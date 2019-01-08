@@ -14,3 +14,10 @@
     right: 0px;
     padding: 10px;
 }
+
+.left {
+    position: absolute;
+    left: 0px;
+    padding: 10px;
+    width: 40%;
+}
