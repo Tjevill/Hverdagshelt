@@ -2,11 +2,12 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Router, NavLink } from 'react-router-dom';
+import { HashRouter, Route, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
+import CaseListCard from "./Components/ProfilePage";
 
 const history = createHashHistory();
 
@@ -68,6 +69,7 @@ class Menu extends Component {
 class Main extends Component {
   render() {
     return (
+
       <div className="container">
         <div className="item heading">
           <div className="avisnavntittel">Vær en hverdagshelt!</div>
@@ -96,6 +98,8 @@ function renderRoot(){
             <HashRouter>
                 <div id='page'>
                     <Navbar />
+                    <CaseListCard />
+                    {/*legge til link til endre personalia*/}
                     {/*<Route exact path='/' component={Home} />*/}
                     {/*<Route exact path='/register' component={Register} />*/}
                     {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
