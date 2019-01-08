@@ -7,7 +7,7 @@ import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
-import CaseListCard from "./Components/profilePage";
+import CaseListCard from "./Components/Test";
 
 const history = createHashHistory();
 
