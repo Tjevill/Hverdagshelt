@@ -2,18 +2,18 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, NavLink } from 'react-router-dom';
+import { HashRouter, Router, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
-import CaseListCard from "./Components/Profile";
 
 const history = createHashHistory();
 
 history.listen((location, action) => {
   window.scrollTo(0, 0);
 });
+
 
 class Navbar extends Component {
     render() {
@@ -59,6 +59,8 @@ class Menu extends Component {
           <li id="menuitem5">
             <NavLink to="/casePage">Testsak</NavLink>
           </li>
+          <li id="menuitem6">
+            <NavLink to="/IssueOverview">IssueOverview</NavLink>
         </ul>
       </HashRouter>
     );
@@ -68,7 +70,6 @@ class Menu extends Component {
 class Main extends Component {
   render() {
     return (
-
       <div className="container">
         <div className="item heading">
           <div className="avisnavntittel">Vær en hverdagshelt!</div>
@@ -109,4 +110,3 @@ function renderRoot() {
 }
 
 renderRoot();
-
