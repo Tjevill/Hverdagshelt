@@ -8,7 +8,9 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
+
 app.use(function(req, res, next) {
+  
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
@@ -22,6 +24,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
 const Hverdagsdao = require("../dao/hverdagsdao.js");
 
 const pool = mysql.createPool({
@@ -33,11 +36,11 @@ const pool = mysql.createPool({
   debug: false
 });
 
-let artikkelDao = new Hverdagsdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
 
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
-  artikkelDao.getAllCases((status, data) => {
+  hverdagsdao.getAllCases((status, data) => {
     res.status(status);
     res.json(data);
   });
