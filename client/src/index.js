@@ -2,18 +2,18 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Router, NavLink } from 'react-router-dom';
+import { HashRouter, Route, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
+import CaseListCard from "./Components/Profile";
 
 const history = createHashHistory();
 
 history.listen((location, action) => {
   window.scrollTo(0, 0);
 });
-
 
 class Navbar extends Component {
     render() {
@@ -68,6 +68,7 @@ class Menu extends Component {
 class Main extends Component {
   render() {
     return (
+
       <div className="container">
         <div className="item heading">
           <div className="avisnavntittel">Vær en hverdagshelt!</div>
@@ -87,23 +88,24 @@ export default Main;
 
 ReactDOM.render(<Main />, document.getElementById("root"));
 
+const root = document.getElementById("root");
 
-const root = document.getElementById('root');
-
-function renderRoot(){
-    if (root)
-        ReactDOM.render(
-            <HashRouter>
-                <div id='page'>
-                    <Navbar />
-                    {/*<Route exact path='/' component={Home} />*/}
-                    {/*<Route exact path='/register' component={Register} />*/}
-                    {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
-                    {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
-                </div>
-            </HashRouter>,
-            root
-        );
+function renderRoot() {
+  if (root)
+    ReactDOM.render(
+      <HashRouter>
+        <div id="page">
+          <Navbar />
+          <Route exact path="/" component={Menu} />
+          <Route exact path="/CasePage" component={CasePage} />
+          {/*<Route exact path='/' component={Home} />*/}
+          {/*<Route exact path='/register' component={Register} />*/}
+          {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
+          {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
+        </div>
+      </HashRouter>,
+      root
+    );
 }
 
 renderRoot();
