@@ -41,11 +41,11 @@ export default class ProfileCard extends Component {
         )
     }
 }
-
-export default class ProfileComponent {
-    render() {
-        return(
-
-        )
-    }
-}
+//
+// export default class ProfileComponent {
+//     render() {
+//         return(
+//
+//         )
+//     }
+// }
