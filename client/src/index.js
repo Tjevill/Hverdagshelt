@@ -59,10 +59,11 @@ class Menu extends Component {
             <NavLink to="/login">Logg inn</NavLink>
           </li>
           <li id="menuitem5">
-            <NavLink to="/casePage">Testsak</NavLink>
+            <NavLink to="/casePage">vaffel</NavLink>
           </li>
           <li id="menuitem6">
             <NavLink to="/IssueOverview">IssueOverview</NavLink>
+          </li>
         </ul>
       </HashRouter>
     );
