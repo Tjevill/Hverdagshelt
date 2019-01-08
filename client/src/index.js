@@ -15,7 +15,6 @@ history.listen((location, action) => {
   window.scrollTo(0, 0);
 });
 
-
 class Navbar extends Component {
     render() {
         return(
@@ -89,25 +88,24 @@ export default Main;
 
 ReactDOM.render(<Main />, document.getElementById("root"));
 
+const root = document.getElementById("root");
 
-const root = document.getElementById('root');
-
-function renderRoot(){
-    if (root)
-        ReactDOM.render(
-            <HashRouter>
-                <div id='page'>
-                    <Navbar />
-                    <CaseListCard />
-                    {/*legge til link til endre personalia*/}
-                    {/*<Route exact path='/' component={Home} />*/}
-                    {/*<Route exact path='/register' component={Register} />*/}
-                    {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
-                    {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
-                </div>
-            </HashRouter>,
-            root
-        );
+function renderRoot() {
+  if (root)
+    ReactDOM.render(
+      <HashRouter>
+        <div id="page">
+          <Navbar />
+          <Route exact path="/" component={Menu} />
+          <Route exact path="/CasePage" component={CasePage} />
+          {/*<Route exact path='/' component={Home} />*/}
+          {/*<Route exact path='/register' component={Register} />*/}
+          {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
+          {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
+        </div>
+      </HashRouter>,
+      root
+    );
 }
 
 renderRoot();
