@@ -7,6 +7,8 @@ import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
+import CaseListCard from "./Components/CaseListCard";
+import ProfileCard from "./Components/ProfileCard";
 
 const history = createHashHistory();
 
@@ -97,7 +99,9 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-          <Route exact path="/" component={Menu} />
+            <CaseListCard/>
+            <ProfileCard/>
+          {/*<Route exact path="/" component={Menu} />*/}
           <Route exact path="/CasePage" component={CasePage} />
           {/*<Route exact path='/' component={Home} />*/}
           {/*<Route exact path='/register' component={Register} />*/}
