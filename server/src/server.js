@@ -6,8 +6,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
+
 app.use(function(req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
@@ -22,7 +24,9 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
 const Hverdagsdao = require("../dao/hverdagsdao.js");
+const eventdao = require("../dao/eventdao.js");
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -34,6 +38,7 @@ const pool = mysql.createPool({
 });
 
 let artikkelDao = new Hverdagsdao(pool);
+let eventDao = new eventdao(pool);
 
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
