@@ -5,7 +5,8 @@ import ReactDOM from "react-dom";
 import { HashRouter, Router, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
-import Cases from "./Cases"
+import Cases from "./Cases";
+import CasePage from "./Components/CasePage";
 
 const history = createHashHistory();
 
@@ -41,7 +42,7 @@ class Navbar extends Component {
 class Menu extends Component {
   render() {
     return (
-      <Router history={history}>
+      <HashRouter history={history}>
         <ul className="hovedmeny">
           <li id="menuitem1">
             <NavLink to="/">Forsiden</NavLink>
@@ -55,15 +56,17 @@ class Menu extends Component {
           <li id="menuitem4">
             <NavLink to="/login">Logg inn</NavLink>
           </li>
+          <li id="menuitem5">
+            <NavLink to="/casePage">Testsak</NavLink>
+          </li>
         </ul>
-      </Router>
+      </HashRouter>
     );
   }
 }
 
 class Main extends Component {
   render() {
-
     return (
       <div className="container">
         <div className="item heading">
