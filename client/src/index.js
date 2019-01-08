@@ -19,10 +19,10 @@ class Navbar extends Component {
         return(
             <div class = "articleGrid">
                 <div>
-                    <nav id='navbar' className='navbar navbar-dark bg-dark'>
+                    <nav id='navbar' className='navbar navbar-dark bg-primary justify-content-between'>
                         <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >Hverdagshelt</a>
                         <form className='form-inline'>
-                            <NavLink to='/register'>
+                            <NavLink to='/profile'>
                                 <button className='btn btn-dark' type='button'>Profile Page</button>
                             </NavLink>
                         </form>
