@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, NavLink } from "react-router-dom";
+import { HashRouter, Router, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
@@ -14,39 +14,29 @@ history.listen((location, action) => {
   window.scrollTo(0, 0);
 });
 
-class Navbar extends Component {
-  render() {
-    return (
-      <div className="articleGrid">
-        <div>
-          <nav
-            id="navbar"
-            className="navbar navbar-dark bg-primary justify-content-between"
-          >
-            <a
-              id="navbar-title"
-              className="navbar-brand"
-              onClick={() => this.toHome()}
-            >
-              Hverdagshelt
-            </a>
-            <form className="form-inline">
-              <NavLink to="/profile">
-                <button className="btn btn-dark" type="button">
-                  Profile Page
-                </button>
-              </NavLink>
-            </form>
-          </nav>
-        </div>
-      </div>
-    );
-  }
 
-  toHome() {
-    history.push("/");
-    window.location.reload();
-  }
+class Navbar extends Component {
+    render() {
+        return(
+            <div class = "articleGrid">
+                <div>
+                    <nav id='navbar' className='navbar navbar-dark bg-primary justify-content-between'>
+                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >Hverdagshelt</a>
+                        <form className='form-inline'>
+                            <NavLink to='/profile'>
+                                <button className='btn btn-dark' type='button'>Profile Page</button>
+                            </NavLink>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        );
+    }
+
+    toHome(){
+        history.push('/');
+        window.location.reload();
+    }
 }
 
 class Menu extends Component {
@@ -69,6 +59,8 @@ class Menu extends Component {
           <li id="menuitem5">
             <NavLink to="/casePage">Testsak</NavLink>
           </li>
+          <li id="menuitem6">
+            <NavLink to="/IssueOverview">IssueOverview</NavLink>
         </ul>
       </HashRouter>
     );
