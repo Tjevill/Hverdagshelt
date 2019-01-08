@@ -28,7 +28,7 @@ export default class CaseListCard extends Component {
     }
 }
 
-export default class ProfileCard extends Component {
+export class ProfileCard extends Component {
     render() {
         return(
             <ul className="list-group">
