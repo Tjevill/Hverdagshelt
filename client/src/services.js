@@ -12,7 +12,7 @@ class Cases {
   category_id: number;
   zipcode: number;
 }
-//TEST
+
 class CaseService {
   getCases(): Promise<Cases[]> {
     let url = "http://localhost:8080/cases/"
