@@ -3,9 +3,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./style.css";
-import { Router, NavLink } from "react-router-dom";
+import { HashRouter, Route, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import Cases from "./Cases"
+import Cases from "./Cases";
+import CasePage from "./Components/CasePage";
 
 const history = createHashHistory();
 
@@ -16,7 +17,7 @@ history.listen((location, action) => {
 class Menu extends Component {
   render() {
     return (
-      <Router history={history}>
+      <HashRouter history={history}>
         <ul className="hovedmeny">
           <li id="menuitem1">
             <NavLink to="/">Forsiden</NavLink>
@@ -30,15 +31,17 @@ class Menu extends Component {
           <li id="menuitem4">
             <NavLink to="/login">Logg inn</NavLink>
           </li>
+          <li id="menuitem5">
+            <NavLink to="/casePage">Testsak</NavLink>
+          </li>
         </ul>
-      </Router>
+      </HashRouter>
     );
   }
 }
 
 class Main extends Component {
   render() {
-
     return (
       <div className="container">
         <div className="item heading">
@@ -57,4 +60,12 @@ class Main extends Component {
 
 export default Main;
 
-ReactDOM.render(<Main />, document.getElementById("root"));
+ReactDOM.render(
+  <HashRouter>
+    <div id="page">
+      <Main />
+      <Route exact path="/CasePage" component={CasePage} />
+    </div>
+  </HashRouter>,
+  document.getElementById("root")
+);
