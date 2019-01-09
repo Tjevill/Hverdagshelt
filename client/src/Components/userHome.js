@@ -30,13 +30,18 @@ export default class userHome extends Component {
 									raised
 									colored
 									className="userHome-button"
+									 onClick={() => {
+                       				 window.location.href = "/#/casePage";
+                       				}}
 								>
 									Meld Feil
 								</Button>
 							</Cell>
 
 							<Cell col={12}>
+							<a href="/#/IssueOverview">
 								<p>Oversikt over alle feil i Trondheim </p>
+							</a>
 							</Cell>
 						</Grid>
 					</div>
