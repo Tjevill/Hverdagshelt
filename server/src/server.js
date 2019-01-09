@@ -26,8 +26,14 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Dao's
 const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
+const casedao = require("../dao/casesdao.js");
+
+let eventDao = new eventdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
+let casedao = new casedao(pool);
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -38,8 +44,6 @@ const pool = mysql.createPool({
   debug: false
 });
 
-let eventDao = new eventdao(pool);
-let hverdagsdao = new Hverdagsdao(pool);
 
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
@@ -91,6 +95,17 @@ app.get("/eventOnDateDesc/:date", (req, res) =>{
   });
 });
 
+// End Events
+
+// Cases
+
+app.get("/allCases", (req, res) =>{
+  console.log("Received get-request on endpoint /allCases");
+  casedao.getAll((status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
 
 
 
