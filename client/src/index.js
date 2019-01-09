@@ -9,7 +9,7 @@ import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
 import CaseListCard from "./Components/CaseListCard";
 import ProfileCard from "./Components/ProfileCard";
-import ProfileContainer from "./Components/ProfileContainer";
+import ProfilePage from "./Components/ProfilePage";
 
 const history = createHashHistory();
 
