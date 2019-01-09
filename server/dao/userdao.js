@@ -101,9 +101,7 @@ module.exports = class UserDao extends Dao {
       var passwordData = sha512(json.password, salt);
       var val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, passwordData.passwordHash, passwordData.salt, json.subscription];
       super.query(
-        "insert into User " +
-          "(name, address, zipcode, tel, email, username, password, secret, subscription) " +
-          "values (?,?,?,?,?,?,?,?,?)",
+        "insert into User (name, address, zipcode, tel, email, username, password, secret, subscription) values (?,?,?,?,?,?,?,?,?)",
         val,
         callback
       );

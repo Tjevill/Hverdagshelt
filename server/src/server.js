@@ -1,4 +1,3 @@
-// @flow
 /* eslint eqeqeq: "off" */
 const express = require("express");
 const mysql = require("mysql");
