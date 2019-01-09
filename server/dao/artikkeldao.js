@@ -1,6 +1,7 @@
 const Dao = require("./dao.js");
 
 module.exports = class ArtikkelDao extends Dao {
+  
   getForside(callback) {
     super.query(
       "select * from nyhetsartikkel where viktighet = 1",

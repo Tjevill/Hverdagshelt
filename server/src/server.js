@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const nodemailer = require('nodemailer');
+
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
@@ -26,7 +27,14 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Dao's
 const Hverdagsdao = require("../dao/hverdagsdao.js");
+const eventdao = require("../dao/eventdao.js");
+const Casedao = require("../dao/casesdao.js");
+
+let eventDao = new eventdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
+let caseDao = new Casedao(pool);
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -46,14 +54,13 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-let hverdagsdao = new Hverdagsdao(pool);
-
 /*
 REST-Architecture:
 /cases
-POST: Create new case
-GET: get all cases
-
+POST: Create
+PUT: Update
+GET: Get
+DELETE: Delete
 
 */
 
@@ -65,28 +72,18 @@ app.get("/cases", (req, res) => {
   });
 });
 
-app.post("/cases", (req: Object, res: Response) => {
+app.post("/cases", (req, res) => {
   console.log("/cases fikk POST request");
-
-  if(!req.body) {
-    return res.sendStatus(400);
-  }else {
-    hverdagsdao.createCase({
-    description: req.body.description,
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    status_id: req.body.status_id,
-    user_id: req.body.user_id,
-    category_id: req.body.category_id,
-    zipcode: req.body.zipcode
-    }
-    ,(status, data) => {
-    res.status(status); 
+  casedao.create((status, data) => {
+    res.status(status);
     res.json(data);
-    
 
-  });
-
+  const mailOptionsCase = {
+    from: 'bedrehverdagshelt@gmail.com',
+    to: 'benos@stud.ntnu.no',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+  };
 
   transporter.sendMail(mailOptionsCase, function(error, info){
     if (error) {
@@ -95,7 +92,66 @@ app.post("/cases", (req: Object, res: Response) => {
         console.log('Email sent: ' + info.response);
     }
     });
-}});
+  
+  });
+}
+
+ 
+
+
+// Events
+app.get("/events", (req, res) => {
+  console.log("Received get-request on endpoint /events");
+  eventDao.getAllEvents((status, data)=>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/getEvent/:id", (req, res) =>{
+  console.log("Received get-request on endpoint /getone"+req.params.id);
+  eventDao.getOne(req.params.id, (status, data)=>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventSearch/:keyword", (req, res) =>{
+  console.log("Received get-request on endpoint /eventSearch/"+req.params.keyword);
+  eventDao.searchEvent(req.params.keyword, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventOnDateAsc/:date", (req, res) =>{
+  console.log("Received get-request on endpoint /eventOnDateAsc/"+req.params.date);
+  eventDao.onDateAsc(req.params.date, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventOnDateDesc/:date", (req, res) =>{
+  console.log("Received get-request on endpoint /eventOnDateDesc/"+req.params.date);
+  eventDao.onDateAsc(req.params.date, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+// End Events
+
+// Cases
+
+app.get("/allCases", (req, res) =>{
+  console.log("Received get-request on endpoint /allCases");
+  casedao.getAll((status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
 
 
 const server = app.listen(process.env.PORT || "8080", function() {
