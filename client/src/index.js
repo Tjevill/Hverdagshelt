@@ -1,6 +1,6 @@
 // @flow
 /* eslint eqeqeq: "off" */
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route } from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
@@ -14,7 +14,8 @@ import UserHome from "./components/userHome";
 import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-
+import Register from "./Components/Register";
+import Login from "./Components/Login";
 
 const history = createHashHistory();
 
@@ -25,7 +26,7 @@ history.listen((location, action) => {
 
 class Navbar extends Component {
 
-  active = ""
+  active = "";
 
   render() {
     return(

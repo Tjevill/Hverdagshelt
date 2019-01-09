@@ -35,22 +35,29 @@ class User {
     zipcode: number;
 }
 
+const url = "http://localhost:8080";
+
+let axiosConfig = {
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+    "x-access-token": sessionStorage.getItem("storedtoken")
+  }
+};
+
+
 class CaseService {
   getCases(): Promise<Cases[]> {
-    return axios.get('/cases');
+
+    return axios.get(url + '/cases');
   }
 
-  getCase(id: number): Promise<Case> {
-    return axios.get('/case/' + id);
-  }
+    getCategories(): Promise<Category[]> {
+        return axios.get(url + '/categories');
+    }
 
-  deleteCase(id: number): Promise<void> {
-        return axios.delete('/case/' + id);
+  getCase(id: number): Promise<Cases> {
+    return axios.get(url + '/cases/' + id);
   }
-  getCategories(): Promise<Category[]> {
-        return axios.get('/categories');
-  }
-
     createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
         return axios.post('/cases', {
             headline: headline,
@@ -67,19 +74,28 @@ class CaseService {
                 console.log(error);
             });
     }
-
-
-
-
-    /* updateStudent(case: Cases): Promise<void> {
-      return axios.put('/cases', case);
-    }*/
-}
-
-class UserService {
-    getUser(id: number): Promise<User> {
-        return axios.get('/user/' + id);
-    }
 }
 export let caseService = new CaseService();
+
+class UserService {
+  addUser(newuser: Register): Promise<void> {
+    console.log("DATA TIL SERVICE: ", newuser);
+    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+    return axios.put(url + "/newuser", newuser);
+  }
+
+  getUserByUsername(username: string): Promise<void> {
+    // console.log(axios.get(domain + "/news/artikkel/" + id));
+    return axios.get(url + "/user/" + username);
+  }
+
+  login(login: Login): Promise<void> {
+    // console.log(axios.post(domain + "/login", login));
+    return axios.post(url + "/login", login);
+  }
+
+
+
+}
+
 export let userService = new UserService();
