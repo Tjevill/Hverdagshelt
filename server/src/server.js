@@ -9,45 +9,97 @@ const cors = require("cors");
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
-app.use(function(req, res, next) {
-  
-  res.header(
-    "Access-Control-Allow-Origin",
-    "http://localhost:3000",
-    "http://kalvskinnet-api.herokuapp.com"
-  );
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-access-token"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
+app.use(function (req, res, next) {
+	
+	res.header(
+		"Access-Control-Allow-Origin",
+		"http://localhost:3000",
+		"http://kalvskinnet-api.herokuapp.com"
+	);
+	res.header("Access-Control-Allow-Credentials", "true");
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, x-access-token"
+	);
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+	next();
 });
 
 const Hverdagsdao = require("../dao/hverdagsdao.js");
+const Userdao = require("../dao/userdao.js");
 
 const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "mathibra",
-  database: "mathibra",
-  password: "QcxPTxcA",
-  debug: false
+	connectionLimit: 10,
+	host: "mysql.stud.iie.ntnu.no",
+	user: "mathibra",
+	database: "mathibra",
+	password: "QcxPTxcA",
+	debug: false
 });
 
 let hverdagsdao = new Hverdagsdao(pool);
+let userdao = new Userdao(pool);
+
 
 app.get("/cases", (req, res) => {
-  console.log("/cases fikk request.");
-  hverdagsdao.getAllCases((status, data) => {
-    res.status(status);
-    res.json(data);
-  });
+	console.log("/cases fikk request.");
+	hverdagsdao.getAllCases((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
 });
 
+/**
+ * Gets all users from DB
+ */
+app.get('/user', (req: Request, res: Response) => {
+	userdao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-const server = app.listen(process.env.PORT || "8080", function() {
-  console.log("App listening on port %s", server.address().port);
-  console.log("Press Ctrl+C to quit");
+/**
+ * Get one user from DB by id
+ */
+app.get('/user/:id', (req: Request, res: Response) => {
+	userdao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Updates user by id
+ */
+app.put('/user/:id', (req: Request, res: Response) => {
+	userdao.updateUser(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Deletes user by id
+ */
+app.delete('/user/:id', (req: Request, res: Response) => {
+	userdao.deleteUserByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Gets count of all users in DB
+ */
+app.get('/userCount', (req: Request, res: Response) => {
+	userdao.getCountUsers((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+const server = app.listen(process.env.PORT || "8080", function () {
+	console.log("App listening on port %s", server.address().port);
+	console.log("Press Ctrl+C to quit");
 });
