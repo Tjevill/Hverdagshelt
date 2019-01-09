@@ -6,6 +6,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const nodemailer = require('nodemailer');
+
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
@@ -65,6 +67,17 @@ const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 
 
+
+
+// Authentication with bedrehverdagshelt@gmail.com
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'bedrehverdagshelt@gmail.com',
+    pass: 'JegErDinHelt69'
+  }
+});
+
 let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
@@ -96,6 +109,7 @@ app.get('/user/:id', (req: Request, res: Response) => {
 	userdao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
+    
 	})
 });
 
@@ -253,6 +267,26 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+app.put("/updateCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to update case with id: "+req.params.case_id);
+  caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+    res.status(status);
+    res.json(data);
+    console.log(req.body);
+  });
+});
+
+app.delete("/deleteCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to delete event with id: "+req.params.case_id);
+  caseDao.deleteCase(req.params.case_id, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+// End Cases
 
     function loginOk(username, password) {
 
@@ -273,6 +307,52 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         return promise1;
     }
 
+app.post("/cases", (req, res) => {
+  console.log("/cases fikk POST request");
+  console.log(req.body.description);
+
+  if(!req.body) {
+    return res.sendStatus(400);
+  } else {
+      caseDao.create({
+        description: req.body.description,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        status_id: req.body.status_id,
+        user_id: req.body.user_id,
+        category_id: req.body.category_id,
+        zipcode: req.body.zipcode,
+        headline: req.body.headline,
+        picture: req.body.picture,
+        employee_id: req.body.employee_id,
+        org_id: req.body.org_id
+      },
+      (status, data) => {
+        res.status(status); 
+        res.json(data);
+  });
+}
+  
+  let sub = req.body.headline;
+  let des = req.body.description;
+  
+    // mail
+  const mailOptionsCase = {
+    from: 'bedrehverdagshelt@gmail.com',
+    to: 'benos@stud.ntnu.no',
+    subject: 'Takk for din henvendelse, saken er registert!',
+    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+  };
+
+  transporter.sendMail(mailOptionsCase, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+  });
+});
+ 
 
     app.post("/login", (req, res) => {
 
