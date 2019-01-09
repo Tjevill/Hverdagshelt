@@ -13,6 +13,18 @@ class Cases {
   zipcode: number;
 }
 
+class User {
+	user_id: number;
+	name: string;
+	address: string;
+	zipcode: string;
+	tel: number;
+	email: string;
+	username: string;
+	subscription: number
+	
+}
+
 const url = "http://localhost:8080";
 
 let axiosConfig = {
@@ -55,7 +67,28 @@ class UserService {
     // console.log(axios.post(domain + "/login", login));
     return axios.post(url + "/login", login);
   }
-
+  
+  getAllUsers(): Promise<User[]>{
+    return axios.get('/user');
+  }
+	
+	getUserByID(id: number): Promise<User[]>{
+    return axios.get('/user/' + id);
+  }
+	
+	updateOne(user: User): Promise<void>{
+		return axios.put('/user/' + user.user_id, user);
+	}
+	
+	deleteUser(id: number): Promise<void>{
+    return axios.delete('/user/' + id);
+  }
+  
+  getCountUsers(): Promise<number>{
+    return axios.put('/userCount');
+  }
+	
+	
 
 
 }
