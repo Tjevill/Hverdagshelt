@@ -16,5 +16,18 @@ body,
   text-align: center;
 }
 
+#case-page .info {
+  width: 50%;
+  float: left;
+}
+
+#case-page #picture {
+  width: 50%;
+}
+
+#case-page #description {
+  padding-top: 2%;
+}
+
 #case-page h1 {
 }

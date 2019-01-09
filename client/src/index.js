@@ -2,13 +2,14 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Router, NavLink } from 'react-router-dom';
+import { HashRouter, Route, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
 import CaseListCard from "./Components/CaseListCard";
 import ProfileCard from "./Components/ProfileCard";
+//import IssueOverview from "./Components/IssueOverview";
 
 const history = createHashHistory();
 
@@ -59,7 +60,7 @@ class Menu extends Component {
             <NavLink to="/login">Logg inn</NavLink>
           </li>
           <li id="menuitem5">
-            <NavLink to="/casePage">vaffel</NavLink>
+            <NavLink to="/casePage">CasePage</NavLink>
           </li>
           <li id="menuitem6">
             <NavLink to="/IssueOverview">IssueOverview</NavLink>
@@ -100,14 +101,9 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-            <CaseListCard/>
-            <ProfileCard/>
-          {/*<Route exact path="/" component={Menu} />*/}
+          <Route exact path="/" component={Menu} />
           <Route exact path="/CasePage" component={CasePage} />
-          {/*<Route exact path='/' component={Home} />*/}
-          {/*<Route exact path='/register' component={Register} />*/}
-          {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
-          {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
+        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
         </div>
       </HashRouter>,
       root

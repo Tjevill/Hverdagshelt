@@ -12,15 +12,35 @@ export default class Main extends Component {
   render() {
     return (
       <div id="case-page">
-        <h1> {this.title} </h1>
-        <img src="https://tinyurl.com/y9qzpzwy" alt="Case image" />
-        <br />
-        <h6> {this.province} </h6>
-        <h6> {this.address} </h6>
-        <h6> {this.date} </h6>
-        <p1> {this.description} </p1>
+        <Card title={this.title} />
+        <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case image" />
+        <p id="description">Beskrivelse</p>
         <Map />
       </div>
     );
   }
+}
+
+
+export class Card extends Component<{
+  className: string,
+  title: string,
+  picture: string
+}> {
+
+  render() {
+    return (
+      <div className={"card article info"}>
+        <div className="card-body article-body">
+            <h5 className="card-title article-title">{this.props.title}</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Kommune: </li>
+              <li class="list-group-item">Adresse: </li>
+              <li class="list-group-item">Lagt inn: </li>
+            </ul>
+        </div>
+      </div>
+    );
+  }
+
 }
