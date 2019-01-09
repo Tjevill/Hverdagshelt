@@ -11,6 +11,7 @@ app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
 app.use(function(req, res, next) {
+  
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
@@ -37,16 +38,60 @@ const pool = mysql.createPool({
   debug: false
 });
 
-let artikkelDao = new Hverdagsdao(pool);
 let eventDao = new eventdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
 
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
-  artikkelDao.getAllCases((status, data) => {
+  hverdagsdao.getAllCases((status, data) => {
     res.status(status);
     res.json(data);
   });
 });
+
+
+// Events
+app.get("/events", (req, res) => {
+  console.log("Received get-request on endpoint /events");
+  eventDao.getAllEvents((status, data)=>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/getEvent/:id", (req, res) =>{
+  console.log("Received get-request on endpoint /getone"+req.params.id);
+  eventDao.getOne(req.params.id, (status, data)=>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventSearch/:keyword", (req, res) =>{
+  console.log("Received get-request on endpoint /eventSearch/"+req.params.keyword);
+  eventDao.searchEvent(req.params.keyword, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventOnDateAsc/:date", (req, res) =>{
+  console.log("Received get-request on endpoint /eventOnDateAsc/"+req.params.date);
+  eventDao.onDateAsc(req.params.date, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/eventOnDateDesc/:date", (req, res) =>{
+  console.log("Received get-request on endpoint /eventOnDateDesc/"+req.params.date);
+  eventDao.onDateAsc(req.params.date, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+
 
 
 const server = app.listen(process.env.PORT || "8080", function() {
