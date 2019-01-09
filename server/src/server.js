@@ -6,7 +6,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
@@ -39,19 +38,72 @@ const pool = mysql.createPool({
 const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
+const Userdao = require("../dao/userdao.js");
 
+
+
+let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 
 
-
 app.get("/cases", (req, res) => {
-  console.log("/cases fikk request.");
-  hverdagsdao.getAllCases((status, data) => {
-    res.status(status);
-    res.json(data);
-  });
+	console.log("/cases fikk request.");
+	hverdagsdao.getAllCases((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Gets all users from DB
+ */
+app.get('/user', (req: Request, res: Response) => {
+	userdao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one user from DB by id
+ */
+app.get('/user/:id', (req: Request, res: Response) => {
+	userdao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Updates user by id
+ */
+app.put('/user/:id', (req: Request, res: Response) => {
+	userdao.updateUser(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Deletes user by id
+ */
+app.delete('/user/:id', (req: Request, res: Response) => {
+	userdao.deleteUserByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Gets count of all users in DB
+ */
+app.get('/userCount', (req: Request, res: Response) => {
+	userdao.getCountUsers((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
 });
 
 // Events
