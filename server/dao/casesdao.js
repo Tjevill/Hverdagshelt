@@ -32,6 +32,14 @@ module.exports = class CasesDao extends Dao {
             "INSERT INTO Cases " +
             "(description, longitude, latitude, status_id, user_id, category_id,"+
             "zipcode, headline, picture, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?,?)",
+            
+            val,
+            callback
+        );
+    }
+
+
+
     getOneZip(zipcode, callback){
         super.query("SELECT * FROM Cases WHERE zipcode = ?", [zipcode], callback);
     }
