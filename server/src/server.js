@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
 app.use(function(req, res, next) {
-  
+
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
@@ -26,6 +26,30 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
+let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord");
+
+
+'use strict';
+var crypto = require('crypto');
+
+var genRandomString = function(length){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex') /** convert to hexadecimal format */
+            .slice(0,length);   /** return required number of characters */
+};
+
+var sha512 = function(password, salt){
+    var hash = crypto.createHmac('sha512', salt);
+    hash.update(password);
+    var value = hash.digest('hex');
+    return {
+        salt:salt,
+        passwordHash:value
+    };
+};
+
+
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -119,9 +143,6 @@ app.get('/userCount', (req: Request, res: Response) => {
 	})
 });
 
-
-
-
 // Events
 app.get("/events", (req, res) => {
   console.log("Received get-request on endpoint /events");
@@ -132,7 +153,7 @@ app.get("/events", (req, res) => {
 });
 
 app.get("/getEvent/:id", (req, res) =>{
-  console.log("Received get-request on endpoint /getone"+req.params.id);
+  console.log("Received get-request on endpoint /getEvent/"+req.params.id);
   eventDao.getOne(req.params.id, (status, data)=>{
     res.status(status);
     res.json(data);
@@ -147,38 +168,144 @@ app.get("/eventSearch/:keyword", (req, res) =>{
   });
 });
 
-app.get("/eventOnDateAsc/:date", (req, res) =>{
-  console.log("Received get-request on endpoint /eventOnDateAsc/"+req.params.date);
-  eventDao.onDateAsc(req.params.date, (status, data) =>{
-    res.status(status);
-    res.json(data);
-  });
+app.get("/eventOnDateAsc/:date", (req, res) => {
+    console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
+    eventDao.onDateAsc(req.params.date, (status, data) => {
+        console.log("/cases fikk request.");
+        hverdagsDao.getAllCases((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 });
 
-app.get("/eventOnDateDesc/:date", (req, res) =>{
-  console.log("Received get-request on endpoint /eventOnDateDesc/"+req.params.date);
-  eventDao.onDateAsc(req.params.date, (status, data) =>{
-    res.status(status);
-    res.json(data);
-  });
-});
+    app.put("/newuser", (req, res) => {
+        console.log("Fikk POST-request fra klienten");
+        userdao.addUser(req.body, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+
+    app.get("/user/:username", (req, res) => {
+        console.log("/user fikk request: " + req.params.username);
+        userdao.getUsername(req.params.username, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/eventOnDateDesc/:date", (req, res) => {
+        console.log("Received get-request on endpoint /eventOnDateDesc/" + req.params.date);
+        eventDao.onDateAsc(req.params.date, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.post("/createEvent", (req, res) => {
+        console.log("Received post-request from client on endpoint /createEvent");
+        eventDao.createEvent(req.body, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.delete("/deleteEvent/:event_id", (req, res) => {
+        console.log("Received delete-request from client.");
+        console.log("Trying to delete event with id: " + req.params.event_id);
+        eventDao.deleteEvent(req.params.event_id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.put("/updateEvent/:event_id", (req, res) => {
+        console.log("received post-request from client");
+        console.log("Trying to update event with id: " + req.params.event_id);
+        eventDao.updateEvent(req.params.event_id, req.body, (status, data) => {
+            res.status(status);
+            res.json(data);
+            console.log(req.body);
+        });
+    });
 
 // End Events
 
 // Cases
 
-app.get("/allCases", (req, res) =>{
-  console.log("Received get-request on endpoint /allCases");
-  casedao.getAll((status, data) =>{
+    app.get("/allCases", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        caseDao.getAllCases((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getCase/:id", (req, res) => {
+        console.log("Received get-request on endpoint /getCase/" + req.params.id);
+        caseDao.getOne(req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getOnZip/:zipcode", (req, res) => {
+        console.log("Received get-request on endpoint /getOnZip/" + req.params.zipcode);
+        caseDao.getOneZip(req.params.zipcode, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    app.get("/getOnCategory/:category_id", (req, res) => {
+        console.log("Received get-request on endpoint /getOnCategory/" + req.params.category_id);
+        caseDao.getOneCategory(req.params.category_id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+app.put("/updateCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to update case with id: "+req.params.case_id);
+  caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+    res.status(status);
+    res.json(data);
+    console.log(req.body);
+  });
+});
+
+app.delete("/deleteCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to delete event with id: "+req.params.case_id);
+  caseDao.deleteCase(req.params.case_id, (status, data) =>{
     res.status(status);
     res.json(data);
   });
 });
 
-/**
- * create case and send case received message 
- *
- */
+// End Cases
+
+    function loginOk(username, password) {
+
+        var promise1 = new Promise(function (resolve, reject) {
+            userdao.getUsername(username, (status, data) => {
+                console.log("data: " + data);
+                const lagretPass = data[0].password;
+                const passwordData = sha512(password, data[0].secret);
+                // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+                if (passwordData.passwordHash == lagretPass) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        })
+        return promise1;
+    }
 
 app.post("/cases", (req, res) => {
   console.log("/cases fikk POST request");
@@ -227,7 +354,31 @@ app.post("/cases", (req, res) => {
 });
  
 
-const server = app.listen(process.env.PORT || "8080", function() {
-  console.log("App listening on port %s", server.address().port);
-  console.log("Press Ctrl+C to quit");
-});
+    app.post("/login", (req, res) => {
+
+
+// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
+        var promiseObject = loginOk(req.body.username, req.body.password);
+        console.log("promiseobject: " + promiseObject);
+
+        promiseObject.then(function (value) {
+            if (value) {
+                let token = jwt.sign({username: req.body.username}, privateKey, {
+                    expiresIn: 10
+                });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
+
+                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+            } else {
+                console.log("Brukernavn & passord IKKE ok");
+                res.status(401);
+                res.json({reply: "Not authorized. Login or password incorrect."});
+            }
+        });
+    });
+
+
+    const server = app.listen(process.env.PORT || "8080", function () {
+        console.log("App listening on port %s", server.address().port);
+        console.log("Press Ctrl+C to quit");
+    });

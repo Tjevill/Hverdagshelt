@@ -1,6 +1,8 @@
 const Dao = require("./dao.js");
 
-module.exports = class hverdagsdao extends Dao {
+
+
+module.exports = class ArtikkelDao extends Dao {
   getAllCases(callback) {
     super.query(
       "select * from Cases",
@@ -8,4 +10,5 @@ module.exports = class hverdagsdao extends Dao {
       callback
     );
   }
-}
+
+};
