@@ -55,6 +55,8 @@ class Navbar extends Component {
   activate(name) {
     console.log(this.active);
 
+    if(name == this.active) return;
+
     if(name != ""){
       let to = document.getElementById(name);
       to.className += " active";
