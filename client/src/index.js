@@ -16,6 +16,7 @@ import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 
+//delete me
 const history = createHashHistory();
 
 history.listen((location, action) => {
