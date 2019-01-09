@@ -82,19 +82,6 @@ class Navbar extends Component {
 
 }
 
-
-class Main extends Component {
-  render() {
-    return (
-      <div>Frontpage!</div>
-    );
-  }
-}
-
-export default Main;
-
-ReactDOM.render(<Main />, document.getElementById("root"));
-
 const root = document.getElementById("root");
 
 
