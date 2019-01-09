@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route } from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
-import Cases from "./cases";
 import CasePage from "./components/CasePage";
 import CaseListCard from "./components/CaseListCard";
 import ProfileCard from "./components/ProfileCard";
