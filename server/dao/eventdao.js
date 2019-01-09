@@ -18,11 +18,11 @@ module.exports = class EventDao extends Dao {
         super.query("SELECT * FROM Events WHERE name LIKE '%"+keyword+"%' ",[keyword], callback);
     }
 
-    onDateAsc(date,callback){
+    onDateAsc(date, callback){
         super.query("SELECT * FROM Events WHERE date LIKE '"+date+"%' ORDER BY date ASC ", [date], callback);
     }
 
-    onDateDesc(date,callback){
+    onDateDesc(date, callback){
         super.query("SELECT * FROM Events WHERE date LIKE '"+date+"%' ORDER BY date DESC ", [date], callback);
     }
 
