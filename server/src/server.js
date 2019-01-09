@@ -26,15 +26,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Dao's
-const Hverdagsdao = require("../dao/hverdagsdao.js");
-const eventdao = require("../dao/eventdao.js");
-const Casedao = require("../dao/casesdao.js");
-
-let eventDao = new eventdao(pool);
-let hverdagsdao = new Hverdagsdao(pool);
-let caseDao = new Casedao(pool);
-
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "mysql.stud.iie.ntnu.no",
@@ -44,6 +35,16 @@ const pool = mysql.createPool({
   debug: false
 });
 
+// Dao's
+const Hverdagsdao = require("../dao/hverdagsdao.js");
+const eventdao = require("../dao/eventdao.js");
+const Casedao = require("../dao/casesdao.js");
+
+let eventDao = new eventdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
+let caseDao = new Casedao(pool);
+
+
 
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
@@ -52,7 +53,6 @@ app.get("/cases", (req, res) => {
     res.json(data);
   });
 });
-
 
 // Events
 app.get("/events", (req, res) => {
@@ -64,7 +64,7 @@ app.get("/events", (req, res) => {
 });
 
 app.get("/getEvent/:id", (req, res) =>{
-  console.log("Received get-request on endpoint /getone"+req.params.id);
+  console.log("Received get-request on endpoint /getEvent/"+req.params.id);
   eventDao.getOne(req.params.id, (status, data)=>{
     res.status(status);
     res.json(data);
@@ -95,19 +95,68 @@ app.get("/eventOnDateDesc/:date", (req, res) =>{
   });
 });
 
+app.post("/createEvent", (req, res) =>{
+  console.log("Received post-request from client on endpoint /createEvent");
+  eventDao.createEvent(req.body, (status, data)=>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.delete("/deleteEvent/:event_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to delete event with id: "+req.params.event_id);
+  eventDao.deleteEvent(req.params.event_id, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.put("/updateEvent/:event_id", (req, res) =>{
+  console.log("received post-request from client");
+  console.log("Trying to update event with id: "+req.params.event_id);
+  eventDao.updateEvent(req.params.event_id, req.body, (status, data) =>{
+    res.status(status);
+    res.json(data);
+    console.log(req.body);
+  });
+});
+
 // End Events
 
 // Cases
 
 app.get("/allCases", (req, res) =>{
   console.log("Received get-request on endpoint /allCases");
-  casedao.getAll((status, data) =>{
+  caseDao.getAllCases((status, data) =>{
     res.status(status);
     res.json(data);
   });
 });
 
+app.get("/getCase/:id", (req, res)=> {
+  console.log("Received get-request on endpoint /getCase/"+req.params.id);
+  caseDao.getOne(req.params.id, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
 
+app.get("/getOnZip/:zipcode", (req, res) => {
+  console.log("Received get-request on endpoint /getOnZip/"+req.params.zipcode);
+  caseDao.getOneZip(req.params.zipcode, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+app.get("/getOnCategory/:category_id", (req, res) => {
+  console.log("Received get-request on endpoint /getOnCategory/"+req.params.category_id);
+  caseDao.getOneCategory(req.params.category_id, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  }) 
+})
 
 const server = app.listen(process.env.PORT || "8080", function() {
   console.log("App listening on port %s", server.address().port);

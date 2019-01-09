@@ -26,7 +26,31 @@ module.exports = class EventDao extends Dao {
         super.query("SELECT * FROM Events WHERE date LIKE '"+date+"%' ORDER BY date DESC ", [date], callback);
     }
 
-    
+    createEvent(json, callback){
+        let val = [json.name, json.date, json.description, json.zipcode];
+        super.query(
+            "INSERT into Events (name, date, description, zipcode) VALUES (?, ?, ?, ?)",
+            val,
+            callback
+        );
+    }
+
+    deleteEvent(event_id, callback){
+        super.query(
+            "DELETE FROM Events WHERE event_id = ?",
+            [event_id],
+            callback
+        );
+    };
+
+    updateEvent(event_id, json, callback){
+        let val = [json.name, json.date, json.description, json.zipcode, event_id];
+        super.query(
+            "UPDATE Events SET name = ?, date = ?, description = ?, zipcode = ? WHERE event_id = ?",
+            val,
+            callback
+        );
+    }
 
 }
 
