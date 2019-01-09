@@ -86,9 +86,7 @@ app.post("/cases", (req: Object, res: Response) => {
     
 
   });
- 
 
-  
 
   transporter.sendMail(mailOptionsCase, function(error, info){
     if (error) {
