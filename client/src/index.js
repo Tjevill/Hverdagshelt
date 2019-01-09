@@ -3,9 +3,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "./style.css";
-import { Router, NavLink } from "react-router-dom";
+import { Router, NavLink, Route } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import Cases from "./Cases"
+import Cases from "./Components/Cases"
+import Register from "./Components/Register";
+import Login from "./Components/Login";
 
 const history = createHashHistory();
 
@@ -22,7 +24,7 @@ class Menu extends Component {
             <NavLink to="/">Forsiden</NavLink>
           </li>
           <li id="menuitem2">
-            <NavLink to="/ntnu">Meny 1</NavLink>
+            <NavLink to="/registrer">Registrer</NavLink>
           </li>
           <li id="menuitem3">
             <NavLink to="/verden">Meny 2</NavLink>
@@ -48,7 +50,14 @@ class Main extends Component {
           <Menu />
         </div>
         <div className="item main">
-          <Cases />
+          <Router history={history}>
+            <div>
+
+            <Route path="/registrer" component={Register} />
+            <Route path="/login" component={Login} />
+
+            </div>
+          </Router>
         </div>
       </div>
     );
