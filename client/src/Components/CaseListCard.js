@@ -7,7 +7,7 @@ import "../style.css";
 export default class CaseListCard extends Component {
     render() {
         return(
-            <div className="card right">
+            <div className="card right card-background">
                 <h1>Your cases</h1>
                 <ul className="list-group">
                     <li className="list-group-item d-flex justify-content-between align-items-center">
