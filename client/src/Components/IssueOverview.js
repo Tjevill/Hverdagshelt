@@ -1,11 +1,11 @@
 //@flow
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import "./style.css";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 
+const history = createHashHistory();
 
 export default class IssueOverview extends Component {
   Kategories = [];
@@ -26,7 +26,7 @@ export default class IssueOverview extends Component {
         </div>
         </div>
         <p>Nyeste Meldte Feil</p>
-        <Router history={history}>
+         <Router history={history}>
         <div class="container text-center">
         <ListGroup>
             <ListGroup.Item to={'/123'}>

@@ -8,6 +8,11 @@ import Cases from "./Cases";
 import CasePage from "./components/CasePage";
 import ProfilePage from "./components/ProfilePage";
 import ReportPage from "./components/ReportPage";
+import UserHome from "./Components/userHome";
+import Events from "./Components/events";
+import IssueOverview from "./Components/IssueOverview";
+import 'react-mdl/extra/material.css';
+import 'react-mdl/extra/material.js';
 
 
 const history = createHashHistory();
@@ -29,6 +34,12 @@ class Navbar extends Component {
                         <form className='form-inline'>
                             <NavLink to='/profile'>
                                 <button className='btn btn-dark' type='button'>Profile Page</button>
+                            </NavLink>
+                               <NavLink to='/userHome'>
+                                <button className='btn btn-dark' type='button'>User Home </button>
+                            </NavLink>
+                            <NavLink to='/events'>
+                                <button className='btn btn-dark' type='button'>Events</button>
                             </NavLink>
                         </form>
                     </nav>
@@ -106,7 +117,9 @@ function renderRoot() {
             <Route exact path="/CasePage" component={CasePage} />
             <Route exact path="/ReportPage" component={ReportPage} />
             <Route exact path="/ProfilePage" component={ProfilePage} />
-        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
+          <Route exact path='/userHome' component={UserHome}/>
+          <Route exact path='/events' component={Events}/>
+          <Route exact path="/IssueOverview" component={IssueOverview} />
         </div>
       </HashRouter>,
       root
