@@ -1,6 +1,7 @@
 const Dao = require("./dao.js");
 
 module.exports = class ArtikkelDao extends Dao {
+  
   getForside(callback) {
     super.query(
       "select * from nyhetsartikkel where viktighet = 1",
@@ -43,9 +44,7 @@ module.exports = class ArtikkelDao extends Dao {
     var val = [json.artikkel, json.user, json.email, json.comment];
     console.log("val: " + val);
     super.query(
-      "insert into comments " +
-        "(artikkel, user, email, comment) " +
-        "values (?,?,?,?)",
+      "insert into comments (artikkel, user, email, comment) values (?,?,?,?)",
       val,
       callback
     );
@@ -70,9 +69,7 @@ module.exports = class ArtikkelDao extends Dao {
     ];
     console.log("val: " + val);
     super.query(
-      "insert into nyhetsartikkel " +
-        "(tittel, ingress, innhold, bilde, kategori, viktighet) " +
-        "values (?,?,?,?,?,?)",
+      "insert into nyhetsartikkel (tittel, ingress, innhold, bilde, kategori, viktighet) values (?,?,?,?,?,?)",
       val,
       callback
     );
