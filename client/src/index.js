@@ -2,14 +2,15 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, NavLink } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
-import Cases from "./Cases";
+//import Cases from "./Cases";
 import CasePage from "./components/CasePage";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
+//import CaseListCard from "./components/CaseListCard";
+//import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
+import IssueOverview from "./components/IssueOverview";
 
 const history = createHashHistory();
 
@@ -17,76 +18,69 @@ history.listen((location, action) => {
   window.scrollTo(0, 0);
 });
 
-
 class Navbar extends Component {
-    render() {
-        return(
-            <div class = "articleGrid">
-                <div>
-                    <nav id='navbar' className='navbar navbar-light justify-content-between'>
-                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >
-                            <img src="http://i.imgur.com/sZeFVIn.jpg" alt="Logo" id="logo-image" class="logo"/>
-                        </a>
-                        <form className='form-inline'>
-                            <NavLink to='/profile'>
-                                <button className='btn btn-dark' type='button'>Profile Page</button>
-                            </NavLink>
-                        </form>
-                    </nav>
-                </div>
-            </div>
-        );
-    }
 
-    toHome(){
-        history.push('/');
-        window.location.reload();
-    }
-}
+  active = ""
 
-class Menu extends Component {
   render() {
-    return (
-      <HashRouter history={history}>
-        <ul className="hovedmeny">
-          <li id="menuitem1">
-            <NavLink to="/">Forsiden</NavLink>
-          </li>
-          <li id="menuitem2">
-            <NavLink to="/ntnu">Meny 1</NavLink>
-          </li>
-          <li id="menuitem3">
-            <NavLink to="/verden">Meny 2</NavLink>
-          </li>
-          <li id="menuitem4">
-            <NavLink to="/login">Logg inn</NavLink>
-          </li>
-          <li id="menuitem5">
-            <NavLink to="/casePage">CasePage</NavLink>
-          </li>
-          <li id="menuitem6">
-            <NavLink to="/IssueOverview">IssueOverview</NavLink>
-          </li>
-        </ul>
-      </HashRouter>
+    return(
+      <div className="topnav" id="navbar">
+        <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+        <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Issues</a>
+        <a className="option" href="#news">News</a>
+        <a className="option" href="#contact">Contact</a>
+        <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profile</a>
+        <a href="/" className="icon" onClick={() => this.mobileMenu()}>
+          <i className="fa fa-bars"></i>
+        </a>
+      </div>
     );
   }
+
+  componentDidMount() {
+    this.active = window.location.hash.split("/")[1];
+    console.log("active: " + this.active);
+    /* not working. Option wont activate when first loaded but works after.
+    if(this.active != ""){
+      let activeOption = document.getElementById(this.active);
+      activeOption.className =+ " active";
+    }*/
+  }
+
+  activate(name) {
+    console.log(this.active);
+
+    if(name != ""){
+      let to = document.getElementById(name);
+      to.className += " active";
+    }
+
+    if(this.active != ""){
+      let from = document.getElementById(this.active);
+      from.className = "option";
+    }
+
+    this.active = name;
+  }
+
+  /* Toggle between adding and removing the "responsive" class
+  to topnav when the user clicks on the icon */
+  mobileMenu() {
+    let x = document.getElementById("navbar");
+    if (x.className === "topnav") {
+      x.className += " responsive";
+    } else {
+      x.className = "topnav";
+    }
+  }
+
 }
+
 
 class Main extends Component {
   render() {
     return (
-      <div className="container">
-        <div className="item heading">
-          <div className="avisnavntittel">Vær en hverdagshelt!</div>
-        </div>
-        <div className="item meny">
-          <Menu />
-        </div>
-        <div className="item main">
-          <Cases />
-        </div>
-      </div>
+      <div>Frontpage!</div>
     );
   }
 }
@@ -103,9 +97,10 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-          <Route exact path="/" component={Menu} />
-          <Route exact path="/CasePage" component={CasePage} />
-        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
+          <Route exact path="/" component={Main} />
+          <Route exact path="/case" component={CasePage} />
+          <Route exact path="/profile" component={ProfilePage} />
+          <Route exact path="/issues" component={IssueOverview} />
         </div>
       </HashRouter>,
       root

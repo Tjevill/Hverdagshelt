@@ -1,11 +1,11 @@
 //@flow
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import "./style.css";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
+import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widgets';
 
+const history = createHashHistory();
 
 export default class IssueOverview extends Component {
   Kategories = [];
@@ -13,21 +13,21 @@ export default class IssueOverview extends Component {
   render(){
     return (
       <>
-      <div class="jumbotron">
-        <div class="container text-center">
+      <div className="jumbotron">
+        <div className="container text-center">
           <p >Kategorier</p>
-          <div class="btn-group btn-group-lg" role="group" aria-label="First group">
-          <button type="button" class="btn btn-secondary">All</button>
-          <button type="button" class="btn btn-secondary">Kategori1</button>
-          <button type="button" class="btn btn-secondary">Kategori2</button>
-          <button type="button" class="btn btn-secondary">Kategori3</button>
-          <button type="button" class="btn btn-secondary">Kategori4</button>
+          <div className="btn-group btn-group-lg" role="group" aria-label="First group">
+          <button type="button" className="btn btn-secondary">All</button>
+          <button type="button" className="btn btn-secondary">Kategori1</button>
+          <button type="button" className="btn btn-secondary">Kategori2</button>
+          <button type="button" className="btn btn-secondary">Kategori3</button>
+          <button type="button" className="btn btn-secondary">Kategori4</button>
      </div>
         </div>
         </div>
         <p>Nyeste Meldte Feil</p>
         <Router history={history}>
-        <div class="container text-center">
+        <div className="container text-center">
         <ListGroup>
             <ListGroup.Item to={'/123'}>
               Ødelagt lampe
@@ -42,30 +42,30 @@ export default class IssueOverview extends Component {
         </div>
         </Router>
         <br/><br/><div id='toolbar'>
-        <div class='wrapper text-center'>
-              <div class="btn-group">
-                <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
-                <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
-                <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
+        <div className='wrapper text-center'>
+              <div className="btn-group">
+                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
+                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
+                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
               </div>
         </div>
       </div>
     </>
     /*
-      <div class="jumbotron">
-        <div class="container text-center">
+      <div className="jumbotron">
+        <div className="container text-center">
           <p>Kategorier</p>
-          <div class="btn-group btn-group-lg" role="group" aria-label="First group">
-          <button type="button" class="btn btn-secondary">Alle</button>
+          <div className="btn-group btn-group-lg" role="group" aria-label="First group">
+          <button type="button" className="btn btn-secondary">Alle</button>
           {this.Kategories.map(kategori =>{
-            <button type="button" class="btn btn-secondary">{kategori.name}</button>
+            <button type="button" className="btn btn-secondary">{kategori.name}</button>
           })}
           </div>
         </div>
       </div>
       <p>Nyeste Meldte Feil</p>
       <Router history={history}>
-      <div class="container text-center">
+      <div className="container text-center">
       <ListGroup>
         {this.Cases.map(case => (
           <ListGroup.Item to={'/casesside'}>
@@ -99,16 +99,16 @@ export default class IssueOverview extends Component {
 
       Begrens antall saker på en side
       <br/><br/><div id='toolbar'>
-        <div class='wrapper text-center'>
-            <div class="btn-group">
-              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
-              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
-              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
+        <div className='wrapper text-center'>
+            <div className="btn-group">
+              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
+              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
+              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
             </div>
             eller
-            <div class="btn-group">
+            <div className="btn-group">
               {(count(sliceArray(this.Cases, 8))).map(case => (
-              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/categories/All/'+case)}>{case}</button>
+              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/'+case)}>{case}</button>
               ))}
           </div>
         </div>

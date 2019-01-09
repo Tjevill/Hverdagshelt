@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 
 export class MapContainer extends Component {
   render() {

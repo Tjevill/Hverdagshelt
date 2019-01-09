@@ -9,7 +9,7 @@ import ProfileCard from "./ProfileCard";
 export default class ProfilePage extends Component {
     render() {
         return(
-            <div class="main-background">
+            <div className="main-background">
                 <ProfileCard/>
                 <CaseListCard/>
             </div>
