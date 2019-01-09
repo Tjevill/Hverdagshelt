@@ -102,18 +102,12 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-<<<<<<< HEAD
           <Route exact path="/" component={Main} />
           <Route exact path="/case" component={CasePage} />
           <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/issues" component={IssueOverview} />
-=======
-          <Route exact path="/" component={Menu} />
-          <Route exact path="/CasePage" component={CasePage} />
           <Route exact path='/userHome' component={UserHome}/>
           <Route exact path='/events' component={Events}/>
-        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
->>>>>>> d73538b3f04ccc41ed115fe3df75001c55c8ad29
         </div>
       </HashRouter>,
       root
