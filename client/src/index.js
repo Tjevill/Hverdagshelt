@@ -6,10 +6,10 @@ import { HashRouter, Route, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
-import CasePage from "./Components/CasePage";
-import CaseListCard from "./Components/CaseListCard";
-import ProfileCard from "./Components/ProfileCard";
-import ProfilePage from "./Components/ProfilePage";
+import CasePage from "./components/CasePage";
+import CaseListCard from "./components/CaseListCard";
+import ProfileCard from "./components/ProfileCard";
+import ProfilePage from "./components/ProfilePage";
 
 const history = createHashHistory();
 
