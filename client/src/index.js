@@ -2,13 +2,14 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Router, NavLink } from 'react-router-dom';
+import { HashRouter, Route, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
 import CaseListCard from "./Components/CaseListCard";
 import ProfileCard from "./Components/ProfileCard";
+import ProfilePage from "./Components/ProfilePage";
 
 const history = createHashHistory();
 
@@ -22,8 +23,10 @@ class Navbar extends Component {
         return(
             <div class = "articleGrid">
                 <div>
-                    <nav id='navbar' className='navbar navbar-dark bg-primary justify-content-between'>
-                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >Hverdagshelt</a>
+                    <nav id='navbar' className='navbar navbar-light justify-content-between'>
+                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >
+                            <img src="http://i.imgur.com/sZeFVIn.jpg" alt="Logo" id="logo-image" class="logo"/>
+                        </a>
                         <form className='form-inline'>
                             <NavLink to='/profile'>
                                 <button className='btn btn-dark' type='button'>Profile Page</button>
@@ -59,7 +62,7 @@ class Menu extends Component {
             <NavLink to="/login">Logg inn</NavLink>
           </li>
           <li id="menuitem5">
-            <NavLink to="/casePage">erling</NavLink>
+            <NavLink to="/casePage">CasePage</NavLink>
           </li>
           <li id="menuitem6">
             <NavLink to="/IssueOverview">IssueOverview</NavLink>
@@ -100,14 +103,9 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-            <CaseListCard/>
-            <ProfileCard/>
-          {/*<Route exact path="/" component={Menu} />*/}
+          <Route exact path="/" component={Menu} />
           <Route exact path="/CasePage" component={CasePage} />
-          {/*<Route exact path='/' component={Home} />*/}
-          {/*<Route exact path='/register' component={Register} />*/}
-          {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
-          {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
+        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
         </div>
       </HashRouter>,
       root

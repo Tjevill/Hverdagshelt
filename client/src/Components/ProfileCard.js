@@ -7,7 +7,7 @@ import "../style.css";
 export default class ProfileCard extends Component {
     render() {
         return(
-            <div className="card left">
+            <div className="card left card-background">
                 <h1>User information</h1>
                    <ul className="list-group">
                <li className="list-group-item d-flex justify-content-between align-items-center">
