@@ -12,6 +12,7 @@ import ProfileCard from "./Components/ProfileCard";
 import ProfilePage from "./Components/ProfilePage";
 import UserHome from "./Components/userHome";
 import Events from "./Components/events";
+import IssueOverview from "./Components/IssueOverview";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 
@@ -119,7 +120,7 @@ function renderRoot() {
           <Route exact path="/CasePage" component={CasePage} />
           <Route exact path='/userHome' component={UserHome}/>
           <Route exact path='/events' component={Events}/>
-        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
+          <Route exact path="/IssueOverview" component={IssueOverview} />
         </div>
       </HashRouter>,
       root
