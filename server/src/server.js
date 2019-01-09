@@ -210,6 +210,27 @@ app.get("/getOnCategory/:category_id", (req, res) => {
   }) 
 })
 
+app.put("/updateCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to update case with id: "+req.params.case_id);
+  caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+    res.status(status);
+    res.json(data);
+    console.log(req.body);
+  });
+});
+
+app.delete("/deleteCase/:case_id", (req, res) =>{
+  console.log("Received delete-request from client.");
+  console.log("Trying to delete event with id: "+req.params.case_id);
+  caseDao.deleteCase(req.params.case_id, (status, data) =>{
+    res.status(status);
+    res.json(data);
+  });
+});
+
+// End Cases
+
 const server = app.listen(process.env.PORT || "8080", function() {
   console.log("App listening on port %s", server.address().port);
   console.log("Press Ctrl+C to quit");
