@@ -31,7 +31,7 @@ export default class userHome extends Component {
 									colored
 									className="userHome-button"
 									 onClick={() => {
-                       				 window.location.href = "/#/casePage";
+                       				 window.location.href = "/#/reportPage";
                        				}}
 								>
 									Meld Feil

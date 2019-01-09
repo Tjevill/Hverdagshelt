@@ -9,6 +9,7 @@ import CasePage from "./components/CasePage";
 import CaseListCard from "./components/CaseListCard";
 import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
+import ReportPage from "./components/ReportPage";
 import IssueOverview from "./components/IssueOverview";
 import UserHome from "./components/userHome";
 import Events from "./components/events";
@@ -108,6 +109,7 @@ function renderRoot() {
           <Route exact path="/issues" component={IssueOverview} />
           <Route exact path='/events' component={Events}/>
           <Route exact path="/IssueOverview" component={IssueOverview} />
+            <Route exact path="/reportPage" component={ReportPage} />
         </div>
       </HashRouter>,
       root
