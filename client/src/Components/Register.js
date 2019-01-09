@@ -11,6 +11,8 @@ export default class Register extends Component {
   message = " ";
   passworderror = " ";
 
+
+
   state = {
     name: "",
     address: "",
