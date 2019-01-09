@@ -13,7 +13,7 @@ export default class Main extends Component {
     return (
       <div id="case-page">
         <Card title={this.title} />
-        <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case image" />
+        <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
         <p id="description">Beskrivelse</p>
         <Map />
       </div>

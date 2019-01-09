@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import {caseService} from '../services';
-import {Alert} from "../widgets";
+import {Alert} from "./widgets";
 
 export default class Report extends Component {
     // categories = [];
