@@ -5,12 +5,16 @@ import ReactDOM from "react-dom";
 import { HashRouter, Route } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
-//import Cases from "./Cases";
+import Cases from "./cases";
 import CasePage from "./components/CasePage";
-//import CaseListCard from "./components/CaseListCard";
-//import ProfileCard from "./components/ProfileCard";
+import CaseListCard from "./components/CaseListCard";
+import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
 import IssueOverview from "./components/IssueOverview";
+import UserHome from "./components/userHome";
+import Events from "./components/events";
+import 'react-mdl/extra/material.css';
+import 'react-mdl/extra/material.js';
 
 const history = createHashHistory();
 
@@ -91,20 +95,30 @@ ReactDOM.render(<Main />, document.getElementById("root"));
 
 const root = document.getElementById("root");
 
+
 function renderRoot() {
   if (root)
     ReactDOM.render(
       <HashRouter>
         <div id="page">
           <Navbar />
+<<<<<<< HEAD
           <Route exact path="/" component={Main} />
           <Route exact path="/case" component={CasePage} />
           <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/issues" component={IssueOverview} />
+=======
+          <Route exact path="/" component={Menu} />
+          <Route exact path="/CasePage" component={CasePage} />
+          <Route exact path='/userHome' component={UserHome}/>
+          <Route exact path='/events' component={Events}/>
+        {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
+>>>>>>> d73538b3f04ccc41ed115fe3df75001c55c8ad29
         </div>
       </HashRouter>,
       root
     );
+
 }
 
 renderRoot();
