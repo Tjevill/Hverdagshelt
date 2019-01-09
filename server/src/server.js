@@ -85,6 +85,7 @@ app.get('/user/:id', (req: Request, res: Response) => {
 	userdao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
+    
 	})
 });
 
@@ -182,37 +183,33 @@ app.get("/allCases", (req, res) =>{
 app.post("/cases", (req, res) => {
   console.log("/cases fikk POST request");
   console.log(req.body.description);
+
   if(!req.body) {
     return res.sendStatus(400);
-  }else {
-  caseDao.create({
-    description: req.body.description,
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    status_id: req.body.status_id,
-    user_id: req.body.user_id,
-    category_id: req.body.category_id,
-    zipcode: req.body.zipcode,
-    headline: req.body.headline,
-    picture: req.body.picture,
-    employee_id: req.body.employee_id,
-    org_id: req.body.org_id
-    }
-    ,(status, data) => {
-    res.status(status); 
-    res.json(data);
+  } else {
+      caseDao.create({
+        description: req.body.description,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        status_id: req.body.status_id,
+        user_id: req.body.user_id,
+        category_id: req.body.category_id,
+        zipcode: req.body.zipcode,
+        headline: req.body.headline,
+        picture: req.body.picture,
+        employee_id: req.body.employee_id,
+        org_id: req.body.org_id
+      },
+      (status, data) => {
+        res.status(status); 
+        res.json(data);
   });
 }
-let sub = req.body.headline;
-let des = req.body.description;
-
-userdao.updateUser(req.body.user_id, (status, data) => {
-		res.status(status);
-		res.json(data)
-    .then(console.log(data.user_id));
-	})
-
-
+  
+  let sub = req.body.headline;
+  let des = req.body.description;
+  
+    // mail
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
     to: 'benos@stud.ntnu.no',
@@ -226,9 +223,9 @@ userdao.updateUser(req.body.user_id, (status, data) => {
     } else {
         console.log('Email sent: ' + info.response);
     }
-    });
-  
   });
+});
+ 
 
 
 
