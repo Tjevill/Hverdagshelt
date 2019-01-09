@@ -3,13 +3,12 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, NavLink } from 'react-router-dom';
-import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./components/CasePage";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
+import ReportPage from "./components/ReportPage";
+
 
 const history = createHashHistory();
 
@@ -24,7 +23,7 @@ class Navbar extends Component {
             <div class = "articleGrid">
                 <div>
                     <nav id='navbar' className='navbar navbar-light justify-content-between'>
-                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >
+                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()}>
                             <img src="http://i.imgur.com/sZeFVIn.jpg" alt="Logo" id="logo-image" class="logo"/>
                         </a>
                         <form className='form-inline'>
@@ -53,10 +52,10 @@ class Menu extends Component {
             <NavLink to="/">Forsiden</NavLink>
           </li>
           <li id="menuitem2">
-            <NavLink to="/ntnu">Meny 1</NavLink>
+            <NavLink to="/ReportPage">Rapporter problem</NavLink>
           </li>
           <li id="menuitem3">
-            <NavLink to="/verden">Meny 2</NavLink>
+            <NavLink to="/ProfilePage">Profil</NavLink>
           </li>
           <li id="menuitem4">
             <NavLink to="/login">Logg inn</NavLink>
@@ -102,9 +101,11 @@ function renderRoot() {
     ReactDOM.render(
       <HashRouter>
         <div id="page">
-          <Navbar />
-          <Route exact path="/" component={Menu} />
-          <Route exact path="/CasePage" component={CasePage} />
+            <Navbar />
+            <Route exact path="/" component={Menu} />
+            <Route exact path="/CasePage" component={CasePage} />
+            <Route exact path="/ReportPage" component={ReportPage} />
+            <Route exact path="/ProfilePage" component={ProfilePage} />
         {/*<Route exact path="/CaseListCard" component={IssueOverview} />*/}
         </div>
       </HashRouter>,

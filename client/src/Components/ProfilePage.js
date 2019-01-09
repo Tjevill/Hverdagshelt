@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import "../style.css";
 import CaseListCard from "./CaseListCard";
 import ProfileCard from "./ProfileCard";
 
