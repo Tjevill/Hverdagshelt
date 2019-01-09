@@ -25,17 +25,6 @@ class Case {
 }
 
 class User {
-    id: number;
-    name: string;
-    address: string;
-    tlf: number;
-    email: string;
-    password: number;
-    subscription: boolean;
-    zipcode: number;
-}
-
-class User {
 	user_id: number;
 	name: string;
 	address: string;
