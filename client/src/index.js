@@ -2,11 +2,16 @@
 /* eslint eqeqeq: "off" */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { Switch, Route } from "react-router-dom";
 import { HashRouter, Router, NavLink } from 'react-router-dom';
 import "./style.css";
 import createHashHistory from "history/createHashHistory";
 import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
+import UserHome from "./Components/userHome";
+import Events from "./Components/events";
+import 'react-mdl/extra/material.css';
+import 'react-mdl/extra/material.js';
 
 const history = createHashHistory();
 
@@ -25,6 +30,12 @@ class Navbar extends Component {
                         <form className='form-inline'>
                             <NavLink to='/profile'>
                                 <button className='btn btn-dark' type='button'>Profile Page</button>
+                            </NavLink>
+                               <NavLink to='/userHome'>
+                                <button className='btn btn-dark' type='button'>User Home </button>
+                            </NavLink>
+                            <NavLink to='/events'>
+                                <button className='btn btn-dark' type='button'>Events</button>
                             </NavLink>
                         </form>
                     </nav>
@@ -100,6 +111,8 @@ function renderRoot(){
                     {/*<Route exact path='/register' component={Register} />*/}
                     {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
                     {/*<Route exact path='/article/:id/edit' component={ArticleEdit} />*/}
+                    <Route exact path='/userHome' component={UserHome}/>
+                       <Route exact path='/events' component={Events}/>
                 </div>
             </HashRouter>,
             root
