@@ -29,10 +29,7 @@ module.exports = class CasesDao extends Dao {
             json.org_id
         ];
         super.query(
-            "INSERT INTO Cases " +
-            "(description, longitude, latitude, status_id, user_id, category_id,"+
-            "zipcode, headline, picture, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?,?)",
-            
+            "INSERT INTO Cases (description, longitude, latitude, status_id, user_id, category_id, zipcode, headline, picture, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?,?)",
             val,
             callback
         );

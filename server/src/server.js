@@ -1,4 +1,3 @@
-// @flow
 /* eslint eqeqeq: "off" */
 const express = require("express");
 const mysql = require("mysql");
@@ -54,9 +53,9 @@ var sha512 = function(password, salt){
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "mysql.stud.iie.ntnu.no",
-  user: "mathibra",
-  database: "mathibra",
-  password: "QcxPTxcA",
+  user: "oyvinval",
+  database: "oyvinval",
+  password: "Dd8noqdd",
   debug: false
 });
 
@@ -91,6 +90,28 @@ app.get("/cases", (req, res) => {
 		res.json(data);
 	});
 });
+
+/**
+ * Gets all districts from DB
+ */
+app.get('/getdistricts', (req: Request, res: Response) => {
+    userdao.getAllDistricts((status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+/**
+ * Gets all provinces from specific district from DB
+ */
+app.get('/getdistricts/:id', (req: Request, res: Response) => {
+    userdao.getProvincesFromFylke(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
 
 /**
  * Gets all users from DB

@@ -6,9 +6,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "google-maps-react": "^2.0.2",
+    "react-mdl": "^1.11.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.0.4",
-    "react-simplified": "^1.5.1"
+    "react-simplified": "^1.5.1",
+    "save": "^2.3.3"
   },
   "browserslist": [
     ">0.2%",
