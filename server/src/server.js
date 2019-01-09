@@ -40,10 +40,8 @@ const pool = mysql.createPool({
 const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
+const Userdao = require("../dao/userdao.js");
 
-let eventDao = new eventdao(pool);
-let hverdagsdao = new Hverdagsdao(pool);
-let caseDao = new Casedao(pool);
 
 
 
@@ -56,68 +54,71 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-/*
-REST-Architecture:
-/cases
-POST: Create
-PUT: Update
-GET: Get
-DELETE: Delete
+let userdao = new Userdao(pool);
+let eventDao = new eventdao(pool);
+let hverdagsdao = new Hverdagsdao(pool);
+let caseDao = new Casedao(pool);
 
-*/
-
-//Cases
 
 app.get("/cases", (req, res) => {
-  console.log("/cases fikk request.");
-  hverdagsdao.getAllCases((status, data) => {
-    res.status(status);
-    res.json(data);
-  });
+	console.log("/cases fikk request.");
+	hverdagsdao.getAllCases((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
 });
 
-app.post("/cases", (req, res) => {
-  console.log("/cases fikk POST request");
-  console.log(req.body.description);
-  if(!req.body) {
-    return res.sendStatus(400);
-  }else {
-  casedao.create({
-    description: req.body.description,
-    longitude: req.body.latitude,
-    status_id: req.body.status_id,
-    user_id: req.body.user_id,
-    category_id: req.body.category_id,
-    zipcode: req.body.zipcode,
-    headline: req.body.headline,
-    picture: req.body.picture,
-    employee_id: req.body.employee_id,
-    org_id: req.body.org_id
-    }
-    ,(status, data) => {
-    res.status(status); 
-    res.json(data);
-    
+/**
+ * Gets all users from DB
+ */
+app.get('/user', (req: Request, res: Response) => {
+	userdao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-  });
-}
+/**
+ * Get one user from DB by id
+ */
+app.get('/user/:id', (req: Request, res: Response) => {
+	userdao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-  const mailOptionsCase = {
-    from: 'bedrehverdagshelt@gmail.com',
-    to: 'benos@stud.ntnu.no',
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
-  };
+/**
+ * Updates user by id
+ */
+app.put('/user/:id', (req: Request, res: Response) => {
+	userdao.updateUser(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-  transporter.sendMail(mailOptionsCase, function(error, info){
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Email sent: ' + info.response);
-    }
-    });
-  
-  });
+/**
+ * Deletes user by id
+ */
+app.delete('/user/:id', (req: Request, res: Response) => {
+	userdao.deleteUserByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Gets count of all users in DB
+ */
+app.get('/userCount', (req: Request, res: Response) => {
+	userdao.getCountUsers((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
 
 
 // Events
@@ -172,6 +173,62 @@ app.get("/allCases", (req, res) =>{
     res.json(data);
   });
 });
+
+/**
+ * create case and send case received message 
+ *
+ */
+
+app.post("/cases", (req, res) => {
+  console.log("/cases fikk POST request");
+  console.log(req.body.description);
+  if(!req.body) {
+    return res.sendStatus(400);
+  }else {
+  caseDao.create({
+    description: req.body.description,
+    longitude: req.body.longitude,
+    latitude: req.body.latitude,
+    status_id: req.body.status_id,
+    user_id: req.body.user_id,
+    category_id: req.body.category_id,
+    zipcode: req.body.zipcode,
+    headline: req.body.headline,
+    picture: req.body.picture,
+    employee_id: req.body.employee_id,
+    org_id: req.body.org_id
+    }
+    ,(status, data) => {
+    res.status(status); 
+    res.json(data);
+  });
+}
+let sub = req.body.headline;
+let des = req.body.description;
+
+userdao.updateUser(req.body.user_id, (status, data) => {
+		res.status(status);
+		res.json(data)
+    .then(console.log(data.user_id));
+	})
+
+
+  const mailOptionsCase = {
+    from: 'bedrehverdagshelt@gmail.com',
+    to: 'benos@stud.ntnu.no',
+    subject: 'Takk for din henvendelse, saken er registert!',
+    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+  };
+
+  transporter.sendMail(mailOptionsCase, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+    });
+  
+  });
 
 
 
