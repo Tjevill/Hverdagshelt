@@ -111,6 +111,12 @@ class UserService {
     }
 
 
+    addEmployee(newemployee: Register): Promise<void> {
+        console.log("DATA TIL SERVICE: ", newemployee);
+        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+        return axios.put(url + "/newuser", newemployee);
+    }
+
   getAllUsers(): Promise<User[]>{
     return axios.get('/user');
   }

@@ -23,12 +23,19 @@ export default class Login extends Component {
     if (!this.login) return null;
 
     return (
-      <form>
+
+        <div className="row">
+            <div className="col-sm-4"></div>
+            <div className="col-sm-4">
+
+
+            <form>
         <h1>Logg inn</h1>
 
-        <div className="formitem">
+        <div className="form-group">
           Brukernavn:{" "}
           <input
+              className="form-control"
             type="text"
             name="username"
             defaultValue=""
@@ -38,6 +45,7 @@ export default class Login extends Component {
         <div className="formitem">
           Passord:{" "}
           <input
+              className="form-control"
             type="password"
             defaultValue=""
             name="password"
@@ -45,11 +53,15 @@ export default class Login extends Component {
           />
         </div>
 
-        <button type="button" onClick={this.save}>
+        <button type="button" onClick={this.save} className="btn btn-primary">
           Login
         </button>
-        <h1>{this.message}</h1>
+        <h4>{this.message}</h4>
       </form>
+
+        </div>
+      <div className="col-sm-4"></div>
+      </div>
     );
   }
 

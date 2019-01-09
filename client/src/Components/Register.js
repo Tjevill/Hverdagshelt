@@ -42,6 +42,11 @@ export default class Register extends Component {
     if (!this.user) return null;
 
     return (
+
+        <div className="row">
+            <div className="col-sm-4"></div>
+            <div className="col-sm-4">
+
       <div className="Registrer">
         <h1>Registrer deg</h1>
 
@@ -137,10 +142,15 @@ export default class Register extends Component {
 
         </div>
         <button type="button" onClick={this.save} className="btn btn-primary">
-          Save
+          Lagre og send
         </button>
         <h1>{this.message}</h1>
       </div>
+
+        </div>
+      <div className="col-sm-4"></div>
+      </div>
+
     );
   }
 

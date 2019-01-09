@@ -5,35 +5,75 @@ import { Component } from "react-simplified";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
+
 export default class Register extends Component {
   user = [];
 
   message = " ";
   passworderror = " ";
 
-
+    fylker = [];
+    kommuner = [];
 
   state = {
-    name: "",
-    address: "",
-    zipcode: "",
-    tel: "",
-    email: "",
-    username: "",
-    password: "",
-    password2: "",
-    subscription: true
+
+    name: "Odd Ronny Grustak",
+    tel: "24681012",
+    email: "oddronny@gmail.com",
+    district: "",
+    province: "",
+    password: "abcd1234",
+    password2: "abcd1234"
   };
 
 
+    componentDidMount() {
+        userService
+            .getDistricts()
+            .then(response => {
+                this.fylker = response;
+                console.log("fylker: ", this.fylker);
+            })
+
+            .catch(
+                (error: Error) =>
+                (this.message = error.message)
+            );
+    }
+
+    handleChangeFylke = event => {
+
+        console.log("FYLKE VALGT: " + event.target.value)
+
+        this.state.district = event.target.value;
+
+        userService
+            .getProvince(event.target.value)
+            .then(response => {
+                this.kommuner = response;
+                console.log("kommuner: ", this.kommuner);
+            })
+            .catch(
+                (error: Error) =>
+                    (this.message = error.message)
+            );
+
+    }
+
+    handleChangeKommune = event => {
+        this.state.province = event.target.value;
+
+    }
 
   handleChange = event => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
+      this.state.province = event.target.value;
 
-    this.setState((state, props) => ({
+
+      this.setState((state, props) => ({
         [name]: value
     }));
 
@@ -43,8 +83,13 @@ export default class Register extends Component {
   render() {
     if (!this.user) return null;
 
+
+
     return (
-      <div className="Registrer">
+        <div className="row">
+            <div className="col-sm-4"></div>
+            <div className="col-sm-4">
+      <div className="NyAnsatt">
         <h1>Registrer ny ansatt</h1>
 
         <div className="form-group">
@@ -53,7 +98,7 @@ export default class Register extends Component {
           className="form-control"
             type="text"
             name="name"
-            defaultValue=""
+            defaultValue="Odd Ronny Grustak"
             onChange={this.handleChange}
           />
         </div>
@@ -62,7 +107,7 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue=""
+            defaultValue="24681012"
             name="tel"
             onChange={this.handleChange}
           />
@@ -72,18 +117,27 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue=""
+            defaultValue="oddronny@gmail.com"
             name="email"
             onChange={this.handleChange}
           />
         </div>
           <div className="form-group">
-              Kategori:{" "}
-              <select name="kategori" onChange={this.handleChange}>
-                  <option>Velg kategori</option>
-                  <option value="ntnu">NTNU / Trondheim</option>
-                  <option value="verden">Nyheter fra verden</option>
-                  <option value="bizarro">Merkelige og interessante nyheter</option>
+              Velg fylke:{" "}
+              <select className="form-control" name="fylke" id="fylke" onChange={this.handleChangeFylke}>
+                  <option>>> Velg fylke</option>
+                  {this.fylker.map(fylke => {
+                      return (<option value={fylke.ID}>{fylke.navn}</option>)
+                  })}
+              </select>
+          </div>
+          <div className="form-group">
+              Velg kommune:{" "}
+              <select className="form-control" name="kommune" id="kommune" onChange={this.handleChangeKommune}>
+                  <option>>>Velg kommune</option>
+                  {this.kommuner.map(kommuner => {
+                      return (<option value={kommuner.ID}>{kommuner.navn}</option>)
+                  })}
               </select>
           </div>
           <div className="form-group">
@@ -91,7 +145,7 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="password"
-            defaultValue=""
+            defaultValue="abcd1234"
             name="password"
             onChange={this.handleChange}
           />
@@ -101,27 +155,23 @@ export default class Register extends Component {
           <input
             className="form-control"
             type="password"
-            defaultValue=""
+            defaultValue="abcd1234"
             name="password2"
             onChange={this.handleChange}
           />
         </div>
         <h3>{this.passworderror}</h3>
-        <div className="form-group">
-        <label htmlFor="subscription">Vil du motta informasjon om events?</label>
-        <input
-          className="form-control"
-          name="subscription"
-          type="checkbox"
-          checked={this.state.subscription}
-          onChange={this.handleChange} />{" "}
 
-        </div>
         <button type="button" onClick={this.save} className="btn btn-primary">
           Save
         </button>
         <h1>{this.message}</h1>
       </div>
+
+        </div>
+      <div className="col-sm-4"></div>
+      </div>
+
     );
   }
 
@@ -157,15 +207,13 @@ export default class Register extends Component {
 
 
     const brukerdata = {
-      name: this.state.name,
-      address: this.state.address,
-      zipcode: this.state.zipcode,
-      tel: this.state.tel,
-      email: this.state.email,
-      username: this.state.username,
-      password: this.state.password,
-      password2: this.state.password2,
-      subscription: this.state.subscription
+        name: this.state.name,
+        tel: this.state.tel,
+        email: this.state.email,
+        district: this.state.district,
+        province: this.state.province,
+        password: this.state.password,
+        password2: this.state.password2
     };
 
         if (this.password != this.password2) {
@@ -176,7 +224,7 @@ export default class Register extends Component {
     //   this.message = "Artikkel lagt inn!";
     console.log("this user: ", brukerdata);
     userService
-      .addUser(brukerdata)
+      .addEmployee(brukerdata)
       .then(response => {
         // history.push("/artikler/" + response.insertId);
         console.log("hmm: ", response);
