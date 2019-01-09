@@ -10,6 +10,7 @@ import createHashHistory from "history/createHashHistory";
 import Cases from "./Components/Cases"
 import Register from "./Components/Register";
 import Login from "./Components/Login";
+import NewEmployee from "./Components/NewEmployee";
 
 const history = createHashHistory();
 
@@ -29,7 +30,7 @@ class Menu extends Component {
             <NavLink to="/registrer">Registrer</NavLink>
           </li>
           <li id="menuitem3">
-            <NavLink to="/verden">Meny 2</NavLink>
+            <NavLink to="/nyansatt">Ny Ansatt</NavLink>
           </li>
           <li id="menuitem4">
             <NavLink to="/login">Logg inn</NavLink>
@@ -56,7 +57,8 @@ class Main extends Component {
             <div>
 
             <Route path="/registrer" component={Register} />
-            <Route path="/login" component={Login} />
+                <Route path="/login" component={Login} />
+                <Route path="/nyansatt" component={NewEmployee} />
 
             </div>
           </Router>

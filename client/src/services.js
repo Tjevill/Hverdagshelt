@@ -12,6 +12,11 @@ class Cases {
   category_id: number;
   zipcode: number;
 }
+class Districts {
+  district: string;
+  zipcode: string;
+}
+
 
 const url = "http://localhost:8080";
 
@@ -21,6 +26,8 @@ let axiosConfig = {
     "x-access-token": sessionStorage.getItem("storedtoken")
   }
 };
+
+
 
 
 class CaseService {
@@ -55,6 +62,14 @@ class UserService {
     // console.log(axios.post(domain + "/login", login));
     return axios.post(url + "/login", login);
   }
+
+  getDistricts(): Promise<Districts[]> {
+      return axios.get(url + '/getdistricts');
+  }
+
+    getProvince(province: number): Promise<Province[]> {
+        return axios.get(url + '/getdistricts/' + province);
+    }
 
 
 
