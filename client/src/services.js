@@ -33,21 +33,21 @@ class CaseService {
     return axios.get('/case/' + id);
   }
 
-  createCase(id: number, description: string, longitude: number, latitude: number, status_id: number, user_id: number, category_id: number, zipcode: number): Promise<void> {
-        return axios.post('/articles', {
-            title: title,
-            content: content,
-            picture: picture,
-            category: category,
-            importance: importance
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-  }
+  // createCase(id: number, description: string, longitude: number, latitude: number, status_id: number, user_id: number, category_id: number, zipcode: number): Promise<void> {
+  //       return axios.post('/articles', {
+  //           title: title,
+  //           content: content,
+  //           picture: picture,
+  //           category: category,
+  //           importance: importance
+  //       })
+  //           .then(function (response) {
+  //               console.log(response);
+  //           })
+  //           .catch(function (error) {
+  //               console.log(error);
+  //           });
+  // }
 
 
   deleteCase(id: number): Promise<void> {
