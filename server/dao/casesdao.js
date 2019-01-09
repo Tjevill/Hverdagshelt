@@ -12,9 +12,8 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
-    create(json, callback) {
+    create(json, callback:any) {
         var val = [
-            json.headline,
             json.description,
             json.longitude,
             json.latitude,
@@ -22,14 +21,15 @@ module.exports = class CasesDao extends Dao {
             json.user_id,
             json.category_id,
             json.zipcode,
+            json.headline,
+            json.picture,
             json.employee_id,
-            json.org_id,
-            json.picture
+            json.org_id
         ];
         super.query(
             "INSERT INTO Cases " +
-            "(headline, description, longitude, latitude, status_id, user_id, category_id, picture"+
-            "zipcode, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?)",
+            "(description, longitude, latitude, status_id, user_id, category_id,"+
+            "zipcode, headline, picture, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?,?)",
             val,
             callback
         );

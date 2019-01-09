@@ -27,6 +27,15 @@ app.use(function(req, res, next) {
   next();
 });
 
+const pool = mysql.createPool({
+  connectionLimit: 10,
+  host: "mysql.stud.iie.ntnu.no",
+  user: "mathibra",
+  database: "mathibra",
+  password: "QcxPTxcA",
+  debug: false
+});
+
 // Dao's
 const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
@@ -36,14 +45,7 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "mathibra",
-  database: "mathibra",
-  password: "QcxPTxcA",
-  debug: false
-});
+
 
 // Authentication with bedrehverdagshelt@gmail.com
 const transporter = nodemailer.createTransport({
@@ -64,6 +66,8 @@ DELETE: Delete
 
 */
 
+//Cases
+
 app.get("/cases", (req, res) => {
   console.log("/cases fikk request.");
   hverdagsdao.getAllCases((status, data) => {
@@ -74,9 +78,29 @@ app.get("/cases", (req, res) => {
 
 app.post("/cases", (req, res) => {
   console.log("/cases fikk POST request");
-  casedao.create((status, data) => {
-    res.status(status);
+  console.log(req.body.description);
+  if(!req.body) {
+    return res.sendStatus(400);
+  }else {
+  casedao.create({
+    description: req.body.description,
+    longitude: req.body.latitude,
+    status_id: req.body.status_id,
+    user_id: req.body.user_id,
+    category_id: req.body.category_id,
+    zipcode: req.body.zipcode,
+    headline: req.body.headline,
+    picture: req.body.picture,
+    employee_id: req.body.employee_id,
+    org_id: req.body.org_id
+    }
+    ,(status, data) => {
+    res.status(status); 
     res.json(data);
+    
+
+  });
+}
 
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
@@ -94,9 +118,6 @@ app.post("/cases", (req, res) => {
     });
   
   });
-}
-
- 
 
 
 // Events
