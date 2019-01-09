@@ -9,6 +9,7 @@ import Cases from "./Cases";
 import CasePage from "./Components/CasePage";
 import CaseListCard from "./Components/CaseListCard";
 import ProfileCard from "./Components/ProfileCard";
+import ProfileContainer from "./Components/ProfileContainer";
 
 const history = createHashHistory();
 
@@ -22,8 +23,10 @@ class Navbar extends Component {
         return(
             <div class = "articleGrid">
                 <div>
-                    <nav id='navbar' className='navbar navbar-dark bg-primary justify-content-between'>
-                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >Hverdagshelt</a>
+                    <nav id='navbar' className='navbar navbar-light justify-content-between'>
+                        <a id='navbar-title' className='navbar-brand' onClick={() => this.toHome()} >
+                            <img src="http://i.imgur.com/sZeFVIn.jpg" alt="Logo" id="logo-image" class="logo"/>
+                        </a>
                         <form className='form-inline'>
                             <NavLink to='/profile'>
                                 <button className='btn btn-dark' type='button'>Profile Page</button>
@@ -100,10 +103,9 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-            <CaseListCard/>
-            <ProfileCard/>
+            <ProfileContainer/>
           {/*<Route exact path="/" component={Menu} />*/}
-          <Route exact path="/CasePage" component={CasePage} />
+          {/*<Route exact path="/CasePage" component={CasePage} />*/}
           {/*<Route exact path='/' component={Home} />*/}
           {/*<Route exact path='/register' component={Register} />*/}
           {/*<Route exact path='/article/:id' component={ArticleInfo} />*/}
