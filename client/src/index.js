@@ -14,8 +14,8 @@ import UserHome from "./components/userHome";
 import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Register from "./Components/Register";
-import Login from "./Components/Login";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 const history = createHashHistory();
 
