@@ -5,7 +5,7 @@ module.exports = class CasesDao extends Dao {
     getAll(callback){
         super.query(
             "SELECT * FROM Cases ORDER BY timestamp", [], callback
-        ):
+        );
     }
 
     getOne(caseid, callback){
