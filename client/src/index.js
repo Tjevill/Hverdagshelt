@@ -31,8 +31,7 @@ class Navbar extends Component {
       <div className="topnav" id="navbar">
         <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
         <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Issues</a>
-        <a className="option" href="#news">News</a>
-        <a className="option" href="#contact">Contact</a>
+        <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
         <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profile</a>
         <a href="/" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
@@ -102,11 +101,10 @@ function renderRoot() {
       <HashRouter>
         <div id="page">
           <Navbar />
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={UserHome} />
           <Route exact path="/case" component={CasePage} />
           <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/issues" component={IssueOverview} />
-          <Route exact path='/userHome' component={UserHome}/>
           <Route exact path='/events' component={Events}/>
         </div>
       </HashRouter>,
