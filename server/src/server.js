@@ -357,13 +357,10 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-<<<<<<< HEAD
+
   //End Case
 
 
-
-=======
->>>>>>> c40e01c4415b528c19c3bd3dbba2baef75939cc7
 app.post("/cases", (req, res) => {
   console.log("/cases received POST-request");
   console.log(req.body.description);
