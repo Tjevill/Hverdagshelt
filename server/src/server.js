@@ -66,8 +66,12 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
+<<<<<<< HEAD
+const Empdao = require("../dao/employeedao.js");
+=======
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 
@@ -85,8 +89,12 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
+<<<<<<< HEAD
+let empDao = new Empdao(pool);
+=======
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 app.get("/cases", (req, res) => {
@@ -118,6 +126,8 @@ app.get('/getdistricts/:id', (req: Request, res: Response) => {
     })
 });
 
+
+// User
 
 /**
  * Gets all users from DB
@@ -170,6 +180,79 @@ app.get('/userCount', (req: Request, res: Response) => {
 	})
 });
 
+<<<<<<< HEAD
+// End user
+
+
+
+// Employee
+
+/** Get all employees from the db */
+app.get("/employee", (req, res) => {
+    console.log("Received get-request on endpoint /employee.");
+    empDao.getAllEmp( (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get one employee matched on employee_id */
+app.get("/employee/:employee_id", (req, res) =>{
+    console.log("Received get-request on endpoint /employee/"+req.params.employee_id);
+    empDao.getOne(req.params.employee_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get all employees in one province */
+app.get("/employee/province/:province_id", (req, res) =>{
+    console.log("Received get-request on endpoint /employee/"+req.params.province_id);
+    empDao.getAllEmpProvince(req.params.province_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/**  Create an employee in the db*/
+app.put("/employee", (req, res) =>{
+    console.log("Received put-request on endpoint /employee");
+    empDao.addEmployee(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Update an employee in the db */
+/*
+app.post("/employee", (req, res) =>{
+    console.log("Received post-request on endpoint /employee");
+    empDao.alterEmp
+})
+*/
+
+/** Count every employee in the db */
+app.get("/countEmp", (req, res) =>{
+    console.log("Received get-request on endpoint /countEmp");
+    empDao.countEmps( (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/**  Count every employee in a specific province*/
+app.get("/countEmp/:province", (req, res) =>{
+    console.log("Received get-request on endpoint /countEmp/"+req.params.province);
+    empDao.countEmpsProvince(req.params.province, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+
+// End employee
+=======
 /**
  * Gets email from user by ID
  */
@@ -323,6 +406,7 @@ app.get('/categoryCount', (req: Request, res: Response) => {
 		res.json(data);
 	})
 });
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 
