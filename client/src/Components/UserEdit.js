@@ -8,11 +8,11 @@ import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets
 
 const history = createHashHistory();
 
-export default class UserEdit extends Component <{id: number}> {
-  user = new Object();
+export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
+  user = [];
   render(){
     let button;
-    if(this.user.subscriptions==false){
+    if(this.user.subscription==0){
       button = (
         <Button.Success onClick={this.subscribe}>Subscribe</Button.Success>
       )
@@ -22,9 +22,15 @@ export default class UserEdit extends Component <{id: number}> {
     }
     return (
       <>
-      <Card title="Edit" class="container text-center">
-      <div class="container text-center">
-        <form ref={e => (this.form = e)}>
+      <div className="jumbotron">
+        <div className="container text-center">
+          <h5>Edit</h5>
+        </div>
+        </div>
+
+        <div className="container text-center">
+          <div class="container text-center">
+            <form ref={e => (this.form = e)}>
           <Form.Input
             type="text"
             label="Navn"
@@ -60,21 +66,24 @@ export default class UserEdit extends Component <{id: number}> {
             onChange={event => (this.user.zipcode= event.target.value)}
             required
           />
+          <br/>
+          <br/>
           {button}<br/><br/>
           <Button.Success onClick={this.save}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>
           </form>
           </div>
-        </Card>
+      </div>
+
       </>
     );
   }
   componentDidMount(){
     userService
-      .getUserByID(this.props.id)
+      .getUserByID(this.props.match.params.id)
       .then(user => {
-        this.user = user;
-        console.log(this.user);
+        this.user = user[0];
+        this.forceUpdate();
       })
       .catch((error: Error) => Alert.danger(error.message));
   }
@@ -84,7 +93,6 @@ export default class UserEdit extends Component <{id: number}> {
 
   unsubscribe(){
   }
-
   save(){
     if(this.user.name==""||this.user.name==null||this.user.name==" ")return alert("Vennligst oppgi navn");
   }

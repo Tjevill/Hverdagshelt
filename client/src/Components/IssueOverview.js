@@ -53,7 +53,7 @@ export default class IssueOverview extends Component {
           <div className="container text-center">
             <ListGroup>
                 {this.cases.map(casen =>(
-                  <ListGroup.Item to={'/getCase/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+                  <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
                 ))}
             </ListGroup>
          </div>
