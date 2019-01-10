@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import Map from "./Map";
-import { caseService } from "../services";
+import { caseService, mapService } from "../services";
 
 export default class Main extends Component {
 
   case = [];
+  map = [];
 
   render() {
     return (
@@ -21,6 +22,10 @@ export default class Main extends Component {
   mounted(){
     let casePromise = caseService.getCaseById(this.props.match.params.id);
     casePromise.then(caseData => (/*console.log(caseData[0]),*/ this.case = caseData[0]));
+
+    let mapInfoPromise = mapService.getMapInfo(63.4283065, 10.3876995);
+    mapInfoPromise.then(mapData => (console.log(mapData["results"][0]["formatted_address"])));
+
   }
 
 }
