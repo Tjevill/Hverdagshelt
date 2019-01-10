@@ -6,16 +6,18 @@ import { Component } from "react-simplified";
 export default class CasePreview extends Component <{title: string, status: number}> {
     x = '';
     y = '';
+
     render() {
         return(
             <li className="list-group-item d-flex justify-content-between align-items-center">
                 {this.props.title}
-                <span className={this.y}>x</span>
+                <span className={this.y}>{this.x}</span>
             </li>
         )
     }
-    mounted() {
+    componentDidMount() {
         if (this.props.status == 1) {
+            console.log('test');
             this.x = 'Godkjent';
             this.y = 'badge badge-primary';
         } else if (this.props.status == 2) {
@@ -27,6 +29,8 @@ export default class CasePreview extends Component <{title: string, status: numb
         } else if (this.props.status == 4) {
             this.x = 'Sak løst';
             this.y = 'badge badge-success';
+        } else {
+            console.log('Error, status invalid!');
         }
     }
 }

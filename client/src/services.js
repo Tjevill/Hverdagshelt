@@ -32,9 +32,23 @@ class User {
 	tel: number;
 	email: string;
 	username: string;
-	subscription: number
-
+	subscription: number;
+	password: string;
+	secret: string;
 }
+
+class UserSubscriptionUpdate {
+  user_id: number;
+  subscription: number;
+}
+
+class Organization {
+  org_id: number;
+  organizationnumber: string;
+  name: string;
+  email: string;
+}
+
 class Districts {
   district: string;
   zipcode: string;
@@ -58,6 +72,10 @@ class CaseService {
   /** Get all cases from the db  */
   getAllCases(): Promise <Cases[]> {
     return axios.get(url+'/allCases');
+  }
+
+  getCaseOnUser(user_id: number): Promise <Case[]>{
+    return axios.get(url+'/getCaseUserId/'+user_id);
   }
 
   /** Get number of cases in the db */
@@ -87,14 +105,14 @@ class CaseService {
   /**  Update one case */
   updateCase(casee: Case): Promise<void>{
     return axios.put(url+'/updateCase/'+casee.case_id, casee);
-  } 
+  }
 
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{
     return axios.delete(url+'/deleteCase/'+case_id);
-  } 
+  }
 
-  /** Create case (User) 
+  /** Create case (User)
   *   For use on the user-frontend.
   *   Sets status_id = 1.
   */
@@ -172,42 +190,86 @@ class UserService {
     }
 
   getAllUsers(): Promise<User[]>{
-    return axios.get('/user');
+    return axios.get(url + '/user');
   }
 
 	getUserByID(id: number): Promise<User[]>{
-    return axios.get('/user/' + id);
+    return axios.get(url + '/user/' + id);
   }
 
 	updateOne(user: User): Promise<void>{
-		return axios.put('/user/' + user.user_id, user);
+		return axios.put(url + '/user/' + user.user_id, user);
 	}
 
 	deleteUser(id: number): Promise<void>{
-    return axios.delete('/user/' + id);
+    return axios.delete(url + '/user/' + id);
   }
 
   getCountUsers(): Promise<number>{
-    return axios.put('/userCount');
+    return axios.put(url + '/userCount');
   }
 
+  getEmailUserByID(id: number): Promise<string>{
+    return axios.get(url + '/userEmail/' + id);
+  }
 
-
+  updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
+    return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
+  }
 
 }
 
 export let userService = new UserService();
 
+class OrgService{
+
+  getAllOrg(): Promise<Organization[]>{
+    return axios.get(url + '/org');
+  }
+
+  getOrgByID(id: number): Promise<Organization[]>{
+    return axios.get(url + '/org/' + id);
+  }
+
+  updateOrgByID(org: Organization): Promise<void>{
+    return axios.put(url + '/org/' + org.org_id);
+  }
+
+  deleteOrgByID(id: number): Promise<void>{
+    return axios.delete(url + '/org/' + id);
+  }
+
+  addNewOrg(org: Organization): Promise<void>{
+    return axios.post(url + '/newOrg', org);
+  }
+
+  getCountOrg(): Promise<number>{
+    return axios.get(url + '/orgCount');
+  }
+
+}
+
+export let orgService = new OrgService();
+
 
 class EmployeeService {
 
-    addEmployee(newemployee: Register): Promise<void> {
-        console.log("DATA TIL SERVICE: ", newemployee);
-        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-        return axios.put(url + "/newuser", newemployee);
-    }
+	addEmployee(newemployee: Register): Promise<void> {
+		console.log("DATA TIL SERVICE: ", newemployee);
+		// console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+		return axios.put(url + "/newuser", newemployee);
+	}
 
 
 }
 export let employeeService = new EmployeeService();
 
+class MapService {
+
+  getMapInfo(lat: number, long: number){
+    return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+}
+
+export let mapService = new MapService();
