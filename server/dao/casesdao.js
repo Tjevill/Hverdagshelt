@@ -14,6 +14,10 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
+    getCaseOnUser(user_id, callback){
+        super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
+    }
+
     create(json: any, callback:any) {
         var val = [
             json.headline,

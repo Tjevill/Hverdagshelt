@@ -291,6 +291,15 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /** Get case on user id */
+    app.get("/getCaseUserId/:user_id", (req, res) =>{
+        console.log("Received get-request on endpoint /getCaseUserId/"+req.params.user_id);
+        caseDao.getCaseOnUser(req.params.user_id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    })
+
     /** get case on zip */
     app.get("/getOnZip/:zipcode", (req, res) => {
         console.log("Received get-request on endpoint /getOnZip/" + req.params.zipcode);
@@ -356,6 +365,9 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
+
+  //End Case
+
 
 app.post("/cases", (req, res) => {
   console.log("/cases received POST-request");
@@ -488,7 +500,6 @@ app.use("/admin", (req, res, next) => {
         }
     });
 });
-
 
 app.post("/admin/legginn", (req, res) => {
     console.log("Fikk POST-request fra klienten");

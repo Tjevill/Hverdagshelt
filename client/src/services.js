@@ -60,6 +60,10 @@ class CaseService {
     return axios.get(url+'/allCases');
   }
 
+  getCaseOnUser(user_id: number): Promise <Case[]>{
+    return axios.get(url+'/getCaseUserId/'+user_id);
+  }
+
   /** Get number of cases in the db */
   countCases(): Promise <number>{
     return axios.get(url+'/countCases');
@@ -163,23 +167,12 @@ class UserService {
     return axios.post(url + "/login", login);
   }
 
-    getRefreshedToken(): Promise<void> {
-      return axios.get(url + "/refreshtoken");
-    }
-
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
   }
 
     getProvince(province: number): Promise<Province[]> {
         return axios.get(url + '/getdistricts/' + province);
-    }
-
-
-    addEmployee(newemployee: Register): Promise<void> {
-        console.log("DATA TIL SERVICE: ", newemployee);
-        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-        return axios.put(url + "/newuser", newemployee);
     }
 
   getAllUsers(): Promise<User[]>{
@@ -208,3 +201,17 @@ class UserService {
 }
 
 export let userService = new UserService();
+
+
+class EmployeeService {
+
+    addEmployee(newemployee: Register): Promise<void> {
+        console.log("DATA TIL SERVICE: ", newemployee);
+        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+        return axios.put(url + "/newuser", newemployee);
+    }
+
+
+}
+export let employeeService = new EmployeeService();
+
