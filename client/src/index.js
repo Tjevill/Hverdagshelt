@@ -96,9 +96,9 @@ function renderRoot() {
           <Route exact path="/case" component={CasePage} />
           <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/issues" component={IssueOverview} />
-          <Route exact path='/events' component={Events}/>
+          <Route exact path="/events" component={Events}/>
           <Route exact path="/IssueOverview" component={IssueOverview} />
-            <Route exact path="/reportPage" component={ReportPage} />
+          <Route exact path="/reportPage" component={ReportPage} />
         </div>
       </HashRouter>,
       root
