@@ -28,12 +28,19 @@ module.exports = class UserDao extends Dao {
         var passwordData = sha512(json.password, salt);
         var val = [json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.province, json.district];
         super.query(
-            "insert into Employee (name, tel, email, password, secret, province, district) values (?,?,?,?,?,?,?)",
+            "INSERT INTO Employee (name, tel, email, password, secret, province, district) VALUES (?,?,?,?,?,?,?)",
             val,
             callback
         );
     }
 
+    getAllEmp(callback){
+        super.query(
+            "SELECT * FROM Employee"
+        )
+    }
+
+    
 
 
 };

@@ -60,6 +60,10 @@ class CaseService {
     return axios.get(url+'/allCases');
   }
 
+  getCaseOnUser(user_id: number): Promise <Case[]>{
+    return axios.get(url+'/getCaseUserId/'+user_id);
+  }
+
   /** Get number of cases in the db */
   countCases(): Promise <number>{
     return axios.get(url+'/countCases');
