@@ -126,7 +126,7 @@ class UserService {
   }
 
 	getUserByID(id: number): Promise<User[]>{
-    return axios.get('/user/' + id);
+    return axios.get(url + '/user/' + id);
   }
 
 	updateOne(user: User): Promise<void>{
