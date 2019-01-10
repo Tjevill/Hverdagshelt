@@ -67,6 +67,7 @@ const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
+const Categorydao = require("../dao/categorydao.js");
 
 
 
@@ -85,6 +86,7 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
+let categoryDao = new Categorydao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -202,7 +204,7 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 // Organization
 
 /**
- * Get all organisations from DB
+ * Get all organizations from DB
  */
 app.get("/org", (req: Request, res: Response) =>{
 	orgDao.getAll((status, data) => {
@@ -270,6 +272,59 @@ app.get('/orgCount', (req: Request, res: Response) => {
 		res.json(data);
 	})
 });
+
+// Category
+/**
+ * Get all categories from DB
+ */
+app.get("/category", (req: Request, res: Response) =>{
+	categoryDao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one category by ID
+ */
+app.get("/category/:id", (req: Request, res: Response) =>{
+	categoryDao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update category
+ */
+app.put('/category/:id', (req: Request, res: Response) => {
+	categoryDao.updateCategory(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Deletes one category by ID
+ */
+app.delete('/category/:id', (req: Request, res: Response) => {
+	categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get count of categories in DB
+ */
+app.get('/categoryCount', (req: Request, res: Response) => {
+	categoryDao.getCountCategories((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
 
 // Events
 
