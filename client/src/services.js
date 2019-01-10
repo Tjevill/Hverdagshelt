@@ -32,9 +32,23 @@ class User {
 	tel: number;
 	email: string;
 	username: string;
-	subscription: number
-
+	subscription: number;
+	password: string;
+	secret: string;
 }
+
+class UserSubscriptionUpdate {
+  user_id: number;
+  subscription: number;
+}
+
+class Organization {
+  org_id: number;
+  organizationnumber: string;
+  name: string;
+  email: string;
+}
+
 class Districts {
   district: string;
   zipcode: string;
@@ -176,44 +190,80 @@ class UserService {
     }
 
   getAllUsers(): Promise<User[]>{
-    return axios.get('/user');
+    return axios.get(url + '/user');
   }
 
 	getUserByID(id: number): Promise<User[]>{
-    return axios.get('/user/' + id);
+    return axios.get(url + '/user/' + id);
   }
 
 	updateOne(user: User): Promise<void>{
-		return axios.put('/user/' + user.user_id, user);
+		return axios.put(url + '/user/' + user.user_id, user);
 	}
 
 	deleteUser(id: number): Promise<void>{
-    return axios.delete('/user/' + id);
+    return axios.delete(url + '/user/' + id);
   }
 
   getCountUsers(): Promise<number>{
-    return axios.put('/userCount');
+    return axios.put(url + '/userCount');
   }
-
-
-
-
+  
+  getEmailUserByID(id: number): Promise<string>{
+    return axios.get(url + '/userEmail/' + id);
+  }
+  
+  updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
+    return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
+  }
+  
 }
 
 export let userService = new UserService();
 
+class OrgService{
+  
+  getAllOrg(): Promise<Organization[]>{
+    return axios.get(url + '/org');
+  }
+  
+  getOrgByID(id: number): Promise<Organization[]>{
+    return axios.get(url + '/org/' + id);
+  }
+  
+  updateOrgByID(org: Organization): Promise<void>{
+    return axios.put(url + '/org/' + org.org_id);
+  }
+  
+  deleteOrgByID(id: number): Promise<void>{
+    return axios.delete(url + '/org/' + id);
+  }
+  
+  addNewOrg(org: Organization): Promise<void>{
+    return axios.post(url + '/newOrg', org);
+  }
+  
+  getCountOrg(): Promise<number>{
+    return axios.get(url + '/orgCount');
+  }
+  
+}
+
+export let orgService = new OrgService();
+
 
 class EmployeeService {
-
-    addEmployee(newemployee: Register): Promise<void> {
-        console.log("DATA TIL SERVICE: ", newemployee);
-        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-        return axios.put(url + "/newuser", newemployee);
-    }
-
-
+	
+	addEmployee(newemployee: Register): Promise<void> {
+		console.log("DATA TIL SERVICE: ", newemployee);
+		// console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+		return axios.put(url + "/newuser", newemployee);
+	}
+	
+	
 }
 export let employeeService = new EmployeeService();
+<<<<<<< HEAD
 
 class MapService {
 
@@ -224,3 +274,5 @@ class MapService {
 }
 
 export let mapService = new MapService();
+=======
+>>>>>>> 82be36808e502e51fbc3b2388caf9212d58a8b6e

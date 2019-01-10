@@ -66,6 +66,7 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
+const Orgdao = require("../dao/orgdao.js");
 
 
 
@@ -83,6 +84,7 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
+let orgDao = new Orgdao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -161,6 +163,99 @@ app.delete('/user/:id', (req: Request, res: Response) => {
  */
 app.get('/userCount', (req: Request, res: Response) => {
 	userdao.getCountUsers((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Gets email from user by ID
+ */
+app.get('/userEmail/:id', (req: Request, res: Response) => {
+  userdao.getEmailUserByID(req.params.id, (status, data) => {
+    res.status(status);
+    res.json(data);
+  })
+});
+
+/**
+ * For updating subscription for one user
+ */
+app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
+	userdao.updateSubription(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
+// Organization
+
+/**
+ * Get all organisations from DB
+ */
+app.get("/org", (req: Request, res: Response) =>{
+	orgDao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one org by ID
+ */
+app.get('/org/:id', (req: Request, res: Response) => {
+	orgDao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update org by ID (does not include password update)
+ */
+app.put('/org/:id', (req: Request, res: Response) => {
+	orgDao.updateOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update org password by ID send object including new password and org_id
+ */
+app.put('/updateOrgPWord/:id', (req: Request, res: Response) => {
+	orgDao.updateOrgPassword(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Delete one org by ID
+ */
+app.delete('/org/:id', (req: Request, res: Response) => {
+	orgDao.deleteOrgByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Add new organization
+ */
+app.post("/newOrg", (req, res) => {
+	orgDao.addOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Get count of all organizations from DB
+ */
+app.get('/orgCount', (req: Request, res: Response) => {
+	orgDao.getCountOrg((status, data) => {
 		res.status(status);
 		res.json(data);
 	})
