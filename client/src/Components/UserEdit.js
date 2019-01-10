@@ -8,11 +8,14 @@ import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets
 
 const history = createHashHistory();
 
+
+
+
 export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
-  user = [];
+  user = new Object();
   render(){
     let button;
-    if(this.user.subscription==0){
+    if(this.user.subscription==1){
       button = (
         <Button.Success onClick={this.subscribe}>Subscribe</Button.Success>
       )
@@ -89,11 +92,41 @@ export default class UserEdit extends Component <{ match: { params: { id: number
   }
 
   subscribe(){
+    console.log(this.user);
+    const sub = {
+      user_id: this.user.user_id,
+      subscription: 0
+    ;
+
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        if(this.sub) history.push('/profile/'+this.user.user_id+'/edit')
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
   unsubscribe(){
+    const sub = {
+      user_id: this.user.user_id,
+      subscription: 1
+    };
+
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        if(this.sub) history.push('/profile/'+this.user.user_id+'/edit')
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
+
   save(){
     if(this.user.name==""||this.user.name==null||this.user.name==" ")return alert("Vennligst oppgi navn");
+    userService
+      .updateOne(this.user)
+      .then(user => {
+        if(this.user) history.push('/profile/'+this.user.user_id)
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 }
