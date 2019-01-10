@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
-    "http://kalvskinnet-api.herokuapp.com"
+    "http://hverdagshelt.herokuapp.com"
   );
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
@@ -25,6 +25,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
+
 
 let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord");
 
@@ -309,24 +311,7 @@ app.delete("/deleteCase/:case_id", (req, res) =>{
 
 // End Cases
 
-    function loginOk(username, password) {
 
-        var promise1 = new Promise(function (resolve, reject) {
-            userdao.getUsername(username, (status, data) => {
-                console.log("data: " + data);
-                const lagretPass = data[0].password;
-                const passwordData = sha512(password, data[0].secret);
-                // console.log(lagretPass.localeCompare(passwordData.passwordHash));
-
-                if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            });
-        })
-        return promise1;
-    }
 
 app.post("/cases", (req, res) => {
   console.log("/cases fikk POST request");
@@ -373,30 +358,114 @@ app.post("/cases", (req, res) => {
     }
   });
 });
- 
-
-    app.post("/login", (req, res) => {
 
 
-// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-        var promiseObject = loginOk(req.body.username, req.body.password);
-        console.log("promiseobject: " + promiseObject);
 
-        promiseObject.then(function (value) {
-            if (value) {
-                let token = jwt.sign({username: req.body.username}, privateKey, {
-                    expiresIn: 10
-                });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
+function loginOk(username, password) {
 
-                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+    var promise1 = new Promise(function (resolve, reject) {
+        userdao.getUsername(username, (status, data) => {
+            console.log("data: " + data);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(password, data[0].secret);
+            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
             } else {
-                console.log("Brukernavn & passord IKKE ok");
-                res.status(401);
-                res.json({reply: "Not authorized. Login or password incorrect."});
+                resolve(false);
             }
         });
+    })
+    return promise1;
+}
+
+app.post("/login", (req, res) => {
+// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
+    var promiseObject = loginOk(req.body.username, req.body.password);
+    console.log("promiseobject: " + promiseObject);
+
+    promiseObject.then(function (value) {
+        if (value) {
+            let token = jwt.sign({username: req.body.username}, privateKey, {
+                expiresIn: 60
+            });
+            res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
+
+            console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.status(401);
+            res.json({reply: "Not authorized. Login or password incorrect."});
+        }
     });
+});
+
+
+
+
+// REFRESHING TOKEN
+app.use("/refreshtoken", (req, res) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, privateKey, (err, decoded) => {
+        if (err) {
+            console.log("Token IKKE ok, så du får ikke refreshet");
+            res.status(401);
+            res.json({ error: "No old token detected, no refresh for you!" });
+        } else {
+            let token = jwt.sign({ brukernavn: req.body.brukernavn }, privateKey, {
+                expiresIn: 5
+            });
+            res.json({ jwt: token });
+        }
+    });
+});
+
+// PASSWORD PROTECTED AREA!! DONT PUT ANYTHING OUTSIDE OF /admin AND
+// DONT PUT ANYTHING THAT SHOULD BE PASSWORD PROTECTED
+
+
+app.use("/admin", (req, res, next) => {
+    var token = req.headers["x-access-token"];
+    console.log("/admin : req.headers: ", req.headers["x-access-token"]);
+    console.log("/admin : req.headers: ", req.headers);
+    jwt.verify(token, publicKey, (err, decoded) => {
+        if (err) {
+            console.log("Token IKKE ok");
+            res.status(401);
+            res.json({ error: "Not authorized" });
+        } else {
+            console.log("Token ok: " + decoded.brukernavn);
+            next();
+        }
+    });
+});
+
+
+app.post("/admin/legginn", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    artikkelDao.addArtikkel(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.put("/admin/edit/:id", (req, res) => {
+    console.log("Fikk PUT-request fra klienten: " + res.params);
+    artikkelDao.editArtikkel(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.delete("/admin/delete/:id", (req, res) => {
+    console.log("/admin/delete/:id fikk request: " + req.params.id);
+    artikkelDao.delArtikkel(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data[0]);
+    });
+});
+
 
 
     const server = app.listen(process.env.PORT || "8080", function () {

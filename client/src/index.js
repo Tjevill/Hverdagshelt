@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route } from 'react-router-dom';
+import {HashRouter, Redirect, Route} from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
 import CasePage from "./components/CasePage";
 import CaseListCard from "./components/CaseListCard";
@@ -16,6 +16,8 @@ import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./components/Register";
 import Login from "./components/Login";
+import NewEmployee from "./components/NewEmployee";
+import Admin from "./components/Admin";
 
 const history = createHashHistory();
 
@@ -32,10 +34,13 @@ class Navbar extends Component {
     return(
       <div className="topnav" id="navbar">
         <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-        <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Issues</a>
-        <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-        <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profile</a>
-        <a href="/" className="icon" onClick={() => this.mobileMenu()}>
+          <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
+          <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
+          <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
+          <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
+          <a className="option" id="register" href="#registrer" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
+          <a className="option" id="admin" href="#admin" onClick={() => this.activate("admin")}>Administrator</a>
+          <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
         </a>
       </div>
@@ -83,6 +88,44 @@ class Navbar extends Component {
 
 }
 
+
+
+const fakeAuth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+        this.isAuthenticated = true;
+        setTimeout(cb, 100); // fake async
+    },
+    signout(cb) {
+        this.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+};
+
+
+
+
+function PrivateRoute({ component: Component, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                fakeAuth.isAuthenticated ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
+
+
 const root = document.getElementById("root");
 
 
@@ -99,6 +142,10 @@ function renderRoot() {
           <Route exact path="/events" component={Events}/>
           <Route exact path="/IssueOverview" component={IssueOverview} />
           <Route exact path="/reportPage" component={ReportPage} />
+          <Route exact path='/login' component={Login}/>
+          <Route exact path='/registrer' component={Register}/>
+          <Route exact path='/nyansatt' component={NewEmployee}/>
+          <PrivateRoute path="/admin" component={Admin} />
         </div>
       </HashRouter>,
       root
