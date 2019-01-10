@@ -307,7 +307,12 @@ app.put("/updateCase/:case_id", (req, res) =>{
     from: 'bedrehverdagshelt@gmail.com',
     to: email,
     subject: 'Saken er oppdatert!',
-    html: '<h1> Status: ' + req.body.status_id + '</h1><p> </p>'
+    html: 
+        '<h1> Status: ' + req.body.status_id + '</h1>' + 
+        '<p><b> HverdagsHelt Support Team </b></p>' +
+        '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
+        '<p> <b> HverdagsHelt AS </b> </p>' +
+        '<p> 72 59 50 00 </p>' 
   };
 
   transporter.sendMail(mailOptionsUpdateCase, function(error, info){
