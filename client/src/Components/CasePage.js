@@ -2,7 +2,7 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import Map from "./Map";
 
-export default class Main extends Component {
+export default class Main extends Component<{ match: { params: { id: number } } }> {
   title = "Title";
   province = "Province";
   address = "Address";
@@ -17,8 +17,14 @@ export default class Main extends Component {
         <p id="description">Beskrivelse</p>
         <Map />
       </div>
-    );
+      );
+    }
+
+  mounted(){
+    console.log("Case page mounted");
+    console.log(this.props.match.params.id);
   }
+
 }
 
 
@@ -33,10 +39,10 @@ export class Card extends Component<{
       <div className={"card article info"}>
         <div className="card-body article-body">
             <h5 className="card-title article-title">{this.props.title}</h5>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Kommune: </li>
-              <li class="list-group-item">Adresse: </li>
-              <li class="list-group-item">Lagt inn: </li>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">Kommune: </li>
+              <li className="list-group-item">Adresse: </li>
+              <li className="list-group-item">Lagt inn: </li>
             </ul>
         </div>
       </div>
