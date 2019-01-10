@@ -13,8 +13,8 @@ export default class CaseListCard extends Component <{ id: number }> {
             <div className="card right card-background">
                 <h1>Your cases</h1>
                 <ul className="list-group">
-                    {this.cases.map(x => (
-                        <CasePreview title={x.headline} status={x.status_id}/>
+                    {this.cases.map(x  => (
+                        <CasePreview  key={x.org_id} title={x.headline} status={x.status_id}/>
                     ))}
                 </ul>
             </div>
