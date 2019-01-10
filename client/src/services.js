@@ -91,14 +91,14 @@ class CaseService {
   /**  Update one case */
   updateCase(casee: Case): Promise<void>{
     return axios.put(url+'/updateCase/'+casee.case_id, casee);
-  } 
+  }
 
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{
     return axios.delete(url+'/deleteCase/'+case_id);
-  } 
+  }
 
-  /** Create case (User) 
+  /** Create case (User)
   *   For use on the user-frontend.
   *   Sets status_id = 1.
   */
@@ -215,3 +215,12 @@ class EmployeeService {
 }
 export let employeeService = new EmployeeService();
 
+class MapService {
+
+  getMapInfo(lat: number, long: number){
+    return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+}
+
+export let mapService = new MapService();
