@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import Map from "./Map";
+import { userService } from "../services";
 
-export default class Main extends Component<{ match: { params: { id: number } } }> {
+export default class Main extends Component {
   title = "Title";
   province = "Province";
   address = "Address";
@@ -23,6 +24,9 @@ export default class Main extends Component<{ match: { params: { id: number } } 
   mounted(){
     console.log("Case page mounted");
     console.log(this.props.match.params.id);
+
+
+
   }
 
 }
