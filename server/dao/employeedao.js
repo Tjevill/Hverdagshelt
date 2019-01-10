@@ -47,10 +47,34 @@ module.exports = class UserDao extends Dao {
     }
 
     /** Get all employees in province */
-    getAllEmpProvince(province: string, callback){
+    getAllEmpProvince(province: string, callback: any){
         super.query(
             "SELECT * FROM Employee WHERE province = ?",
             [province],
+            callback
+        );
+    }
+
+    /** Delete an employee in the db on employee_id */
+    deleteEmpById(id: number, callback: any){
+        let val = id;
+        super.query(
+            "DELETE FROM Employee WHERE employee_id = ?",
+            [val],
+            callback
+        );
+    }
+
+    /** Change password for an employee in the db */
+    updateEmpPassword(json: jsonUpdatePWordEmp, callback: any){
+        
+        let salt = genRandomString(32);
+        let passwordData = sha512(json.password, salt);
+        let val = [passwordData.passwordHash, passwordData.salt, json.employee_id];
+
+        super.query(
+            "UPDATE Employee SET password = ?, secret = ? WHERE employee_id = ?",
+            [val],
             callback
         );
     }

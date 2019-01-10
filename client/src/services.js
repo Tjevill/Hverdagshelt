@@ -7,7 +7,6 @@ class Category {
     description: string;
 }
 
-<<<<<<< HEAD
 class Employee{
   name: string;
   tel: string;
@@ -17,8 +16,6 @@ class Employee{
   district: string;
 }
 
-=======
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 class Case {
   case_id: number;
   description: string;
@@ -154,17 +151,6 @@ class CaseService {
     return axios.get(url+'/searchCaseDesc/'+description);
   }
 
-<<<<<<< HEAD
-=======
-
-
-  //Det under var her fra før.
-  getCases(): Promise<Case[]> {
-
-    return axios.get(url + '/cases');
-  }
-
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
@@ -311,7 +297,6 @@ export let categoryService = new CategoryService();
 
 class EmployeeService {
 
-<<<<<<< HEAD
   /** Create employee  
   * JSON sent in postman: 
   * { "name": "Ben Oscar Strømstrømstrøm", 
@@ -325,6 +310,12 @@ class EmployeeService {
       console.log("DATA TIL SERVICE: ", emp);
       // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
       return axios.put(url + "/employee", emp);
+  }
+
+
+  /** Delete an employee with employee_id. Yolo */
+  deleteEmp(employee_id): Promise<void>{
+    return axios.delete(url + '/employee/'+employee_id);
   } 
 
   /** Get all employees */
@@ -353,13 +344,6 @@ class EmployeeService {
   }
 
   
-=======
-  addEmployee(newemployee: Register): Promise<void> {
-    console.log("DATA TIL SERVICE: ", newemployee);
-    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-    return axios.put(url + "/newuser", newemployee);
-  }
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 }

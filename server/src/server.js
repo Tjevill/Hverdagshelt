@@ -66,12 +66,7 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
-<<<<<<< HEAD
 const Empdao = require("../dao/employeedao.js");
-=======
-const Orgdao = require("../dao/orgdao.js");
-const Categorydao = require("../dao/categorydao.js");
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 
@@ -89,12 +84,7 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
-<<<<<<< HEAD
 let empDao = new Empdao(pool);
-=======
-let orgDao = new Orgdao(pool);
-let categoryDao = new Categorydao(pool);
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 app.get("/cases", (req, res) => {
@@ -180,7 +170,6 @@ app.get('/userCount', (req: Request, res: Response) => {
 	})
 });
 
-<<<<<<< HEAD
 // End user
 
 
@@ -223,13 +212,23 @@ app.put("/employee", (req, res) =>{
     });
 });
 
-/** Update an employee in the db */
-/*
-app.post("/employee", (req, res) =>{
+/** Delete an employee in the db on employee_id */
+app.delete("/employee/:employee_id", (req, res) =>{
+    console.log("Received delete-request on endpoint /employee/"+req.employee_id);
+    empDao.deleteEmpById(req.params.employee_id, (status, data)=>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Update an employee in the db on employee_id */
+app.post("/employee/:employee_id", (req, res) =>{
     console.log("Received post-request on endpoint /employee");
-    empDao.alterEmp
-})
-*/
+    empDao.updateEmpPassword(req.body, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
 
 /** Count every employee in the db */
 app.get("/countEmp", (req, res) =>{
@@ -252,161 +251,6 @@ app.get("/countEmp/:province", (req, res) =>{
 
 
 // End employee
-=======
-/**
- * Gets email from user by ID
- */
-app.get('/userEmail/:id', (req: Request, res: Response) => {
-  userdao.getEmailUserByID(req.params.id, (status, data) => {
-    res.status(status);
-    res.json(data);
-  })
-});
-
-/**
- * For updating subscription for one user
- */
-app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
-	userdao.updateSubription(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * For updating users password. Send object with user_id and new password
- */
-app.put('/updateUserPWord', (req: Request, res: Response) => {
-	userdao.updateUserPassword(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-
-// Organization
-
-/**
- * Get all organizations from DB
- */
-app.get("/org", (req: Request, res: Response) =>{
-	orgDao.getAll((status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Get one org by ID
- */
-app.get('/org/:id', (req: Request, res: Response) => {
-	orgDao.getOneByID(req.params.id, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Update org by ID (does not include password update)
- */
-app.put('/org/:id', (req: Request, res: Response) => {
-	orgDao.updateOrg(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Update org password by ID send object including new password and org_id
- */
-app.put('/updateOrgPWord', (req: Request, res: Response) => {
-	orgDao.updateOrgPassword(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Delete one org by ID
- */
-app.delete('/org/:id', (req: Request, res: Response) => {
-	orgDao.deleteOrgByID(req.params.id, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Add new organization
- */
-app.post("/newOrg", (req, res) => {
-	orgDao.addOrg(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	});
-});
-
-/**
- * Get count of all organizations from DB
- */
-app.get('/orgCount', (req: Request, res: Response) => {
-	orgDao.getCountOrg((status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-// Category
-/**
- * Get all categories from DB
- */
-app.get("/category", (req: Request, res: Response) =>{
-	categoryDao.getAll((status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Get one category by ID
- */
-app.get("/category/:id", (req: Request, res: Response) =>{
-	categoryDao.getOneByID(req.params.id, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Update category
- */
-app.put('/category/:id', (req: Request, res: Response) => {
-	categoryDao.updateCategory(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Deletes one category by ID
- */
-app.delete('/category/:id', (req: Request, res: Response) => {
-	categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
-
-/**
- * Get count of categories in DB
- */
-app.get('/categoryCount', (req: Request, res: Response) => {
-	categoryDao.getCountCategories((status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
->>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 
