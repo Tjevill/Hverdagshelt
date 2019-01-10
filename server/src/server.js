@@ -132,7 +132,7 @@ app.get('/user/:id', (req: Request, res: Response) => {
 	userdao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
-    
+
 	})
 });
 
@@ -357,13 +357,6 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-<<<<<<< HEAD
-  //End Case
-
-
-
-=======
->>>>>>> c40e01c4415b528c19c3bd3dbba2baef75939cc7
 app.post("/cases", (req, res) => {
   console.log("/cases received POST-request");
   console.log(req.body.description);
@@ -381,11 +374,11 @@ app.post("/cases", (req, res) => {
         category_id: req.body.category_id,
         picture: req.body.picture,
         email: req.body.email
-        
-        
+
+
       },
       (status, data) => {
-        res.status(status); 
+        res.status(status);
         res.json(data);
         console.log("json.data:" + data[0]);
   });
@@ -394,8 +387,8 @@ app.post("/cases", (req, res) => {
   let sub = req.body.headline;
   let des = req.body.description;
   let email = req.body.email;
-  
-    
+
+
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
     to: email,
