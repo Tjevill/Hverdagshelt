@@ -51,7 +51,7 @@ export default class IssueOverview extends Component {
           <div className="container text-center">
             <ListGroup>
                 {this.cases.map(casen =>(
-                  <ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
+                  <ListGroup.Item to={'/casesside'} key={casen.case_id}> {casen.headline} </ListGroup.Item>
                 ))}
             </ListGroup>
          </div>
@@ -74,8 +74,10 @@ export default class IssueOverview extends Component {
   componentDidMount(){
     console.log("mounted IssuesOverview");
     caseService
-      .getCases()
-      .then(cases => (console.log("cases:" + cases)))
+      .getAllCases()
+        .then(cases => {
+            this.cases = cases;
+            console.log(this.cases)})
       .catch((error: Error) => Alert.danger(error.message));
     caseService
       .getCategories()
