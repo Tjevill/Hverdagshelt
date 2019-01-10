@@ -58,20 +58,6 @@ export default class UserEdit extends Component <{id: number}> {
             onChange={event => (this.user.zipcode= event.target.value)}
             required
           />
-          <Form.Input
-            type="text"
-            label="Passord"
-            value={this.user.password}
-            onChange={event => (this.user.password = event.target.value)}
-            required
-          />
-          <Form.Input
-            type="text"
-            label="GjentaPassord"
-            value={this.user.password}
-            onChange={event => (this.user.password = event.target.value)}
-            required
-          />
           {button}<br/><br/>
           <Button.Success onClick={this.save}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>

@@ -23,6 +23,10 @@ type jsonUpdateSub = {
 	subscription: number
 }
 
+type jsonUpdateUserPWord = {
+	user_id: number,
+	password: string
+}
 
 
 var genRandomString = function(length){
@@ -73,8 +77,12 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-    
-    //TODO: change and make one for password only!
+	
+	/**
+	 * Use this method for updating personal data, except password
+	 * @param json
+	 * @param callback
+	 */
     updateUser (json: jsonUpdate, callback: mixed){
         let val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, json.password, json.subscription, json.user_id];
         super.query(
@@ -83,6 +91,22 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
+	
+	/**
+	 * Use this method for changing password for the user
+	 * @param json
+	 * @param callback
+	 */
+	updateUserPassword(json: jsonUpdateUserPWord, callback: mixed){
+		let salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
+		let passwordData = sha512(json.password, salt);
+		let val = [passwordData.passwordHash, passwordData.salt, json.user_id];
+		super.query(
+			"update User set password = ?, secret = ? where user_id = ?",
+			val,
+			callback
+		);
+	}
 
     updateSubription (json: jsonUpdateSub, callback: mixed){
     	let val = [json.subscription, json.user_id];
