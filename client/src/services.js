@@ -272,3 +272,13 @@ class EmployeeService {
 	
 }
 export let employeeService = new EmployeeService();
+
+class MapService {
+
+  getMapInfo(lat: number, long: number){
+    return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+}
+
+export let mapService = new MapService();

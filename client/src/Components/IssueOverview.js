@@ -9,13 +9,31 @@ import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widge
 const history = createHashHistory();
 
 
+function sliceArray(array, size) {
+  var result = [];
+  for (var x = 0; x < Math.ceil(array.length / size); x++) {
+    var start = x * size;
+    var end = start + size;
+    result.push(array.slice(start, end));
+  }
+  return result;
+}
+
+
+function count(array) {
+  var result = [];
+  for (var x = 1; x < array.length+1; x++) {
+    result.push(x);
+  }
+  return result;
+}
 
 export default class IssueOverview extends Component {
   categories = [];
   cases = [];
   render(){
     return (
-      <>
+    <>
       <div className="jumbotron">
         <div className="container text-center">
           <p>Kategorier</p>
@@ -38,56 +56,18 @@ export default class IssueOverview extends Component {
             </ListGroup>
          </div>
         </Router>
-        <br/><br/>
-        <div id='toolbar'>
+      <br/><br/>
+
+      <div id='toolbar'>
         <div className='wrapper text-center'>
-              <div className="btn-group">
+            <div className="btn-group">
                 <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
                 <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
                 <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
-              </div>
+            </div>
         </div>
       </div>
     </>
-    /*
-      Dele inn forskjellige sider
-      //to slice a array with a particular size
-      function sliceArray(array, size) {
-        var result = [];
-        for (var x = 0; x < Math.ceil(array.length / size); x++) {
-          var start = x * size;
-          var end = start + size;
-          result.push(array.slice(start, end));
-        }
-        return result;
-      }
-
-
-      function count(array) {
-        var result = [];
-        for (var x = 1; x < array.length+1; x++) {
-          result.push(x);
-        }
-        return result;
-      }
-
-      Begrens antall saker på en side
-      <br/><br/><div id='toolbar'>
-        <div className='wrapper text-center'>
-            <div className="btn-group">
-              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
-              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
-              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
-            </div>
-            eller
-            <div className="btn-group">
-              {(count(sliceArray(this.Cases, 8))).map(case => (
-              <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/'+case)}>{case}</button>
-              ))}
-          </div>
-        </div>
-      </div>
-       */
     );
   }
 
