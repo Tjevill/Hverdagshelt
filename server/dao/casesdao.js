@@ -98,6 +98,11 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
     }
 
-
-
+    getNumberOfCases(callback){
+        super.query(
+            "SELECT COUNT(*) AS x FROM Cases",
+            [],
+            callback
+            );
+    }
 }
