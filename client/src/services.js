@@ -42,6 +42,11 @@ class UserSubscriptionUpdate {
   subscription: number;
 }
 
+class UserUpdatePWord {
+	user_id: number;
+	password: string;
+}
+
 class Organization {
   org_id: number;
   organizationnumber: string;
@@ -208,59 +213,63 @@ class UserService {
   getCountUsers(): Promise<number>{
     return axios.put(url + '/userCount');
   }
-
+  
   getEmailUserByID(id: number): Promise<string>{
     return axios.get(url + '/userEmail/' + id);
   }
-
+  
   updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
     return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
   }
-
+  
+  updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
+  	return axios.put(url + '/updateUserPWord', userPWordUpdate);
+	}
+  
 }
 
 export let userService = new UserService();
 
 class OrgService{
-
+  
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
   }
-
+  
   getOrgByID(id: number): Promise<Organization[]>{
     return axios.get(url + '/org/' + id);
   }
-
+  
   updateOrgByID(org: Organization): Promise<void>{
     return axios.put(url + '/org/' + org.org_id);
   }
-
+  
   deleteOrgByID(id: number): Promise<void>{
     return axios.delete(url + '/org/' + id);
   }
-
+  
   addNewOrg(org: Organization): Promise<void>{
     return axios.post(url + '/newOrg', org);
   }
-
+  
   getCountOrg(): Promise<number>{
     return axios.get(url + '/orgCount');
   }
-
+  
 }
 
 export let orgService = new OrgService();
 
 
 class EmployeeService {
-
+	
 	addEmployee(newemployee: Register): Promise<void> {
 		console.log("DATA TIL SERVICE: ", newemployee);
 		// console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
 		return axios.put(url + "/newuser", newemployee);
 	}
-
-
+	
+	
 }
 export let employeeService = new EmployeeService();
 

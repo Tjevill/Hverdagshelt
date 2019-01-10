@@ -188,6 +188,16 @@ app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
 	})
 });
 
+/**
+ * For updating users password. Send object with user_id and new password
+ */
+app.put('/updateUserPWord', (req: Request, res: Response) => {
+	userdao.updateUserPassword(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
 
 // Organization
 
@@ -224,7 +234,7 @@ app.put('/org/:id', (req: Request, res: Response) => {
 /**
  * Update org password by ID send object including new password and org_id
  */
-app.put('/updateOrgPWord/:id', (req: Request, res: Response) => {
+app.put('/updateOrgPWord', (req: Request, res: Response) => {
 	orgDao.updateOrgPassword(req.body, (status, data) => {
 		res.status(status);
 		res.json(data);
