@@ -168,13 +168,34 @@ app.get('/userCount', (req: Request, res: Response) => {
 	})
 });
 
-// Organisation
+/**
+ * Gets email from user by ID
+ */
+app.get('/userEmail/:id', (req: Request, res: Response) => {
+  userdao.getEmailUserByID(req.params.id, (status, data) => {
+    res.status(status);
+    res.json(data);
+  })
+});
+
+/**
+ * For updating subscription for one user
+ */
+app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
+	userdao.updateSubription(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
+// Organization
 
 /**
  * Get all organisations from DB
  */
-app.get("/org/:id", (req: Request, res: Response) =>{
-	orgDao.getAll(req.params.id, (status, data) => {
+app.get("/org", (req: Request, res: Response) =>{
+	orgDao.getAll((status, data) => {
 		res.status(status);
 		res.json(data);
 	})
@@ -183,18 +204,58 @@ app.get("/org/:id", (req: Request, res: Response) =>{
 /**
  * Get one org by ID
  */
-app.get('/org', (req: Request, res: Response) => {
-	orgDao.getOneByID((status, data) => {
+app.get('/org/:id', (req: Request, res: Response) => {
+	orgDao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
 	})
 });
 
 /**
- * Update org by ID
+ * Update org by ID (does not include password update)
  */
 app.put('/org/:id', (req: Request, res: Response) => {
 	orgDao.updateOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update org password by ID send object including new password and org_id
+ */
+app.put('/updateOrgPWord/:id', (req: Request, res: Response) => {
+	orgDao.updateOrgPassword(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Delete one org by ID
+ */
+app.delete('/org/:id', (req: Request, res: Response) => {
+	orgDao.deleteOrgByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Add new organization
+ */
+app.post("/newOrg", (req, res) => {
+	orgDao.addOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Get count of all organizations from DB
+ */
+app.get('/orgCount', (req: Request, res: Response) => {
+	orgDao.getCountOrg((status, data) => {
 		res.status(status);
 		res.json(data);
 	})

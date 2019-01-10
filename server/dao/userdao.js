@@ -18,6 +18,11 @@ type jsonUpdate = {
 
 };
 
+type jsonUpdateSub = {
+	user_id: number,
+	subscription: number
+}
+
 
 
 var genRandomString = function(length){
@@ -68,7 +73,8 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-
+    
+    //TODO: change and make one for password only!
     updateUser (json: jsonUpdate, callback: mixed){
         let val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, json.password, json.subscription, json.user_id];
         super.query(
@@ -78,6 +84,15 @@ module.exports = class UserDao extends Dao {
         );
     }
 
+    updateSubription (json: jsonUpdateSub, callback: mixed){
+    	let val = [json.subscription, json.user_id];
+    	super.query(
+    		"update User set subscription = ? where user_id = ?",
+				val,
+				callback
+			);
+		}
+    
     deleteUserByID(id: number, callback: mixed) {
         let val = id;
         super.query(
@@ -92,8 +107,17 @@ module.exports = class UserDao extends Dao {
             "select COUNT(*) as x from User",
             [],
             callback
-        )
+        );
     }
+    
+    getEmailUserByID(id: number, callback: mixed) {
+    	let val = id;
+    	super.query(
+    		"select email from User where user_id = ?",
+				[val],
+				callback
+			);
+		}
 
     addEmployee(json, callback) {
         var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
