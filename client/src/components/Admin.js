@@ -34,6 +34,37 @@ function AuthExample() {
     );
 }
 
+function refreshToken() {
+    const myHeaders = new Headers();
+
+    myHeaders.append('x-access-token', sessionStorage.getItem('storedtoken'));
+    myHeaders.append('Content-Type', 'application/json; charset=utf-8');
+
+    let url = 'http://localhost:8080/refreshtoken';
+    let fetchData = {
+        method: 'POST',
+        headers: myHeaders
+    }
+
+    fetch(url, fetchData)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (myJson) {
+            let mytoken = myJson.jwt;
+            sessionStorage.setItem('storedtoken', mytoken);
+            if (mytoken != undefined) {
+                console.log("Refreshtoken: Token refreshed!");
+                return true;
+            }
+            else {
+                console.log("Refreshtoken: Mangler token. Kan ikke refreshe");
+                return false;
+            }
+        });
+}
+
+
 const fakeAuth = {
     isAuthenticated: false,
     authenticate(cb) {
