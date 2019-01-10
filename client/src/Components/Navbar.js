@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
+import { caseService } from "../services";
 
 export default class Navbar extends Component {
 
@@ -23,15 +24,23 @@ export default class Navbar extends Component {
     );
   }
 
-  componentDidMount() {
-    let path = window.location.hash.split("/")[1];
-    if(this.options.includes(path)){
-      this.active = path;
-      console.log("active: " + this.active);
-      let activeOption = document.getElementById(this.active);
-      console.log(activeOption);
-      activeOption.className =+ " active";
-    }
+  async componentDidMount() {
+      let path = window.location.hash.split("/")[1];
+      if(this.options.includes(path)){
+        this.active = path;
+        console.log("active: " + this.active);
+
+        //setTimeout(
+          //this.activate(document.getElementById(this.active))
+          //, 500);
+
+      }
+
+      caseService
+        .getAllCases()
+        .then(cases => {console.log(cases)});
+
+
   }
 
   activate(name) {

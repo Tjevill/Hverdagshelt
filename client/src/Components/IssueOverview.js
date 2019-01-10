@@ -11,9 +11,13 @@ const history = createHashHistory();
 
 
 export default class IssueOverview extends Component {
+
+  loaded = true;
   categories = [];
   cases = [];
+
   render(){
+    if (this.loaded){
     return (
       <>
       <div className="jumbotron">
@@ -89,6 +93,13 @@ export default class IssueOverview extends Component {
       </div>
        */
     );
+    } else {
+      return(
+        <div>
+          <h1> Loading </h1>
+        </div>
+      )
+    }
   }
 
   mounted(){

@@ -70,7 +70,7 @@ let axiosConfig = {
 class CaseService {
 
   /** Get all cases from the db  */
-  getAllCases(): Promise <Cases[]> {
+  getAllCases(): Promise <Case[]> {
     return axios.get(url+'/allCases');
   }
 
@@ -134,7 +134,6 @@ class CaseService {
 
   //Det under var her fra før.
   getCases(): Promise<Cases[]> {
-
     return axios.get(url + '/cases');
   }
 
