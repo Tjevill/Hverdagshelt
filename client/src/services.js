@@ -24,17 +24,26 @@ class Case {
   org_id: number;
 }
 
+class Event{
+  event_id: number;
+  name: string;
+  date: string; //date / string ?
+  description: string;
+  zipcode: string;
+}
+
+
 class User {
-	user_id: number;
-	name: string;
-	address: string;
-	zipcode: string;
-	tel: number;
-	email: string;
-	username: string;
-	subscription: number;
-	password: string;
-	secret: string;
+  user_id: number;
+  name: string;
+  address: string;
+  zipcode: string;
+  tel: number;
+  email: string;
+  username: string;
+  subscription: number;
+  password: string;
+  secret: string;
 }
 
 class UserSubscriptionUpdate {
@@ -43,8 +52,8 @@ class UserSubscriptionUpdate {
 }
 
 class UserUpdatePWord {
-	user_id: number;
-	password: string;
+  user_id: number;
+  password: string;
 }
 
 class Organization {
@@ -147,7 +156,7 @@ class CaseService {
         return axios.get(url + '/categories');
     }
 
-  getCase(id: number): Promise<Cases> {
+  getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
     createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
@@ -198,15 +207,15 @@ class UserService {
     return axios.get(url + '/user');
   }
 
-	getUserByID(id: number): Promise<User[]>{
+  getUserByID(id: number): Promise<User[]>{
     return axios.get(url + '/user/' + id);
   }
 
-	updateOne(user: User): Promise<void>{
-		return axios.put(url + '/user/' + user.user_id, user);
-	}
+  updateOne(user: User): Promise<void>{
+    return axios.put(url + '/user/' + user.user_id, user);
+  }
 
-	deleteUser(id: number): Promise<void>{
+  deleteUser(id: number): Promise<void>{
     return axios.delete(url + '/user/' + id);
   }
 
@@ -223,8 +232,8 @@ class UserService {
   }
 
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
-  	return axios.put(url + '/updateUserPWord', userPWordUpdate);
-	}
+    return axios.put(url + '/updateUserPWord', userPWordUpdate);
+  }
 
 }
 
@@ -263,11 +272,11 @@ export let orgService = new OrgService();
 
 class EmployeeService {
 
-	addEmployee(newemployee: Register): Promise<void> {
-		console.log("DATA TIL SERVICE: ", newemployee);
-		// console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-		return axios.put(url + "/newuser", newemployee);
-	}
+  addEmployee(newemployee: Register): Promise<void> {
+    console.log("DATA TIL SERVICE: ", newemployee);
+    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+    return axios.put(url + "/newuser", newemployee);
+  }
 
 
 }
@@ -282,3 +291,13 @@ class MapService {
 }
 
 export let mapService = new MapService();
+
+class EventService {
+  getAllEvents(): Promise<Event[]>{
+    return axios.get(url + "/events");
+  }
+
+
+
+}
+export let eventService = new EventService();
