@@ -56,11 +56,13 @@ module.exports = class CasesDao extends Dao {
                     json.headline,
                     json.picture, 
                     json.employee_id, 
-                    json.org_id, 
+                    json.org_id,
+                    json.email,
                     case_id
+
                     ];
         super.query(
-            "UPDATE Cases SET description = ?, longitude = ?, latitude = ?, status_id = ?, user_id = ?, category_id = ?, zipcode = ?, headline = ?, picture = ?, employee_id = ?, org_id = ? WHERE case_id = ? ",
+            "UPDATE Cases SET description = ?, longitude = ?, latitude = ?, status_id = ?, user_id = ?, category_id = ?, zipcode = ?, headline = ?, picture = ?, employee_id = ?, org_id = ?, email = ? WHERE case_id = ? ",
             val,
             callback
         );

@@ -298,6 +298,25 @@ app.put("/updateCase/:case_id", (req, res) =>{
     res.json(data);
     console.log(req.body);
   });
+
+  
+  let email = req.body.email;
+  
+    
+  const mailOptionsUpdateCase = {
+    from: 'bedrehverdagshelt@gmail.com',
+    to: email,
+    subject: 'Saken er oppdatert!',
+    html: '<h1> Status: ' + req.body.status_id + '</h1><p> </p>'
+  };
+
+  transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+  });
 });
 
 app.delete("/deleteCase/:case_id", (req, res) =>{
@@ -341,14 +360,16 @@ app.post("/cases", (req, res) => {
   let email = req.body.email;
   
     
-  const mailOptionsCase = {
+  const mailOptionsCreateCase = {
     from: 'bedrehverdagshelt@gmail.com',
     to: email,
     subject: 'Takk for din henvendelse, saken er registert!',
     html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+
+    
   };
 
-  transporter.sendMail(mailOptionsCase, function(error, info){
+  transporter.sendMail(mailOptionsCreateCase, function(error, info){
     if (error) {
         console.log(error);
     } else {
