@@ -42,6 +42,11 @@ class UserSubscriptionUpdate {
   subscription: number;
 }
 
+class UserUpdatePWord {
+	user_id: number;
+	password: string;
+}
+
 class Organization {
   org_id: number;
   organizationnumber: string;
@@ -216,6 +221,10 @@ class UserService {
   updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
     return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
   }
+  
+  updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
+  	return axios.put(url + '/updateUserPWord', userPWordUpdate);
+	}
   
 }
 
