@@ -357,10 +357,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-<<<<<<< HEAD
   //End Case
-=======
->>>>>>> 829070dd1500b5db6e44cb403839d5d09e22d866
 
   //End Case
 
