@@ -1,4 +1,3 @@
-// @flow
 /* eslint eqeqeq: "off" */
 const express = require("express");
 const mysql = require("mysql");
@@ -6,6 +5,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const nodemailer = require('nodemailer');
+
 app.use(cors());
 app.use(bodyParser.json()); // for å tolke JSON
 
@@ -52,9 +53,9 @@ var sha512 = function(password, salt){
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "mysql.stud.iie.ntnu.no",
-  user: "mathibra",
-  database: "mathibra",
-  password: "QcxPTxcA",
+  user: "oyvinval",
+  database: "oyvinval",
+  password: "Dd8noqdd",
   debug: false
 });
 
@@ -64,6 +65,17 @@ const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 
+
+
+
+// Authentication with bedrehverdagshelt@gmail.com
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'bedrehverdagshelt@gmail.com',
+    pass: 'JegErDinHelt69'
+  }
+});
 
 let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
@@ -78,6 +90,28 @@ app.get("/cases", (req, res) => {
 		res.json(data);
 	});
 });
+
+/**
+ * Gets all districts from DB
+ */
+app.get('/getdistricts', (req: Request, res: Response) => {
+    userdao.getAllDistricts((status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+/**
+ * Gets all provinces from specific district from DB
+ */
+app.get('/getdistricts/:id', (req: Request, res: Response) => {
+    userdao.getProvincesFromFylke(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
 
 /**
  * Gets all users from DB
@@ -96,6 +130,7 @@ app.get('/user/:id', (req: Request, res: Response) => {
 	userdao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
+    
 	})
 });
 
@@ -167,7 +202,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
     app.put("/newuser", (req, res) => {
         console.log("Fikk POST-request fra klienten");
-        userdao.addUser(req.body, (status, data) => {
+        userdao.addEmployee(req.body, (status, data) => {
             res.status(status);
             res.json(data);
         });
@@ -282,48 +317,141 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
   //End Case
 
-    function loginOk(username, password) {
 
-        var promise1 = new Promise(function (resolve, reject) {
-            userdao.getUsername(username, (status, data) => {
-                console.log("data: " + data);
-                const lagretPass = data[0].password;
-                const passwordData = sha512(password, data[0].secret);
-                // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
-                if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            });
-        })
-        return promise1;
+app.post("/cases", (req, res) => {
+  console.log("/cases fikk POST request");
+  console.log(req.body.description);
+
+  if(!req.body) {
+    return res.sendStatus(400);
+  } else {
+      caseDao.create({
+        description: req.body.description,
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+        status_id: req.body.status_id,
+        user_id: req.body.user_id,
+        category_id: req.body.category_id,
+        zipcode: req.body.zipcode,
+        headline: req.body.headline,
+        picture: req.body.picture,
+        employee_id: req.body.employee_id,
+        org_id: req.body.org_id
+      },
+      (status, data) => {
+        res.status(status); 
+        res.json(data);
+  });
+}
+  
+  let sub = req.body.headline;
+  let des = req.body.description;
+  
+    // mail
+  const mailOptionsCase = {
+    from: 'bedrehverdagshelt@gmail.com',
+    to: 'benos@stud.ntnu.no',
+    subject: 'Takk for din henvendelse, saken er registert!',
+    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+  };
+
+  transporter.sendMail(mailOptionsCase, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
     }
+  });
+});
 
 
-    app.post("/login", (req, res) => {
 
+function loginOk(username, password) {
 
-// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-        var promiseObject = loginOk(req.body.username, req.body.password);
-        console.log("promiseobject: " + promiseObject);
+    var promise1 = new Promise(function (resolve, reject) {
+        userdao.getUsername(username, (status, data) => {
+            console.log("data: " + data);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(password, data[0].secret);
+            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
-        promiseObject.then(function (value) {
-            if (value) {
-                let token = jwt.sign({username: req.body.username}, privateKey, {
-                    expiresIn: 10
-                });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
-
-                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
             } else {
-                console.log("Brukernavn & passord IKKE ok");
-                res.status(401);
-                res.json({reply: "Not authorized. Login or password incorrect."});
+                resolve(false);
             }
         });
+    })
+    return promise1;
+}
+
+app.post("/login", (req, res) => {
+// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
+    var promiseObject = loginOk(req.body.username, req.body.password);
+    console.log("promiseobject: " + promiseObject);
+
+    promiseObject.then(function (value) {
+        if (value) {
+            let token = jwt.sign({username: req.body.username}, privateKey, {
+                expiresIn: 60
+            });
+            res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
+
+            console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.status(401);
+            res.json({reply: "Not authorized. Login or password incorrect."});
+        }
     });
+});
+
+
+// PASSWORD PROTECTED AREA!! DONT PUT ANYTHING OUTSIDE OF /admin AND
+// DONT PUT ANYTHING THAT SHOULD BE PASSWORD PROTECTED
+
+
+app.use("/admin", (req, res, next) => {
+    var token = req.headers["x-access-token"];
+    console.log("/admin : req.headers: ", req.headers["x-access-token"]);
+    console.log("/admin : req.headers: ", req.headers);
+    jwt.verify(token, publicKey, (err, decoded) => {
+        if (err) {
+            console.log("Token IKKE ok");
+            res.status(401);
+            res.json({ error: "Not authorized" });
+        } else {
+            console.log("Token ok: " + decoded.brukernavn);
+            next();
+        }
+    });
+});
+
+app.post("/admin/legginn", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    artikkelDao.addArtikkel(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.put("/admin/edit/:id", (req, res) => {
+    console.log("Fikk PUT-request fra klienten: " + res.params);
+    artikkelDao.editArtikkel(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.delete("/admin/delete/:id", (req, res) => {
+    console.log("/admin/delete/:id fikk request: " + req.params.id);
+    artikkelDao.delArtikkel(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data[0]);
+    });
+});
+
 
 
     const server = app.listen(process.env.PORT || "8080", function () {

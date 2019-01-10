@@ -38,6 +38,22 @@ var sha512 = function(password, salt){
 
 module.exports = class UserDao extends Dao {
 
+    getAllDistricts (callback: mixed) {
+        super.query(
+            "select * FROM fylke",
+            [],
+            callback);
+    }
+
+
+    getProvincesFromFylke (id: number, callback: mixed) {
+        super.query(
+            "select * FROM kommune WHERE fylke_id = ?",
+            [id],
+            callback
+        );
+    }
+
     getAll (callback: mixed) {
         super.query(
             "select user_id, name, address, zipcode, tel, email, username, subscription FROM User",
@@ -79,15 +95,24 @@ module.exports = class UserDao extends Dao {
         )
     }
 
+    addEmployee(json, callback) {
+        var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
+        var passwordData = sha512(json.password, salt);
+        var val = [json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.province, json.district];
+        super.query(
+            "insert into Employee (name, tel, email, password, secret, province, district) values (?,?,?,?,?,?,?)",
+            val,
+            callback
+        );
+    }
+
 
     addUser(json, callback) {
       var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
       var passwordData = sha512(json.password, salt);
       var val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, passwordData.passwordHash, passwordData.salt, json.subscription];
       super.query(
-        "insert into User " +
-          "(name, address, zipcode, tel, email, username, password, secret, subscription) " +
-          "values (?,?,?,?,?,?,?,?,?)",
+        "insert into User (name, address, zipcode, tel, email, username, password, secret, subscription) values (?,?,?,?,?,?,?,?,?)",
         val,
         callback
       );
