@@ -9,8 +9,8 @@ export default class ProfilePage extends Component {
     render() {
         return(
             <div className="main-background">
-                <ProfileCard/>
-                <CaseListCard/>
+                <ProfileCard id={31}/>
+                <CaseListCard id={31}/>
             </div>
         );
     }
