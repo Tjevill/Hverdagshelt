@@ -70,6 +70,11 @@ class Organization {
   email: string;
 }
 
+class OrganizationUpdatePWord {
+  org_id: number;
+  password: string;
+}
+
 class Districts {
   district: string;
   zipcode: string;
@@ -250,6 +255,10 @@ class OrgService{
 
   updateOrgByID(org: Organization): Promise<void>{
     return axios.put(url + '/org/' + org.org_id, org);
+  }
+  
+  updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
+    return axios.put(url + '/updateOrgPWord', org);
   }
 
   deleteOrgByID(id: number): Promise<void>{
