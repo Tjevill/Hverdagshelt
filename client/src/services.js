@@ -328,6 +328,10 @@ class EmployeeService {
     return axios.delete(url + '/employee/'+employee_id);
   } 
 
+
+  /** Change password */
+
+
   /** Get all employees */
   getAll(): Promise<Employee[]>{
     return axios.get(url+'/employee');

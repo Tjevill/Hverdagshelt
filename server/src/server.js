@@ -379,7 +379,7 @@ app.delete("/employee/:employee_id", (req, res) =>{
 	});
 });
 
-/** Update an employee in the db on employee_id */
+/** Update an employee password in the db on employee_id */
 app.post("/employee/:employee_id", (req, res) =>{
 	console.log("Received post-request on endpoint /employee");
 	empDao.updateEmpPassword(req.body, (status, data) =>{
