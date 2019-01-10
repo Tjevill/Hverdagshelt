@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { authService } from '../authservices';
+import {userService} from "../services";
 
-export class Login extends React.Component {
+export default class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        userService.logout();
+        authService.logout();
 
         this.state = {
             username: '',
@@ -35,12 +36,26 @@ export class Login extends React.Component {
         if (!(username && password)) {
             return;
         }
+        const login = {
+            username: this.state.username,
+            password: this.state.password
+        };
 
-        this.setState({ loading: true });
-        userService.login(username, password)
+        console.log(" ------ ");
+        this.message = "Login successful";
+        console.log("this login: ", login);
+        userService
+            .login(login)
+            .then(response => {
+                this.message = response.reply;
+                sessionStorage.setItem("storedtoken", response.jwt);
+                sessionStorage.setItem('user', JSON.stringify(username));
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("user: " + sessionStorage.getItem("user"));
+            })
             .then(
                 user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/" } };
+                    const { from } = this.props.location.state || { from: { pathname: "/admin/main" } };
                     this.props.history.push(from);
                 },
                 error => this.setState({ error, loading: false })
@@ -51,10 +66,7 @@ export class Login extends React.Component {
         const { username, password, submitted, loading, error } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <div className="alert alert-info">
-                    Username: test<br />
-                    Password: test
-                </div>
+
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
@@ -86,4 +98,4 @@ export class Login extends React.Component {
     }
 }
 
-export { Login };
+export { LoginPage };

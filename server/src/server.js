@@ -439,8 +439,8 @@ app.post("/login", (req, res) => {
 
     promiseObject.then(function (value) {
         if (value) {
-            let token = jwt.sign({username: req.body.username}, privateKey, {
-                expiresIn: 60
+            let token = jwt.sign({username: req.body.username, user_id: req.body.user_id, name: req.body.name}, privateKey, {
+                expiresIn: 30
             });
             res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
 

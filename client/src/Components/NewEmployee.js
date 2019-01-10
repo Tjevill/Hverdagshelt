@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import { employeeService } from "../services";
+import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
 
@@ -28,7 +29,7 @@ export default class Register extends Component {
 
 
     componentDidMount() {
-        employeeService
+        userService
             .getDistricts()
             .then(response => {
                 this.fylker = response;
@@ -47,7 +48,7 @@ export default class Register extends Component {
 
         this.state.district = event.target.value;
 
-        employeeService
+        userService
             .getProvince(event.target.value)
             .then(response => {
                 this.kommuner = response;

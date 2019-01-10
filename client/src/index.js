@@ -15,9 +15,12 @@ import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./components/Register";
-import Login from "./components/Login";
+import Login from "./components/Login2";
 import NewEmployee from "./components/NewEmployee";
+import AdminMain from "./components/AdminMain";
+import LoginPage from "./components/LoginPage";
 import Admin from "./components/Admin";
+import PrivateRoute from "./components/PrivateRoute";
 
 const history = createHashHistory();
 
@@ -39,7 +42,7 @@ class Navbar extends Component {
           <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
           <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
           <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
-          <a className="option" id="admin" href="#admin" onClick={() => this.activate("admin")}>Administrator</a>
+          <a className="option" id="admin" href="#admin/main" onClick={() => this.activate("admin")}>Administrator</a>
           <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
         </a>
@@ -106,26 +109,6 @@ const fakeAuth = {
 
 
 
-function PrivateRoute({ component: Component, ...rest }) {
-    return (
-        <Route
-            {...rest}
-            render={props =>
-                fakeAuth.isAuthenticated ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: "/login",
-                            state: { from: props.location }
-                        }}
-                    />
-                )
-            }
-        />
-    );
-}
-
 
 const root = document.getElementById("root");
 
@@ -147,7 +130,9 @@ function renderRoot() {
             <Route exact path='/login' component={Login}/>
             <Route exact path='/register' component={Register}/>
             <Route exact path='/nyansatt' component={NewEmployee}/>
-            <PrivateRoute path="/admin" component={Admin} />
+              <PrivateRoute exact path="/admin/main" component={AdminMain} />
+              <Route path="/admin/login" component={LoginPage} />
+
           </div>
         </div>
       </HashRouter>,
