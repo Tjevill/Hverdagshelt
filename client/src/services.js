@@ -22,17 +22,26 @@ class Case {
   org_id: number;
 }
 
+class Event{
+  event_id: number;
+  name: string;
+  date: string; //date / string ?
+  description: string;
+  zipcode: string;
+}
+
+
 class User {
-	user_id: number;
-	name: string;
-	address: string;
-	zipcode: string;
-	tel: number;
-	email: string;
-	username: string;
-	subscription: number;
-	password: string;
-	secret: string;
+  user_id: number;
+  name: string;
+  address: string;
+  zipcode: string;
+  tel: number;
+  email: string;
+  username: string;
+  subscription: number;
+  password: string;
+  secret: string;
 }
 
 class UserSubscriptionUpdate {
@@ -41,8 +50,8 @@ class UserSubscriptionUpdate {
 }
 
 class UserUpdatePWord {
-	user_id: number;
-	password: string;
+  user_id: number;
+  password: string;
 }
 
 class Organization {
@@ -73,7 +82,7 @@ let axiosConfig = {
 class CaseService {
 
   /** Get all cases from the db  */
-  getAllCases(): Promise <Cases[]> {
+  getAllCases(): Promise <Case[]> {
     return axios.get(url+'/allCases');
   }
 
@@ -136,7 +145,7 @@ class CaseService {
 
 
   //Det under var her fra før.
-  getCases(): Promise<Cases[]> {
+  getCases(): Promise<Case[]> {
 
     return axios.get(url + '/cases');
   }
@@ -145,7 +154,7 @@ class CaseService {
         return axios.get(url + '/categories');
     }
 
-  getCase(id: number): Promise<Cases> {
+  getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
     createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
@@ -196,64 +205,64 @@ class UserService {
     return axios.get(url + '/user');
   }
 
-	getUserByID(id: number): Promise<User[]>{
+  getUserByID(id: number): Promise<User[]>{
     return axios.get(url + '/user/' + id);
   }
 
-	updateOne(user: User): Promise<void>{
-		return axios.put(url + '/user/' + user.user_id, user);
-	}
+  updateOne(user: User): Promise<void>{
+    return axios.put(url + '/user/' + user.user_id, user);
+  }
 
-	deleteUser(id: number): Promise<void>{
+  deleteUser(id: number): Promise<void>{
     return axios.delete(url + '/user/' + id);
   }
 
   getCountUsers(): Promise<number>{
     return axios.put(url + '/userCount');
   }
-  
+
   getEmailUserByID(id: number): Promise<string>{
     return axios.get(url + '/userEmail/' + id);
   }
-  
+
   updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
     return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
   }
-  
+
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
-  	return axios.put(url + '/updateUserPWord', userPWordUpdate);
-	}
-  
+    return axios.put(url + '/updateUserPWord', userPWordUpdate);
+  }
+
 }
 
 export let userService = new UserService();
 
 class OrgService{
-  
+
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
   }
-  
+
   getOrgByID(id: number): Promise<Organization[]>{
     return axios.get(url + '/org/' + id);
   }
-  
+
   updateOrgByID(org: Organization): Promise<void>{
     return axios.put(url + '/org/' + org.org_id, org);
   }
-  
+
   deleteOrgByID(id: number): Promise<void>{
     return axios.delete(url + '/org/' + id);
   }
-  
+
   addNewOrg(org: Organization): Promise<void>{
     return axios.post(url + '/newOrg', org);
   }
-  
+
   getCountOrg(): Promise<number>{
     return axios.get(url + '/orgCount');
   }
-  
+
 }
 
 export let orgService = new OrgService();
@@ -286,14 +295,14 @@ class CategoryService {
 export let categoryService = new CategoryService();
 
 class EmployeeService {
-	
-	addEmployee(newemployee: Register): Promise<void> {
-		console.log("DATA TIL SERVICE: ", newemployee);
-		// console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-		return axios.put(url + "/newuser", newemployee);
-	}
-	
-	
+
+  addEmployee(newemployee: Register): Promise<void> {
+    console.log("DATA TIL SERVICE: ", newemployee);
+    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+    return axios.put(url + "/newuser", newemployee);
+  }
+
+
 }
 export let employeeService = new EmployeeService();
 
@@ -306,3 +315,13 @@ class MapService {
 }
 
 export let mapService = new MapService();
+
+class EventService {
+  getAllEvents(): Promise<Event[]>{
+    return axios.get(url + "/events");
+  }
+
+
+
+}
+export let eventService = new EventService();

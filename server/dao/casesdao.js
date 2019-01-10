@@ -32,7 +32,7 @@ module.exports = class CasesDao extends Dao {
         
         ];
         super.query(
-            "INSERT INTO Cases (headline, description, longitude, latitude, zipcode, user_id, category_id, picture, email) values (?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO Cases (headline, description, longitude, latitude, zipcode, user_id, category_id, picture) values (?,?,?,?,?,?,?,?)",
             val,
             callback
         );
@@ -60,8 +60,10 @@ module.exports = class CasesDao extends Dao {
                     json.headline,
                     json.picture, 
                     json.employee_id, 
-                    json.org_id, 
+                    json.org_id,
+                    json.email,
                     case_id
+
                     ];
         super.query(
             "UPDATE Cases SET description = ?, longitude = ?, latitude = ?, status_id = ?, user_id = ?, category_id = ?, zipcode = ?, headline = ?, picture = ?, employee_id = ?, org_id = ? WHERE case_id = ? ",

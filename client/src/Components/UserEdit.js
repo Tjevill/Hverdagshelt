@@ -6,6 +6,8 @@ import createHashHistory from "history/createHashHistory";
 import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 
+const history = createHashHistory();
+
 export default class UserEdit extends Component <{id: number}> {
   user = new Object();
   render(){
@@ -67,10 +69,13 @@ export default class UserEdit extends Component <{id: number}> {
       </>
     );
   }
-  mounted(){
+  componentDidMount(){
     userService
       .getUserByID(this.props.id)
-      .then(user => (this.user=user))
+      .then(user => {
+        this.user = user;
+        console.log(this.user);
+      })
       .catch((error: Error) => Alert.danger(error.message));
   }
 

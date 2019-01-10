@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
-import { caseService } from "../services";
+import { caseService, userService} from "../services";
 import createHashHistory from "history/createHashHistory";
 import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widgets';
 
@@ -28,6 +28,8 @@ function count(array) {
   return result;
 }
 
+//<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
+
 export default class IssueOverview extends Component {
   categories = [];
   cases = [];
@@ -38,9 +40,9 @@ export default class IssueOverview extends Component {
         <div className="container text-center">
           <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/IssueOverview" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
                 {this.categories.map(categori =>(
-                  <a href="#/IssueOverview" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div>
         </div>
@@ -51,7 +53,7 @@ export default class IssueOverview extends Component {
           <div className="container text-center">
             <ListGroup>
                 {this.cases.map(casen =>(
-                  <ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
+                  <ListGroup.Item to={'/getCase/'+casen.case_id}> {casen.headline} </ListGroup.Item>
                 ))}
             </ListGroup>
          </div>
@@ -71,15 +73,20 @@ export default class IssueOverview extends Component {
     );
   }
 
-  mounted(){
+  componentDidMount(){
+    console.log("mounted IssuesOverview");
+    caseService
+      .getAllCases()
+        .then(cases => {
+            this.cases = cases;
+            console.log(this.cases);
+            this.forceUpdate();
+          })
+      .catch((error: Error) => Alert.danger(error.message));
     caseService
       .getCategories()
-      .then(categories =>(this.categories=categories))
+      .then(categories =>(console.log("categories:" + categories)))
       .catch((error: Error) => Alert.danger(error.message));
 
-    caseService
-      .getCases()
-      .then(cases => (this.cases=cases))
-      .catch((error: Error) => Alert.danger(error.message));
   }
 }
