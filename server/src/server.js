@@ -415,9 +415,9 @@ app.post("/cases", (req, res) => {
 
 function loginOk(username, password) {
 
-    var promise1 = new Promise(function (resolve, reject) {
+    let promise1 = new Promise(function (resolve, reject) {
         userdao.getUsername(username, (status, data) => {
-            console.log("data: " + data);
+            // console.log("data: " + data);
             const lagretPass = data[0].password;
             const passwordData = sha512(password, data[0].secret);
             // console.log(lagretPass.localeCompare(passwordData.passwordHash));
@@ -435,15 +435,17 @@ function loginOk(username, password) {
 app.post("/login", (req, res) => {
 // console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
     var promiseObject = loginOk(req.body.username, req.body.password);
-    console.log("promiseobject: " + promiseObject);
+
 
     promiseObject.then(function (value) {
         if (value) {
-            let token = jwt.sign({username: req.body.username, user_id: req.body.user_id, name: req.body.name}, privateKey, {
-                expiresIn: 30
+            var persondata = [];
+            userdao.getUsername(username, (status, data) => {
+                persondata = {name: data[0].name, username: data[0].username};
             });
-            res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
 
+            let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 30000 });
+            res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: req.body.username, user_id: req.body.user_id, name: req.body.name});
             console.log("Brukernavn & passord ok, velkommen " + req.body.username);
         } else {
             console.log("Brukernavn & passord IKKE ok");

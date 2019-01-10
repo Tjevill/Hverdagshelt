@@ -48,6 +48,8 @@ export default class LoginPage extends React.Component {
             .login(login)
             .then(response => {
                 this.message = response.reply;
+                let info = JSON.stringify(response);
+                console.log("Response: " + info)
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('user', JSON.stringify(username));
                 console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));

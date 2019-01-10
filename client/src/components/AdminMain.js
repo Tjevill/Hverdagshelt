@@ -14,10 +14,13 @@ export default class AdminMain extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            user: JSON.parse(localStorage.getItem('storedtoken')),
-            users: { loading: true }
-        });
+
+        let hmf = sessionStorage.getItem('storedtoken');
+
+        console.log("hmf: " + hmf);
+        console.log(sessionStorage.getItem('storedtoken'));
+        console.log(sessionStorage.getItem('sto'));
+
 
     }
 
@@ -25,6 +28,7 @@ export default class AdminMain extends React.Component {
         const { user, users } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
+
                 <h1>Hi {user.name}!</h1>
                 <p>You're logged in with React & Basic HTTP Authentication!!</p>
                 <h3>Users from secure api end point:</h3>
