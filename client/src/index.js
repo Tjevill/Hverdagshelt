@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route } from 'react-router-dom';
+import {HashRouter, Redirect, Route} from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
 import CasePage from "./components/CasePage";
 import CaseListCard from "./components/CaseListCard";
@@ -88,6 +88,44 @@ class Navbar extends Component {
 
 }
 
+
+
+const fakeAuth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+        this.isAuthenticated = true;
+        setTimeout(cb, 100); // fake async
+    },
+    signout(cb) {
+        this.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+};
+
+
+
+
+function PrivateRoute({ component: Component, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                fakeAuth.isAuthenticated ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
+
+
 const root = document.getElementById("root");
 
 
@@ -108,7 +146,9 @@ function renderRoot() {
             <Route exact path='/registrer' component={Register}/>
 
             <Route exact path='/nyansatt' component={NewEmployee}/>
-            <Route exact path='/admin' component={Admin}/>
+
+            <PrivateRoute path="/admin" component={Admin} />
+
         </div>
       </HashRouter>,
       root
