@@ -85,7 +85,7 @@ export default class IssueOverview extends Component {
   }
 
   componentDidMount(){
-    console.log("mounted IssuesOverview");
+    //console.log("mounted IssuesOverview");
     caseService
       .getAllCases()
         .then(cases => {
