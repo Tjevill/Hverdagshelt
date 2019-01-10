@@ -38,9 +38,9 @@ export default class IssueOverview extends Component {
         <div className="container text-center">
           <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/IssueOverview" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
                 {this.categories.map(categori =>(
-                  <a href="#/IssueOverview" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div>
         </div>
