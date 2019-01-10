@@ -71,15 +71,15 @@ export default class IssueOverview extends Component {
     );
   }
 
-  mounted(){
-    caseService
-      .getCategories()
-      .then(categories =>(this.categories=categories))
-      .catch((error: Error) => Alert.danger(error.message));
-
+  componentDidMount(){
+    console.log("mounted IssuesOverview");
     caseService
       .getCases()
-      .then(cases => (this.cases=cases))
+      .then(cases => (console.log("cases:" + cases)))
+      .catch((error: Error) => Alert.danger(error.message));
+    caseService
+      .getCategories()
+      .then(categories =>(console.log("categories:" + categories)))
       .catch((error: Error) => Alert.danger(error.message));
   }
 }
