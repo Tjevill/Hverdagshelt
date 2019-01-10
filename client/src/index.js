@@ -38,7 +38,7 @@ class Navbar extends Component {
           <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
           <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
           <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
-          <a className="option" id="register" href="#registrer" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
+          <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
           <a className="option" id="admin" href="#admin" onClick={() => this.activate("admin")}>Administrator</a>
           <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
@@ -68,6 +68,7 @@ class Navbar extends Component {
     }
 
     if(this.active != ""){
+      console.log(this.activate);
       let from = document.getElementById(this.active);
       from.className = "option";
     }
@@ -143,7 +144,7 @@ function renderRoot() {
           <Route exact path="/IssueOverview" component={IssueOverview} />
           <Route exact path="/reportPage" component={ReportPage} />
           <Route exact path='/login' component={Login}/>
-          <Route exact path='/registrer' component={Register}/>
+          <Route exact path='/register' component={Register}/>
           <Route exact path='/nyansatt' component={NewEmployee}/>
           <PrivateRoute path="/admin" component={Admin} />
         </div>
