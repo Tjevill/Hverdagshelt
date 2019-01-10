@@ -1,4 +1,4 @@
-const Dao = require("./dao.js")
+const Dao = require("./dao.js");
 
 
 'use strict';
