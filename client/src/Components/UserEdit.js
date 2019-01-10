@@ -3,14 +3,14 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
+import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 
-export default class UserEdit extends Component {
-  user = null;
-  x =1 ;
+export default class UserEdit extends Component <{id: number}> {
+  user = new Object();
   render(){
     let button;
-    if(this.x==2){
+    if(this.user.subscriptions==false){
       button = (
         <Button.Success onClick={this.subscribe}>Subscribe</Button.Success>
       )
@@ -26,50 +26,36 @@ export default class UserEdit extends Component {
           <Form.Input
             type="text"
             label="Navn"
-            //value={this.user.name}
+            value={this.user.name}
             onChange={event => (this.user.name = event.target.value)}
             required
           />
           <Form.Input
             type="text"
             label="Address"
-            //value={this.user.address}
+            value={this.user.address}
             onChange={event => (this.user.address = event.target.value)}
             required
           />
           <Form.Input
             type="text"
             label="Mobilnummer"
-            //value={this.user.mobilnummer}
+            value={this.user.tel}
             onChange={event => (this.user.tel = event.target.value)}
             required
           />
           <Form.Input
             type="text"
             label="Email"
-            //value={this.user.email}
+            value={this.user.email}
             onChange={event => (this.user.email = event.target.value)}
             required
           />
           <Form.Input
             type="text"
             label="Postnummer"
-            //value={this.user.email}
+            value={this.user.zipcode}
             onChange={event => (this.user.zipcode= event.target.value)}
-            required
-          />
-          <Form.Input
-            type="text"
-            label="Passord"
-            //value={this.user.email}
-            onChange={event => (this.user.password = event.target.value)}
-            required
-          />
-          <Form.Input
-            type="text"
-            label="GjentaPassord"
-            //value={this.user.email}
-            onChange={event => (this.user.password = event.target.value)}
             required
           />
           {button}<br/><br/>
@@ -82,7 +68,10 @@ export default class UserEdit extends Component {
     );
   }
   mounted(){
-
+    userService
+      .getUserByID(this.props.id)
+      .then(user => (this.user=user))
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
   subscribe(){

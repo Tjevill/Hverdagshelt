@@ -1,4 +1,4 @@
-const Dao = require("./dao.js")
+const Dao = require("./dao.js");
 
 
 'use strict';
@@ -18,6 +18,15 @@ type jsonUpdate = {
 
 };
 
+type jsonUpdateSub = {
+	user_id: number,
+	subscription: number
+}
+
+type jsonUpdateUserPWord = {
+	user_id: number,
+	password: string
+}
 
 
 var genRandomString = function(length){
@@ -68,7 +77,12 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-
+	
+	/**
+	 * Use this method for updating personal data, except password
+	 * @param json
+	 * @param callback
+	 */
     updateUser (json: jsonUpdate, callback: mixed){
         let val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, json.password, json.subscription, json.user_id];
         super.query(
@@ -77,7 +91,32 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
+	
+	/**
+	 * Use this method for changing password for the user
+	 * @param json
+	 * @param callback
+	 */
+	updateUserPassword(json: jsonUpdateUserPWord, callback: mixed){
+		let salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
+		let passwordData = sha512(json.password, salt);
+		let val = [passwordData.passwordHash, passwordData.salt, json.user_id];
+		super.query(
+			"update User set password = ?, secret = ? where user_id = ?",
+			val,
+			callback
+		);
+	}
 
+    updateSubription (json: jsonUpdateSub, callback: mixed){
+    	let val = [json.subscription, json.user_id];
+    	super.query(
+    		"update User set subscription = ? where user_id = ?",
+				val,
+				callback
+			);
+		}
+    
     deleteUserByID(id: number, callback: mixed) {
         let val = id;
         super.query(
@@ -92,19 +131,17 @@ module.exports = class UserDao extends Dao {
             "select COUNT(*) as x from User",
             [],
             callback
-        )
-    }
-
-    addEmployee(json, callback) {
-        var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
-        var passwordData = sha512(json.password, salt);
-        var val = [json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.province, json.district];
-        super.query(
-            "insert into Employee (name, tel, email, password, secret, province, district) values (?,?,?,?,?,?,?)",
-            val,
-            callback
         );
     }
+    
+    getEmailUserByID(id: number, callback: mixed) {
+    	let val = id;
+    	super.query(
+    		"select email from User where user_id = ?",
+				[val],
+				callback
+			);
+		}
 
 
     addUser(json, callback) {

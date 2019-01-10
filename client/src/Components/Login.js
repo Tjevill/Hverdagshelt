@@ -8,10 +8,15 @@ export default class Login extends Component {
   login = [];
   message = "";
 
+  response = "";
+
   state = {
     username: "",
     password: ""
   };
+
+
+
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -59,6 +64,7 @@ export default class Login extends Component {
         <h4>{this.message}</h4>
       </form>
 
+                <button type="button" className="login100-form-btn" onClick={this.refreshToken}>Refresh token</button>
         </div>
       <div className="col-sm-4"></div>
       </div>

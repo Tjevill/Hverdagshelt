@@ -1,4 +1,6 @@
 
+// trying to import htmlsig.html into emailsignature, with document.write() not complete
+
 let html = (
   <div style="text-size-adjust: none !important; -ms-text-size-adjust: none !important; -webkit-text-size-adjust: none !important;"> 
     <span style="margin: 0px; padding: 0px; line-height: 100%; display: block; font-family: Helvetica, Arial, sans-serif;" /> 

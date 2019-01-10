@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { userService } from "../services";
+import { employeeService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
 
@@ -28,7 +28,7 @@ export default class Register extends Component {
 
 
     componentDidMount() {
-        userService
+        employeeService
             .getDistricts()
             .then(response => {
                 this.fylker = response;
@@ -47,7 +47,7 @@ export default class Register extends Component {
 
         this.state.district = event.target.value;
 
-        userService
+        employeeService
             .getProvince(event.target.value)
             .then(response => {
                 this.kommuner = response;
@@ -223,7 +223,7 @@ export default class Register extends Component {
 
     //   this.message = "Artikkel lagt inn!";
     console.log("this user: ", brukerdata);
-    userService
+    employeeService
       .addEmployee(brukerdata)
       .then(response => {
         // history.push("/artikler/" + response.insertId);

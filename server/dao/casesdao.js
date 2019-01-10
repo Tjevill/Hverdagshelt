@@ -14,6 +14,10 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
+    getCaseOnUser(user_id, callback){
+        super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
+    }
+
     create(json: any, callback:any) {
         var val = [
             json.headline,
@@ -68,6 +72,10 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
+    updateCaseStatus(){
+
+    }
+
     deleteCase(case_id, callback){
         super.query(
             "DELETE FROM Cases WHERE case_id = ?",
@@ -75,5 +83,31 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     };
+    
+    //Ben har laget lignende (?). Hva er forskjellen ? 
+    createUserCase(json, callback){
+        let status_id = "1";
+        let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
+        super.query(
+            "INSERT INTO Cases  ( description, longitude, latitude, status_id, user_id, category_id, zipcode, headline, picture ) VALUES ( ?, ? ,?, ?, ?, ?, ?, ?, ? )",
+            val,
+            callback
+        );
+    }
 
+    searchCaseCategory(category_id, callback){
+        super.query("SELECT * FROM Cases WHERE category_id = ? ", [category_id], callback);
+    }
+
+    searchCaseDescription(keyword, callback){
+        super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
+    }
+
+    getNumberOfCases(callback){
+        super.query(
+            "SELECT COUNT(*) AS x FROM Cases",
+            [],
+            callback
+            );
+    }
 }
