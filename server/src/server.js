@@ -66,6 +66,7 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
+const Empdao = require("../dao/employeedao.js");
 
 
 
@@ -83,6 +84,7 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
+let empDao = new Empdao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -114,6 +116,8 @@ app.get('/getdistricts/:id', (req: Request, res: Response) => {
     })
 });
 
+
+// User
 
 /**
  * Gets all users from DB
@@ -165,6 +169,80 @@ app.get('/userCount', (req: Request, res: Response) => {
 		res.json(data);
 	})
 });
+
+// End user
+
+
+
+// Employee
+
+/** Get all employees from the db */
+app.get("/employee", (req, res) => {
+    console.log("Received get-request on endpoint /employee.");
+    empDao.getAllEmp( (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get one employee matched on employee_id */
+app.get("/employee/:employee_id", (req, res) =>{
+    console.log("Received get-request on endpoint /employee/"+req.params.employee_id);
+    empDao.getOne(req.params.employee_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get all employees in one province */
+app.get("/employee/province/:province_id", (req, res) =>{
+    console.log("Received get-request on endpoint /employee/"+req.params.province_id);
+    empDao.getAllEmpProvince(req.params.province_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/**  Create an employee in the db*/
+app.put("/employee", (req, res) =>{
+    console.log("Received put-request on endpoint /employee");
+    empDao.addEmployee(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Update an employee in the db */
+/*
+app.post("/employee", (req, res) =>{
+    console.log("Received post-request on endpoint /employee");
+    empDao.alterEmp
+})
+*/
+
+/** Count every employee in the db */
+app.get("/countEmp", (req, res) =>{
+    console.log("Received get-request on endpoint /countEmp");
+    empDao.countEmps( (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/**  Count every employee in a specific province*/
+app.get("/countEmp/:province", (req, res) =>{
+    console.log("Received get-request on endpoint /countEmp/"+req.params.province);
+    empDao.countEmpsProvince(req.params.province, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+
+// End employee
+
+
 
 // Events
 

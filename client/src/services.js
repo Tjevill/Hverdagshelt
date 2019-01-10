@@ -7,7 +7,14 @@ class Category {
     description: string;
 }
 
-
+class Employee{
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  province: string;
+  district: string;
+}
 
 class Case {
   case_id: number;
@@ -116,14 +123,6 @@ class CaseService {
     return axios.get(url+'/searchCaseDesc/'+description);
   }
 
-
-
-  //Det under var her fra før.
-  getCases(): Promise<Cases[]> {
-
-    return axios.get(url + '/cases');
-  }
-
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
@@ -205,11 +204,47 @@ export let userService = new UserService();
 
 class EmployeeService {
 
-    addEmployee(newemployee: Register): Promise<void> {
-        console.log("DATA TIL SERVICE: ", newemployee);
-        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-        return axios.put(url + "/newuser", newemployee);
-    }
+  /** Create employee  
+  * JSON sent in postman: 
+  * { "name": "Ben Oscar Strømstrømstrøm", 
+      "tel": "12345678", 
+      "email": "benstrom@strom.ben", 
+      "password": "bentricity",
+      "province":1, 
+      "district":1 }
+  */
+  addEmployee(emp: Employee): Promise<void> {
+      console.log("DATA TIL SERVICE: ", emp);
+      // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+      return axios.put(url + "/employee", emp);
+  } 
+
+  /** Get all employees */
+  getAll(): Promise<Employee[]>{
+    return axios.get(url+'/employee');
+  }
+
+  /** Get one employee with employee_id */
+  getOne(employee_id : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/'+employee_id);
+  }
+
+  /** Get all employees in a given province with province_id */
+  getEmpProvince(province_id : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/province/'+province_id);
+  }
+
+  /** Get the number of employees in the db */
+  countEmps(): Promise<Employee[]>{
+    return axios.get(url+'/countEmp');
+  }
+
+  /** Get the number of employees in a given province with province_id */
+  countEmpsProvince(province_id : number): Promise<Employee[]>{
+    return axios.get(url+'/countEmp/'+province_id);
+  }
+
+  
 
 
 }
