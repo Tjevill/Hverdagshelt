@@ -12,8 +12,10 @@ import {
 	Grid,
 	Cell
 } from "react-mdl";
+import { eventService } from "../services.js";
 
 export default class userHome extends Component {
+	events = [];
 	render() {
 		return (
 			<div className="userHome-body">
@@ -49,6 +51,39 @@ export default class userHome extends Component {
 
 				<div className="userHome-cards">
 					Events
+					{this.events.map( event => (
+					<Card
+						shadow={0}
+						style={{
+							width: "120px",
+							height: "120px",
+							margin: "auto"
+						}}
+					>
+						<CardTitle
+							expand
+							style={{
+								color: "#fff",
+								background:
+								"url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC"
+							}}
+						>
+							{event.date.substring(0, 16)
+                            .replace("20", "")
+                            .replace("T", " ")}
+						</CardTitle>
+						<CardText>
+							<Icon name="home" />	{event.zipcode}
+						</CardText>
+						<CardActions border>
+							<Button colored>{event.name}</Button>
+						</CardActions>
+					</Card>
+					))}
+
+
+
+					{/*
 					<Card shadow={0} style={{ width: "150px", margin: "auto" }}>
 						<CardTitle
 							style={{
@@ -76,8 +111,16 @@ export default class userHome extends Component {
 							<Button colored>Overskrift</Button>
 						</CardActions>
 					</Card>
+				*/}
 				</div>
 			</div>
 		);
+	}
+
+	componentDidMount() {
+		eventService //Endre til event senere
+			.getAllEvents()
+			.then(sak => (this.events = sak))
+			.catch((error: Error) => console.log(error.message));
 	}
 }
