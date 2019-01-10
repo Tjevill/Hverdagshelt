@@ -167,6 +167,8 @@ app.get('/userCount', (req: Request, res: Response) => {
 });
 
 // Events
+
+/** Get all events */
 app.get("/events", (req, res) => {
   console.log("Received get-request on endpoint /events");
   eventDao.getAllEvents((status, data)=>{
@@ -175,6 +177,7 @@ app.get("/events", (req, res) => {
   });
 });
 
+/** Get one event on event_id */
 app.get("/getEvent/:id", (req, res) =>{
   console.log("Received get-request on endpoint /getEvent/"+req.params.id);
   eventDao.getOne(req.params.id, (status, data)=>{
@@ -183,6 +186,7 @@ app.get("/getEvent/:id", (req, res) =>{
   });
 });
 
+/** Search for event on description */
 app.get("/eventSearch/:keyword", (req, res) =>{
   console.log("Received get-request on endpoint /eventSearch/"+req.params.keyword);
   eventDao.searchEvent(req.params.keyword, (status, data) =>{
@@ -191,6 +195,7 @@ app.get("/eventSearch/:keyword", (req, res) =>{
   });
 });
 
+/** Search for event on date ascending */
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
@@ -219,6 +224,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /**  */
     app.get("/eventOnDateDesc/:date", (req, res) => {
         console.log("Received get-request on endpoint /eventOnDateDesc/" + req.params.date);
         eventDao.onDateAsc(req.params.date, (status, data) => {
@@ -258,6 +264,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 // Cases
 
+    /** get all cases */
     app.get("/allCases", (req, res) => {
         console.log("Received get-request on endpoint /allCases");
         caseDao.getAllCases((status, data) => {
@@ -266,6 +273,16 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /** count all cases in db */
+    app.get("/countCases", (req, res) =>{
+        console.log("Received get-request on endpoint /countCases");
+        caseDao.getNumberOfCases( (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** get case by id */
     app.get("/getCase/:id", (req, res) => {
         console.log("Received get-request on endpoint /getCase/" + req.params.id);
         caseDao.getOne(req.params.id, (status, data) => {
@@ -274,6 +291,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /** get case on zip */
     app.get("/getOnZip/:zipcode", (req, res) => {
         console.log("Received get-request on endpoint /getOnZip/" + req.params.zipcode);
         caseDao.getOneZip(req.params.zipcode, (status, data) => {
@@ -282,6 +300,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /** get case on category_id */
     app.get("/getOnCategory/:category_id", (req, res) => {
         console.log("Received get-request on endpoint /getOnCategory/" + req.params.category_id);
         caseDao.getOneCategory(req.params.category_id, (status, data) => {
@@ -290,62 +309,97 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-app.put("/updateCase/:case_id", (req, res) =>{
-  console.log("Received delete-request from client.");
-  console.log("Trying to update case with id: "+req.params.case_id);
-  caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
-    res.status(status);
-    res.json(data);
-    console.log(req.body);
-  });
-});
+    /** update case on case_id */
+    app.put("/updateCase/:case_id", (req, res) =>{
+      console.log("Received delete-request from client.");
+      console.log("Trying to update case with id: "+req.params.case_id);
+      caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+        res.status(status);
+        res.json(data);
+        console.log(req.body);
+      });
+    });
 
-app.delete("/deleteCase/:case_id", (req, res) =>{
-  console.log("Received delete-request from client.");
-  console.log("Trying to delete event with id: "+req.params.case_id);
-  caseDao.deleteCase(req.params.case_id, (status, data) =>{
-    res.status(status);
-    res.json(data);
-  });
-});
+    /** search case by category */
+    app.get("/searchCaseCategory/:category_id", (req, res) =>{
+        console.log("Received get-request from client.");
+        caseDao.searchCaseCategory(req.params.category_id, (status, data)=>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
-// End Cases
+    /** search case by description */
+    app.get("/searchCaseDesc/:description",(req, res) =>{
+        console.log("Received get-request from client.");
+        caseDao.searchCaseDescription(req.params.description, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
 
+    /** delete case by case_id */
+    app.delete("/deleteCase/:case_id", (req, res) =>{
+      console.log("Received delete-request from client.");
+      console.log("Trying to delete event with id: "+req.params.case_id);
+      caseDao.deleteCase(req.params.case_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+      });
+    });
+
+    /** create case on user side  */
+    app.post("/createUserCase", (req, res) => {
+        console.log("Received post-request from client on endpoint /createEvent");
+        caseDao.createUserCase(req.body, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+<<<<<<< HEAD
+  //End Case
+=======
+>>>>>>> 829070dd1500b5db6e44cb403839d5d09e22d866
+
+  //End Case
 
 
 app.post("/cases", (req, res) => {
-  console.log("/cases fikk POST request");
+  console.log("/cases received POST-request");
   console.log(req.body.description);
 
   if(!req.body) {
     return res.sendStatus(400);
   } else {
       caseDao.create({
+        headline: req.body.headline,
         description: req.body.description,
         longitude: req.body.longitude,
         latitude: req.body.latitude,
-        status_id: req.body.status_id,
+        zipcode: req.body.zipcode,
         user_id: req.body.user_id,
         category_id: req.body.category_id,
-        zipcode: req.body.zipcode,
-        headline: req.body.headline,
         picture: req.body.picture,
-        employee_id: req.body.employee_id,
-        org_id: req.body.org_id
+        email: req.body.email
+        
+        
       },
       (status, data) => {
         res.status(status); 
         res.json(data);
+        console.log("json.data:" + data[0]);
   });
 }
-  
+  // mail
   let sub = req.body.headline;
   let des = req.body.description;
+  let email = req.body.email;
   
-    // mail
+    
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
-    to: 'benos@stud.ntnu.no',
+    to: email,
     subject: 'Takk for din henvendelse, saken er registert!',
     html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
   };
@@ -358,6 +412,8 @@ app.post("/cases", (req, res) => {
     }
   });
 });
+
+// End Cases
 
 
 
@@ -440,7 +496,6 @@ app.use("/admin", (req, res, next) => {
         }
     });
 });
-
 
 app.post("/admin/legginn", (req, res) => {
     console.log("Fikk POST-request fra klienten");
