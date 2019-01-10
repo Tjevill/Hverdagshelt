@@ -7,6 +7,7 @@ class Category {
     description: string;
 }
 
+<<<<<<< HEAD
 class Employee{
   name: string;
   tel: string;
@@ -16,6 +17,8 @@ class Employee{
   district: string;
 }
 
+=======
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 class Case {
   case_id: number;
   description: string;
@@ -31,17 +34,45 @@ class Case {
   org_id: number;
 }
 
-class User {
-	user_id: number;
-	name: string;
-	address: string;
-	zipcode: string;
-	tel: number;
-	email: string;
-	username: string;
-	subscription: number
-
+class Event{
+  event_id: number;
+  name: string;
+  date: string; //date / string ?
+  description: string;
+  zipcode: string;
 }
+
+
+class User {
+  user_id: number;
+  name: string;
+  address: string;
+  zipcode: string;
+  tel: number;
+  email: string;
+  username: string;
+  subscription: number;
+  password: string;
+  secret: string;
+}
+
+class UserSubscriptionUpdate {
+  user_id: number;
+  subscription: number;
+}
+
+class UserUpdatePWord {
+  user_id: number;
+  password: string;
+}
+
+class Organization {
+  org_id: number;
+  organizationnumber: string;
+  name: string;
+  email: string;
+}
+
 class Districts {
   district: string;
   zipcode: string;
@@ -63,7 +94,7 @@ let axiosConfig = {
 class CaseService {
 
   /** Get all cases from the db  */
-  getAllCases(): Promise <Cases[]> {
+  getAllCases(): Promise <Case[]> {
     return axios.get(url+'/allCases');
   }
 
@@ -98,14 +129,14 @@ class CaseService {
   /**  Update one case */
   updateCase(casee: Case): Promise<void>{
     return axios.put(url+'/updateCase/'+casee.case_id, casee);
-  } 
+  }
 
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{
     return axios.delete(url+'/deleteCase/'+case_id);
-  } 
+  }
 
-  /** Create case (User) 
+  /** Create case (User)
   *   For use on the user-frontend.
   *   Sets status_id = 1.
   */
@@ -123,11 +154,22 @@ class CaseService {
     return axios.get(url+'/searchCaseDesc/'+description);
   }
 
+<<<<<<< HEAD
+=======
+
+
+  //Det under var her fra før.
+  getCases(): Promise<Case[]> {
+
+    return axios.get(url + '/cases');
+  }
+
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
 
-  getCase(id: number): Promise<Cases> {
+  getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
     createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
@@ -175,35 +217,101 @@ class UserService {
     }
 
   getAllUsers(): Promise<User[]>{
-    return axios.get('/user');
+    return axios.get(url + '/user');
   }
 
-	getUserByID(id: number): Promise<User[]>{
-    return axios.get('/user/' + id);
+  getUserByID(id: number): Promise<User[]>{
+    return axios.get(url + '/user/' + id);
   }
 
-	updateOne(user: User): Promise<void>{
-		return axios.put('/user/' + user.user_id, user);
-	}
+  updateOne(user: User): Promise<void>{
+    return axios.put(url + '/user/' + user.user_id, user);
+  }
 
-	deleteUser(id: number): Promise<void>{
-    return axios.delete('/user/' + id);
+  deleteUser(id: number): Promise<void>{
+    return axios.delete(url + '/user/' + id);
   }
 
   getCountUsers(): Promise<number>{
-    return axios.put('/userCount');
+    return axios.put(url + '/userCount');
   }
 
+  getEmailUserByID(id: number): Promise<string>{
+    return axios.get(url + '/userEmail/' + id);
+  }
 
+  updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
+    return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
+  }
 
+  updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
+    return axios.put(url + '/updateUserPWord', userPWordUpdate);
+  }
 
 }
 
 export let userService = new UserService();
 
+class OrgService{
+
+  getAllOrg(): Promise<Organization[]>{
+    return axios.get(url + '/org');
+  }
+
+  getOrgByID(id: number): Promise<Organization[]>{
+    return axios.get(url + '/org/' + id);
+  }
+
+  updateOrgByID(org: Organization): Promise<void>{
+    return axios.put(url + '/org/' + org.org_id, org);
+  }
+
+  deleteOrgByID(id: number): Promise<void>{
+    return axios.delete(url + '/org/' + id);
+  }
+
+  addNewOrg(org: Organization): Promise<void>{
+    return axios.post(url + '/newOrg', org);
+  }
+
+  getCountOrg(): Promise<number>{
+    return axios.get(url + '/orgCount');
+  }
+
+}
+
+export let orgService = new OrgService();
+
+
+class CategoryService {
+  
+  getAllCategories(): Promise<Category[]>{
+    return axios.get(url + '/category');
+  }
+  
+  getCategoryByID(id: number): Promise<Category[]>{
+    return axios.get(url + '/category/' + id);
+  }
+  
+  updateCategoryByID(category: Category): Promise<void>{
+    return axios.put(url + '/category/' + category.category_id, category);
+  }
+  
+  deleteCategoryByID(id: number): Promise<void>{
+    return axios.delete(url + '/category/' + id);
+  }
+  
+  getCountCategories(): Promise<number>{
+    return axios.get(url + '/categoryCount');
+  }
+	
+}
+
+export let categoryService = new CategoryService();
 
 class EmployeeService {
 
+<<<<<<< HEAD
   /** Create employee  
   * JSON sent in postman: 
   * { "name": "Ben Oscar Strømstrømstrøm", 
@@ -245,8 +353,34 @@ class EmployeeService {
   }
 
   
+=======
+  addEmployee(newemployee: Register): Promise<void> {
+    console.log("DATA TIL SERVICE: ", newemployee);
+    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+    return axios.put(url + "/newuser", newemployee);
+  }
+>>>>>>> 7170215c7132ee9872ce62dbc81ac377e0061193
 
 
 }
 export let employeeService = new EmployeeService();
 
+class MapService {
+
+  getMapInfo(lat: number, long: number){
+    return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+}
+
+export let mapService = new MapService();
+
+class EventService {
+  getAllEvents(): Promise<Event[]>{
+    return axios.get(url + "/events");
+  }
+
+
+
+}
+export let eventService = new EventService();

@@ -16,6 +16,7 @@ import {
 	Grid,
 	Cell
 } from "react-mdl";
+import { userService, eventService } from "../services.js";
 
 class Action {
 	title: string;
@@ -50,28 +51,39 @@ let actions = [
 		"2018-03-3 05:00",
 		"Prinsens Gate 34A"
 	)
-];
+]; 
 
 export default class events extends Component {
+	/*user= "haki"; // Endre til case senere */
+	events = [];
 	render() {
 		return (
 			<div className="events-body">
+				{console.log(this.events[1])}
+				{this.events.map(event=> console.log(event))}
 				<List style={{ width: "650px" }}>
-					{actions.map(action => (
+					{this.events.map(event => (
 						<a href="#">
 							<ListItem threeLine>
 								<ListItemContent
 									avatar="person"
-									subtitle={action.time  + ", " + action.location}
+									subtitle={
+										event.date.substring(0, 16)
+                            .replace("20", "")
+                            .replace("T", " ") + ", " + event.zipcode
+									}
 								>
-									{action.title}
+									{event.name}
 								</ListItemContent>
-
-								<ListItemAction>
+								{/* For bilde
+									<ListItemAction>
 									<a href="#">
 										<img src={action.image} />
 									</a>
-								</ListItemAction>
+								</ListItemAction>*/
+									
+								}
+								
 							</ListItem>
 						</a>
 					))}
@@ -79,4 +91,35 @@ export default class events extends Component {
 			</div>
 		);
 	}
+
+	componentDidMount() {
+		eventService //Endre til event senere
+			.getAllEvents()
+			.then(sak => (this.events = sak))
+			.catch((error: Error) => console.log(error.message));
+	}
 }
+
+/*constructor() {
+    super();
+    this.state = {
+      events: []
+    };
+  }*/
+
+/*userService //Endre til event senere
+	 	.getUserByID(34).then( sak => console.log(sak))
+	 	.catch((error: Error) => console.log(error.message));
+	 	console.log(this.user);*/
+
+/* componentDidMount() {
+	 	eventService //Endre til event senere
+	 	.getAllEvents()
+	 	.then( sak => this.setState({events: sak}))
+	 	.catch((error: Error) => console.log(error.message)); 
+	 	
+	 	
+   
+  } */
+
+
