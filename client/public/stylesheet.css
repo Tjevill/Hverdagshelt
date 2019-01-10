@@ -6,8 +6,14 @@ body,
   width: 100%;
 }
 
+#page {
+  padding-top: 60px;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
+  position: fixed;
+  width: 100%;
   background-color: #333;
   overflow: hidden;
 }

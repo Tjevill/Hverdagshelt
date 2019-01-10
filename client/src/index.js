@@ -134,19 +134,21 @@ function renderRoot() {
   if (root)
     ReactDOM.render(
       <HashRouter>
-        <div id="page">
+        <div>
           <Navbar />
-          <Route exact path="/" component={UserHome} />
-          <Route exact path="/case" component={CasePage} />
-          <Route exact path="/profile" component={ProfilePage} />
-          <Route exact path="/issues" component={IssueOverview} />
-          <Route exact path="/events" component={Events}/>
-          <Route exact path="/IssueOverview" component={IssueOverview} />
-          <Route exact path="/reportPage" component={ReportPage} />
-          <Route exact path='/login' component={Login}/>
-          <Route exact path='/register' component={Register}/>
-          <Route exact path='/nyansatt' component={NewEmployee}/>
-          <PrivateRoute path="/admin" component={Admin} />
+          <div id="page">
+            <Route exact path="/" component={UserHome} />
+            <Route exact path="/case" component={CasePage} />
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/issues" component={IssueOverview} />
+            <Route exact path="/events" component={Events}/>
+            <Route exact path="/IssueOverview" component={IssueOverview} />
+            <Route exact path="/reportPage" component={ReportPage} />
+            <Route exact path='/login' component={Login}/>
+            <Route exact path='/register' component={Register}/>
+            <Route exact path='/nyansatt' component={NewEmployee}/>
+            <PrivateRoute path="/admin" component={Admin} />
+          </div>
         </div>
       </HashRouter>,
       root
