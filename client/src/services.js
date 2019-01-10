@@ -7,8 +7,6 @@ class Category {
     description: string;
 }
 
-
-
 class Case {
   case_id: number;
   description: string;
@@ -241,7 +239,7 @@ class OrgService{
   }
   
   updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id);
+    return axios.put(url + '/org/' + org.org_id, org);
   }
   
   deleteOrgByID(id: number): Promise<void>{
@@ -260,6 +258,32 @@ class OrgService{
 
 export let orgService = new OrgService();
 
+
+class CategoryService {
+  
+  getAllCategories(): Promise<Category[]>{
+    return axios.get(url + '/category');
+  }
+  
+  getCategoryByID(id: number): Promise<Category[]>{
+    return axios.get(url + '/category/' + id);
+  }
+  
+  updateCategoryByID(category: Category): Promise<void>{
+    return axios.put(url + '/category/' + category.category_id, category);
+  }
+  
+  deleteCategoryByID(id: number): Promise<void>{
+    return axios.delete(url + '/category/' + id);
+  }
+  
+  getCountCategories(): Promise<number>{
+    return axios.get(url + '/categoryCount');
+  }
+	
+}
+
+export let categoryService = new CategoryService();
 
 class EmployeeService {
 	
