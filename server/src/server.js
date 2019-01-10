@@ -307,43 +307,41 @@ app.delete("/deleteCase/:case_id", (req, res) =>{
   });
 });
 
-// End Cases
-
-
-
 app.post("/cases", (req, res) => {
-  console.log("/cases fikk POST request");
+  console.log("/cases received POST-request");
   console.log(req.body.description);
 
   if(!req.body) {
     return res.sendStatus(400);
   } else {
       caseDao.create({
+        headline: req.body.headline,
         description: req.body.description,
         longitude: req.body.longitude,
         latitude: req.body.latitude,
-        status_id: req.body.status_id,
+        zipcode: req.body.zipcode,
         user_id: req.body.user_id,
         category_id: req.body.category_id,
-        zipcode: req.body.zipcode,
-        headline: req.body.headline,
         picture: req.body.picture,
-        employee_id: req.body.employee_id,
-        org_id: req.body.org_id
+        email: req.body.email
+        
+        
       },
       (status, data) => {
         res.status(status); 
         res.json(data);
+        console.log("json.data:" + data[0]);
   });
 }
-  
+  // mail
   let sub = req.body.headline;
   let des = req.body.description;
+  let email = req.body.email;
   
-    // mail
+    
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
-    to: 'benos@stud.ntnu.no',
+    to: email,
     subject: 'Takk for din henvendelse, saken er registert!',
     html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
   };
@@ -356,6 +354,8 @@ app.post("/cases", (req, res) => {
     }
   });
 });
+
+// End Cases
 
 
 
