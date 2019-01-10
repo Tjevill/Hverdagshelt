@@ -244,7 +244,7 @@ app.put('/updateOrgPWord', (req: Request, res: Response) => {
 });
 
 /**
- * Delete one org by ID
+ * Delete one organization by ID
  */
 app.delete('/org/:id', (req: Request, res: Response) => {
 	orgDao.deleteOrgByID(req.params.id, (status, data) => {
