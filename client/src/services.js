@@ -214,7 +214,7 @@ class UserService {
   }
   
   updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
-    return axios.put('/userSubscriptionUpdate', userSubUpdate);
+    return axios.put(url + '/userSubscriptionUpdate', userSubUpdate);
   }
   
 }
