@@ -31,9 +31,13 @@ function count(array) {
 //<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
 
 export default class IssueOverview extends Component {
+
+  loaded = true;
   categories = [];
   cases = [];
+
   render(){
+    if (this.loaded){
     return (
     <>
       <div className="jumbotron">
@@ -53,7 +57,7 @@ export default class IssueOverview extends Component {
           <div className="container text-center">
             <ListGroup>
                 {this.cases.map(casen =>(
-                  <ListGroup.Item to={'/getCase/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+                  <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
                 ))}
             </ListGroup>
          </div>
@@ -71,10 +75,17 @@ export default class IssueOverview extends Component {
       </div>
     </>
     );
+    } else {
+      return(
+        <div>
+          <h1> Loading </h1>
+        </div>
+      )
+    }
   }
 
   componentDidMount(){
-    console.log("mounted IssuesOverview");
+    //console.log("mounted IssuesOverview");
     caseService
       .getAllCases()
         .then(cases => {

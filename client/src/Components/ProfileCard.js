@@ -34,8 +34,9 @@ export default class ProfileCard extends Component <{ id: number }> {
     componentDidMount() {
         userService.getUserByID(this.props.id)
             .then(response => {
-                this.user = response[0];
-                console.log(this.user.name)})
+              this.user = response[0];
+              //console.log(this.user.name)
+            })
             .catch((error: Error) => console.log(error.message));
     }
 }
