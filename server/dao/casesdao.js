@@ -16,20 +16,19 @@ module.exports = class CasesDao extends Dao {
 
     create(json: any, callback:any) {
         var val = [
+            json.headline,
             json.description,
             json.longitude,
             json.latitude,
-            json.status_id,
+            json.zipcode,
             json.user_id,
             json.category_id,
-            json.zipcode,
-            json.headline,
             json.picture,
-            json.employee_id,
-            json.org_id
+            json.email
+        
         ];
         super.query(
-            "INSERT INTO Cases (description, longitude, latitude, status_id, user_id, category_id, zipcode, headline, picture, employee_id, org_id) values (?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO Cases (headline, description, longitude, latitude, zipcode, user_id, category_id, picture, email) values (?,?,?,?,?,?,?,?,?)",
             val,
             callback
         );

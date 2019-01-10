@@ -163,6 +163,10 @@ class UserService {
     return axios.post(url + "/login", login);
   }
 
+    getRefreshedToken(): Promise<void> {
+      return axios.get(url + "/refreshtoken");
+    }
+
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
   }

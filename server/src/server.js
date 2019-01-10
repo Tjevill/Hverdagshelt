@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
-    "http://kalvskinnet-api.herokuapp.com"
+    "http://hverdagshelt.herokuapp.com"
   );
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
@@ -25,6 +25,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
+
 
 let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord");
 
@@ -207,7 +209,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
     app.put("/newuser", (req, res) => {
         console.log("Fikk POST-request fra klienten");
-        userdao.addEmployee(req.body, (status, data) => {
+        userdao.addUser(req.body, (status, data) => {
             res.status(status);
             res.json(data);
         });
@@ -355,43 +357,48 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+<<<<<<< HEAD
   //End Case
 
 
 
+=======
+>>>>>>> c40e01c4415b528c19c3bd3dbba2baef75939cc7
 app.post("/cases", (req, res) => {
-  console.log("/cases fikk POST request");
+  console.log("/cases received POST-request");
   console.log(req.body.description);
 
   if(!req.body) {
     return res.sendStatus(400);
   } else {
       caseDao.create({
+        headline: req.body.headline,
         description: req.body.description,
         longitude: req.body.longitude,
         latitude: req.body.latitude,
-        status_id: req.body.status_id,
+        zipcode: req.body.zipcode,
         user_id: req.body.user_id,
         category_id: req.body.category_id,
-        zipcode: req.body.zipcode,
-        headline: req.body.headline,
         picture: req.body.picture,
-        employee_id: req.body.employee_id,
-        org_id: req.body.org_id
+        email: req.body.email
+        
+        
       },
       (status, data) => {
         res.status(status); 
         res.json(data);
+        console.log("json.data:" + data[0]);
   });
 }
-  
+  // mail
   let sub = req.body.headline;
   let des = req.body.description;
+  let email = req.body.email;
   
-    // mail
+    
   const mailOptionsCase = {
     from: 'bedrehverdagshelt@gmail.com',
-    to: 'benos@stud.ntnu.no',
+    to: email,
     subject: 'Takk for din henvendelse, saken er registert!',
     html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
   };
@@ -404,6 +411,8 @@ app.post("/cases", (req, res) => {
     }
   });
 });
+
+// End Cases
 
 
 
@@ -448,6 +457,25 @@ app.post("/login", (req, res) => {
 });
 
 
+
+
+// REFRESHING TOKEN
+app.use("/refreshtoken", (req, res) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, privateKey, (err, decoded) => {
+        if (err) {
+            console.log("Token IKKE ok, så du får ikke refreshet");
+            res.status(401);
+            res.json({ error: "No old token detected, no refresh for you!" });
+        } else {
+            let token = jwt.sign({ brukernavn: req.body.brukernavn }, privateKey, {
+                expiresIn: 5
+            });
+            res.json({ jwt: token });
+        }
+    });
+});
+
 // PASSWORD PROTECTED AREA!! DONT PUT ANYTHING OUTSIDE OF /admin AND
 // DONT PUT ANYTHING THAT SHOULD BE PASSWORD PROTECTED
 
@@ -467,6 +495,7 @@ app.use("/admin", (req, res, next) => {
         }
     });
 });
+
 
 app.post("/admin/legginn", (req, res) => {
     console.log("Fikk POST-request fra klienten");

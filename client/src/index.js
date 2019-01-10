@@ -2,7 +2,7 @@
 /* eslint eqeqeq: "off" */
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route } from 'react-router-dom';
+import {HashRouter, Redirect, Route} from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
 import CasePage from "./components/CasePage";
 import CaseListCard from "./components/CaseListCard";
@@ -38,9 +38,9 @@ class Navbar extends Component {
           <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
           <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
           <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
-          <a className="option" id="register" href="#registrer" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
+          <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
           <a className="option" id="admin" href="#admin" onClick={() => this.activate("admin")}>Administrator</a>
-        <a href="/" className="icon" onClick={() => this.mobileMenu()}>
+          <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
         </a>
       </div>
@@ -68,6 +68,7 @@ class Navbar extends Component {
     }
 
     if(this.active != ""){
+      console.log(this.activate);
       let from = document.getElementById(this.active);
       from.className = "option";
     }
@@ -88,6 +89,44 @@ class Navbar extends Component {
 
 }
 
+
+
+const fakeAuth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+        this.isAuthenticated = true;
+        setTimeout(cb, 100); // fake async
+    },
+    signout(cb) {
+        this.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+};
+
+
+
+
+function PrivateRoute({ component: Component, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                fakeAuth.isAuthenticated ? (
+                    <Component {...props} />
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: props.location }
+                        }}
+                    />
+                )
+            }
+        />
+    );
+}
+
+
 const root = document.getElementById("root");
 
 
@@ -95,20 +134,21 @@ function renderRoot() {
   if (root)
     ReactDOM.render(
       <HashRouter>
-        <div id="page">
+        <div>
           <Navbar />
-          <Route exact path="/" component={UserHome} />
-          <Route exact path="/case" component={CasePage} />
-          <Route exact path="/profile" component={ProfilePage} />
-          <Route exact path="/issues" component={IssueOverview} />
-          <Route exact path='/events' component={Events}/>
-          <Route exact path="/IssueOverview" component={IssueOverview} />
-          <Route exact path="/reportPage" component={ReportPage} />
+          <div id="page">
+            <Route exact path="/" component={UserHome} />
+            <Route exact path="/case" component={CasePage} />
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/issues" component={IssueOverview} />
+            <Route exact path="/events" component={Events}/>
+            <Route exact path="/IssueOverview" component={IssueOverview} />
+            <Route exact path="/reportPage" component={ReportPage} />
             <Route exact path='/login' component={Login}/>
-            <Route exact path='/registrer' component={Register}/>
-
+            <Route exact path='/register' component={Register}/>
             <Route exact path='/nyansatt' component={NewEmployee}/>
-            <Route exact path='/admin' component={Admin}/>
+            <PrivateRoute path="/admin" component={Admin} />
+          </div>
         </div>
       </HashRouter>,
       root
