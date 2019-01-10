@@ -33,8 +33,13 @@ class User {
 	email: string;
 	username: string;
 	subscription: number
-	
+
 }
+class Districts {
+  district: string;
+  zipcode: string;
+}
+
 
 const url = "http://localhost:8080";
 
@@ -44,6 +49,8 @@ let axiosConfig = {
     "x-access-token": sessionStorage.getItem("storedtoken")
   }
 };
+
+
 
 
 class CaseService {
@@ -94,28 +101,47 @@ class UserService {
     // console.log(axios.post(domain + "/login", login));
     return axios.post(url + "/login", login);
   }
-  
+
+    getRefreshedToken(): Promise<void> {
+      return axios.get(url + "/refreshtoken");
+    }
+
+  getDistricts(): Promise<Districts[]> {
+      return axios.get(url + '/getdistricts');
+  }
+
+    getProvince(province: number): Promise<Province[]> {
+        return axios.get(url + '/getdistricts/' + province);
+    }
+
+
+    addEmployee(newemployee: Register): Promise<void> {
+        console.log("DATA TIL SERVICE: ", newemployee);
+        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+        return axios.put(url + "/newuser", newemployee);
+    }
+
   getAllUsers(): Promise<User[]>{
     return axios.get('/user');
   }
-	
+
 	getUserByID(id: number): Promise<User[]>{
     return axios.get('/user/' + id);
   }
-	
+
 	updateOne(user: User): Promise<void>{
 		return axios.put('/user/' + user.user_id, user);
 	}
-	
+
 	deleteUser(id: number): Promise<void>{
     return axios.delete('/user/' + id);
   }
-  
+
   getCountUsers(): Promise<number>{
     return axios.put('/userCount');
   }
-	
-	
+
+
 
 
 }
