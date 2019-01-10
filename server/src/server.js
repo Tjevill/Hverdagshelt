@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
     "http://localhost:3000",
-    "http://kalvskinnet-api.herokuapp.com"
+    "http://hverdagshelt.herokuapp.com"
   );
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
@@ -25,6 +25,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
+
+
 
 let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord");
 
@@ -202,7 +204,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
     app.put("/newuser", (req, res) => {
         console.log("Fikk POST-request fra klienten");
-        userdao.addEmployee(req.body, (status, data) => {
+        userdao.addUser(req.body, (status, data) => {
             res.status(status);
             res.json(data);
         });
@@ -400,6 +402,25 @@ app.post("/login", (req, res) => {
 });
 
 
+
+
+// REFRESHING TOKEN
+app.use("/refreshtoken", (req, res) => {
+    let token = req.headers["x-access-token"];
+    jwt.verify(token, privateKey, (err, decoded) => {
+        if (err) {
+            console.log("Token IKKE ok, så du får ikke refreshet");
+            res.status(401);
+            res.json({ error: "No old token detected, no refresh for you!" });
+        } else {
+            let token = jwt.sign({ brukernavn: req.body.brukernavn }, privateKey, {
+                expiresIn: 5
+            });
+            res.json({ jwt: token });
+        }
+    });
+});
+
 // PASSWORD PROTECTED AREA!! DONT PUT ANYTHING OUTSIDE OF /admin AND
 // DONT PUT ANYTHING THAT SHOULD BE PASSWORD PROTECTED
 
@@ -419,6 +440,7 @@ app.use("/admin", (req, res, next) => {
         }
     });
 });
+
 
 app.post("/admin/legginn", (req, res) => {
     console.log("Fikk POST-request fra klienten");
