@@ -68,7 +68,9 @@ export default class events extends Component {
 								<ListItemContent
 									avatar="person"
 									subtitle={
-										event.date + ", " + event.zipcode
+										event.date.substring(0, 16)
+                            .replace("20", "")
+                            .replace("T", " ") + ", " + event.zipcode
 									}
 								>
 									{event.name}
