@@ -191,7 +191,7 @@ app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
 });
 
 /**
- * For updating users password. Send object with user_id and new password
+ * For updating users password. Send object with user_id and new password from frontend
  */
 app.put('/updateUserPWord', (req: Request, res: Response) => {
 	userdao.updateUserPassword(req.body, (status, data) => {
