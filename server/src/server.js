@@ -253,26 +253,34 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-app.put("/updateCase/:case_id", (req, res) =>{
-  console.log("Received delete-request from client.");
-  console.log("Trying to update case with id: "+req.params.case_id);
-  caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
-    res.status(status);
-    res.json(data);
-    console.log(req.body);
-  });
-});
+    app.put("/updateCase/:case_id", (req, res) =>{
+      console.log("Received delete-request from client.");
+      console.log("Trying to update case with id: "+req.params.case_id);
+      caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+        res.status(status);
+        res.json(data);
+        console.log(req.body);
+      });
+    });
 
-app.delete("/deleteCase/:case_id", (req, res) =>{
-  console.log("Received delete-request from client.");
-  console.log("Trying to delete event with id: "+req.params.case_id);
-  caseDao.deleteCase(req.params.case_id, (status, data) =>{
-    res.status(status);
-    res.json(data);
-  });
-});
+    app.delete("/deleteCase/:case_id", (req, res) =>{
+      console.log("Received delete-request from client.");
+      console.log("Trying to delete event with id: "+req.params.case_id);
+      caseDao.deleteCase(req.params.case_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+      });
+    });
 
-// End Cases
+    app.post("/createUserCase", (req, res) => {
+        console.log("Received post-request from client on endpoint /createEvent");
+        caseDao.createUserCase(req.body, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+  //End Case
 
     function loginOk(username, password) {
 
