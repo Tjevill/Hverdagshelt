@@ -75,7 +75,7 @@ let axiosConfig = {
 class CaseService {
 
   /** Get all cases from the db  */
-  getAllCases(): Promise <Cases[]> {
+  getAllCases(): Promise <Case[]> {
     return axios.get(url+'/allCases');
   }
 
@@ -138,7 +138,7 @@ class CaseService {
 
 
   //Det under var her fra før.
-  getCases(): Promise<Cases[]> {
+  getCases(): Promise<Case[]> {
 
     return axios.get(url + '/cases');
   }
@@ -147,7 +147,7 @@ class CaseService {
         return axios.get(url + '/categories');
     }
 
-  getCase(id: number): Promise<Cases> {
+  getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
     createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
