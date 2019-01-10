@@ -67,6 +67,7 @@ const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
+const Categorydao = require("../dao/categorydao.js");
 
 
 
@@ -85,6 +86,7 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
+let categoryDao = new Categorydao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -202,7 +204,7 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 // Organization
 
 /**
- * Get all organisations from DB
+ * Get all organizations from DB
  */
 app.get("/org", (req: Request, res: Response) =>{
 	orgDao.getAll((status, data) => {
@@ -270,6 +272,59 @@ app.get('/orgCount', (req: Request, res: Response) => {
 		res.json(data);
 	})
 });
+
+// Category
+/**
+ * Get all categories from DB
+ */
+app.get("/category", (req: Request, res: Response) =>{
+	categoryDao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one category by ID
+ */
+app.get("/category/:id", (req: Request, res: Response) =>{
+	categoryDao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update category
+ */
+app.put('/category/:id', (req: Request, res: Response) => {
+	categoryDao.updateCategory(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Deletes one category by ID
+ */
+app.delete('/category/:id', (req: Request, res: Response) => {
+	categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get count of categories in DB
+ */
+app.get('/categoryCount', (req: Request, res: Response) => {
+	categoryDao.getCountCategories((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
 
 // Events
 
@@ -425,14 +480,36 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
     /** update case on case_id */
     app.put("/updateCase/:case_id", (req, res) =>{
-      console.log("Received delete-request from client.");
-      console.log("Trying to update case with id: "+req.params.case_id);
-      caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+    console.log("Received delete-request from client.");
+    console.log("Trying to update case with id: "+req.params.case_id);
+    caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
         res.status(status);
         res.json(data);
         console.log(req.body);
-      });
     });
+
+    let email = req.body.email;    
+    const mailOptionsUpdateCase = {
+        from: 'bedrehverdagshelt@gmail.com',
+        to: email,
+        subject: 'Saken er oppdatert!',
+        html: 
+            '<h1> Status: ' + req.body.status_id + '</h1>' + 
+            '<p><b> HverdagsHelt Support Team </b></p>' +
+            '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
+            '<p> <b> HverdagsHelt AS </b> </p>' +
+            '<p> 72 59 50 00 </p>' 
+    };
+
+    transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    });
+    
 
     /** search case by category */
     app.get("/searchCaseCategory/:category_id", (req, res) =>{
@@ -471,56 +548,52 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-  //End Case
+  
 
+    /** create case and send confirmation mail */
+    app.post("/cases", (req, res) => {
+        console.log("/cases received POST-request");
+        console.log(req.body.description);
 
-app.post("/cases", (req, res) => {
-  console.log("/cases received POST-request");
-  console.log(req.body.description);
+        if(!req.body) {
+            return res.sendStatus(400);
+        } else {
+            caseDao.create({
+                headline: req.body.headline,
+                description: req.body.description,
+                longitude: req.body.longitude,
+                latitude: req.body.latitude,
+                zipcode: req.body.zipcode,
+                user_id: req.body.user_id,
+                category_id: req.body.category_id,
+                picture: req.body.picture,
+                email: req.body.email
+            },
+            (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("json.data:" + data[0]);
+        });
+        }
+        // mail
+        let sub = req.body.headline;
+        let des = req.body.description;
+        let email = req.body.email;
+        const mailOptionsCreateCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Takk for din henvendelse, saken er registert!',
+            html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+        };
 
-  if(!req.body) {
-    return res.sendStatus(400);
-  } else {
-      caseDao.create({
-        headline: req.body.headline,
-        description: req.body.description,
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
-        zipcode: req.body.zipcode,
-        user_id: req.body.user_id,
-        category_id: req.body.category_id,
-        picture: req.body.picture,
-        email: req.body.email
-
-
-      },
-      (status, data) => {
-        res.status(status);
-        res.json(data);
-        console.log("json.data:" + data[0]);
-  });
-}
-  // mail
-  let sub = req.body.headline;
-  let des = req.body.description;
-  let email = req.body.email;
-
-
-  const mailOptionsCase = {
-    from: 'bedrehverdagshelt@gmail.com',
-    to: email,
-    subject: 'Takk for din henvendelse, saken er registert!',
-    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
-  };
-
-  transporter.sendMail(mailOptionsCase, function(error, info){
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Email sent: ' + info.response);
-    }
-  });
-});
+        transporter.sendMail(mailOptionsCreateCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    });
 
 // End Cases
 
