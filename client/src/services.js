@@ -40,6 +40,14 @@ class Districts {
   zipcode: string;
 }
 
+class Event{
+  event_id: number;
+  name: string;
+  date: string; //date / string ? 
+  description: string;
+  zipcode: string;
+}
+
 
 const url = "http://localhost:8080";
 
@@ -84,6 +92,17 @@ class CaseService {
     }
 }
 export let caseService = new CaseService();
+
+
+class EventService {
+  getAllEvents(): Promise<Event[]>{
+    return axios.get(url + "/events");
+  }
+
+
+ 
+}
+export let eventService = new EventService();
 
 class UserService {
   addUser(newuser: Register): Promise<void> {
