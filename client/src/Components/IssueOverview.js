@@ -28,6 +28,8 @@ function count(array) {
   return result;
 }
 
+//<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
+
 export default class IssueOverview extends Component {
   categories = [];
   cases = [];
@@ -83,5 +85,6 @@ export default class IssueOverview extends Component {
       .getCategories()
       .then(categories =>(console.log("categories:" + categories)))
       .catch((error: Error) => Alert.danger(error.message));
+
   }
 }
