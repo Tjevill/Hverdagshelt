@@ -10,16 +10,16 @@ class Category {
 
 
 class Case {
-  id: number;
-  headline: string;
+  case_id: number;
   description: string;
-  picture: string;
   longitude: number;
   latitude: number;
   status_id: number;
   user_id: number;
   category_id: number;
   zipcode: number;
+  headline: string;
+  picture: string;
   employee_id: number;
   org_id: number;
 }
@@ -52,8 +52,69 @@ let axiosConfig = {
 
 
 
-
+/** Service-class for cases */
 class CaseService {
+
+  /** Get all cases from the db  */
+  getAllCases(): Promise <Cases[]> {
+    return axios.get(url+'/allCases');
+  }
+
+  /** Get number of cases in the db */
+  countCases(): Promise <number>{
+    return axios.get(url+'/countCases');
+  }
+
+  /** Get case by id */
+  getCaseById(case_id : number): Promise <Case[]>{
+    return axios.get(url+'/getCase/'+case_id);
+  }
+
+  /** Get case by zipcode
+  *   Intended for filtering cases on zip
+   */
+  getCaseByZip(zipcode : string): Promise <Case[]>{
+    return axios.get(url+'/getOnZip/'+zipcode);
+  }
+
+  /** Get case by category_id
+  *   Intended for filtering cases on category
+   */
+  getCaseByCat(category_id : number): Promise <Case[]>{
+    return axios.get(url+'/getOnCategory/'+category_id);
+  }
+
+  /**  Update one case */
+  updateCase(casee: Case): Promise<void>{
+    return axios.put(url+'/updateCase/'+casee.case_id, casee);
+  } 
+
+  /** Delete one case by case_id */
+  deleteById(case_id : number): Promise<void>{
+    return axios.delete(url+'/deleteCase/'+case_id);
+  } 
+
+  /** Create case (User) 
+  *   For use on the user-frontend.
+  *   Sets status_id = 1.
+  */
+  createUserCase(casee: Case): Promise<void>{
+    return axios.post(url+'/createUserCase', casee);
+  }
+
+  /** Search for case by category */
+  searchCaseByCat(category_id: number): Promise<Case[]>{
+    return axios.get(url+'/searchCaseCategory/'+category_id);
+  }
+
+  /** Search for case by description */
+  searchCaseByDesc(description: string): Promise<Case[]>{
+    return axios.get(url+'/searchCaseDesc/'+description);
+  }
+
+
+
+  //Det under var her fra før.
   getCases(): Promise<Cases[]> {
 
     return axios.get(url + '/cases');
