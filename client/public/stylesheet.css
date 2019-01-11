@@ -25,19 +25,25 @@ body,
 
 /* Style the links inside the navigation bar */
 .topnav a {
+  height: 50px;
   float: left;
   display: block;
   color: #f2f2f2;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 /* Change the color of links on hover */
 .topnav .option:hover {
   background-color: #ddd;
   color: black;
+}
+
+.topnav #report {
+  background-color: #FD6A02;
+  font-weight: bold;
 }
 
 /* Add an active class to highlight the current page */

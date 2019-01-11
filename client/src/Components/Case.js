@@ -10,7 +10,6 @@ export default class Case extends Component {
   case = {};
   map = <></>;
   mapData = {};
-  zip = 0;
   province = "";
   test = <h1>test</h1>;
 
@@ -23,7 +22,7 @@ export default class Case extends Component {
               title={this.case.headline}
               province={this.province}
               address={this.mapData.formatted_address.split(",")[0]}
-              zip={this.zip}
+              zip={this.case.zipcode}
               date={this.case.timestamp}
             />
             <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
@@ -50,9 +49,8 @@ export default class Case extends Component {
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
         mapData => (
           this.mapData = mapData.results[0],
-          this.zip = this.mapData.address_components[this.mapData.address_components.length - 1].long_name,
           //console.log(this.mapData),
-          mapService.getProvince(this.zip).then(
+          mapService.getProvince(this.case.zipcode).then(
             zipData => (
               this.province = zipData.result.postnr[0].kommune,
               this.loaded = true
