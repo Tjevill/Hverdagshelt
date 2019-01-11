@@ -329,7 +329,9 @@ class EmployeeService {
 
 
   /** Change password */
-
+  updateEmpPw(emp: Employee): Promise<void>{
+    return axios.put(url+'/updateEmpPW', emp);
+  }
 
   /** Get all employees */
   getAll(): Promise<Employee[]>{
