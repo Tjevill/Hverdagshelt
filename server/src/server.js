@@ -203,6 +203,15 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 	})
 });
 
+/**
+ * Get province from User by users ID
+ */
+app.get('/userProvince/:id', (req: Request, res: Response) => {
+	userdao.getUsersProvinceByUserID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
 // Organization
 
