@@ -7,7 +7,7 @@ export default class Main extends Component {
 
   loaded = false;
   case = [];
-  map = [];
+  map = <></>;
   test = <h1>test</h1>;
 
   render() {
@@ -18,7 +18,7 @@ export default class Main extends Component {
           <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
           <p id="description">{this.case.description}</p>
         </div>
-        <Map lat={this.case.latitude} long={this.case.longitude}/>
+        {this.map}
       </div>
       );
     }
@@ -29,7 +29,8 @@ export default class Main extends Component {
     let casePromise = caseService.getCaseById(this.props.match.params.id);
     casePromise.then(caseData => (
       console.log(caseData[0]),
-      this.case = caseData[0]
+      this.case = caseData[0],
+      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
     ));
   }
 
