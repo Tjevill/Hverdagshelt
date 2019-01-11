@@ -18,16 +18,12 @@ export default class UserEdit extends Component <{ match: { params: { id: number
     let button;
     if(this.user.subscription==1){
       button = (
-        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-primary">
-          Subscribe
-        </button>
+        <Button.Success onClick={this.subscribe(this.user)}>Subscribe</Button.Success>
       );
       this.user_id = this.user.user_id;
     } else {
       button = (
-        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-primary">
-          Unsubscribe
-        </button>
+        <Button.Danger onClick={this.unsubscribe(this.user)}>Unsubscribe</Button.Danger>
       );
       this.user_id = this.user.user_id;
     }
@@ -39,65 +35,53 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           <h5>Edit</h5>
         </div>
       </div>
+
       <div className="container text-center">
         <div class="container text-center">
-        <div className="form-group">
-          Navn:{" "}
-          <input
-          className="form-control"
+          <form ref={e => (this.form = e)}>
+          <Form.Input
             type="text"
-            name="name"
-            defaultValue={this.user.name}
+            label="Navn"
+            defaultvalue={this.user.name}
             onChange={event => (this.user.name = event.target.value)}
+            required
           />
-        </div>
-        <div className="form-group">
-          Adresse:{" "}
-          <input
-          className="form-control"
+          <Form.Input
             type="text"
-            defaultValue={this.user.address}
-            name="address"
+            label="Address"
+            value={this.user.address}
             onChange={event => (this.user.address = event.target.value)}
+            required
           />
-        </div>
-        <div className="form-group">
-          Postnummer:{" "}
-          <input
-          className="form-control"
+          <Form.Input
             type="text"
-            defaultValue={this.user.zipcode}
-            name="zipcode"
-            onChange={event => (this.user.zipcode = event.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          Telefon:{" "}
-          <input
-          className="form-control"
-            type="text"
-            defaultValue={this.user.tel}
-            name="tel"
+            label="Mobilnummer"
+            value={this.user.tel}
             onChange={event => (this.user.tel = event.target.value)}
+            required
           />
-        </div>
-        <div className="form-group">
-          Email:{" "}
-          <input
-          className="form-control"
+          <Form.Input
             type="text"
-            defaultValue={this.user.email}
-            name="email"
+            label="Email"
+            value={this.user.email}
             onChange={event => (this.user.email = event.target.value)}
+            required
           />
-        </div>
+          <Form.Input
+            type="text"
+            label="Postnummer"
+            value={this.user.zipcode}
+            onChange={event => (this.user.zipcode= event.target.value)}
+            required
+          />
           <br/>
           <br/>
           {button}
           <br/>
           <br/>
-          <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
+          <Button.Success onClick={this.save}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>
+          </form>
           </div>
       </div>
       </>
@@ -116,7 +100,6 @@ export default class UserEdit extends Component <{ match: { params: { id: number
   }
 
   subscribe(user){
-    console.log("this.user.name:" + user.name);
     if(!user){
       console.log("Returning null!");
       this.message = "Error";
@@ -130,7 +113,6 @@ export default class UserEdit extends Component <{ match: { params: { id: number
       .updateSubscription(sub)
       .then(sub => {
         console.log("Subscription now"+{sub});
-        if(user) window.location.reload();
       })
       .catch((error: Error) => Alert.danger(error.message));
   }
@@ -145,17 +127,16 @@ export default class UserEdit extends Component <{ match: { params: { id: number
       .updateSubscription(sub)
       .then(sub => {
         console.log("Subscription now"+{sub});
-        if(user) window.location.reload();
       })
       .catch((error: Error) => Alert.danger(error.message));
   }
 
-  save(user){
-    console.log("this.user.name:" + user.subscription);
-
+  save(){
+    if(this.user.name==""||this.user.name==null||this.user.name==" ")return alert("Vennligst oppgi navn");
     userService
-      .updateOne(user)
-      .then(user => { console.log(user)
+      .updateOne(this.user)
+      .then(user => {
+        if(this.user) history.push('/profile/'+this.user.user_id)
       })
       .catch((error: Error) => Alert.danger(error.message));
   }

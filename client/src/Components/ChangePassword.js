@@ -5,6 +5,7 @@ import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
+const history = createHashHistory();
 
 export default class ChangePassword extends Component <{id: number}> {
   user = new Object();
@@ -21,6 +22,7 @@ export default class ChangePassword extends Component <{id: number}> {
             onChange={event => (this.user.passord = event.target.value)}
             required
           />
+
           <Form.Input
             type="password"
             label="Nytt Passord"
