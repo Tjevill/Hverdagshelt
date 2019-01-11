@@ -68,7 +68,7 @@ const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
-
+const Empdao = require("../dao/employeedao.js");
 
 
 
@@ -87,6 +87,7 @@ let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
+let empDao = new Empdao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -118,6 +119,8 @@ app.get('/getdistricts/:id', (req: Request, res: Response) => {
     })
 });
 
+
+// User
 
 /**
  * Gets all users from DB
@@ -191,7 +194,7 @@ app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
 });
 
 /**
- * For updating users password. Send object with user_id and new password
+ * For updating users password. Send object with user_id and new password from frontend
  */
 app.put('/updateUserPWord', (req: Request, res: Response) => {
 	userdao.updateUserPassword(req.body, (status, data) => {
@@ -200,6 +203,15 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 	})
 });
 
+/**
+ * Get province from User by users ID
+ */
+app.get('/userProvince/:id', (req: Request, res: Response) => {
+	userdao.getUsersProvinceByUserID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
 // Organization
 
@@ -244,7 +256,7 @@ app.put('/updateOrgPWord', (req: Request, res: Response) => {
 });
 
 /**
- * Delete one org by ID
+ * Delete one organization by ID
  */
 app.delete('/org/:id', (req: Request, res: Response) => {
 	orgDao.deleteOrgByID(req.params.id, (status, data) => {
@@ -324,6 +336,88 @@ app.get('/categoryCount', (req: Request, res: Response) => {
 	})
 });
 
+
+// End user
+
+
+
+// Employee
+
+/** Get all employees from the db */
+app.get("/employee", (req, res) => {
+	console.log("Received get-request on endpoint /employee.");
+	empDao.getAllEmp( (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Get one employee matched on employee_id */
+app.get("/employee/:employee_id", (req, res) =>{
+	console.log("Received get-request on endpoint /employee/"+req.params.employee_id);
+	empDao.getOne(req.params.employee_id, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Get all employees in one province */
+app.get("/employee/province/:province_id", (req, res) =>{
+	console.log("Received get-request on endpoint /employee/"+req.params.province_id);
+	empDao.getAllEmpProvince(req.params.province_id, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**  Create an employee in the db*/
+app.put("/employee", (req, res) =>{
+	console.log("Received put-request on endpoint /employee");
+	empDao.addEmployee(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Delete an employee in the db on employee_id */
+app.delete("/employee/:employee_id", (req, res) =>{
+	console.log("Received delete-request on endpoint /employee/"+req.employee_id);
+	empDao.deleteEmpById(req.params.employee_id, (status, data)=>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Update an employee password in the db on employee_id */
+app.post("/employee/:employee_id", (req, res) =>{
+	console.log("Received post-request on endpoint /employee");
+	empDao.updateEmpPassword(req.body, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Count every employee in the db */
+app.get("/countEmp", (req, res) =>{
+	console.log("Received get-request on endpoint /countEmp");
+	empDao.countEmps( (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**  Count every employee in a specific province*/
+app.get("/countEmp/:province", (req, res) =>{
+	console.log("Received get-request on endpoint /countEmp/"+req.params.province);
+	empDao.countEmpsProvince(req.params.province, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+
+
+// End employee
 
 
 // Events
