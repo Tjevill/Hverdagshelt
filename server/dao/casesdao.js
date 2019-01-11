@@ -21,7 +21,9 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
     }
 
-    // create case with only the needed attributes
+    /** Create case 
+    *   @param json : json object with attributes.
+     */
     create(json: any, callback:any) {
         var val = [
             json.headline,
@@ -43,7 +45,9 @@ module.exports = class CasesDao extends Dao {
     }
 
 
-
+    /** Get all cases based on zipcode
+    *   @param zipcode - area zipcode you want to get cases from.
+     */
     getOneZip(zipcode, callback){
         super.query("SELECT * FROM Cases WHERE zipcode = ?", [zipcode], callback);
     }
@@ -53,6 +57,10 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE category_id = ?", [category_id], callback);
     }
 
+    /** Update one case on case_id.
+    *   @param case_id : case_id.
+    *   @param json : json object with changes.
+     */
     updateCase(case_id, json, callback){
         let val = [
                     json.description, 
@@ -81,6 +89,9 @@ module.exports = class CasesDao extends Dao {
 
     }
 
+    /** Delete case on case_id
+    *   @param case_id - the case_id
+     */
     deleteCase(case_id, callback){
         super.query(
             "DELETE FROM Cases WHERE case_id = ?",
@@ -89,7 +100,10 @@ module.exports = class CasesDao extends Dao {
         );
     };
     
-    //Ben har laget lignende (?). Hva er forskjellen ? 
+    /** Create case from the user perspective.
+    *   Intended to be used on the user frontend-part.
+    *   @param json - json-object with the necessary attributes.
+     */
     createUserCase(json, callback){
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
@@ -100,10 +114,15 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
+    /** Search for a case based on the category name 
+    *   @param description - the category name.
+    */
     searchCaseCategory(description, callback){
         super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
     }
 
+    /** Search for a case based on the description e.g "tett vannhull". 
+    */
     searchCaseDescription(keyword, callback){
         super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
     }
