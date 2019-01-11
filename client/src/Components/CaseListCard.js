@@ -6,6 +6,7 @@ import CasePreview from "./CasePreview";
 import {caseService} from "../services";
 
 
+
 export default class CaseListCard extends Component <{ id: number }> {
     cases = [];
     render() {
@@ -14,7 +15,7 @@ export default class CaseListCard extends Component <{ id: number }> {
                 <h1>Your cases</h1>
                 <ul className="list-group">
                     {this.cases.map(x  => (
-                        <CasePreview  key={x.org_id} title={x.headline} status={x.status_id}/>
+                        <CasePreview  key={x.org_id} title={x.headline} status={x.status_id} id={x.case_id}/>
                     ))}
                 </ul>
             </div>

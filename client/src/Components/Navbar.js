@@ -25,7 +25,6 @@ export default class Navbar extends Component {
 
   async componentDidMount() {
       let path = window.location.hash.split("/")[1];
-      console.log("path: " + path);
       if(this.options.includes(path)){
         this.activate(path);
       }

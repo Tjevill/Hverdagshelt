@@ -7,38 +7,44 @@ export class MapContainer extends Component {
   infoShowing = false;
   activeMarker: {};
 
+  lat = this.props.lat;
+  long = this.props.long;
+
   render() {
-    return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        initialCenter={{
-          lat: this.props.lat,
-          lng: this.props.long
-        }}
-        onClick={this.onMapClick}
-      >
-        <Marker
-          onClick={this.onMarkerClick}
-          name={"current location"}
-        />
+      return (
+        <Map
+          google={this.props.google}
+          zoom={14}
+          initialCenter={{
+            lat: this.lat,
+            lng: this.long
+          }}
+          onClick={this.onMapClick}
+        >
+          <Marker
+            onClick={this.onMarkerClick}
+            name={"current location"}
+          />
 
-        <InfoWindow marker={this.activeMarker} visible={this.infoShowing}>
-            <div>
-              <h6>InfoWindow stuff</h6>
-            </div>
-        </InfoWindow>
+          <InfoWindow
+            marker={this.activeMarker}
+            visible={this.infoShowing}
+            onClose={this.onMapClick}
+          >
+              <div>
+                <h6>Lat: {this.lat}</h6>
+                <h6>long: {this.long}</h6>
+              </div>
+          </InfoWindow>
 
-      </Map>
-
-    );
+        </Map>
+      );
   }
 
   onMarkerClick = (props, marker, e) => {
     console.log("onMarkerClick");
     this.activeMarker = marker;
     this.infoShowing = true;
-    this.forceUpdate();
   }
 
   onMapClick(){
