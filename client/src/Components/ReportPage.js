@@ -27,13 +27,14 @@ export default class Report extends Component {
         this.selectedFile = event.target.files[0];
     };
 
-    fileUploadHandler = () => {
+    fileUploadHandler(){
         const fd = new FormData();
         fd.append('file', this.selectedFile, this.selectedFile.name);
         fd.append('upload_preset', 'elo47cnr');
         axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
             .then(res => {
                 this.state.picture = res.url;
+                this.register();
             });
     };
     handleChange = event => {
@@ -77,7 +78,6 @@ export default class Report extends Component {
                             Last opp bilde:
                             <label className="file-upload-container" htmlFor="file-upload"></label>
                             <input id="file-upload" type="file" name="file-upload" onChange={this.fileSelectedHandler}></input>
-                            <button onClick={this.fileUploadHandler}> Upload test</button>
                         </div>
                         <div className="form-group">
                             latitude:{" "}
@@ -119,7 +119,7 @@ export default class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.register} className="btn btn-primary">
+                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary">
                             Fullfør
                         </button>
                         <h1>{this.message}</h1>
@@ -128,9 +128,6 @@ export default class Report extends Component {
             </div>
         );
     }
-
-
-
     register(){
         var valid = true;
         if (this.state.headline == ''){
@@ -157,6 +154,14 @@ export default class Report extends Component {
             category_id: this.state.category_id,
             user_id: this.state.user_id
         };
+
+        const fd = new FormData();
+        fd.append('file', this.selectedFile, this.selectedFile.name);
+        fd.append('upload_preset', 'elo47cnr');
+        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+            .then(res => {
+                this.state.picture = res.url;
+            });
 
         if(valid){
             if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
