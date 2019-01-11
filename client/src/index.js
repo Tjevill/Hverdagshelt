@@ -77,7 +77,7 @@ function renderRoot() {
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/issues" component={IssueOverview} />
             <Route exact path="/events" component={Events}/>
-            <Route exact path="/IssueOverview" component={IssueOverview} />
+            <Route exact path="/issues/:name" component={IssueOverview} />
             <Route exact path="/reportPage" component={ReportPage} />
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>

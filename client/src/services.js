@@ -238,10 +238,15 @@ class UserService {
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
     return axios.put(url + '/updateUserPWord', userPWordUpdate);
   }
+  
+  getUsersProviceFromUserID(id: number): Promise<string>{
+    return axios.put(url + '/userProvince/' + id);
+  }
 
 }
 
 export let userService = new UserService();
+
 
 class OrgService{
 

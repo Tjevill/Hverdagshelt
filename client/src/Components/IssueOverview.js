@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
-import { caseService, userService} from "../services";
+import { caseService, categoryService} from "../services";
 import createHashHistory from "history/createHashHistory";
 import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widgets';
 
@@ -44,9 +44,9 @@ export default class IssueOverview extends Component {
         <div className="container text-center">
           <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/Issues/All" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
                 {this.categories.map(categori =>(
-                  <a href="#/IssueOverview" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href={"#/Issues/"+categori.description} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div>
         </div>
@@ -94,9 +94,13 @@ export default class IssueOverview extends Component {
             this.forceUpdate();
           })
       .catch((error: Error) => Alert.danger(error.message));
-    caseService
-      .getCategories()
-      .then(categories =>(console.log("categories:" + categories)))
+    categoryService
+      .getAllCategories()
+      .then(categories =>{
+          this.categories = categories;
+          console.log(this.categories);
+          this.forceUpdate();
+        })
       .catch((error: Error) => Alert.danger(error.message));
 
   }
