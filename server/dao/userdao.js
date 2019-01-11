@@ -64,14 +64,14 @@ module.exports = class UserDao extends Dao {
 	
 	getAll (callback: mixed) {
 		super.query(
-			"select user_id, name, address, zipcode, tel, email, username, subscription FROM User",
+			"select user_id, name, address, zipcode, tel, email, subscription FROM User",
 			[],
 			callback);
 	}
 	
 	getOneByID (id: number, callback: mixed) {
 		super.query(
-			"select user_id, name, address, zipcode, tel, email, username, subscription FROM User WHERE user_id = ?",
+			"select user_id, name, address, zipcode, tel, email, subscription FROM User WHERE user_id = ?",
 			[id],
 			callback
 		);
