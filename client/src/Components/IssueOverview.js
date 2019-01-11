@@ -44,7 +44,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
 
     if(this.props.match.params.name=="All"){
       console.log(this.props.match.params.id);
-      this.cateside = this.cases.slice(1,6);
+      this.cateside = this.cases.slice((this.props.match.params.id-1)*16,(this.props.match.params.id-1)*16+15);
 
       lists = (
         <div>
@@ -69,12 +69,12 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} : {casen.category_id} </ListGroup.Item>
         ))}
         </div>);
-        sidebuttons =(
-          <div>
-          {(count(sliceArray(this.caseofCat, 15))).map(sidetall => (
-              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/'+this.props.match.params.name+'/'+sidetall)}>{sidetall}</button>
-          ))}
-          </div>);
+      sidebuttons = (
+        <div>
+        {(count(sliceArray(this.caseofCat, 15))).map(sidetall => (
+            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/'+this.props.match.params.name+'/'+sidetall)}>{sidetall}</button>
+        ))}
+        </div>);
      };
 
 
@@ -90,7 +90,17 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                 {this.categories.map(categori =>(
                   <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
-          </div>
+          </div><br/><br/>
+          <div class="form-group align-items-center">
+    <label className="col-sm-6 col-form-label" for="exampleFormControlSelect1">Velg Kommune</label><br/>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
         </div>
       </div>
 
@@ -139,10 +149,9 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .searchCaseByCat(this.props.match.params.name)
       .then(cases => {
           this.caseofCat = cases;
-          console.log("name"+this.props.match.params.name);
+          console.log("name :"+this.props.match.params.name);
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
     };
-
 }
