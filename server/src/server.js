@@ -67,6 +67,9 @@ const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
+const Categorydao = require("../dao/categorydao.js");
+const Empdao = require("../dao/employeedao.js");
+
 
 
 
@@ -85,6 +88,9 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
+let categoryDao = new Categorydao(pool);
+let empDao = new Empdao(pool);
+
 
 
 app.get("/cases", (req, res) => {
