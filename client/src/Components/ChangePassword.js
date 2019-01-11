@@ -22,6 +22,7 @@ export default class ChangePassword extends Component <{id: number}> {
             onChange={event => (this.user.passord = event.target.value)}
             required
           />
+
           <Form.Input
             type="password"
             label="Nytt Passord"

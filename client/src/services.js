@@ -47,10 +47,8 @@ class User {
   zipcode: string;
   tel: number;
   email: string;
-  username: string;
   subscription: number;
-  password: string;
-  secret: string;
+
 }
 
 class UserSubscriptionUpdate {
@@ -238,6 +236,10 @@ class UserService {
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
     return axios.put(url + '/updateUserPWord', userPWordUpdate);
   }
+  
+  getUsersProviceFromUserID(id: number): Promise<string>{
+    return axios.put(url + '/userProvince/' + id);
+  }
 
 }
 
@@ -330,7 +332,17 @@ class EmployeeService {
 
 
   /** Change password */
+  updateEmpPw(emp: Employee): Promise<void>{
+    return axios.put(url+'/updateEmpPW', emp);
+  }
 
+  /** Change employee data on employee_id - NOT PASSWORD!
+  * Example on JSON in postman: 
+  *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
+  */
+  updateEmpData(emp: Employee) : Promise<void>{
+    return axios.put(url+'/employee/'+emp.employee_id, emp);
+  }
 
   /** Get all employees */
   getAll(): Promise<Employee[]>{

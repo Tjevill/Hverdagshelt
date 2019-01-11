@@ -125,7 +125,12 @@ export default class UserEdit extends Component <{ match: { params: { id: number
     const sub = {
       user_id: user.user_id,
       subscription: 0
+<<<<<<< HEAD
     };
+=======
+    }
+
+>>>>>>> 378f6d88395003bf45fd14c9736e44ffd3f841d5
     userService
       .updateSubscription(sub)
       .then(sub => {

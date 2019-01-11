@@ -203,6 +203,15 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 	})
 });
 
+/**
+ * Get province from User by users ID
+ */
+app.get('/userProvince/:id', (req: Request, res: Response) => {
+	userdao.getUsersProvinceByUserID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
 // Organization
 
@@ -379,9 +388,19 @@ app.delete("/employee/:employee_id", (req, res) =>{
 	});
 });
 
+/** Update an employee in db on employee_id. Does NOT include password change. */
+app.put("/employee/:employee_id", (req: Request, res: Response) =>{
+    console.log("Received put-request on endpoint /employee/"+req.params.employee_id);
+    console.log("body & soul "+req.body.email);
+    empDao.updateEmp(req.body, req.params.employee_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
 /** Update an employee password in the db on employee_id */
-app.post("/employee/:employee_id", (req, res) =>{
-	console.log("Received post-request on endpoint /employee");
+app.put("/updateEmpPW", (req: Request, res: Response) =>{
+	console.log("Received post-request on endpoint /updateEmpPw");
 	empDao.updateEmpPassword(req.body, (status, data) =>{
 		res.status(status);
 		res.json(data);
@@ -389,7 +408,7 @@ app.post("/employee/:employee_id", (req, res) =>{
 });
 
 /** Count every employee in the db */
-app.get("/countEmp", (req, res) =>{
+app.get("/countEmp", (req: Request, res: Response) =>{
 	console.log("Received get-request on endpoint /countEmp");
 	empDao.countEmps( (status, data) =>{
 		res.status(status);
@@ -398,7 +417,7 @@ app.get("/countEmp", (req, res) =>{
 });
 
 /**  Count every employee in a specific province*/
-app.get("/countEmp/:province", (req, res) =>{
+app.get("/countEmp/:province", (req: Request, res: Response) =>{
 	console.log("Received get-request on endpoint /countEmp/"+req.params.province);
 	empDao.countEmpsProvince(req.params.province, (status, data) =>{
 		res.status(status);
@@ -406,9 +425,9 @@ app.get("/countEmp/:province", (req, res) =>{
 	});
 });
 
-
-
 // End employee
+
+
 
 
 // Events

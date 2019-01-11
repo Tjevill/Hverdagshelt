@@ -5,27 +5,32 @@ import { caseService, mapService } from "../services";
 
 export default class Main extends Component {
 
+  loaded = false;
   case = [];
   map = [];
+  test = <h1>test</h1>;
 
   render() {
     return (
       <div id="case-page">
-        <Card title={this.case.headline} date={this.case.timestamp} />
-        <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
-        <p id="description">{this.case.description}</p>
-        <Map />
+        <div style={{ marginBottom: "80px"}}>
+          <Card title={this.case.headline} date={this.case.timestamp} />
+          <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
+          <p id="description">{this.case.description}</p>
+        </div>
+        <Map lat={this.case.latitude} long={this.case.longitude}/>
       </div>
       );
     }
 
   mounted(){
+    if(this.loaded) document.location.reload();
+    this.loaded = true;
     let casePromise = caseService.getCaseById(this.props.match.params.id);
-    casePromise.then(caseData => (/*console.log(caseData[0]),*/ this.case = caseData[0]));
-
-    let mapInfoPromise = mapService.getMapInfo(63.4283065, 10.3876995);
-    mapInfoPromise.then(mapData => (console.log(mapData["results"][0]["formatted_address"])));
-
+    casePromise.then(caseData => (
+      console.log(caseData[0]),
+      this.case = caseData[0]
+    ));
   }
 
 }
