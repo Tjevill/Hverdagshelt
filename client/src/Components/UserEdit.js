@@ -97,7 +97,7 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           <br/>
           <br/>
           <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
-          <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>
+          <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
       </div>
       </>
@@ -116,7 +116,7 @@ export default class UserEdit extends Component <{ match: { params: { id: number
   }
 
   subscribe(user){
-    console.log("this.user.name:" + user.name);
+    //console.log("this.user.name:" + user.name);
     if(!user){
       console.log("Returning null!");
       this.message = "Error";
@@ -151,12 +151,15 @@ export default class UserEdit extends Component <{ match: { params: { id: number
   }
 
   save(user){
-    console.log("this.user.name:" + user.subscription);
-
+    console.log("this.user.name:" + user.name);
+    if(user.name==""||user.name==null||user.name==" "){
+      return alert("Vennligst oppgi navn");
+    }
     userService
       .updateOne(user)
-      .then(user => { console.log(user)
-      })
+      .then(()=> console.log("happy")
+        //history.push('/profile/'+user.user_id)
+        )
       .catch((error: Error) => Alert.danger(error.message));
   }
 }
