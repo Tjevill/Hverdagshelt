@@ -42,6 +42,7 @@ let sha512 = function(password, salt){
 
 module.exports = class OrgDao extends Dao {
 	
+	/**	Get all organizations in the db. */
 	getAll (callback: mixed) {
 		super.query(
 			"select * from Organization",
@@ -49,6 +50,10 @@ module.exports = class OrgDao extends Dao {
 			callback
 		);
 	}
+
+	/**	Get one organization in the db 
+	*	@param id - The id of the organization you with to get from the db.
+	*/
 	getOneByID (id: number, callback: mixed) {
 		super.query(
 			"select * from Organization where org_id = ?",
@@ -74,7 +79,7 @@ module.exports = class OrgDao extends Dao {
 	
 	/**
 	 * Use this method for changing password for the organization
-	 * @param json
+	 * @param json - json-object with the id and edited password
 	 * @param callback
 	 */
 	updateOrgPassword(json: jsonUpdatePWordOrg, callback: mixed){
@@ -88,6 +93,9 @@ module.exports = class OrgDao extends Dao {
 		);
 	}
 	
+	/**	Delete organization from db.
+	*	@param id - the id of the organization you wish to delete
+	 */
 	deleteOrgByID(id: number, callback: mixed) {
 		let val = id;
 		super.query(
@@ -97,6 +105,10 @@ module.exports = class OrgDao extends Dao {
 		);
 	}
 	
+	/** Create organization and add in the db.
+	*	@param json - json-object with the necessary information needed.
+	*					org.nr, name, emailand password.
+	*/
 	addOrg(json: jsonAddOrg, callback) {
 		let salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
 		let passwordData = sha512(json.password, salt);
@@ -108,6 +120,7 @@ module.exports = class OrgDao extends Dao {
 		);
 	}
 	
+	/**	Get the number of organizations in the db. */
 	getCountOrg(callback: mixed) {
 		super.query(
 			"select COUNT(*) as x from Organization",
