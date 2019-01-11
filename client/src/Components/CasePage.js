@@ -8,13 +8,19 @@ export default class Main extends Component {
   loaded = false;
   case = [];
   map = <></>;
+  mapData = {};
   test = <h1>test</h1>;
 
   render() {
     return (
       <div id="case-page">
         <div style={{ marginBottom: "80px"}}>
-          <Card title={this.case.headline} date={this.case.timestamp} />
+          <Card
+            title={this.case.headline}
+            province={this.case.province}
+            address={this.case.address}
+            date={this.case.timestamp}
+          />
           <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
           <p id="description">{this.case.description}</p>
         </div>
@@ -24,25 +30,31 @@ export default class Main extends Component {
     }
 
   mounted(){
+
     if(this.loaded) document.location.reload();
     this.loaded = true;
     let casePromise = caseService.getCaseById(this.props.match.params.id);
     casePromise.then(caseData => (
       console.log(caseData[0]),
       this.case = caseData[0],
-      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
+      mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
+        mapData => (console.log(mapData.results[0]))
+      )
+
+      //this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
     ));
+
   }
 
 }
 
 
 export class Card extends Component<{
-    title: "Title",
-    province: "Province",
-    address: "Address",
-    date: "Date",
-    description: "Description"
+    title: string,
+    province: number,
+    address: string,
+    date: string,
+    description: string
 }> {
 
   render() {
@@ -51,8 +63,8 @@ export class Card extends Component<{
         <div className="card-body article-body">
             <h5 className="card-title article-title">{this.props.title}</h5>
             <ul className="list-group list-group-flush">
-              <li className="list-group-item">Kommune: </li>
-              <li className="list-group-item">Adresse: </li>
+              <li className="list-group-item">{this.props.province}</li>
+              <li className="list-group-item">Adresse: {this.props.address}</li>
               <li className="list-group-item">Lagt inn: {getDate(this.props.date)}</li>
             </ul>
         </div>

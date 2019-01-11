@@ -30,14 +30,30 @@ function count(array) {
 
 //<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
 
-export default class IssueOverview extends Component {
-
-  loaded = true;
+export default class IssueOverview extends Component <{ match: { params: { name: string } } }>{
+  caseofCat = [];
   categories = [];
   cases = [];
 
   render(){
-    if (this.loaded){
+    let lists;
+
+    if(this.props.match.params.name=="All"){
+      lists = (
+        <div>
+        {this.cases.map(casen =>(
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+        ))}
+        </div>);
+     }else{
+      lists = (
+        <div>
+        {this.caseofCat.map(casen =>(
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+        ))}
+        </div>);
+     }
+
     return (
     <>
       <div className="jumbotron">
@@ -56,9 +72,7 @@ export default class IssueOverview extends Component {
         <Router history={history}>
           <div className="container text-center">
             <ListGroup>
-                {this.cases.map(casen =>(
-                  <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
-                ))}
+                {lists}
             </ListGroup>
          </div>
         </Router>
@@ -75,13 +89,6 @@ export default class IssueOverview extends Component {
       </div>
     </>
     );
-    } else {
-      return(
-        <div>
-          <h1> Loading </h1>
-        </div>
-      )
-    }
   }
 
   componentDidMount(){
@@ -99,6 +106,14 @@ export default class IssueOverview extends Component {
       .then(categories =>{
           this.categories = categories;
           console.log(this.categories);
+          this.forceUpdate();
+        })
+      .catch((error: Error) => Alert.danger(error.message));
+    caseService
+      .getAllCases()
+      .then(cases => {
+          this.caseofCat = cases;
+          console.log(this.cases);
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));

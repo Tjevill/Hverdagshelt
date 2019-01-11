@@ -38,10 +38,6 @@ export class MapContainer extends Component<{lat: number, long: number}> {
       );
   }
 
-  componentDidMount(){
-    console.log(this.props.lat + ", " + this.props.long);
-  }
-
   onMarkerClick = (props, marker, e) => {
     console.log("onMarkerClick");
     this.activeMarker = marker;
