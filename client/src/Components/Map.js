@@ -2,13 +2,11 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
-export class MapContainer extends Component {
+export class MapContainer extends Component<{lat: number, long: number}> {
 
   infoShowing = false;
   activeMarker: {};
 
-  lat = this.props.lat;
-  long = this.props.long;
 
   render() {
       return (
@@ -16,8 +14,8 @@ export class MapContainer extends Component {
           google={this.props.google}
           zoom={14}
           initialCenter={{
-            lat: this.lat,
-            lng: this.long
+            lat: this.props.lat,
+            lng: this.props.long
           }}
           onClick={this.onMapClick}
         >
@@ -29,16 +27,19 @@ export class MapContainer extends Component {
           <InfoWindow
             marker={this.activeMarker}
             visible={this.infoShowing}
-            onClose={this.onMapClick}
           >
               <div>
-                <h6>Lat: {this.lat}</h6>
-                <h6>long: {this.long}</h6>
+                <h6>Lat: {this.props.lat}</h6>
+                <h6>long: {this.props.long}</h6>
               </div>
           </InfoWindow>
 
         </Map>
       );
+  }
+
+  componentDidMount(){
+    console.log(this.props.lat + ", " + this.props.long);
   }
 
   onMarkerClick = (props, marker, e) => {

@@ -47,10 +47,8 @@ class User {
   zipcode: string;
   tel: number;
   email: string;
-  username: string;
   subscription: number;
-  password: string;
-  secret: string;
+
 }
 
 class UserSubscriptionUpdate {
