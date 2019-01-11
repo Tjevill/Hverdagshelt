@@ -2,6 +2,7 @@ const Dao = require("./dao.js");
 
 module.exports = class CasesDao extends Dao {
 
+    /** Get all cases from db ordered by timestamp.*/
     getAllCases(callback){
         super.query(
             "SELECT * FROM Cases ORDER BY timestamp", 
@@ -10,10 +11,12 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
+    /** Get one case on case_id. */
     getOne(caseid, callback){
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
+    /** Get all cases from one user based on user_id */
     getCaseOnUser(user_id, callback){
         super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
     }
@@ -95,12 +98,16 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
-    searchCaseCategory(category_id, callback){
-        super.query("SELECT * FROM Cases WHERE category_id = ? ", [category_id], callback);
+    searchCaseCategory(description, callback){
+        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
     }
 
     searchCaseDescription(keyword, callback){
         super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
+    }
+
+    getCaseCategoryName(category_id, callback){
+        super.query("SELECT * FROM Cases WHERE ")
     }
 
     getNumberOfCases(callback){

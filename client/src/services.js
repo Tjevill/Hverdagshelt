@@ -147,8 +147,8 @@ class CaseService {
   }
 
   /** Search for case by category */
-  searchCaseByCat(category_id: number): Promise<Case[]>{
-    return axios.get(url+'/searchCaseCategory/'+category_id);
+  searchCaseByCat(description: string): Promise<Case[]>{
+    return axios.get(url+'/searchCaseCategory/'+description);
   }
 
   /** Search for case by description */

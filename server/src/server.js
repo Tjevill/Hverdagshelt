@@ -463,7 +463,6 @@ app.get("/eventSearch/:keyword", (req, res) =>{
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
-        console.log("/cases fikk request.");
         hverdagsDao.getAllCases((status, data) => {
             res.status(status);
             res.json(data);
@@ -615,10 +614,10 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
     });
     
 
-    /** search case by category */
-    app.get("/searchCaseCategory/:category_id", (req, res) =>{
+    /** search case by category description */
+    app.get("/searchCaseCategory/:description", (req, res) =>{
         console.log("Received get-request from client.");
-        caseDao.searchCaseCategory(req.params.category_id, (status, data)=>{
+        caseDao.searchCaseCategory(req.params.description, (status, data)=>{
             res.status(status);
             res.json(data);
         });
