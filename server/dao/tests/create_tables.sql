@@ -1,14 +1,18 @@
-DROP TABLE IF EXISTS nyhetsartikkel;
+DROP TABLE IF EXISTS Cases;
 
-CREATE TABLE nyhetsartikkel (
-  id int(11) unsigned NOT NULL AUTO_INCREMENT,
-  tittel varchar(250) COLLATE latin1_danish_ci DEFAULT NULL,
-  ingress varchar(250) COLLATE latin1_danish_ci DEFAULT NULL,
-  innhold text COLLATE latin1_danish_ci,
-  opprettet timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  bilde varchar(200) COLLATE latin1_danish_ci DEFAULT NULL,
-  kategori varchar(100) COLLATE latin1_danish_ci DEFAULT NULL,
-  viktighet int(1) DEFAULT NULL,
-  vote int(5) NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
-);
+CREATE TABLE `Cases` (
+  `case_id` int(8) NOT NULL AUTO_INCREMENT,
+  `description` text NOT NULL,
+  `longitude` decimal(11,8) NOT NULL,
+  `latitude` decimal(10,8) NOT NULL,
+  `status_id` int(8) NOT NULL DEFAULT '1',
+  `user_id` int(8) NOT NULL,
+  `category_id` int(8) NOT NULL,
+  `zipcode` varchar(4) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `headline` varchar(100) NOT NULL,
+  `picture` text,
+  `employee_id` int(11) DEFAULT NULL,
+  `org_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (case_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -2,6 +2,7 @@ const Dao = require("./dao.js");
 
 module.exports = class CasesDao extends Dao {
 
+    /** Get all cases from db ordered by timestamp.*/
     getAllCases(callback){
         super.query(
             "SELECT * FROM Cases ORDER BY timestamp", 
@@ -10,14 +11,19 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
+    /** Get one case on case_id. */
     getOne(caseid, callback){
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
+    /** Get all cases from one user based on user_id */
     getCaseOnUser(user_id, callback){
         super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
     }
 
+    /** Create case 
+    *   @param json : json object with attributes.
+     */
     create(json: any, callback:any) {
         var val = [
             json.headline,
@@ -39,16 +45,23 @@ module.exports = class CasesDao extends Dao {
     }
 
 
-
-    getOneZip(zipcode, callback){
+    /** Get all cases based on zipcode
+    *   @param zipcode - area zipcode you want to get cases from.
+     */
+    getOneZip(zipcode: number, callback){
         super.query("SELECT * FROM Cases WHERE zipcode = ?", [zipcode], callback);
     }
-
-    getOneCategory(category_id, callback){
+    
+    //decrecated
+    getOneCategory(category_id:number , callback){
         super.query("SELECT * FROM Cases WHERE category_id = ?", [category_id], callback);
     }
 
-    updateCase(case_id, json, callback){
+    /** Update one case on case_id.
+    *   @param case_id : case_id.
+    *   @param json : json object with changes.
+     */
+    updateCase(case_id: number, json, callback){
         let val = [
                     json.description, 
                     json.longitude, 
@@ -76,7 +89,10 @@ module.exports = class CasesDao extends Dao {
 
     }
 
-    deleteCase(case_id, callback){
+    /** Delete case on case_id
+    *   @param case_id - the case_id
+     */
+    deleteCase(case_id: number, callback){
         super.query(
             "DELETE FROM Cases WHERE case_id = ?",
             [case_id],
@@ -84,8 +100,11 @@ module.exports = class CasesDao extends Dao {
         );
     };
     
-    //Ben har laget lignende (?). Hva er forskjellen ? 
-    createUserCase(json, callback){
+    /** Create case from the user perspective.
+    *   Intended to be used on the user frontend-part.
+    *   @param json - json-object with the necessary attributes.
+     */
+    createUserCase(json:json, callback){
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
         super.query(
@@ -95,14 +114,35 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
-    searchCaseCategory(category_id, callback){
-        super.query("SELECT * FROM Cases WHERE category_id = ? ", [category_id], callback);
+    /** Search for a case based on the category name 
+    *   @param description - the category name.
+    */
+    searchCaseCategory(description: string, callback){
+        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
     }
 
+    /** Search for a case based on the description e.g "tett vannhull". 
+    *   @param keyword - the word/phrase you want to search for in the description
+    */
     searchCaseDescription(keyword, callback){
         super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
     }
 
+    /** Search for a case based on the category_id.
+    *   @param category_id - the category_id your searching for
+     */
+    getCaseCategoryName(category_id, callback){
+        super.query("SELECT * FROM Cases WHERE ")
+    }
+
+    getProvinceOnCase(province, callback){
+        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ?",
+        [province],
+        callback
+        );
+    }
+
+    /** Get the number of cases in the database. */
     getNumberOfCases(callback){
         super.query(
             "SELECT COUNT(*) AS x FROM Cases",

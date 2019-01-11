@@ -10,6 +10,7 @@ export default class Navbar extends Component {
     return(
       <div className="topnav" id="navbar">
         <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+          <a className="option" id="report" href="#reportPage" onClick={() => this.activate("")}>Rapporter</a>
           <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
           <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
           <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
@@ -25,7 +26,6 @@ export default class Navbar extends Component {
 
   async componentDidMount() {
       let path = window.location.hash.split("/")[1];
-      console.log("path: " + path);
       if(this.options.includes(path)){
         this.activate(path);
       }
@@ -37,16 +37,14 @@ export default class Navbar extends Component {
 
     if(name == this.active) return;
 
-    console.log("name: " + name);
-
     if(name != ""){
-      console.log("Activating: " + name);
+      //console.log("Activating: " + name);
       let to = document.getElementById(name);
       to.className += " active";
     }
 
     if(this.active != ""){
-      console.log("Deactivating: " + this.active);
+      //console.log("Deactivating: " + this.active);
       let from = document.getElementById(this.active);
       from.className = "option";
     }
