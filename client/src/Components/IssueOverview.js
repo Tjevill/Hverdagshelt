@@ -30,29 +30,55 @@ function count(array) {
 
 //<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
 
-export default class IssueOverview extends Component <{ match: { params: { name: string } } }>{
+export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
+  sepacategories = [];
   cases = [];
+  cateside  = [];
 
   render(){
+    console.log(this.caseofCat);
     let lists;
+    let sidebuttons;
 
     if(this.props.match.params.name=="All"){
+      console.log(this.props.match.params.id);
+      this.cateside = this.cases.slice(1,6);
+
       lists = (
         <div>
-        {this.cases.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+        {this.cateside.map(casen =>(
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} </ListGroup.Item>
         ))}
-        </div>);
-     }else{
+        </div>
+      );
+
+      sidebuttons =(
+        <div>
+        {(count(sliceArray(this.cases, 15))).map(sidetall => (
+            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/All/'+sidetall)}>{sidetall} </button>
+        ))}
+        </div>
+      );
+
+     } else {
       lists = (
         <div>
         {this.caseofCat.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} </ListGroup.Item>
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} : {casen.category_id} </ListGroup.Item>
         ))}
         </div>);
-     }
+        sidebuttons =(
+          <div>
+          {(count(sliceArray(this.caseofCat, 15))).map(sidetall => (
+              <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/'+this.props.match.params.name+'/'+sidetall)}>{sidetall}</button>
+          ))}
+          </div>);
+     };
+
+
+
 
     return (
     <>
@@ -60,9 +86,9 @@ export default class IssueOverview extends Component <{ match: { params: { name:
         <div className="container text-center">
           <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/Issues/All" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
                 {this.categories.map(categori =>(
-                  <a href={"#/Issues/"+categori.description} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div>
         </div>
@@ -80,11 +106,9 @@ export default class IssueOverview extends Component <{ match: { params: { name:
 
       <div id='toolbar'>
         <div className='wrapper text-center'>
-            <div className="btn-group">
-                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>1</button>
-                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>2</button>
-                <button type="button" className="btn btn-outline-dark" onClick={() => history.push('/categories/All/')}>3</button>
-            </div>
+          <div class="btn-group">
+            {sidebuttons}
+        </div>
         </div>
       </div>
     </>
@@ -101,6 +125,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
             this.forceUpdate();
           })
       .catch((error: Error) => Alert.danger(error.message));
+
     categoryService
       .getAllCategories()
       .then(categories =>{
@@ -109,14 +134,15 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
+
     caseService
-      .getAllCases()
+      .searchCaseByCat(this.props.match.params.name)
       .then(cases => {
           this.caseofCat = cases;
-          console.log(this.cases);
+          console.log("name"+this.props.match.params.name);
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
+    };
 
-  }
 }
