@@ -26,9 +26,11 @@ export default class events extends Component {
 	render() {
 		return (
 			<div className="events-body">
+
+			<div className="events-container">
 				{console.log(this.events[1])}
 				{this.events.map(event=> console.log(event))}
-				<List style={{ width: "650px" }}>
+				<List style={{ width: "600px" }}>
 					{this.events.map(event => (
 						<a href="#">
 							<ListItem threeLine>
@@ -42,12 +44,12 @@ export default class events extends Component {
 								>
 									{event.name}
 								</ListItemContent>
-								{/* For bilde
+								{ 
 									<ListItemAction>
 									<a href="#">
-										<img src={action.image} />
+										<img src="https://www.magical-planet.com/wp-content/uploads/2018/03/Duomo-of-Milan-696x366.jpg" />
 									</a>
-								</ListItemAction>*/
+								</ListItemAction>
 									
 								}
 								
@@ -55,6 +57,7 @@ export default class events extends Component {
 						</a>
 					))}
 				</List>
+				</div>
 			</div>
 		);
 	}
