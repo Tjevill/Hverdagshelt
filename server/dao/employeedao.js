@@ -25,8 +25,10 @@ var sha512 = function(password, salt){
 
 module.exports = class UserDao extends Dao {
 
-    /** Create an employee and add in the db */
-    addEmployee(json, callback) {
+    /** Create an employee and add in the db 
+    *   @param json - employee json object.
+    */
+    addEmployee(json: any, callback) {
 
         var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
         var passwordData = sha512(json.password, salt);
@@ -39,9 +41,6 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Alter employee in the database */
-    //alterEmp();
-
     /** Get all employees */
     getAllEmp(callback: any){
         super.query(
@@ -51,8 +50,10 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Get all employees in province */
-    getAllEmpProvince(province: string, callback: any){
+    /** Get all employees in based on province  
+    *   @param province - province id.
+    */
+    getAllEmpProvince(province: number, callback: any){
         super.query(
             "SELECT * FROM Employee WHERE province = ?",
             [province],
@@ -60,9 +61,11 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Delete an employee in the db on employee_id */
-    deleteEmpById(id: number, callback: any){
-        let val = id;
+    /** Delete an employee in the db on employee_id 
+    *   @param employee_id - employee_id in the database. 
+    */
+    deleteEmpById(employee_id: number, callback: any){
+        let val = employee_id;
         super.query(
             "DELETE FROM Employee WHERE employee_id = ?",
             [val],
@@ -70,7 +73,9 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Update employee personal data, except password */
+    /** Update employee personal data, except password 
+    *   @param json - json object with all the edited data.
+    */
     updateEmp(json: jsonUpdate, emp_id, callback: mixed){
 
         let val = [json.name, json.tel, json.email, json.province, json.district, emp_id];
@@ -81,7 +86,9 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Change password for an employee in the db */
+    /** Change password for an employee in the db 
+    *   @param json - json-object with the edited password.
+    */
     updateEmpPassword(json: jsonUpdatePWordEmp, callback: any){
         
         let salt = genRandomString(32);
@@ -95,7 +102,9 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Get one employee on employee_id */
+    /** Get one employee on employee_id 
+    *   @param employee_id - the id of the employee you want to find.
+    */
     getOne(employee_id:number, callback: any){
         super.query(
             "SELECT * FROM Employee WHERE employee_id = ?",
@@ -104,7 +113,8 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Get number of employees */
+    /** Get number of employees in the db.
+    */
     countEmps(callback){
         super.query(
             "SELECT COUNT(*) AS x FROM Employee",
@@ -113,8 +123,10 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Get number of employees in province */
-    countEmpsProvince(province: string, callback: any){
+    /** Get number of employees in province 
+    *   @param province - province number.
+    */
+    countEmpsProvince(province: number, callback: any){
         super.query(
             "SELECT COUNT(*) AS x FROM Employee WHERE province = ?",
             [province],

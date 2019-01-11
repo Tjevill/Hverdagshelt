@@ -67,6 +67,9 @@ const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
+const Categorydao = require("../dao/categorydao.js");
+const Empdao = require("../dao/employeedao.js");
+
 
 
 
@@ -85,6 +88,9 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
+let categoryDao = new Categorydao(pool);
+let empDao = new Empdao(pool);
+
 
 
 app.get("/cases", (req, res) => {
@@ -458,7 +464,6 @@ app.get("/eventSearch/:keyword", (req, res) =>{
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
-        console.log("/cases fikk request.");
         hverdagsDao.getAllCases((status, data) => {
             res.status(status);
             res.json(data);
@@ -523,7 +528,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 // Cases
 
-    /** get all cases */
+    /** Get all cases */
     app.get("/allCases", (req, res) => {
         console.log("Received get-request on endpoint /allCases");
         caseDao.getAllCases((status, data) => {
@@ -532,7 +537,16 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** count all cases in db */
+    /** Get the province of every */
+    app.get("/allCases/:province", (req, res) =>{
+        console.log("Received get-request on endpoint /allCases/"+req.params.province);
+        caseDao.getProvinceOnCase( req.params.province, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Count all cases in db */
     app.get("/countCases", (req, res) =>{
         console.log("Received get-request on endpoint /countCases");
         caseDao.getNumberOfCases( (status, data) =>{
@@ -541,7 +555,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** get case by id */
+    /** Get case by id */
     app.get("/getCase/:id", (req, res) => {
         console.log("Received get-request on endpoint /getCase/" + req.params.id);
         caseDao.getOne(req.params.id, (status, data) => {
@@ -610,10 +624,10 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
     });
     
 
-    /** search case by category */
-    app.get("/searchCaseCategory/:category_id", (req, res) =>{
+    /** search case by category description */
+    app.get("/searchCaseCategory/:description", (req, res) =>{
         console.log("Received get-request from client.");
-        caseDao.searchCaseCategory(req.params.category_id, (status, data)=>{
+        caseDao.searchCaseCategory(req.params.description, (status, data)=>{
             res.status(status);
             res.json(data);
         });

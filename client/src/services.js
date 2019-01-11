@@ -145,13 +145,18 @@ class CaseService {
   }
 
   /** Search for case by category */
-  searchCaseByCat(category_id: number): Promise<Case[]>{
-    return axios.get(url+'/searchCaseCategory/'+category_id);
+  searchCaseByCat(description: string): Promise<Case[]>{
+    return axios.get(url+'/searchCaseCategory/'+description);
   }
 
   /** Search for case by description */
   searchCaseByDesc(description: string): Promise<Case[]>{
     return axios.get(url+'/searchCaseDesc/'+description);
+  }
+
+  /** Search for case by province */
+  searchCaseByProv(province: string): Promise<Case[]>{
+    return axios.get(url+'/allCases/'+province);
   }
 
     getCategories(): Promise<Category[]> {
@@ -236,7 +241,7 @@ class UserService {
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
     return axios.put(url + '/updateUserPWord', userPWordUpdate);
   }
-  
+
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.put(url + '/userProvince/' + id);
   }
@@ -259,7 +264,7 @@ class OrgService{
   updateOrgByID(org: Organization): Promise<void>{
     return axios.put(url + '/org/' + org.org_id, org);
   }
-  
+
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
     return axios.put(url + '/updateOrgPWord', org);
   }
@@ -282,40 +287,40 @@ export let orgService = new OrgService();
 
 
 class CategoryService {
-  
+
   getAllCategories(): Promise<Category[]>{
     return axios.get(url + '/category');
   }
-  
+
   getCategoryByID(id: number): Promise<Category[]>{
     return axios.get(url + '/category/' + id);
   }
-  
+
   updateCategoryByID(category: Category): Promise<void>{
     return axios.put(url + '/category/' + category.category_id, category);
   }
-  
+
   deleteCategoryByID(id: number): Promise<void>{
     return axios.delete(url + '/category/' + id);
   }
-  
+
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
   }
-	
+
 }
 
 export let categoryService = new CategoryService();
 
 class EmployeeService {
 
-  /** Create employee  
-  * JSON sent in postman: 
-  * { "name": "Ben Oscar Strømstrømstrøm", 
-      "tel": "12345678", 
-      "email": "benstrom@strom.ben", 
+  /** Create employee
+  * JSON sent in postman:
+  * { "name": "Ben Oscar Strømstrømstrøm",
+      "tel": "12345678",
+      "email": "benstrom@strom.ben",
       "password": "bentricity",
-      "province":1, 
+      "province":1,
       "district":1 }
   */
   addEmployee(emp: Employee): Promise<void> {
@@ -328,7 +333,7 @@ class EmployeeService {
   /** Delete an employee with employee_id. Yolo */
   deleteEmp(employee_id): Promise<void>{
     return axios.delete(url + '/employee/'+employee_id);
-  } 
+  }
 
 
   /** Change password */
@@ -337,7 +342,7 @@ class EmployeeService {
   }
 
   /** Change employee data on employee_id - NOT PASSWORD!
-  * Example on JSON in postman: 
+  * Example on JSON in postman:
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
@@ -369,7 +374,7 @@ class EmployeeService {
     return axios.get(url+'/countEmp/'+province_id);
   }
 
-  
+
 
 
 }
@@ -379,6 +384,10 @@ class MapService {
 
   getMapInfo(lat: number, long: number){
     return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+  getProvince(zip: number){
+    return axios.get("http://data.sortere.no/api/sted/" + zip);
   }
 
 }

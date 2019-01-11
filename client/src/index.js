@@ -6,7 +6,7 @@ import {HashRouter, Redirect, Route} from 'react-router-dom';
 import createHashHistory from "history/createHashHistory";
 
 import Navbar from "./components/Navbar";
-import CasePage from "./components/CasePage";
+import Case from "./components/Case";
 import CaseListCard from "./components/CaseListCard";
 import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
@@ -74,12 +74,12 @@ function renderRoot() {
           <Navbar />
           <div id="page">
             <Route exact path="/" component={UserHome} />
-            <Route exact path="/case/:id" component={CasePage} />
+            <Route exact path="/case/:id" component={Case} />
             <Route exact path="/profile/:id/edit" component={UserEdit} />
             <Route exact path="/profile" component={ProfilePage} />
             <Route exact path="/issues" component={IssueOverview} />
             <Route exact path="/events" component={Events}/>
-            <Route exact path="/issues/:name" component={IssueOverview} />
+            <Route exact path="/issues/:name/:id" component={IssueOverview} />
             <Route exact path="/reportPage" component={ReportPage} />
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
