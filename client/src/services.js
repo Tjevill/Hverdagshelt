@@ -386,6 +386,10 @@ class MapService {
     return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
   }
 
+  getProvince(zip: number){
+    return axios.get("http://data.sortere.no/api/sted/" + zip);
+  }
+
 }
 
 export let mapService = new MapService();
