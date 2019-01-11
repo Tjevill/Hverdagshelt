@@ -36,16 +36,14 @@ export default class Navbar extends Component {
 
     if(name == this.active) return;
 
-    console.log("name: " + name);
-
     if(name != ""){
-      console.log("Activating: " + name);
+      //console.log("Activating: " + name);
       let to = document.getElementById(name);
       to.className += " active";
     }
 
     if(this.active != ""){
-      console.log("Deactivating: " + this.active);
+      //console.log("Deactivating: " + this.active);
       let from = document.getElementById(this.active);
       from.className = "option";
     }
