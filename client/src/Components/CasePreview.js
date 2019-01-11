@@ -17,7 +17,7 @@ export default class CasePreview extends Component <{title: string, status: numb
     }
     componentDidMount() {
         if (this.props.status == 1) {
-            console.log('test');
+            //console.log('test');
             this.x = 'Godkjent';
             this.y = 'badge badge-primary';
         } else if (this.props.status == 2) {

@@ -6,11 +6,16 @@ import createHashHistory from "history/createHashHistory";
 import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 
-export default class UserEdit extends Component <{id: number}> {
+const history = createHashHistory();
+
+
+
+
+export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
   user = new Object();
   render(){
     let button;
-    if(this.user.subscriptions==false){
+    if(this.user.subscription==1){
       button = (
         <Button.Success onClick={this.subscribe}>Subscribe</Button.Success>
       )
@@ -20,9 +25,15 @@ export default class UserEdit extends Component <{id: number}> {
     }
     return (
       <>
-      <Card title="Edit" class="container text-center">
-      <div class="container text-center">
-        <form ref={e => (this.form = e)}>
+      <div className="jumbotron">
+        <div className="container text-center">
+          <h5>Edit</h5>
+        </div>
+        </div>
+
+        <div className="container text-center">
+          <div class="container text-center">
+            <form ref={e => (this.form = e)}>
           <Form.Input
             type="text"
             label="Navn"
@@ -58,29 +69,64 @@ export default class UserEdit extends Component <{id: number}> {
             onChange={event => (this.user.zipcode= event.target.value)}
             required
           />
+          <br/>
+          <br/>
           {button}<br/><br/>
           <Button.Success onClick={this.save}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>
           </form>
           </div>
-        </Card>
+      </div>
+
       </>
     );
   }
-  mounted(){
+  componentDidMount(){
     userService
-      .getUserByID(this.props.id)
-      .then(user => (this.user=user))
+      .getUserByID(this.props.match.params.id)
+      .then(user => {
+        this.user = user[0];
+        this.forceUpdate();
+      })
       .catch((error: Error) => Alert.danger(error.message));
   }
 
   subscribe(){
+    console.log(this.user);
+    const sub = {
+      user_id: this.user.user_id,
+      subscription: 0
+    }
+
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        if(this.sub) history.push('/profile/'+this.user.user_id+'/edit')
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
   unsubscribe(){
+    const sub = {
+      user_id: this.user.user_id,
+      subscription: 1
+    };
+
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        if(this.sub) history.push('/profile/'+this.user.user_id+'/edit')
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
   save(){
     if(this.user.name==""||this.user.name==null||this.user.name==" ")return alert("Vennligst oppgi navn");
+    userService
+      .updateOne(this.user)
+      .then(user => {
+        if(this.user) history.push('/profile/'+this.user.user_id)
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 }

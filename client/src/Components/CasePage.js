@@ -14,18 +14,16 @@ export default class Main extends Component {
         <Card title={this.case.headline} date={this.case.timestamp} />
         <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
         <p id="description">{this.case.description}</p>
-        <Map />
+        <Map lat={this.case.latitude} long={this.case.longitude}/>
+        {console.log(this.case.latitude + " " + this.case.longitude)}
       </div>
       );
     }
 
   mounted(){
+    console.log("mounted");
     let casePromise = caseService.getCaseById(this.props.match.params.id);
     casePromise.then(caseData => (/*console.log(caseData[0]),*/ this.case = caseData[0]));
-
-    let mapInfoPromise = mapService.getMapInfo(63.4283065, 10.3876995);
-    mapInfoPromise.then(mapData => (console.log(mapData["results"][0]["formatted_address"])));
-
   }
 
 }

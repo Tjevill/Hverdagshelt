@@ -7,7 +7,14 @@ class Category {
     description: string;
 }
 
-
+class Employee{
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  province: string;
+  district: string;
+}
 
 class Case {
   case_id: number;
@@ -61,6 +68,11 @@ class Organization {
   organizationnumber: string;
   name: string;
   email: string;
+}
+
+class OrganizationUpdatePWord {
+  org_id: number;
+  password: string;
 }
 
 class Districts {
@@ -142,14 +154,6 @@ class CaseService {
   /** Search for case by description */
   searchCaseByDesc(description: string): Promise<Case[]>{
     return axios.get(url+'/searchCaseDesc/'+description);
-  }
-
-
-
-  //Det under var her fra før.
-  getCases(): Promise<Case[]> {
-
-    return axios.get(url + '/cases');
   }
 
     getCategories(): Promise<Category[]> {
@@ -239,6 +243,7 @@ class UserService {
 
 export let userService = new UserService();
 
+
 class OrgService{
 
   getAllOrg(): Promise<Organization[]>{
@@ -250,7 +255,11 @@ class OrgService{
   }
 
   updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id);
+    return axios.put(url + '/org/' + org.org_id, org);
+  }
+  
+  updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
+    return axios.put(url + '/updateOrgPWord', org);
   }
 
   deleteOrgByID(id: number): Promise<void>{
@@ -270,13 +279,85 @@ class OrgService{
 export let orgService = new OrgService();
 
 
+class CategoryService {
+  
+  getAllCategories(): Promise<Category[]>{
+    return axios.get(url + '/category');
+  }
+  
+  getCategoryByID(id: number): Promise<Category[]>{
+    return axios.get(url + '/category/' + id);
+  }
+  
+  updateCategoryByID(category: Category): Promise<void>{
+    return axios.put(url + '/category/' + category.category_id, category);
+  }
+  
+  deleteCategoryByID(id: number): Promise<void>{
+    return axios.delete(url + '/category/' + id);
+  }
+  
+  getCountCategories(): Promise<number>{
+    return axios.get(url + '/categoryCount');
+  }
+	
+}
+
+export let categoryService = new CategoryService();
+
 class EmployeeService {
 
-  addEmployee(newemployee: Register): Promise<void> {
-    console.log("DATA TIL SERVICE: ", newemployee);
-    // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-    return axios.put(url + "/newuser", newemployee);
+  /** Create employee  
+  * JSON sent in postman: 
+  * { "name": "Ben Oscar Strømstrømstrøm", 
+      "tel": "12345678", 
+      "email": "benstrom@strom.ben", 
+      "password": "bentricity",
+      "province":1, 
+      "district":1 }
+  */
+  addEmployee(emp: Employee): Promise<void> {
+      console.log("DATA TIL SERVICE: ", emp);
+      // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
+      return axios.put(url + "/employee", emp);
   }
+
+
+  /** Delete an employee with employee_id. Yolo */
+  deleteEmp(employee_id): Promise<void>{
+    return axios.delete(url + '/employee/'+employee_id);
+  } 
+
+
+  /** Change password */
+
+
+  /** Get all employees */
+  getAll(): Promise<Employee[]>{
+    return axios.get(url+'/employee');
+  }
+
+  /** Get one employee with employee_id */
+  getOne(employee_id : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/'+employee_id);
+  }
+
+  /** Get all employees in a given province with province_id */
+  getEmpProvince(province_id : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/province/'+province_id);
+  }
+
+  /** Get the number of employees in the db */
+  countEmps(): Promise<Employee[]>{
+    return axios.get(url+'/countEmp');
+  }
+
+  /** Get the number of employees in a given province with province_id */
+  countEmpsProvince(province_id : number): Promise<Employee[]>{
+    return axios.get(url+'/countEmp/'+province_id);
+  }
+
+  
 
 
 }
