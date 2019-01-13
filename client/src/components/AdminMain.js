@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { authService } from '../authservices';
+import {refreshToken} from './widgets';
 
 export default class AdminMain extends React.Component {
     constructor(props) {
@@ -13,15 +12,12 @@ export default class AdminMain extends React.Component {
         };
     }
 
+
+
     componentDidMount() {
-
         let hmf = sessionStorage.getItem('storedtoken');
-
         console.log("hmf: " + hmf);
         console.log(sessionStorage.getItem('storedtoken'));
-        console.log(sessionStorage.getItem('sto'));
-
-
     }
 
     render() {
@@ -44,6 +40,9 @@ export default class AdminMain extends React.Component {
                 }
                 <p>
                     <Link to="/admin/login">Logout</Link>
+
+                </p>
+                <p><button type="button" className="login100-form-btn" onClick={this.refreshToken}>Refresh token</button>
                 </p>
             </div>
         );

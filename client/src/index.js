@@ -122,16 +122,16 @@ function renderRoot() {
           <div id="page">
             <Route exact path="/" component={UserHome} />
             <Route exact path="/case" component={CasePage} />
-            <Route exact path="/profile" component={ProfilePage} />
+            <PrivateRoute exact path="/profile" component={ProfilePage} />
             <Route exact path="/issues" component={IssueOverview} />
             <Route exact path="/events" component={Events}/>
             <Route exact path="/IssueOverview" component={IssueOverview} />
             <Route exact path="/reportPage" component={ReportPage} />
-            <Route exact path='/login' component={Login}/>
             <Route exact path='/register' component={Register}/>
             <Route exact path='/nyansatt' component={NewEmployee}/>
               <PrivateRoute exact path="/admin/main" component={AdminMain} />
               <Route path="/admin/login" component={LoginPage} />
+              <Route exact path='/login' component={Login}/>
 
           </div>
         </div>

@@ -71,3 +71,33 @@
 
   padding: 10px;
 }
+
+.row {
+    height:100%;
+    background-color:none;
+}
+
+.loginoption1, .loginoption2, .loginoption3 {
+    border-radius: 25px;
+    border: 1px solid black;
+    background-color: #eeeeee;
+    width:350px;
+    height: inherit;
+    text-align:center;
+    padding:14px;
+    margin:10px;
+    box-shadow: 4px 4px 20px #686868;
+    cursor: pointer;
+
+}
+
+.loginoption1 img, .loginoption2 img, .loginoption3 img {
+    height:300px;
+}
+/* Optional styling */
+summary::-webkit-details-marker {
+    color: blue;
+}
+summary:focus {
+    outline-style: none;
+}

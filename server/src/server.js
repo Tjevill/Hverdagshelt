@@ -413,11 +413,76 @@ app.post("/cases", (req, res) => {
 
 
 
-function loginOk(username, password) {
+app.post("/login", (req, res) => {
+// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
+    var promiseObject = loginOk(req.body.email, req.body.password);
+
+
+    promiseObject.then(function (value) {
+        if (value) {
+
+            userdao.getUsername(req.body.email, (status, data) => {
+
+                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+            });
+
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
+        }
+    });
+});
+
+
+app.post("/loginhh", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
-        userdao.getUsername(username, (status, data) => {
-            // console.log("data: " + data);
+        userdao.getUserByEmail(req.body.email, (status, data) => {
+            console.log("data: " + data);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(password, data[0].secret);
+            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    })
+
+    promise1.then(function (value) {
+        if (value) {
+            userdao.getUsername(req.body.email, (status, data) => {
+
+                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+            });
+
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
+        }
+    });
+});
+
+
+// app.get('/admin/main/', middleware.checkToken, handlers.index);
+
+/*
+
+function loginOk(email, password) {
+
+    let promise1 = new Promise(function (resolve, reject) {
+        userdao.getUsername(email, (status, data) => {
+            console.log("data: " + data);
             const lagretPass = data[0].password;
             const passwordData = sha512(password, data[0].secret);
             // console.log(lagretPass.localeCompare(passwordData.passwordHash));
@@ -434,26 +499,29 @@ function loginOk(username, password) {
 
 app.post("/login", (req, res) => {
 // console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-    var promiseObject = loginOk(req.body.username, req.body.password);
+    var promiseObject = loginOk(req.body.email, req.body.password);
 
 
     promiseObject.then(function (value) {
         if (value) {
-            var persondata = [];
-            userdao.getUsername(username, (status, data) => {
-                persondata = {name: data[0].name, username: data[0].username};
+
+            userdao.getUsername(req.body.email, (status, data) => {
+
+                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
             });
 
-            let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 30000 });
-            res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: req.body.username, user_id: req.body.user_id, name: req.body.name});
-            console.log("Brukernavn & passord ok, velkommen " + req.body.username);
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.status(401);
             res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
         }
     });
 });
+
+*/
 
 
 
@@ -463,11 +531,11 @@ app.use("/refreshtoken", (req, res) => {
     let token = req.headers["x-access-token"];
     jwt.verify(token, privateKey, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok, så du får ikke refreshet");
+            console.log("Token IKKE ok, så du får    ikke refreshet");
             res.status(401);
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
-            let token = jwt.sign({ brukernavn: req.body.brukernavn }, privateKey, {
+            let token = jwt.sign({ email: req.body.email }, privateKey, {
                 expiresIn: 5
             });
             res.json({ jwt: token });

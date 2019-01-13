@@ -153,15 +153,18 @@ class UserService {
     return axios.put(url + "/newuser", newuser);
   }
 
-  getUserByUsername(username: string): Promise<void> {
-    // console.log(axios.get(domain + "/news/artikkel/" + id));
-    return axios.get(url + "/user/" + username);
-  }
 
-  login(login: Login): Promise<void> {
-    // console.log(axios.post(domain + "/login", login));
-    return axios.post(url + "/login", login);
-  }
+    loginHverdagshelt(login: Login): Promise<void> {
+        return axios.post(url + "/loginhh", login);
+    }
+
+    loginBedrift(login: Login): Promise<void> {
+        return axios.post(url + "/loginb", login);
+    }
+
+    loginKommune(login: Login): Promise<void> {
+        return axios.post(url + "/logink", login);
+    }
 
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
