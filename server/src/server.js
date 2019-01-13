@@ -1,3 +1,4 @@
+// @flow
 /* eslint eqeqeq: "off" */
 const express = require("express");
 const mysql = require("mysql");
@@ -50,14 +51,24 @@ var sha512 = function(password, salt){
     };
 };
 
-
+/*
 
 const pool = mysql.createPool({
+    connectionLimit: 10,
+    host: "mysql.stud.iie.ntnu.no",
+    user: "oyvinval",
+    database: "oyvinval",
+    password: "Dd8noqdd",
+    debug: false
+});
+
+*/
+const pool = mysql.createPool({
   connectionLimit: 10,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "oyvinval",
-  database: "oyvinval",
-  password: "Dd8noqdd",
+  host: "praxiz2.mysql.domeneshop.no",
+  user: "praxiz2",
+  database: "praxiz2",
+  password: "e3rquLfn",
   debug: false
 });
 
@@ -412,39 +423,13 @@ app.post("/cases", (req, res) => {
 // End Cases
 
 
-
-app.post("/login", (req, res) => {
-// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-    var promiseObject = loginOk(req.body.email, req.body.password);
-
-
-    promiseObject.then(function (value) {
-        if (value) {
-
-            userdao.getUsername(req.body.email, (status, data) => {
-
-                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
-                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
-            });
-
-        } else {
-            console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
-            res.status(401);
-
-        }
-    });
-});
-
-
 app.post("/loginhh", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
-        userdao.getUserByEmail(req.body.email, (status, data) => {
-            console.log("data: " + data);
+        userdao.getUserByEmail(req.body.email1, (status, data) => {
+            console.log("data email: " + data[0].password);
             const lagretPass = data[0].password;
-            const passwordData = sha512(password, data[0].secret);
+            const passwordData = sha512(req.body.password1, data[0].secret);
             // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
             if (passwordData.passwordHash == lagretPass) {
@@ -457,11 +442,11 @@ app.post("/loginhh", (req, res) => {
 
     promise1.then(function (value) {
         if (value) {
-            userdao.getUsername(req.body.email, (status, data) => {
+            userdao.getUserByEmail(req.body.email1, (status, data) => {
 
-                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
-                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+                let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
             });
 
         } else {
@@ -536,7 +521,7 @@ app.use("/refreshtoken", (req, res) => {
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
             let token = jwt.sign({ email: req.body.email }, privateKey, {
-                expiresIn: 5
+                expiresIn: 60000
             });
             res.json({ jwt: token });
         }

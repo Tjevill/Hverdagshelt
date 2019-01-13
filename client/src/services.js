@@ -154,7 +154,7 @@ class UserService {
   }
 
 
-    loginHverdagshelt(login: Login): Promise<void> {
+    loginHverdagshelt(login: Login[]): Promise<void> {
         return axios.post(url + "/loginhh", login);
     }
 

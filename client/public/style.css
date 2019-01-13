@@ -2,10 +2,39 @@
 .navbar-nav > li > a {
     padding-top:5px !important;
     padding-bottom:5px !important;
+    overflow: visible;
+    z-index: 999;
 }
 .navbar {
-    min-height:100px !important
+    min-height:100px !important;
+    overflow: visible;
+    z-index: 999;
 }
+
+.dropdown{
+    position:fixed;
+
+}
+.dropdown-toggle {
+    padding-top:13px !important;
+    padding-bottom:13px !important;
+    background: none;
+    color: #ffffff;
+    font-size:16px;
+    border:none;
+}
+.dropdown-toggle:hover {
+    background: white;
+    color: #000000;
+}
+
+.dropdown-toggle:active  {
+    background: white;
+    color: #000000;
+}
+
+
+
 .card {
     width:40%;
     border:none;
@@ -101,3 +130,5 @@ summary::-webkit-details-marker {
 summary:focus {
     outline-style: none;
 }
+
+
