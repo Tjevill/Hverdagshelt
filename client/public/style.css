@@ -38,27 +38,7 @@
     width: 25%;
 }
 
-.userHome-banner  {
-    background-color: #50BBE6;
 
-
-}
-
-
-
-.userHome-banner-background{
-	width: 400px;
-
-	background-color: #F7F7F7;
-	text-align: center;
-	margin: 0 auto;
-
-
-}
-
-.userHome-cards{
-	text-align: center;
-}
 
 .events-body li{
 	  margin-bottom: 80px;
@@ -67,7 +47,156 @@
 .events-body img{
   width: 200px;
   position: absolute;
-  right: 0px;
-
   padding: 10px;
+}
+
+
+.userHome-body{
+    background-color: #f2f2f2;
+
+}
+
+.userHome-container{
+    background-color:#fff; /* BYTTES UT MED HVIT */
+    width: 1000px;
+    margin:0 auto;
+}
+
+.userHome-banner{
+
+      background-image: url("https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/3/2018/03/03103805/big-concert-audience-listening-to-music-at-festival-picture-id485343244.jpg");
+    height: 250px;
+    background-color: #50BBE6;
+    text-align: center;
+    padding-top: 1px;
+
+}
+
+.userHome-events{
+    /* background-color: grey;  BYTTES UT MED HVIT */
+ 
+     width: 700px;
+     margin:0 auto;
+}
+
+.userHome-event{
+    height: 200px;
+    background-color: #fff;
+}
+
+.cell1{
+    margin-bottom:10px;
+    background-color: white;
+    height: 800%;
+   padding-top: 25px;
+   padding-left: 30px;
+
+
+
+}
+
+.cell2{
+    padding-left: 50px;
+    background-color: white;
+    height: 800%;
+
+
+}
+
+.cell3{
+    background-color: white;
+    padding-top: 25px;
+    height: 750%;
+
+}
+
+.cell3 img{
+    height: 150px;
+    width: 
+}
+
+.userHome-event h5{
+    color:#1c7f7f;
+
+
+
+}
+
+.userHome-event p{
+
+    color: grey; 
+}   
+
+
+.cell1 p{
+     text-align: center;
+     border-bottom: 1px solid #000
+ }
+
+
+.cell1 p, h4{
+     text-align: center;
+     font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+.userHome-button1{
+     border-radius: 9px;
+     margin:0 auto;
+     width: 500px;
+     height: 200px;
+     background: rgba(204, 204, 204, 0.5);
+    text-align: center;
+
+
+}
+
+.userHome-button1 h5{
+    padding-top: 30px;
+    
+
+}
+
+.userHome-button1 button{
+  background-color: #f4511e;
+  border: none;
+  color: black;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 50px;
+  width: 400px;
+  height: 100px;
+  margin: 4px 2px;
+  opacity: 0.7;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+
+.userHome-button1 button:hover{
+ opacity: 1;
+
+}
+
+.events-container{
+
+    
+    margin:0 auto;
+    padding-left: 500px;
+}
+
+.calender{
+    
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #e1e8e8;
+
+}
+
+
+
+.userHome-events h4{
+    font-family: 'IBM Plex Sans', sans-serif;
 }
