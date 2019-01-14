@@ -1,6 +1,6 @@
 
 
-INSERT INTO `CasesTest` ( `description`, `longitude`, `latitude`, `status_id`, `user_id`, `category_id`, `zipcode`, `timestamp`, `headline`, `picture`, `employee_id`, `org_id`) VALUES
+INSERT INTO `Cases` ( `description`, `longitude`, `latitude`, `status_id`, `user_id`, `category_id`, `zipcode`, `timestamp`, `headline`, `picture`, `employee_id`, `org_id`) VALUES
 ('test One', '10.38769950', '63.42830650', 1, 31, 1, '7012', '2019-01-09 08:09:06', 'aliens are invading send help', 'url', 1, 1),
 ( 'tætt vannhøll', '112.92326821', '43.29427921', 2, 31, 1, '7021', '2019-01-09 08:09:06', 'tætt vannhøl, fix pls', NULL, NULL, NULL),
 ( 'test sak', '1.00000000', '2.00000000', 1, 1, 1, '7012', '2019-01-09 12:26:48', 'test headline', 'url', 1, 1),
