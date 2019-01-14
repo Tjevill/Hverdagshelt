@@ -18,9 +18,9 @@ export default class LoginPage extends React.Component {
         authService.logout();
 
         this.state = {
-            height1: 550,
-            height2: 0,
-            height3: 0,
+            height1: 400,
+            height2: 400,
+            height3: 400,
             email: '',
             password: '',
             submitted: false,
@@ -156,19 +156,19 @@ export default class LoginPage extends React.Component {
 
     handleSubmitKommune(e) {
         this.setState({submitted: true});
-        const { email1, password1, returnUrl } = this.state;
-        if (!(email1 && password1)) return;
-        const login = {
+        const { email3, password3, returnUrl } = this.state;
+        if (!(email3 && password3)) return;
+        const login3 = {
 
-            email1: "praxiz@gmail.com",
-            password1: "mittpass"
+            email3: this.state.email3,
+            password3: this.state.password3
         };
 
         console.log(" ------ ");
         this.message = "Login successful";
-        console.log("this login: ", login);
+        console.log("this login: ", login3);
         userService
-            .loginHverdagshelt(login)
+            .loginKommune(login3)
             .then(response => {
                 this.message = response.reply;
                 let info = JSON.stringify(response);
@@ -176,16 +176,16 @@ export default class LoginPage extends React.Component {
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
-                sessionStorage.setItem('access', 'user');
-                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                //console.log("email: " + sessionStorage.getItem("email"));
-                //console.log("user: " + sessionStorage.getItem("userid"));
+                sessionStorage.setItem('access', 'kommune');
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("email: " + sessionStorage.getItem("email"));
+                console.log("user: " + sessionStorage.getItem("userid"));
 
 
             })
             .then(
                 user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/profile" } };
+                    const { from } = this.props.location.state || { from: { pathname: "/admin" } };
                     this.props.history.push(from);
                 },
                 // error => this.setState({ error, loading: false })
@@ -198,7 +198,7 @@ export default class LoginPage extends React.Component {
     }
 
     render() {
-        const { email1, password1, submitted, loading, error, height1, height2, height3 } = this.state;
+        const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;
 
         return (
             <div className="container">
@@ -223,28 +223,28 @@ export default class LoginPage extends React.Component {
                             <h4>Logg inn:</h4>
 
                                 <form name="form1" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
-                                <div className={'form-group' + (submitted && !email1 ? ' has-error' : '')}>
+                                <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
                                     <label htmlFor="email1">E-mail</label>
                                     <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
-                                    {submitted && !email1 &&
+                                    {submitted1 && !email1 &&
                                     <div className="help-block">E-mail is required</div>
                                     }
                                 </div>
-                                <div className={'form-group' + (submitted && !password1 ? ' has-error' : '')}>
+                                <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
                                     <label htmlFor="password1">Password</label>
                                     <input type="password" className="form-control" name="password1" onChange={this.handleChange} />
-                                    {submitted && !password1 &&
+                                    {submitted1 && !password1 &&
                                     <div className="help-block">Password is required</div>
                                     }
                                 </div>
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-primary">Login</button>
-                                    {loading &&
+                                    {loading1 &&
                                     <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                                     }
                                 </div>
-                                {error &&
-                                <div className={'alert alert-danger'}>{error}</div>
+                                {error1 &&
+                                <div className={'alert alert-danger'}>{error1}</div>
                                 }
                             </form>
                         </div>
@@ -253,7 +253,7 @@ export default class LoginPage extends React.Component {
 
 
 
-                    <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
+                    <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
                         <h3>BEDRIFT</h3>
                         <div className="profilbilde">
@@ -262,42 +262,42 @@ export default class LoginPage extends React.Component {
 
                         <AnimateHeight
                             duration={ 500 }
-                            height={ height1 } // see props documentation bellow
+                            height={ height2 } // see props documentation bellow
                         >
-                            <div id="option1" className="login">
+                            <div id="option2" className="login">
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="form1" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
-                                    <div className={'form-group' + (submitted && !email1 ? ' has-error' : '')}>
-                                        <label htmlFor="email1">E-mail</label>
-                                        <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
-                                        {submitted && !email1 &&
+                                <form name="form2" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
+                                    <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
+                                        <label htmlFor="email2">E-mail</label>
+                                        <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
+                                        {submitted2 && !email2 &&
                                         <div className="help-block">E-mail is required</div>
                                         }
                                     </div>
-                                    <div className={'form-group' + (submitted && !password1 ? ' has-error' : '')}>
-                                        <label htmlFor="password1">Password</label>
-                                        <input type="password" className="form-control" name="password1" onChange={this.handleChange} />
-                                        {submitted && !password1 &&
+                                    <div className={'form-group' + (submitted2 && !password2 ? ' has-error' : '')}>
+                                        <label htmlFor="password2">Password</label>
+                                        <input type="password" className="form-control" name="password2" onChange={this.handleChange} />
+                                        {submitted2 && !password2 &&
                                         <div className="help-block">Password is required</div>
                                         }
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary">Login</button>
-                                        {loading &&
+                                        {loading2 &&
                                         <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                                         }
                                     </div>
-                                    {error &&
-                                    <div className={'alert alert-danger'}>{error}</div>
+                                    {error2 &&
+                                    <div className={'alert alert-danger'}>{error2}</div>
                                     }
                                 </form>
                             </div>
                         </AnimateHeight>
                     </div>
 
-                    <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
+                    <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
                         <h3>KOMMUNE</h3>
                         <div className="profilbilde">
@@ -306,35 +306,35 @@ export default class LoginPage extends React.Component {
 
                         <AnimateHeight
                             duration={ 500 }
-                            height={ height1 } // see props documentation bellow
+                            height={ height3 } // see props documentation bellow
                         >
-                            <div id="option1" className="login">
+                            <div id="option3" className="login">
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="form1" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
-                                    <div className={'form-group' + (submitted && !email1 ? ' has-error' : '')}>
-                                        <label htmlFor="email1">E-mail</label>
-                                        <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
-                                        {submitted && !email1 &&
+                                <form name="form3" onSubmit={() => {this.handleSubmitKommune()}}>
+                                    <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
+                                        <label htmlFor="email3">E-mail</label>
+                                        <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
+                                        {submitted3 && !email3 &&
                                         <div className="help-block">E-mail is required</div>
                                         }
                                     </div>
-                                    <div className={'form-group' + (submitted && !password1 ? ' has-error' : '')}>
-                                        <label htmlFor="password1">Password</label>
-                                        <input type="password" className="form-control" name="password1" onChange={this.handleChange} />
-                                        {submitted && !password1 &&
+                                    <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
+                                        <label htmlFor="password3">Password</label>
+                                        <input type="password" className="form-control" name="password3" onChange={this.handleChange} />
+                                        {submitted3 && !password3 &&
                                         <div className="help-block">Password is required</div>
                                         }
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary">Login</button>
-                                        {loading &&
+                                        {loading3 &&
                                         <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                                         }
                                     </div>
-                                    {error &&
-                                    <div className={'alert alert-danger'}>{error}</div>
+                                    {error3 &&
+                                    <div className={'alert alert-danger'}>{error3}</div>
                                     }
                                 </form>
                             </div>

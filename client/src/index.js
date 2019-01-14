@@ -43,7 +43,6 @@ class Navbar extends Component {
 
     render() {
 
-
     console.log("this.props: ",  this.props)
     if (!this.props.loggedin) {
 
@@ -68,7 +67,8 @@ class Navbar extends Component {
               <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Rapporter feil</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                 <ButtonToolbar>
-                    <DropdownButton bsStyle="default" title={sessionStorage.getItem("email")} href="#profile" noCaret id="dropdown-no-caret" >
+                    <DropdownButton bsStyle="default" title={sessionStorage.getItem("email")} noCaret id="dropdown-no-caret" >
+                        <MenuItem href="#profile/" eventKey="1">Rediger profil</MenuItem>
                         <MenuItem href="#profile/edit" eventKey="1">Rediger profil</MenuItem>
                         <MenuItem href="#profile/newpass" eventKey="2">Forandre Passord</MenuItem>
                         <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
@@ -81,18 +81,27 @@ class Navbar extends Component {
         );
 
       }
-
+/*
         if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
 
           return (
               <div className="topnav" id="navbar">
                   <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-                  <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Rapporter feil</a>
                   <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                   <ButtonToolbar>
-                      <DropdownButton bsStyle="default" title={sessionStorage.getItem("email")} href="#profile" noCaret id="dropdown-no-caret" >
-                          <MenuItem href="#profile/edit" eventKey="1">Rediger profil</MenuItem>
-                          <MenuItem href="#profile/newpass" eventKey="2">Forandre Passord</MenuItem>
+                      <DropdownButton bsStyle="default" title="Administrator" href="#profile" noCaret id="dropdown-no-caret" >
+                          <MenuItem href="#admin/kommune" eventKey="1">Kommuneansatte</MenuItem>
+                          <MenuItem href="#admin/helter" eventKey="2">Hverdagshelter</MenuItem>
+                          <MenuItem href="#admim/bedrifter" eventKey="3">Bedrifter</MenuItem>
+                          <MenuItem href="#admin/rapporter" eventKey="4">Feilrapporter</MenuItem>
+                          <MenuItem href="#admin/events" eventKey="4">Events</MenuItem>
+                          <MenuItem divider />
+                          <MenuItem onClick={this.handleLogOut} eventKey="5">Logg ut</MenuItem>
+                      </DropdownButton>
+                      <DropdownButton bsStyle="default" title="Min side" href="#profile" noCaret id="dropdown-no-caret" >
+                          <MenuItem href="#admin/" eventKey="1">Min side</MenuItem>
+                          <MenuItem href="#admin/edit" eventKey="1">Rediger profil</MenuItem>
+                          <MenuItem href="#admim/newpass" eventKey="2">Forandre Passord</MenuItem>
                           <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
                           <MenuItem divider />
                           <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
@@ -102,7 +111,7 @@ class Navbar extends Component {
               </div>
           );
 
-        }
+        } */
 
           if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {
 
@@ -180,7 +189,7 @@ const root = document.getElementById("root");
 function renderRoot() {
   if (root) {
 
-    var promiseObject = refreshToken();
+    const promiseObject = refreshToken();
     promiseObject.then(function (value) {
 
       if (value !== 'undefined') {
@@ -228,7 +237,7 @@ function renderRoot() {
             root
           );
       } else {
-        console.log("Brukernavn & passord IKKE ok");
+          console.log("Brukernavn & passord IKKE ok");
       }
     });
   }

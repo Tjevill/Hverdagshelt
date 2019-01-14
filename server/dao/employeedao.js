@@ -35,5 +35,13 @@ module.exports = class UserDao extends Dao {
     }
 
 
+    getEmployeeByEmail(email, callback) {
+        super.query(
+            "select * from Employee where email = ?",
+            [email],
+            callback
+        );
+    }
+
 
 };

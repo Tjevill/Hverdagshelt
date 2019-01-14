@@ -77,6 +77,7 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
+const Employeedao = require("../dao/employeedao.js");
 
 
 
@@ -94,6 +95,7 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
+let employeeDao = new Employeedao(pool);
 
 
 app.get("/cases", (req, res) => {
@@ -458,6 +460,41 @@ app.post("/loginhh", (req, res) => {
     });
 });
 
+
+app.post("/logink", (req, res) => {
+
+    let promise1 = new Promise(function (resolve, reject) {
+        employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
+            console.log("data email: " + req.body.email3);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(req.body.password3, data[0].secret);
+            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    })
+
+    promise1.then(function (value) {
+        if (value) {
+            employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
+
+                let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
+            });
+
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
+        }
+    });
+});
 
 // app.get('/admin/main/', middleware.checkToken, handlers.index);
 
