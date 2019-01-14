@@ -3,8 +3,9 @@ import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
 const style = {
-    width: '94%',
-    height: '30%'
+    width: '100%',
+    height: '100%',
+    position: "relative"
 }
 
 export class MapContainer extends Component<{lat: number, long: number}> {
@@ -17,12 +18,14 @@ export class MapContainer extends Component<{lat: number, long: number}> {
     render() {
         return (
             <Map
+                className="report-map"
                 google={this.props.google}
                 zoom={8}
                 initialCenter={{
                     lat: 63,
                     lng: 10
                 }}
+                style={style}
                 onClick={this.onMapClick}
             >
                 <Marker

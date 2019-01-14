@@ -48,24 +48,6 @@ export class MapContainer extends Component<{lat: number, long: number}> {
       );
   }
 
-    // componentDidMount() {
-    //     // const refs = {};
-    //
-    //     this.setState({
-    //
-    //         onMarkerMounted: ref => {
-    //             this.activeMarker = ref;
-    //             console.log('mounted test')
-    //         },
-    //
-    //         onPositionChanged: () => {
-    //             const position = this.activeMarker.getPosition();
-    //             console.log(position.toString());
-    //             console.log('position changed test');
-    //         }
-    //     })
-    // }
-
   onMarkerClick = (props, marker, e) => {
     console.log("onMarkerClick");
     this.activeMarker = marker;
