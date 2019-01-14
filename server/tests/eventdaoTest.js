@@ -78,6 +78,7 @@ test('createEvent', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
     expect(data.affectedRows).toBe(1);
+    expect(data.insertId).toBe(4);
     done();
   }
   eventdao.createEvent(
@@ -91,4 +92,34 @@ test('createEvent', done => {
       ,callback
     );
 });
+
+test('updateEvent', done => {
+  function callback(status, data) {
+    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+    expect(data.affectedRows).toBe(1);
+    done();
+  }
+  eventdao.updateEvent(
+      2,
+    { 
+        name:"Test Update",
+        date:"2019-07-10 16:00:0", 
+        description:"Jest made this update",
+        zipcode:"7021"
+            
+    }
+      ,callback
+    );
+});
+
+test('deleteEvent', done => {
+  function callback(status, data) {
+    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+    expect(data.affectedRows).toBe(1);
+    
+    done();
+  }
+  eventdao.deleteEvent(1,callback);
+});
+
 
