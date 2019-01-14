@@ -75,6 +75,7 @@ export default class Report extends Component {
                                 <MapContainer className="mapper" long={63} lat={10}/>
 
                         </div>
+
                         <div className="form-group form-group-style">
                             Beskrivelse:{" "}
                             <input
