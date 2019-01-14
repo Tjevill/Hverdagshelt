@@ -1,23 +1,24 @@
 // @flow
 
-var mysql = require('mysql');
+const mysql = require('mysql');
 jest.setTimeout(10000);
 
 const CategoryDao = require("../dao/categorydao.js");
 const runsqlfile = require('./runsqlfile.js');
 
 // GitLab CI Pool
-var pool = mysql.createPool({
+const pool = mysql.createPool({
 	connectionLimit: 1,
 	host: 'mysql.stud.iie.ntnu.no',
 	user: 'benos',
-	password: 'FNYpbRGo',
+	password: 'uJHtIkcl',
 	database: 'benos',
 	debug: false,
 	multipleStatements: true
 });
 
 let categorydao = new CategoryDao(pool);
+
 beforeAll(done => {
 	runsqlfile('dao/tests/create_tables.sql', pool, () => {
 		runsqlfile('dao/tests/create_testdata.sql', pool, done);

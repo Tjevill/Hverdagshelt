@@ -1,5 +1,9 @@
 DROP TABLE IF EXISTS Cases;
 DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Organization;
+
 
 CREATE TABLE `Cases` (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
@@ -18,8 +22,7 @@ CREATE TABLE `Cases` (
   PRIMARY KEY (case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `Cases`
-  ADD PRIMARY KEY (`case_id`);
+
 
 
   CREATE TABLE `Employee` (
@@ -34,3 +37,34 @@ ALTER TABLE `Cases`
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE Category (
+  category_id int(8) NOT NULL AUTO_INCREMENT,
+  description VARCHAR(240) NOT NULL,
+  PRIMARY KEY (category_id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+CREATE TABLE User (
+  user_id int(8) NOT NULL AUTO_INCREMENT,
+  name varchar(200) NOT NULL,
+  address varchar(200) NOT NULL,
+  zipcode varchar(4) NOT NULL,
+  tel INT(8) NOT NULL,
+  email varchar(100) NOT NULL,
+  password text NOT NULL,
+  secret varchar(32) NOT NULL,
+  subscription tinyint(1) NOT NULL,
+  PRIMARY KEY (user_id)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+CREATE TABLE Organization (
+  org_id int(8) NOT NULL AUTO_INCREMENT,
+  organizationnumber int(12) NOT NULL,
+  name varchar(100) NOT NULL,
+  email varchar(50) NOT NULL,
+  password text NOT NULL,
+  secret varchar(32) NOT NULL,
+  PRIMARY KEY organizationnumber (organizationnumber)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
