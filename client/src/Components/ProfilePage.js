@@ -12,6 +12,7 @@ export default class ProfilePage extends Component {
                 <ProfileCard id={31}/>
                 <CaseListCard id={31}/>
             </div>
+
         );
     }
 }

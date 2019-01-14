@@ -69,6 +69,7 @@ const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
+const Statusdao = require("../dao/statusdao.js");
 
 
 
@@ -90,6 +91,7 @@ let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
+let statusDao = new Statusdao(pool);
 
 
 
@@ -601,17 +603,17 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             console.log(req.body);
         });
 
-        let email = req.body.email;    
+        let email = req.body.email;
         const mailOptionsUpdateCase = {
             from: 'bedrehverdagshelt@gmail.com',
             to: email,
             subject: 'Saken er oppdatert!',
-            html: 
-                '<h1> Status: ' + req.body.status_id + '</h1>' + 
+            html:
+                '<h1> Status: ' + req.body.status_id + '</h1>' +
                 '<p><b> HverdagsHelt Support Team </b></p>' +
                 '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
                 '<p> <b> HverdagsHelt AS </b> </p>' +
-                '<p> 72 59 50 00 </p>' 
+                '<p> 72 59 50 00 </p>'
         };
 
         transporter.sendMail(mailOptionsUpdateCase, function(error, info){
@@ -622,7 +624,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             }
         });
     });
-    
+
 
     /** search case by category description */
     app.get("/searchCaseCategory/:description", (req, res) =>{
@@ -661,7 +663,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-  
+
 
     /** create case and send confirmation mail */
     app.post("/cases", (req, res) => {
@@ -850,6 +852,24 @@ app.delete("/admin/delete/:id", (req, res) => {
         res.json(data[0]);
     });
 });
+
+/** Get all status */
+    app.get("/status", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getAllStatuses((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Get status by ID */
+    app.get("/status/:id", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getOneById( req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 
 
 
