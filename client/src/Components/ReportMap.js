@@ -3,8 +3,8 @@ import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
 const style = {
-    width: '80%',
-    height: '60%'
+    width: '94%',
+    height: '30%'
 }
 
 export class MapContainer extends Component<{lat: number, long: number}> {
@@ -18,7 +18,6 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         return (
             <Map
                 google={this.props.google}
-                style={style}
                 zoom={8}
                 initialCenter={{
                     lat: 63,
@@ -48,19 +47,10 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         );
     }
 
-    onMarkerDragEnd = (coord, index) => {
+    onMarkerDragEnd = (coord) => {
       console.log(coord.latLng.lat());
       console.log(coord.latLng.lng());
     };
-
-
-    onPositionChanged(e){
-        console.log('Changed position');
-        console.log(this.refs.marker.getPosition());
-        //const position = this.refs.getPosition();
-        //console.log(position.toString());
-        //console.log('position changed test');
-    }
 
     onMarkerClick = (props, marker, e) => {
         console.log("onMarkerClick");
