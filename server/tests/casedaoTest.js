@@ -17,8 +17,6 @@ let pool = mysql.createPool({
   multipleStatements: true
 });
 
- 
- 
 
 let casedao = new Casedao(pool);
 beforeAll(done => {
