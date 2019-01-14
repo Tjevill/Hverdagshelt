@@ -48,12 +48,12 @@ module.exports = class CasesDao extends Dao {
     /** Get all cases based on zipcode
     *   @param zipcode - area zipcode you want to get cases from.
      */
-    getOneZip(zipcode, callback){
+    getOneZip(zipcode: number, callback){
         super.query("SELECT * FROM Cases WHERE zipcode = ?", [zipcode], callback);
     }
     
     //decrecated
-    getOneCategory(category_id, callback){
+    getOneCategory(category_id:number , callback){
         super.query("SELECT * FROM Cases WHERE category_id = ?", [category_id], callback);
     }
 
@@ -61,7 +61,7 @@ module.exports = class CasesDao extends Dao {
     *   @param case_id : case_id.
     *   @param json : json object with changes.
      */
-    updateCase(case_id, json, callback){
+    updateCase(case_id: number, json, callback){
         let val = [
                     json.description, 
                     json.longitude, 
@@ -92,7 +92,7 @@ module.exports = class CasesDao extends Dao {
     /** Delete case on case_id
     *   @param case_id - the case_id
      */
-    deleteCase(case_id, callback){
+    deleteCase(case_id: number, callback){
         super.query(
             "DELETE FROM Cases WHERE case_id = ?",
             [case_id],
@@ -104,7 +104,7 @@ module.exports = class CasesDao extends Dao {
     *   Intended to be used on the user frontend-part.
     *   @param json - json-object with the necessary attributes.
      */
-    createUserCase(json, callback){
+    createUserCase(json:json, callback){
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
         super.query(
@@ -117,20 +117,32 @@ module.exports = class CasesDao extends Dao {
     /** Search for a case based on the category name 
     *   @param description - the category name.
     */
-    searchCaseCategory(description, callback){
+    searchCaseCategory(description: string, callback){
         super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
     }
 
     /** Search for a case based on the description e.g "tett vannhull". 
+    *   @param keyword - the word/phrase you want to search for in the description
     */
     searchCaseDescription(keyword, callback){
         super.query("SELECT * FROM Cases WHERE description LIKE '%"+keyword+"%' ", [keyword], callback);
     }
 
+    /** Search for a case based on the category_id.
+    *   @param category_id - the category_id your searching for
+     */
     getCaseCategoryName(category_id, callback){
         super.query("SELECT * FROM Cases WHERE ")
     }
 
+    getProvinceOnCase(province, callback){
+        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ?",
+        [province],
+        callback
+        );
+    }
+
+    /** Get the number of cases in the database. */
     getNumberOfCases(callback){
         super.query(
             "SELECT COUNT(*) AS x FROM Cases",

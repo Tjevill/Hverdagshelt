@@ -154,6 +154,11 @@ class CaseService {
     return axios.get(url+'/searchCaseDesc/'+description);
   }
 
+  /** Search for case by province */
+  searchCaseByProv(province: string): Promise<Case[]>{
+    return axios.get(url+'/allCases/'+province);
+  }
+
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
@@ -379,6 +384,10 @@ class MapService {
 
   getMapInfo(lat: number, long: number){
     return axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDNsdJJIvghqZOflTCuKk-tPumXWdutCBA");
+  }
+
+  getProvince(zip: number){
+    return axios.get("http://data.sortere.no/api/sted/" + zip);
   }
 
 }

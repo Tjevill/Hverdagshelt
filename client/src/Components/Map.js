@@ -2,6 +2,11 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
+const style = {
+  width: '80%',
+  height: '60%'
+}
+
 export class MapContainer extends Component<{lat: number, long: number}> {
 
   infoShowing = false;
@@ -12,6 +17,7 @@ export class MapContainer extends Component<{lat: number, long: number}> {
       return (
         <Map
           google={this.props.google}
+          style={style}
           zoom={14}
           initialCenter={{
             lat: this.props.lat,
@@ -22,6 +28,9 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           <Marker
             onClick={this.onMarkerClick}
             name={"current location"}
+            // draggable={true}
+            // ref={this.onMarkerMounted}
+            // onPositionChanged={this.onPositionChanged}
           />
 
           <InfoWindow
@@ -37,6 +46,24 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         </Map>
       );
   }
+
+    // componentDidMount() {
+    //     // const refs = {};
+    //
+    //     this.setState({
+    //
+    //         onMarkerMounted: ref => {
+    //             this.activeMarker = ref;
+    //             console.log('mounted test')
+    //         },
+    //
+    //         onPositionChanged: () => {
+    //             const position = this.activeMarker.getPosition();
+    //             console.log(position.toString());
+    //             console.log('position changed test');
+    //         }
+    //     })
+    // }
 
   onMarkerClick = (props, marker, e) => {
     console.log("onMarkerClick");

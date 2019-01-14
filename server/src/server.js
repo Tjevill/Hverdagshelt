@@ -528,7 +528,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 // Cases
 
-    /** get all cases */
+    /** Get all cases */
     app.get("/allCases", (req, res) => {
         console.log("Received get-request on endpoint /allCases");
         caseDao.getAllCases((status, data) => {
@@ -537,7 +537,16 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** count all cases in db */
+    /** Get the province of every */
+    app.get("/allCases/:province", (req, res) =>{
+        console.log("Received get-request on endpoint /allCases/"+req.params.province);
+        caseDao.getProvinceOnCase( req.params.province, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Count all cases in db */
     app.get("/countCases", (req, res) =>{
         console.log("Received get-request on endpoint /countCases");
         caseDao.getNumberOfCases( (status, data) =>{
@@ -546,7 +555,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** get case by id */
+    /** Get case by id */
     app.get("/getCase/:id", (req, res) => {
         console.log("Received get-request on endpoint /getCase/" + req.params.id);
         caseDao.getOne(req.params.id, (status, data) => {

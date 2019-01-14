@@ -46,6 +46,7 @@ var sha512 = function (password, salt) {
 
 module.exports = class UserDao extends Dao {
 	
+	/**	Get all districts. */
 	getAllDistricts (callback: mixed) {
 		super.query(
 			"select * FROM fylke",
@@ -53,7 +54,7 @@ module.exports = class UserDao extends Dao {
 			callback);
 	}
 	
-	
+	/** Get all provinces on district_id. */
 	getProvincesFromFylke (id: number, callback: mixed) {
 		super.query(
 			"select * FROM kommune WHERE fylke_id = ?",
@@ -62,6 +63,7 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	Get all users in the db. */
 	getAll (callback: mixed) {
 		super.query(
 			"select user_id, name, address, zipcode, tel, email, subscription FROM User",
@@ -69,6 +71,9 @@ module.exports = class UserDao extends Dao {
 			callback);
 	}
 	
+	/**	Get one user from the db based on user_id.
+	*	@param id - User_id for the user you wish to retrieve from the db.
+	*/
 	getOneByID (id: number, callback: mixed) {
 		super.query(
 			"select user_id, name, address, zipcode, tel, email, subscription FROM User WHERE user_id = ?",
@@ -117,6 +122,9 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	 Update the subscription on the given user.
+	*	@param json - json-object with the edited subscription level and user_id.
+	*/
 	updateSubription (json: jsonUpdateSub, callback: mixed) {
 		let val = [json.subscription, json.user_id];
 		super.query(
@@ -126,6 +134,9 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	Delete user in the db on user_id. 
+	*	@param id - user_id for the user you wish to delete from db.
+	*/
 	deleteUserByID (id: number, callback: mixed) {
 		let val = id;
 		super.query(
@@ -135,6 +146,7 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	Get the number of users in the db. */
 	getCountUsers (callback: mixed) {
 		super.query(
 			"select COUNT(*) as x from User",
@@ -143,6 +155,9 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	Get the email for a given user 
+	*	@param id - user_id of the user you wish to retrieve the mail for.
+	*/
 	getEmailUserByID (id: number, callback: mixed) {
 		let val = id;
 		super.query(
@@ -152,6 +167,9 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	/**	Get the province from the user based on user_id 
+	*	@param id - the user_id you wish the province for.
+	*/
 	getUsersProvinceByUserID (id: number, callback: mixed) {
 		super.query(
 			"select province from Place where zipcode = (select zipcode from User where user_id = ?)",
@@ -160,7 +178,9 @@ module.exports = class UserDao extends Dao {
 		)
 	}
 	
-	
+	/**	Add a new user to the db
+	 *	@param json - json-object with the new data needed to create a new user in the db.
+	 */
 	addUser (json, callback) {
 		var salt = genRandomString(32);
 		/** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
@@ -169,14 +189,6 @@ module.exports = class UserDao extends Dao {
 		super.query(
 			"insert into User (name, address, zipcode, tel, email, username, password, secret, subscription) values (?,?,?,?,?,?,?,?,?)",
 			val,
-			callback
-		);
-	}
-	
-	getUsername (username, callback) {
-		super.query(
-			"select * from User where username = ?",
-			[username],
 			callback
 		);
 	}
