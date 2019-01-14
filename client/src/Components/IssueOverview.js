@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
-import { caseService, categoryService} from "../services";
+import { caseService, categoryService,userService} from "../services";
 import createHashHistory from "history/createHashHistory";
 import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widgets';
 
@@ -36,6 +36,25 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   sepacategories = [];
   cases = [];
   cateside  = [];
+  fylker = [];
+  kommuner = [];
+  kommune = "";
+
+  handleChangeFylke = event =>{
+    console.log("FYLKE VALGT: " + event.target.value);
+      userService
+        .getProvince(event.target.value)
+        .then(response => {
+            this.kommuner = response;
+            console.log("kommuner: ", this.kommuner);
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+  }
+
+  handleChangeKommune = event => {
+      this.kommune = event.target.value;
+
+  }
 
   render(){
     console.log(this.caseofCat);
@@ -91,16 +110,24 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                   <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div><br/><br/>
-          <div class="form-group align-items-center">
-    <label className="col-sm-6 col-form-label" for="exampleFormControlSelect1">Velg Kommune</label><br/>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
+          <div class="form-group">
+            Velg fylke:{" "}
+            <select class="form-control" name="fylke" id="fylke" onChange={this.handleChangeFylke}>
+                <option>Velg fylke</option>
+                {this.fylker.map(fylke => {
+                    return(<option value={fylke.ID}>{fylke.navn}</option>)
+                })}
+            </select>
+          </div>
+          <div class="form-group">
+            Velg Kommune:{" "}
+            <select class="form-control" name="kommune" id="kommune" onChange={this.handleChangeKommune}>
+                <option>Velg Kommune</option>
+                {this.kommuner.map(kommune => {
+                    return(<option value={kommune.ID}>{kommune.navn}</option>)
+                })}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -153,5 +180,20 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
+
+    caseService
+      .searchCaseByProv(this.props.match.params.name)
+
+    userService
+      .getDistricts()
+      .then(fylker => {
+          this.fylker = fylker;
+          this.forceUpdate();
+      })
+      .catch((error: Error) => Alert.danger(error.message));
     };
+
+
+
+
 }
