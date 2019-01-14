@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import Map from "./Map";
+import Map from "./CaseMap";
 import { caseService, mapService } from "../services";
 
 export default class Case extends Component {
@@ -50,7 +50,7 @@ export default class Case extends Component {
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
         mapData => {
           this.mapData = mapData.results[0];
-          console.log(this.mapData);
+          //console.log(this.mapData);
           if(this.mapData == null){
             this.mapData = {
               formatted_address: "none"
