@@ -70,7 +70,7 @@ function renderRoot() {
   if (root)
     ReactDOM.render(
       <HashRouter>
-        <div>
+        <div className="max">
           <Navbar />
           <div id="page">
             <Route exact path="/" component={UserHome} />
