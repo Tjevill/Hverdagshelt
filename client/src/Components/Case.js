@@ -17,7 +17,7 @@ export default class Case extends Component {
     if(this.loaded){
       return (
         <div id="case-page">
-          <div style={{ marginBottom: "80px"}}>
+          <div id="info">
             <Card
               title={this.case.headline}
               province={this.province}
@@ -43,23 +43,28 @@ export default class Case extends Component {
     if(this.openMap) document.location.reload();
     this.openMap = true;
     let casePromise = caseService.getCaseById(this.props.match.params.id);
-    casePromise.then(caseData => (
-      //console.log(caseData[0]),
-      this.case = caseData[0],
+    casePromise.then(caseData => {
+      //console.log(caseData[0]);
+      this.case = caseData[0];
+      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>;
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
-        mapData => (
-          this.mapData = mapData.results[0],
-          //console.log(this.mapData),
+        mapData => {
+          this.mapData = mapData.results[0];
+          console.log(this.mapData);
+          if(this.mapData == null){
+            this.mapData = {
+              formatted_address: "none"
+            }
+          }
           mapService.getProvince(this.case.zipcode).then(
-            zipData => (
-              this.province = zipData.result.postnr[0].kommune,
-              this.loaded = true
-            )
-          )
-        )
-      ),
-      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
-    ));
+            zipData => {
+              this.province = zipData.result.postnr[0].kommune;
+              this.loaded = true;
+            }
+          );
+        }
+      );
+    });
 
   }
 
@@ -77,9 +82,9 @@ export class Card extends Component<{
 
   render() {
     return (
-      <div className={"card article info"}>
-        <div className="card-body article-body">
-            <h5 className="card-title article-title">{this.props.title}</h5>
+      <div className="card details">
+        <div className="card-body">
+            <h5 className="card-title">{this.props.title}</h5>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">Kommune: {this.props.province}</li>
               <li className="list-group-item">Adresse: {this.props.address}</li>

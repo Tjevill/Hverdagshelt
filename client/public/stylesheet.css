@@ -87,23 +87,34 @@ body,
 #case-page {
   height: 100%;
   width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
   text-align: center;
 }
 
-#case-page .info {
-  width: 50%;
-  float: left;
+#case-page #info {
+
+}
+
+#case-page .details {
+  left: 0px;
+  width: 60%;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 #case-page #picture {
-  width: 50%;
+  right: 0px;
+  width: 35%;
 }
 
 #case-page #description {
   padding-top: 2%;
 }
 
-#case-page h1 {
+.max {
+  height: 100%;
+  width: 100%;
 }
 
 .right {
