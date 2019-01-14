@@ -18,10 +18,10 @@ export class MapContainer extends Component<{lat: number, long: number}> {
             <Map
                 google={this.props.google}
                 style={style}
-                zoom={14}
+                zoom={8}
                 initialCenter={{
-                    lat: this.props.lat,
-                    lng: this.props.long
+                    lat: 63,
+                    lng: 10
                 }}
                 onClick={this.onMapClick}
             >
@@ -29,9 +29,9 @@ export class MapContainer extends Component<{lat: number, long: number}> {
                     onClick={this.onMarkerClick}
                     name={"current location"}
                     draggable={true}
-                    position={{ lat: this.props.lat, lng: this.props.long}}
+                    position={{ lat: 63, lng: 10}}
                     ref={this.onMarkerMounted}
-                    onPositionChanged={() => this.onPositionChanged()}
+                    onDragend={() => this.onPositionChanged()}
                 />
 
                 <InfoWindow
