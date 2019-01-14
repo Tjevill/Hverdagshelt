@@ -14,7 +14,6 @@ import {
 import { caseService, mapService } from "../services.js";
 import Map from "./Map";
 import {Alert} from './widgets';
-import Geocode from "react-geocode";
 
 const formValid = ({ formErrors, ...rest }) => {
 	let valid = true;
@@ -122,7 +121,7 @@ export default class caseEdit extends Component<{
 
 				<div className="form-wrapper">
 					<h1> Rediger sak </h1>
-					
+
 					<form onSubmit={this.handleSubmit} noValidate>
 						<div className="headline">
 
@@ -132,7 +131,7 @@ export default class caseEdit extends Component<{
 								type="text"
 								defaultValue={this.case.headline}
 								placeholder="Tittel"
-							
+
 								name="headline"
 								noValidate
 								onChange={this.handleChange}
@@ -152,7 +151,7 @@ export default class caseEdit extends Component<{
 								defaultValue={this.mapData.formatted_address.split(",")[0]}
 
 								placeholder="Adresse"
-							
+
 								name="address"
 								noValidate
 								onChange={this.handleChange}
@@ -171,7 +170,7 @@ export default class caseEdit extends Component<{
 								type="text"
 								defaultValue={this.case.description}
 								placeholder="Beskrivelse"
-							
+
 								name="description"
 								noValidate
 								onChange={this.handleChange}
@@ -191,7 +190,7 @@ export default class caseEdit extends Component<{
 								type="text"
 								defaultValue={this.case.zipcode}
 								placeholder="Postnummer"
-							
+
 								name="zip"
 								noValidate
 								onChange={this.handleChange}
