@@ -2,19 +2,27 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import {caseService, categoryService} from '../services';
+import {caseService, categoryService, mapService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
-import MapContainer from "./ReportMap";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
 const style = {
-    float: 'bottom'
+    width: '100%',
+    height: '100%',
+    position: "relative"
 }
 
-export default class Report extends Component {
+export class Report extends Component {
     categories = [];
-
     selectedFile: null;
+    infoShowing = false;
+    activeMarker: {};
+    lat = 63.4283065;
+    lng = 10.3876995;
+    address = '';
+    zipcode = '';
+    mapData = {};
 
     state = {
         headline: "",
@@ -58,7 +66,7 @@ export default class Report extends Component {
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="Rapporter">
-                        <h1>Meld inn et problem</h1>
+                        <h1>Meld feil</h1>
                         <div className="form-group form-group-style">
                             Tittel:{" "}
                             <input
@@ -72,7 +80,32 @@ export default class Report extends Component {
 
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
-                                <MapContainer className="mapper" long={63} lat={10}/>
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="headline"
+                                defaultValue={this.address}
+                                readOnly={true}
+                            />
+                            <Map
+                                className="report-map"
+                                google={this.props.google}
+                                zoom={8}
+                                initialCenter={{
+                                    lat: this.lat,
+                                    lng: this.lng
+                                }}
+                                style={style}
+                                onClick={this.onMapClick}
+                            >
+                                <Marker
+                                    name={"current location"}
+                                    draggable={true}
+                                    position={{ lat: this.lat, lng: this.lng }}
+                                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                                />
+
+                            </Map>
 
                         </div>
 
@@ -120,6 +153,47 @@ export default class Report extends Component {
             </div>
         );
     }
+
+    onMarkerDragEnd = (coord) => {
+        console.log(coord.latLng.lat());
+        this.lat = coord.latLng.lat();
+        console.log(coord.latLng.lng());
+        this.lng = coord.latLng.lng();
+        mapService.getMapInfo(this.lat, this.lng).then(
+            mapData => {
+                this.mapData = mapData.results[0];
+                console.log(this.mapData);
+                if(this.mapData == null){
+                    this.mapData = {
+                        formatted_address: "none"
+                    }
+                }
+                let filter = [];
+                this.address = this.mapData.formatted_address;
+                if (this.mapData.address_components == null) {
+                    console.log('Ikke i Norge!');
+                } else {
+                    filter = this.mapData.address_components.filter(e =>
+                        e.types[0] == 'postal_code');
+                }
+
+                console.log(filter);
+                if(filter[0] == null) {
+                    this.zipcode = '0000';
+                } else {
+                    this.zipcode = filter[0].long_name;
+                }
+                console.log(this.zipcode);
+            }
+        );
+    };
+
+    onMapClick(props, map, e){
+        console.log("onMapClick");
+        this.infoShowing = false;
+        this.activeMarker = {};
+    }
+
     register(){
         var valid = true;
         if (this.state.headline == ''){
@@ -139,8 +213,8 @@ export default class Report extends Component {
         const casedata = {
             headline: this.state.headline,
             description: this.state.description,
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
+            latitude: this.lat,
+            longitude: this.lng,
             zipcode: 7050,
             picture: this.state.picture,
             category_id: this.state.category_id,
@@ -167,5 +241,14 @@ export default class Report extends Component {
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));
+
+
     }
+
+
 }
+
+export default GoogleApiWrapper({
+    apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
+})(Report);
+

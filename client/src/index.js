@@ -24,7 +24,6 @@ import UserEdit from "./components/UserEdit";
 import ChangePassword from "./components/ChangePassword";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import Map from "./components/Map";
-import MapContainer from "./components/ReportMap";
 
 
 const history = createHashHistory();
