@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import {caseService, categoryService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
+import MapContainer from "./ReportMap";
 
 export default class Report extends Component {
     categories = [];

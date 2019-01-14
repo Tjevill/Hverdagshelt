@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 export default class Navbar extends Component {
 
   active = "";
-  options = ["issues", "events", "profile", "login", "register", "admin"];
+  options = ["issues", "events", "profile", "login", "register", "admin", "map"];
 
   render() {
     return(
@@ -17,6 +17,7 @@ export default class Navbar extends Component {
           <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
           <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
           <a className="option" id="admin" href="#admin" onClick={() => this.activate("admin")}>Administrator</a>
+          <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Map</a>
           <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}>
           <i className="fa fa-bars"></i>
         </a>
