@@ -1,7 +1,7 @@
 // @flow
 
 const mysql = require('mysql');
-jest.setTimeout(10000);
+jest.setTimeout(50000);
 
 const CategoryDao = require("../dao/categorydao.js");
 const runsqlfile = require('./runsqlfile.js');
@@ -25,6 +25,9 @@ beforeAll(done => {
 	});
 });
 
+afterAll(done => {
+	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
+});
 
 test('getAllCategories from categorydao.js', done => {
 	function callback(status, data) {

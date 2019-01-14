@@ -6,8 +6,7 @@ DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS StatusTable;
 
-
-CREATE TABLE `Cases` (
+CREATE TABLE Cases (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
   `description` text NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
@@ -23,7 +22,6 @@ CREATE TABLE `Cases` (
   `org_id` int(11) DEFAULT NULL,
   PRIMARY KEY (case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
   CREATE TABLE `Employee` (
   `employee_id` int(8) NOT NULL AUTO_INCREMENT,
