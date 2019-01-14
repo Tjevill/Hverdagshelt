@@ -54,10 +54,10 @@ var sha512 = function(password, salt){
 
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "oyvinval",
-  database: "oyvinval",
-  password: "Dd8noqdd",
+  host: "praxiz2.mysql.domeneshop.no",
+  user: "praxiz2",
+  database: "praxiz2",
+  password: "e3rquLfn",
   debug: false
 });
 
