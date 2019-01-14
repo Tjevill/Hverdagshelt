@@ -20,9 +20,9 @@ INSERT INTO `Employee` (`name`, `tel`, `email`, `password`, `secret`, `province`
 ('Bentoooo', 4123444, 'test@test.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 22);
 
 INSERT INTO Events (name, date, description, zipcode) VALUES 
-    ('Test Event 1', 2019-12-03, 'description 1', 7001),
-    ('Test Event 2', 2019-12-03, 'description 2', 7002),
-    ('Test Event 3', 2019-12-03, 'description 3', 7003);
+    ('Test Event 1', "2019-12-03", 'description 1', 7001),
+    ('Test Event 2', "2019-12-03", 'description 2', 7002),
+    ('Test Event 3', "2019-12-03", 'description 3', 7003);
 
 
 INSERT INTO Category (description)

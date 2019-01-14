@@ -43,3 +43,11 @@ test('getOneByID from categorydao.js', done => {
 	categorydao.getOneByID(1, callback);
 });
 
+test('updateCategory from categorydao.js', done => {
+	function callback(status, data) {
+		console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+		expect(data.length).toBe(1);
+		done();
+	}
+	categorydao.getOneByID(1, callback);
+});
