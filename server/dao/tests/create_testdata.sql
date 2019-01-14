@@ -18,6 +18,6 @@ INSERT INTO `Cases` ( `description`, `longitude`, `latitude`, `status_id`, `user
 INSERT INTO Category ( description) VALUES ( 'Elektrisitet'), ( 'Hullfylling');
 
 INSERT INTO Events (name, date, description, zipcode) VALUES 
-    ('Test Event 1', 2019-12-03, 'description 1', 7001),
-    ('Test Event 2', 2019-12-03, 'description 2', 7002),
-    ('Test Event 3', 2019-12-03, 'description 3', 7003);
+    ('Test Event 1', "2019-12-03", 'description 1', 7001),
+    ('Test Event 2', "2019-12-03", 'description 2', 7002),
+    ('Test Event 3', "2019-12-03", 'description 3', 7003);

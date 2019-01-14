@@ -61,7 +61,7 @@ DROP TABLE IF EXISTS Events;
 CREATE TABLE Events (
     event_id int(8) NOT NULL AUTO_INCREMENT,
     name varchar(100) NOT NULL,
-    date DATETIME NOT NULL,
+    date varchar(100) NOT NULL, -- Will be changed to DATETIME or DATE
     description text NOT NULL,
     zipcode int(4) NOT NULL,
     PRIMARY KEY (event_id) 
