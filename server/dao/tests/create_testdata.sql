@@ -13,3 +13,8 @@ INSERT INTO `Cases` (`case_id`, `description`, `longitude`, `latitude`, `status_
 (10, 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:27:43', 'test headline', 'url', NULL, NULL),
 (11, 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:36:00', 'test headline', 'url', NULL, NULL);
 
+
+
+INSERT INTO `Employee` (`name`, `tel`, `email`, `password`, `secret`, `province`, `district`) VALUES
+('Odd Ronny Grustak', 24681012, 'oddronny@gmail.com', '66a6530c6943ff75238f0bef371af70929c899b12d08ffefeefa33fb1cc328c36925b5918520b20d82a2745845f650f633ec6120e3ca1a1bce4aed0e08c39118', '65aaacb1161c919729fdf2fecedbae72', 74, 5),
+('Bentoooo', 4123444, 'test@test.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 22);
