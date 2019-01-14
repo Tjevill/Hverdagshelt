@@ -112,7 +112,7 @@
 
 .cell3 img{
     height: 150px;
-    width: 
+    width: 150px;
 }
 
 .userHome-event h5{
@@ -203,6 +203,19 @@
 .userHome-events h4{
     font-family: 'IBM Plex Sans', sans-serif;
 }
+
+/*.row-style {*/
+    /*width: 500px;*/
+/*}*/
+
+.form-group-style {
+    margin-bottom: 10%;
+}
+
+.map-container {
+    margin-bottom: 100px;
+}
+
 
 
 
@@ -327,3 +340,5 @@ light green: #A3C4BC
 ListItem {
     height: 200px;
 }
+
+

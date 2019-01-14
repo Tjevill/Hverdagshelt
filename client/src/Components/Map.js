@@ -1,84 +1,84 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { caseService } from "../services";
+
 
 const style = {
-  width: '80%',
-  height: '60%'
+    width: '100%',
+    height: '100%'
 }
 
-export class MapContainer extends Component<{lat: number, long: number}> {
+class Info {
+  index: number;
+  html: string;
+}
 
-  infoShowing = false;
-  activeMarker: {};
+export class MapContainer extends Component {
 
+    infoShowing = false;
+    activeMarker: {};
+    cases = [];
+    info = [];
 
-  render() {
-      return (
-        <Map
-          google={this.props.google}
-          style={style}
-          zoom={14}
-          initialCenter={{
-            lat: this.props.lat,
-            lng: this.props.long
-          }}
-          onClick={this.onMapClick}
-        >
-          <Marker
-            onClick={this.onMarkerClick}
-            name={"current location"}
-            // draggable={true}
-            // ref={this.onMarkerMounted}
-            // onPositionChanged={this.onPositionChanged}
-          />
+    render() {
+        return (
+            <div className="max">
+                <Map
+                    google={this.props.google}
+                    style={style}
+                    zoom={2}
+                    initialCenter={{
+                        lat: 63.4283065,
+                        lng: 10.3876995
+                    }}
+                    onClick={this.onMapClick}
+                >
+                    {this.cases.map(caseItem => (
+                      <Marker
+                          key={caseItem.case_id}
+                          position={{
+                              lat: caseItem.latitude,
+                              lng: caseItem.longitude
+                          }}
+                          name={caseItem.case_id}
+                          onClick={this.onMarkerClick}
+                      />
+                    ))}
+                </Map>
+            </div>
+        );
+    }
 
-          <InfoWindow
-            marker={this.activeMarker}
-            visible={this.infoShowing}
-          >
-              <div>
-                <h6>Lat: {this.props.lat}</h6>
-                <h6>long: {this.props.long}</h6>
-              </div>
-          </InfoWindow>
+    componentDidMount(){
+        caseService.getAllCases().then(
+            cases => {
+                this.cases = cases;
+                this.cases.map(caseItem => {
+                  this.info.push(
+                    {
 
-        </Map>
-      );
-  }
+                    }
+                  );
+                });
+            }
+        );
+    }
 
-    // componentDidMount() {
-    //     // const refs = {};
-    //
-    //     this.setState({
-    //
-    //         onMarkerMounted: ref => {
-    //             this.activeMarker = ref;
-    //             console.log('mounted test')
-    //         },
-    //
-    //         onPositionChanged: () => {
-    //             const position = this.activeMarker.getPosition();
-    //             console.log(position.toString());
-    //             console.log('position changed test');
-    //         }
-    //     })
-    // }
+    onMarkerClick = (props, marker, e) => {
+      console.log("onMarkerClick");
+      this.activeMarker = marker;
+      this.infoShowing = true;
+    }
 
-  onMarkerClick = (props, marker, e) => {
-    console.log("onMarkerClick");
-    this.activeMarker = marker;
-    this.infoShowing = true;
-  }
-
-  onMapClick(){
-    console.log("onMapClick");
-    this.infoShowing = false;
-    this.activeMarker = {};
-  }
+    onMapClick(){
+      console.log("onMapClick");
+      this.infoShowing = false;
+      this.activeMarker = {};
+    }
 
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
+    apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
 })(MapContainer);

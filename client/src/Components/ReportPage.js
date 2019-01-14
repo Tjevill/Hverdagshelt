@@ -5,6 +5,11 @@ import { Component } from "react-simplified";
 import {caseService, categoryService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
+import MapContainer from "./ReportMap";
+
+const style = {
+    float: 'bottom'
+}
 
 export default class Report extends Component {
     categories = [];
@@ -49,12 +54,12 @@ export default class Report extends Component {
     };
     render(){
         return(
-            <div className="row">
+            <div className="row row-style" style={style}>
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="Rapporter">
                         <h1>Meld inn et problem</h1>
-                        <div className="form-group">
+                        <div className="form-group form-group-style">
                             Tittel:{" "}
                             <input
                                 className="form-control"
@@ -64,7 +69,14 @@ export default class Report extends Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="map-container">
+                            Spesifiser hvor problemet befinner seg:
+                                <MapContainer className="mapper" long={63} lat={10}/>
+
+                        </div>
+
+                        <div className="form-group form-group-style">
                             Beskrivelse:{" "}
                             <input
                                 className="form-control"
@@ -74,32 +86,12 @@ export default class Report extends Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group form-group-style">
                             Last opp bilde:
                             <label className="file-upload-container" htmlFor="file-upload"></label>
                             <input id="file-upload" type="file" name="file-upload" onChange={this.fileSelectedHandler}></input>
                         </div>
-                        <div className="form-group">
-                            latitude:{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue=""
-                                name="latitude"
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            longitude:{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue=""
-                                name="longitude"
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
+                        <div className="form-group form-group-style">
                             Hvilken bruker? (temp):{" "}
                             <input
                                 className="form-control"

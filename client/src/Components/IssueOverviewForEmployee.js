@@ -28,14 +28,13 @@ function count(array) {
   return result;
 }
 
-//<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
-
 export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
   sepacategories = [];
   cases = [];
   casesbyKommune= [];
+  casesbyStatus = [];
   cateside  = [];
   fylker = [];
   kommuner = [];
@@ -67,48 +66,69 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           console.log(this.casesbyKommune);
        if(this.casesbyKommune.length==0){
          this.Meldning =(
-            <p>Finnes ingen saker under Kommune {event.target.value}</p>
+            <h>Finnes ingen saker under Kommune {event.target.value}</h>
           );
           console.log("hahaha");
        }
+  }
 
+  handleChangeStatus = event => {
+    console.log(this.cases);
+    console.log(event.target.value);
+    if(event.target.value==0){
+      console.log("haha");
+      this.casesbyStatus = this.cases;
+      this.forceUpdate();
+    }else{
+      this.casesbyStatus = this.cases.filter(function(vaule){
+      return vaule.status_id==event.target.value;
+      });
+    this.forceUpdate();
+    console.log(this.casesbyStatus);
+    }
   }
 
   render(){
-    console.log(this.caseofCat);
     let lists;
     let sidebuttons;
 
     if(this.props.match.params.name=="All"){
-      console.log(this.props.match.params.name);
       this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
-
       lists = (
         <div>
-        {this.cateside.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} </ListGroup.Item>
+        {this.casesbyStatus.map(casen =>(
+          <a class="list-group-item " href={"#/case/"+casen.case_id} target="_self">
+            CaseID:&nbsp; {casen.case_id} CaseHeadline:&nbsp;{casen.headline} CaseCategoryID: {casen.category_id}
+              <span class="pull-right">
+                  <div class="btn-group" role="group" aria-label="...">
+                      <a href="#/Issues/All/1" class="btn btn-sm btn-warning"   >
+                          <span class="glyphicon glyphicon-pencil" aria-hidden="true">Rediger</span>
+                      </a>
+                      <span class="btn btn-sm btn-danger" >
+                          <span class="glyphicon glyphicon-remove" aria-hidden="true">&nbsp;Slett&nbsp;&nbsp;</span>
+                      </span>
+                  </div>
+              </span>
+          </a>
         ))}
         </div>
       );
 
-      sidebuttons =(
+      sidebuttons = (
         <div>
-        {(count(sliceArray(this.cases, 15))).map(sidetall => (
+        {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
             <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/All/'+sidetall)}>{sidetall} </button>
         ))}
         </div>
       );
 
      } else {
-       console.log(this.caseofCat);
-
        lists = (
          <div>
         {this.caseofCat.map(casen =>(
           <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} </ListGroup.Item>
         ))}
         </div>);
-
        sidebuttons = (
         <div>
         {(count(sliceArray(this.caseofCat, 15))).map(sidetall => (
@@ -151,6 +171,22 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                 </select>
             </div>
           </div>
+          <div class="col align-self-center">
+          <form class="form-inline well">
+            <div class="form-group">
+              <label for="inputKommune">Status &nbsp;</label>
+                <select class="w-auto" id="kommune" name="kommune" class="form-control" onChange={this.handleChangeStatus}>
+                  <option selected value={0}>Velg Status</option>
+                  <option value={1}>Registrert</option>
+                  <option value={2}>Under Vurdering</option>
+                  <option value={3}>Satt på vent</option>
+                  <option value={4}>Arbeid pågår</option>
+                  <option value={5}>Avvist</option>
+                  <option value={6}>Løst</option>
+              </select>
+            </div>
+          </form>
+          </div>
           {this.Meldning}
         </div>
       </div>
@@ -160,9 +196,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       <p>Nyeste Meldte Feil</p>
         <Router history={history}>
           <div className="container text-center">
-            <ListGroup>
                 {lists}
-            </ListGroup>
          </div>
         </Router>
       <br/><br/>
@@ -184,6 +218,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCases()
         .then(cases => {
             this.cases = cases;
+            this.casesbyStatus = cases;
             console.log(this.cases);
             this.forceUpdate();
           })
