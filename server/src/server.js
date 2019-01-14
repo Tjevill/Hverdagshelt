@@ -69,6 +69,7 @@ const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
+const Statusdao = require("../dao/statusdao.js");
 
 
 
@@ -90,6 +91,7 @@ let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
+let statusDao = new Statusdao(pool);
 
 
 
@@ -713,8 +715,9 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 let verifyOldPassword = (id, password) => {
 	
-	let promise = new Promise((resolve => {
+	let promise4 = new Promise((resolve => {
 		userdao.getHashedPWord(id, (status, data) => {
+			console.log("data:  l/p: " + id + " " + password  + "    " + data[0].user_id + "------" + data[0].password + "-------" + data[0].secret);
 			const savedPassword = data[0].password;
 			const passwordData = sha512(password, data[0].secret);
 			
@@ -725,7 +728,7 @@ let verifyOldPassword = (id, password) => {
 			}
 		})
 	}));
-	return promise;
+	return promise4;
 };
 
 
@@ -748,10 +751,13 @@ function loginOk(username, password) {
     return promise1;
 }
 
-app.get('userVerification/:id', (req: Request, res: Response) => {
-	let promise = verifyOldPassword(req.params.id, req.params.password);
+/**
+ * Verifies old password for user.
+ */
+app.get('/userVerification', (req: Request, res: Response) => {
+	let promise4 = verifyOldPassword(req.body.id, req.body.oldPassword);
 	
-	promise.then((value => {
+	promise4.then((value => {
 		if(value){
 			res.json({login: 1});
 			res.status(200);
@@ -846,6 +852,24 @@ app.delete("/admin/delete/:id", (req, res) => {
         res.json(data[0]);
     });
 });
+
+/** Get all status */
+    app.get("/status", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getAllStatuses((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Get status by ID */
+    app.get("/status/:id", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getOneById( req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 
 
 

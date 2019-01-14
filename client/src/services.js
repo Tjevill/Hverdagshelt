@@ -31,6 +31,11 @@ class Case {
   org_id: number;
 }
 
+class Status {
+  status_id: number;
+  description: string;
+}
+
 class Event{
   event_id: number;
   name: string;
@@ -59,6 +64,12 @@ class UserSubscriptionUpdate {
 class UserUpdatePWord {
   user_id: number;
   password: string;
+}
+
+class UserVerifyOldPWordAndUpdate {
+	user_id: number;
+	oldPassword: string;
+	newpassword: string;
 }
 
 class Organization {
@@ -245,6 +256,21 @@ class UserService {
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.put(url + '/userProvince/' + id);
   }
+	
+	/**
+	 * Service object for verifying and changing password for logged in users.
+	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
+	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
+	 */
+  verifyOldPasswordAndUpdatePWord(updatePassword: UserVerifyOldPWordAndUpdate): Promise<number>{
+  	const res = axios.get(url + '/userVerification' + updatePassword);
+  	if(res === 1){
+  		axios.put(url + '/updateUserPword', {"user_id": updatePassword.user_id, "password": updatePassword.newpassword});
+			return 1;
+		}else{
+  		return 0;
+		}
+	}
 
 }
 
@@ -403,3 +429,14 @@ class EventService {
 
 }
 export let eventService = new EventService();
+
+class StatusService {
+
+  getAllStatuses(): Promise<Status[]> {
+    return axios.get(url + "/status")
+  }
+
+  getOneById(id:number): Promise<Status[]> {
+    return axios.get(url + "/status/" + id);
+  }
+}
