@@ -27,9 +27,6 @@ beforeAll(done => {
   });
 });
 
-afterAll( () => {
-    pool.end();
-});
 
 test('getAllCases', done => {
   function callback(status, data) {

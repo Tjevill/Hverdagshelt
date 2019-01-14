@@ -24,9 +24,6 @@ beforeAll(done => {
   });
 });
 
-afterAll(() => {
- pool.end();
-});
 
 test('getAllEvents', done => {
   function callback(status, data) {

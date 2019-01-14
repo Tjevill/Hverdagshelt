@@ -25,10 +25,6 @@ beforeAll(done =>{
     });
 });
 
-afterAll( () => {
-    pool.end();
-});
-
 test("Get every status from db", done =>{
     function callback(status, data){
         console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
