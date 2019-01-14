@@ -25,12 +25,13 @@ import ChangePassword from "./components/ChangePassword";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import Map from "./components/Map";
 import MapContainer from "./components/ReportMap";
-<<<<<<< HEAD
-import EventsEdit from  "./components/EventsEdit";
-=======
 import CaseEdit from "./components/caseEdit";
+import EventsEdit from "./components/EventsEdit";
+import NewEvents from "./components/NewEvents";
 
->>>>>>> b13da2459bb7baf08361c828b64cbabfea3623fb
+
+
+
 
 
 const history = createHashHistory();
