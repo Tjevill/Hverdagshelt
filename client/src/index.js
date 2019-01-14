@@ -22,6 +22,7 @@ import NewEmployee from "./components/NewEmployee";
 import Admin from "./components/Admin";
 import UserEdit from "./components/UserEdit";
 import ChangePassword from "./components/ChangePassword";
+import Map from "./components/Map";
 
 
 const history = createHashHistory();
@@ -85,6 +86,7 @@ function renderRoot() {
             <Route exact path="/register" component={Register}/>
             <Route exact path="/nyansatt" component={NewEmployee}/>
             <Route exact path="/nypassord/:id" component={ChangePassword} />
+            <Route exact path="/map" component={Map} />
             <PrivateRoute path="/admin" component={Admin} />
           </div>
         </div>
