@@ -11,7 +11,7 @@ var pool = mysql.createPool({
   connectionLimit: 1,
   host: 'mysql.stud.iie.ntnu.no',
   user: 'benos',
-  password: 'FNYpbRGo',
+  password: 'uJHtIkcl',
   database: 'benos',
   debug: false,
   multipleStatements: true
