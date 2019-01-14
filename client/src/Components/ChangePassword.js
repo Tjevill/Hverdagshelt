@@ -71,8 +71,15 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
     	newpassword: this.newPassword1
     };
 
-    const testpromise = userService.verifyOldPasswordAndUpdatePWord(passwordInfo);
-    console.log("testpromise" + testpromise);
+    userService
+      .verifyOldPasswordAndUpdatePWord(passwordInfo)
+      .then(response => {
+          console.log(response);
+        })
+     .catch((error: Error) => Alert.danger(error.message));
+
+
+
 
 
   }
