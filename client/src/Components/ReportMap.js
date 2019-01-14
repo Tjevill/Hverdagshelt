@@ -48,7 +48,7 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         );
     }
 
-    onMarkerDragEnd = (coord, index) => {
+    onMarkerDragEnd = (coord) => {
       console.log(coord.latLng.lat());
       console.log(coord.latLng.lng());
     };

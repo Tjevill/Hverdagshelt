@@ -9,11 +9,17 @@ const style = {
     height: '100%'
 }
 
-export class MapContainer extends Component{
+class Info {
+  index: number;
+  html: string;
+}
+
+export class MapContainer extends Component {
 
     infoShowing = false;
     activeMarker: {};
     cases = [];
+    info = [];
 
     render() {
         return (
@@ -29,14 +35,15 @@ export class MapContainer extends Component{
                     onClick={this.onMapClick}
                 >
                     {this.cases.map(caseItem => (
-                        <Marker
-                            key={caseItem.case_id}
-                            position={{
-                                lat: caseItem.latitude,
-                                lng: caseItem.longitude
-                            }}
-                            name={caseItem.case_id}
-                        />
+                      <Marker
+                          key={caseItem.case_id}
+                          position={{
+                              lat: caseItem.latitude,
+                              lng: caseItem.longitude
+                          }}
+                          name={caseItem.case_id}
+                          onClick={this.onMarkerClick}
+                      />
                     ))}
                 </Map>
             </div>
@@ -47,8 +54,27 @@ export class MapContainer extends Component{
         caseService.getAllCases().then(
             cases => {
                 this.cases = cases;
+                this.cases.map(caseItem => {
+                  this.info.push(
+                    {
+
+                    }
+                  );
+                });
             }
         );
+    }
+
+    onMarkerClick = (props, marker, e) => {
+      console.log("onMarkerClick");
+      this.activeMarker = marker;
+      this.infoShowing = true;
+    }
+
+    onMapClick(){
+      console.log("onMapClick");
+      this.infoShowing = false;
+      this.activeMarker = {};
     }
 
 }

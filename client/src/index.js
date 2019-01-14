@@ -89,7 +89,7 @@ function renderRoot() {
             <Route exact path="/nyansatt" component={NewEmployee}/>
             <Route exact path="/nypassord/:id" component={ChangePassword} />
             <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
-            <Route exact path="/map" component={MapContainer} />
+            <Route exact path="/map" component={Map} />
             <PrivateRoute path="/admin" component={Admin} />
           </div>
         </div>
