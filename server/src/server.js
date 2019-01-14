@@ -713,8 +713,9 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 let verifyOldPassword = (id, password) => {
 	
-	let promise = new Promise((resolve => {
+	let promise4 = new Promise((resolve => {
 		userdao.getHashedPWord(id, (status, data) => {
+			console.log("data:  l/p: " + id + " " + password  + "    " + data[0].user_id + "------" + data[0].password + "-------" + data[0].secret);
 			const savedPassword = data[0].password;
 			const passwordData = sha512(password, data[0].secret);
 			
@@ -725,7 +726,7 @@ let verifyOldPassword = (id, password) => {
 			}
 		})
 	}));
-	return promise;
+	return promise4;
 };
 
 
@@ -748,10 +749,13 @@ function loginOk(username, password) {
     return promise1;
 }
 
-app.get('userVerification/:id', (req: Request, res: Response) => {
-	let promise = verifyOldPassword(req.params.id, req.params.password);
+/**
+ * Verifies old password for user.
+ */
+app.get('/userVerification', (req: Request, res: Response) => {
+	let promise4 = verifyOldPassword(req.body.id, req.body.oldPassword);
 	
-	promise.then((value => {
+	promise4.then((value => {
 		if(value){
 			res.json({login: 1});
 			res.status(200);
