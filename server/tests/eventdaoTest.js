@@ -24,6 +24,10 @@ beforeAll(done => {
   });
 });
 
+afterAll(() => {
+ pool.end();
+});
+
 test('getAllEvents', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
