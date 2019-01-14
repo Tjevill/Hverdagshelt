@@ -150,4 +150,5 @@ module.exports = class CasesDao extends Dao {
             callback
             );
     }
-}
+};
+
