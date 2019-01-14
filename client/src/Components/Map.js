@@ -22,6 +22,9 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           <Marker
             onClick={this.onMarkerClick}
             name={"current location"}
+            // draggable={true}
+            // ref={this.onMarkerMounted}
+            // onPositionChanged={this.onPositionChanged}
           />
 
           <InfoWindow
@@ -37,6 +40,24 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         </Map>
       );
   }
+
+    // componentDidMount() {
+    //     // const refs = {};
+    //
+    //     this.setState({
+    //
+    //         onMarkerMounted: ref => {
+    //             this.activeMarker = ref;
+    //             console.log('mounted test')
+    //         },
+    //
+    //         onPositionChanged: () => {
+    //             const position = this.activeMarker.getPosition();
+    //             console.log(position.toString());
+    //             console.log('position changed test');
+    //         }
+    //     })
+    // }
 
   onMarkerClick = (props, marker, e) => {
     console.log("onMarkerClick");
