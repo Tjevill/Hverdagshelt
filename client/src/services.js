@@ -31,6 +31,11 @@ class Case {
   org_id: number;
 }
 
+class Status {
+  status_id: number;
+  description: string;
+}
+
 class Event{
   event_id: number;
   name: string;
@@ -403,3 +408,14 @@ class EventService {
 
 }
 export let eventService = new EventService();
+
+class StatusService {
+
+  getAllStatuses(): Promise<Status[]> {
+    return axios.get(url + "/status")
+  }
+
+  getOneById(id:number): Promise<Status[]> {
+    return axios.get(url + "/status/" + id);
+  }
+}

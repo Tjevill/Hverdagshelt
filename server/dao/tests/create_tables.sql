@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS Cases;
 DROP TABLE IF EXISTS Employee;
 
 CREATE TABLE `Cases` (
-  `case_id` int(8) NOT NULL,
+  `case_id` int(8) NOT NULL AUTO_INCREMENT,
   `description` text NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
   `latitude` decimal(10,8) NOT NULL,
@@ -14,7 +14,8 @@ CREATE TABLE `Cases` (
   `headline` varchar(100) NOT NULL,
   `picture` text,
   `employee_id` int(11) DEFAULT NULL,
-  `org_id` int(11) DEFAULT NULL
+  `org_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `Cases`

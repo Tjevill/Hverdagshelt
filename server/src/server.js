@@ -55,9 +55,9 @@ var sha512 = function(password, salt){
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "mysql.stud.iie.ntnu.no",
-  user: "oyvinval",
-  database: "oyvinval",
-  password: "Dd8noqdd",
+  user: "mariteil",
+  database: "mariteil",
+  password: "Fs7ABKyd",
   debug: false
 });
 
@@ -69,6 +69,7 @@ const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
+const Statusdao = require("../dao/statusdao.js");
 
 
 
@@ -90,6 +91,7 @@ let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
+let statusDao = new Statusdao(pool);
 
 
 
@@ -601,17 +603,17 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             console.log(req.body);
         });
 
-        let email = req.body.email;    
+        let email = req.body.email;
         const mailOptionsUpdateCase = {
             from: 'bedrehverdagshelt@gmail.com',
             to: email,
             subject: 'Saken er oppdatert!',
-            html: 
-                '<h1> Status: ' + req.body.status_id + '</h1>' + 
+            html:
+                '<h1> Status: ' + req.body.status_id + '</h1>' +
                 '<p><b> HverdagsHelt Support Team </b></p>' +
                 '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
                 '<p> <b> HverdagsHelt AS </b> </p>' +
-                '<p> 72 59 50 00 </p>' 
+                '<p> 72 59 50 00 </p>'
         };
 
         transporter.sendMail(mailOptionsUpdateCase, function(error, info){
@@ -622,7 +624,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             }
         });
     });
-    
+
 
     /** search case by category description */
     app.get("/searchCaseCategory/:description", (req, res) =>{
@@ -661,7 +663,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-  
+
 
     /** create case and send confirmation mail */
     app.post("/cases", (req, res) => {
@@ -711,6 +713,23 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 // End Cases
 
 
+let verifyOldPassword = (id, password) => {
+	
+	let promise = new Promise((resolve => {
+		userdao.getHashedPWord(id, (status, data) => {
+			const savedPassword = data[0].password;
+			const passwordData = sha512(password, data[0].secret);
+			
+			if(passwordData.passwordHash === savedPassword){
+				resolve(true);
+			} else {
+				resolve(false);
+			}
+		})
+	}));
+	return promise;
+};
+
 
 function loginOk(username, password) {
 
@@ -730,6 +749,20 @@ function loginOk(username, password) {
     })
     return promise1;
 }
+
+app.get('userVerification/:id', (req: Request, res: Response) => {
+	let promise = verifyOldPassword(req.params.id, req.params.password);
+	
+	promise.then((value => {
+		if(value){
+			res.json({login: 1});
+			res.status(200);
+		} else {
+			res.json({login: 0});
+			res.status(401);
+		}
+	}));
+});
 
 app.post("/login", (req, res) => {
 // console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
@@ -815,6 +848,24 @@ app.delete("/admin/delete/:id", (req, res) => {
         res.json(data[0]);
     });
 });
+
+/** Get all status */
+    app.get("/status", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getAllStatuses((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Get status by ID */
+    app.get("/status/:id", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getOneById( req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 
 
 

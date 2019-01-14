@@ -82,6 +82,15 @@ module.exports = class UserDao extends Dao {
 		);
 	}
 	
+	getHashedPWord(id: number, callback: mixed){
+		super.query(
+			"select password, secret from User where user_id = ?",
+			[id],
+			callback
+		);
+		
+	}
+	
 	/**
 	 * Use this method for updating personal data, except password
 	 * @param json

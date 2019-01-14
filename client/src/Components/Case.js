@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import Map from "./Map";
+import Map from "./CaseMap";
 import { caseService, mapService } from "../services";
 
 export default class Case extends Component {
@@ -10,7 +10,6 @@ export default class Case extends Component {
   case = {};
   map = <></>;
   mapData = {};
-  zip = 0;
   province = "";
   test = <h1>test</h1>;
 
@@ -18,12 +17,12 @@ export default class Case extends Component {
     if(this.loaded){
       return (
         <div id="case-page">
-          <div style={{ marginBottom: "80px"}}>
+          <div id="info">
             <Card
               title={this.case.headline}
               province={this.province}
               address={this.mapData.formatted_address.split(",")[0]}
-              zip={this.zip}
+              zip={this.case.zipcode}
               date={this.case.timestamp}
             />
             <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
@@ -44,24 +43,28 @@ export default class Case extends Component {
     if(this.openMap) document.location.reload();
     this.openMap = true;
     let casePromise = caseService.getCaseById(this.props.match.params.id);
-    casePromise.then(caseData => (
-      //console.log(caseData[0]),
-      this.case = caseData[0],
+    casePromise.then(caseData => {
+      //console.log(caseData[0]);
+      this.case = caseData[0];
+      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>;
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
-        mapData => (
-          this.mapData = mapData.results[0],
-          this.zip = this.mapData.address_components[this.mapData.address_components.length - 1].long_name,
-          //console.log(this.mapData),
-          mapService.getProvince(this.zip).then(
-            zipData => (
-              this.province = zipData.result.postnr[0].kommune,
-              this.loaded = true
-            )
-          )
-        )
-      ),
-      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
-    ));
+        mapData => {
+          this.mapData = mapData.results[0];
+          //console.log(this.mapData);
+          if(this.mapData == null){
+            this.mapData = {
+              formatted_address: "none"
+            }
+          }
+          mapService.getProvince(this.case.zipcode).then(
+            zipData => {
+              this.province = zipData.result.postnr[0].kommune;
+              this.loaded = true;
+            }
+          );
+        }
+      );
+    });
 
   }
 
@@ -79,9 +82,9 @@ export class Card extends Component<{
 
   render() {
     return (
-      <div className={"card article info"}>
-        <div className="card-body article-body">
-            <h5 className="card-title article-title">{this.props.title}</h5>
+      <div className="card details">
+        <div className="card-body">
+            <h5 className="card-title">{this.props.title}</h5>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">Kommune: {this.props.province}</li>
               <li className="list-group-item">Adresse: {this.props.address}</li>
