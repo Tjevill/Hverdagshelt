@@ -51,26 +51,18 @@ var sha512 = function(password, salt){
     };
 };
 
-/*
+
 
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: "mysql.stud.iie.ntnu.no",
-    user: "oyvinval",
-    database: "oyvinval",
-    password: "Dd8noqdd",
+    user: "mariteil",
+    database: "mariteil",
+    password: "Fs7ABKyd",
     debug: false
 });
 
-*/
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: "praxiz2.mysql.domeneshop.no",
-  user: "praxiz2",
-  database: "praxiz2",
-  password: "e3rquLfn",
-  debug: false
-});
+
 
 // Dao's
 const Hverdagsdao = require("../dao/hverdagsdao.js");
@@ -96,6 +88,43 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let employeeDao = new Employeedao(pool);
+
+
+
+app.put("/newuser", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    userdao.addUser(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+app.put("/newemployee", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addEmployee(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+app.put("/neworganization", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addOrganization(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.put("/neworgcat/:id", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
+        res.status(status);
+       //  res.json(data);
+    });
+});
+
 
 
 app.get("/cases", (req, res) => {
@@ -322,7 +351,19 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** update case on case_id */
+
+/** get all categories  */
+
+    app.get("/getAllCategories", (req, res) => {
+        console.log("Received get-request on endpoint /getAllCategories");
+        employeeDao.getAllCategories((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+
+/** update case on case_id */
     app.put("/updateCase/:case_id", (req, res) =>{
       console.log("Received delete-request from client.");
       console.log("Trying to update case with id: "+req.params.case_id);
@@ -496,18 +537,17 @@ app.post("/logink", (req, res) => {
     });
 });
 
-// app.get('/admin/main/', middleware.checkToken, handlers.index);
 
-/*
 
-function loginOk(email, password) {
+app.post("/loginb", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
-        userdao.getUsername(email, (status, data) => {
-            console.log("data: " + data);
+        console.log("data email: ", req.body);
+        employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
+            console.log("data email: " + req.body.email2);
             const lagretPass = data[0].password;
-            const passwordData = sha512(password, data[0].secret);
-            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+            const passwordData = sha512(req.body.password2, data[0].secret);
+            console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
             if (passwordData.passwordHash == lagretPass) {
                 resolve(true);
@@ -516,22 +556,14 @@ function loginOk(email, password) {
             }
         });
     })
-    return promise1;
-}
 
-app.post("/login", (req, res) => {
-// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-    var promiseObject = loginOk(req.body.email, req.body.password);
-
-
-    promiseObject.then(function (value) {
+    promise1.then(function (value) {
         if (value) {
+            employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
 
-            userdao.getUsername(req.body.email, (status, data) => {
-
-                let token = jwt.sign({username: req.body.username}, privateKey, { expiresIn: 10 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", username: data[0].username, user_id: data[0].user_id, name: data[0].name});
-                console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+                let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
             });
 
         } else {
@@ -542,8 +574,6 @@ app.post("/login", (req, res) => {
         }
     });
 });
-
-*/
 
 
 

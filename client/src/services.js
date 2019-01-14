@@ -120,10 +120,6 @@ class CaseService {
     return axios.get(url + '/cases');
   }
 
-    getCategories(): Promise<Category[]> {
-        return axios.get(url + '/categories');
-    }
-
   getCase(id: number): Promise<Cases> {
     return axios.get(url + '/cases/' + id);
   }
@@ -203,11 +199,24 @@ export let userService = new UserService();
 
 
 class EmployeeService {
+    getCategories(): Promise<Category[]> {
+        return axios.get(url + '/getAllCategories');
+    }
+
+    addOrganization(newemployee: Register): Promise<void> {
+        console.log("ORG TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworganization", newemployee);
+    }
 
     addEmployee(newemployee: Register): Promise<void> {
-        console.log("DATA TIL SERVICE: ", newemployee);
-        // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-        return axios.put(url + "/newuser", newemployee);
+        console.log("EMPLOYEE TIL SERVICE: ", newemployee);
+        return axios.put(url + "/newemployee", newemployee);
+    }
+
+
+    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
+        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworgcat/" + company_id, newemployee);
     }
 
 

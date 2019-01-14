@@ -13,16 +13,16 @@ export default class Register extends Component {
   message = " ";
   passworderror = " ";
 
-    fylker = [];
-    kommuner = [];
+    communes = [];
+    counties = [];
 
   state = {
 
     name: "Odd Ronny Grustak",
     tel: "24681012",
     email: "oddronny@gmail.com",
-    district: "",
-    province: "",
+    county: "",
+    commune: "",
     password: "abcd1234",
     password2: "abcd1234"
   };
@@ -32,8 +32,8 @@ export default class Register extends Component {
         userService
             .getDistricts()
             .then(response => {
-                this.fylker = response;
-                console.log("fylker: ", this.fylker);
+                this.counties = response;
+                console.log("fylker: ", this.counties);
             })
 
             .catch(
@@ -46,13 +46,13 @@ export default class Register extends Component {
 
         console.log("FYLKE VALGT: " + event.target.value)
 
-        this.state.district = event.target.value;
+        this.state.county = event.target.value;
 
         userService
             .getProvince(event.target.value)
             .then(response => {
-                this.kommuner = response;
-                console.log("kommuner: ", this.kommuner);
+                this.communes = response;
+                console.log("kommuner: ", this.communes);
             })
             .catch(
                 (error: Error) =>
@@ -62,7 +62,7 @@ export default class Register extends Component {
     }
 
     handleChangeKommune = event => {
-        this.state.province = event.target.value;
+        this.state.commune = event.target.value;
 
     }
 
@@ -71,7 +71,7 @@ export default class Register extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-      this.state.province = event.target.value;
+      this.state.commune = event.target.value;
 
 
       this.setState((state, props) => ({
@@ -125,18 +125,18 @@ export default class Register extends Component {
         </div>
           <div className="form-group">
               Velg fylke:{" "}
-              <select className="form-control" name="fylke" id="fylke" onChange={this.handleChangeFylke}>
+              <select className="form-control" name="county" id="county" onChange={this.handleChangeFylke}>
                   <option>>> Velg fylke</option>
-                  {this.fylker.map(fylke => {
+                  {this.counties.map(fylke => {
                       return (<option value={fylke.ID}>{fylke.navn}</option>)
                   })}
               </select>
           </div>
           <div className="form-group">
               Velg kommune:{" "}
-              <select className="form-control" name="kommune" id="kommune" onChange={this.handleChangeKommune}>
+              <select className="form-control" name="commune" id="commune" onChange={this.handleChangeKommune}>
                   <option>>>Velg kommune</option>
-                  {this.kommuner.map(kommuner => {
+                  {this.communes.map(kommuner => {
                       return (<option value={kommuner.ID}>{kommuner.navn}</option>)
                   })}
               </select>
@@ -211,8 +211,8 @@ export default class Register extends Component {
         name: this.state.name,
         tel: this.state.tel,
         email: this.state.email,
-        district: this.state.district,
-        province: this.state.province,
+        county: this.state.county,
+        commune: this.state.commune,
         password: this.state.password,
         password2: this.state.password2
     };

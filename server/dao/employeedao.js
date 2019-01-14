@@ -20,16 +20,56 @@ var sha512 = function(password, salt){
     };
 };
 
-module.exports = class UserDao extends Dao {
+module.exports = class EmployeeDao extends Dao {
+
+
+    addOrganization(json, callback) {
+        var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
+        var passwordData = sha512(json.password, salt);
+        var val = [json.organizationnumber, json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt];
+        super.query(
+            "insert into Organization (organizationnumber, name, tel, email, password, secret) values (?,?,?,?,?,?)",
+            val,
+            callback
+        );
+    }
+
+    addManyRefrences(json, company_id, callback) {
+        console.log("json; ", company_id);
+        console.log("testing: " + json.length);
+
+        json.map(hm =>
+
+            console.log("catid: " + hm.catid)
+
+          /super.query(
+                "INSERT INTO Org_cat (org_id, category_id) values (?,?)",
+                [company_id, hm.catid],
+                callback
+            )
+
+        );
+
+
+    }
 
 
     addEmployee(json, callback) {
         var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
         var passwordData = sha512(json.password, salt);
-        var val = [json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.province, json.district];
+        var val = [json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.county, json.commune];
         super.query(
-            "insert into Employee (name, tel, email, password, secret, province, district) values (?,?,?,?,?,?,?)",
+            "insert into Employee (name, tel, email, password, secret, county, commune) values (?,?,?,?,?,?,?)",
             val,
+            callback
+        );
+    }
+
+    getBedriftByEmail(email, callback) {
+        console.log("Getting Bedrift based on its email: " + email);
+        super.query(
+            "select * from Organization where email = ?",
+            [email],
             callback
         );
     }
@@ -41,6 +81,13 @@ module.exports = class UserDao extends Dao {
             [email],
             callback
         );
+    }
+
+    getAllCategories(callback: mixed) {
+        super.query(
+            "select * FROM Category",
+            [],
+            callback);
     }
 
 

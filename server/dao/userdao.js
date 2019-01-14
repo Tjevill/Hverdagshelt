@@ -99,9 +99,9 @@ module.exports = class UserDao extends Dao {
     addUser(json, callback) {
       var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
       var passwordData = sha512(json.password, salt);
-      var val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, passwordData.passwordHash, passwordData.salt, json.subscription];
+      var val = [json.name, json.address, json.zipcode, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.subscription];
       super.query(
-        "insert into User (name, address, zipcode, tel, email, username, password, secret, subscription) values (?,?,?,?,?,?,?,?,?)",
+        "insert into User (name, address, zipcode, tel, email, password, secret, subscription) values (?,?,?,?,?,?,?,?)",
         val,
         callback
       );

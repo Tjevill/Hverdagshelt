@@ -2,19 +2,58 @@
 .navbar-nav > li > a {
     padding-top:5px !important;
     padding-bottom:5px !important;
-    overflow: visible;
+    overflow: visible; !important;
     z-index: 999;
 }
 .navbar {
     min-height:100px !important;
-    overflow: visible;
-    z-index: 999;
+    overflow: visible; !important;
+
+
+}
+
+.dropdownmenus {
+    position:fixed;
+    left:310px;
+}
+
+.dropdownmenus1 {
+    position:fixed;
+    left:380px;
 }
 
 .dropdown{
-    position:fixed;
-
+    z-index:-1;
+    border: 0px solid white;
+    overflow: visible;
 }
+
+.open {
+    color: #ffffff; !important;
+
+    background-color: white;
+}
+
+
+.logged-in-as {
+    position: fixed;
+    right:10px;
+    color: #fff;
+    padding-top:5px !important;
+    padding-bottom:15px !important;
+}
+
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+
+.dropdown-menu_left {
+    border: 2px solid red;
+}
+
+
 .dropdown-toggle {
     padding-top:13px !important;
     padding-bottom:13px !important;
@@ -25,12 +64,12 @@
 }
 .dropdown-toggle:hover {
     background: white;
-    color: #000000;
+    color: #004400;
 }
 
 .dropdown-toggle:active  {
-    background: white;
-    color: #000000;
+    background: white; !important
+    color: #ff0000; !important
 }
 
 
@@ -130,5 +169,3 @@ summary::-webkit-details-marker {
 summary:focus {
     outline-style: none;
 }
-
-

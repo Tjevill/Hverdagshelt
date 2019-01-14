@@ -15,6 +15,7 @@ import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./components/Register";
+import NewOrganization from "./components/NewOrganization";
 import NewEmployee from "./components/NewEmployee";
 import AdminMain from "./components/AdminMain";
 import LoginPage from "./components/LoginPage";
@@ -26,6 +27,7 @@ import createHistory from 'history/createBrowserHistory'
 const history = createHistory({
   forceRefresh: true
 })
+
 
 
 
@@ -51,8 +53,9 @@ class Navbar extends Component {
         <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
         <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
         <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-        <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
-        <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
+          <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
+          <a className="option" id="nyorg" href="#nyorg" onClick={() => this.activate("nyorg")}>Registrer deg som Kommuneansatt!</a>
+          <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
       </div>
     );
@@ -66,12 +69,18 @@ class Navbar extends Component {
               <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
               <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Rapporter feil</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-                <ButtonToolbar>
-                    <DropdownButton bsStyle="default" title={sessionStorage.getItem("email")} noCaret id="dropdown-no-caret" >
-                        <MenuItem href="#profile/" eventKey="1">Rediger profil</MenuItem>
-                        <MenuItem href="#profile/edit" eventKey="1">Rediger profil</MenuItem>
-                        <MenuItem href="#profile/newpass" eventKey="2">Forandre Passord</MenuItem>
-                        <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
+                <ButtonToolbar className="dropdownmenus1">
+                    <DropdownButton
+                        bsStyle="dropdown_right"
+                        title="Min side"
+                        key="2"
+                        id="dropdown-basic-2"
+                        noCaret
+                    >
+                        <MenuItem href="#user/" eventKey="1">Min side</MenuItem>
+                        <MenuItem href="#user/edit" eventKey="1">Rediger profil</MenuItem>
+                        <MenuItem href="#user/newpass" eventKey="2">Forandre Passord</MenuItem>
+                        <MenuItem href="#user/rapporter" eventKey="3">Feilrapporter</MenuItem>
                         <MenuItem divider />
                         <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
                     </DropdownButton>
@@ -81,53 +90,76 @@ class Navbar extends Component {
         );
 
       }
-/*
+
         if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
 
-          return (
-              <div className="topnav" id="navbar">
-                  <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-                  <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-                  <ButtonToolbar>
-                      <DropdownButton bsStyle="default" title="Administrator" href="#profile" noCaret id="dropdown-no-caret" >
-                          <MenuItem href="#admin/kommune" eventKey="1">Kommuneansatte</MenuItem>
-                          <MenuItem href="#admin/helter" eventKey="2">Hverdagshelter</MenuItem>
-                          <MenuItem href="#admim/bedrifter" eventKey="3">Bedrifter</MenuItem>
-                          <MenuItem href="#admin/rapporter" eventKey="4">Feilrapporter</MenuItem>
-                          <MenuItem href="#admin/events" eventKey="4">Events</MenuItem>
-                          <MenuItem divider />
-                          <MenuItem onClick={this.handleLogOut} eventKey="5">Logg ut</MenuItem>
-                      </DropdownButton>
-                      <DropdownButton bsStyle="default" title="Min side" href="#profile" noCaret id="dropdown-no-caret" >
-                          <MenuItem href="#admin/" eventKey="1">Min side</MenuItem>
-                          <MenuItem href="#admin/edit" eventKey="1">Rediger profil</MenuItem>
-                          <MenuItem href="#admim/newpass" eventKey="2">Forandre Passord</MenuItem>
-                          <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
-                          <MenuItem divider />
-                          <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
-                      </DropdownButton>
-                  </ButtonToolbar>;
-                  <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
-              </div>
-          );
+            return(
+                <div className="topnav" id="navbar">
+                    <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+                    <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
+                    <ButtonToolbar className="dropdownmenus">
+                        <DropdownButton
+                            bsStyle="dropdown_right"
+                            title="Min side"
+                            key="2"
+                            id="dropdown-basic-2"
+                            noCaret
+                        >
+                            <MenuItem href="#bedrift/" eventKey="1">Min side</MenuItem>
+                            <MenuItem href="#bedrift/edit" eventKey="1">Rediger profil</MenuItem>
+                            <MenuItem href="#bedrift/newpass" eventKey="2">Forandre Passord</MenuItem>
+                            <MenuItem href="#bedrift/rapporter" eventKey="3">Feilrapporter</MenuItem>
+                            <MenuItem divider />
+                            <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
+                        </DropdownButton>
+                    </ButtonToolbar>;
+                    <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+                    <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+                </div>
+            );
 
-        } */
+        }
 
           if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {
+
 
             return(
                 <div className="topnav" id="navbar">
                   <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-                  <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
                   <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                   <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
-
-                  {this.props.loggedin ? <a className="option" id="admin" href="#admin/main" onClick={() => this.activate("admin")}>Administrator</a> : ""}
-
-                  <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
-                  <div style={{color:"white"}}>{this.props.loggedin ? ("Logged in") : "Not Logged in"}
-                    {this.props.loggedin ? <button type="button" onClick={this.handleLogOut}>Log out</button> : ""}</div>
-
+                    <ButtonToolbar className="dropdownmenus">
+                        <DropdownButton
+                        bsStyle="dropdown_left"
+                        title="Administrator"
+                        key="1"
+                        id="dropdown-basic-1"
+                        noCaret
+                    >
+                            <MenuItem href="#admin/kommune" eventKey="1">Kommuneansatte</MenuItem>
+                            <MenuItem href="#admin/helter" eventKey="2">Hverdagshelter</MenuItem>
+                            <MenuItem href="#admim/bedrifter" eventKey="3">Bedrifter</MenuItem>
+                            <MenuItem href="#admin/rapporter" eventKey="4">Feilrapporter</MenuItem>
+                            <MenuItem href="#admin/events" eventKey="4">Events</MenuItem>
+                            <MenuItem divider />
+                            <MenuItem onClick={this.handleLogOut} eventKey="5">Logg ut</MenuItem>
+                        </DropdownButton>
+                        <DropdownButton
+                                bsStyle="dropdown_right"
+                                title="Min side"
+                                key="2"
+                                id="dropdown-basic-2"
+                                noCaret
+                            >
+                            <MenuItem href="#admin/" eventKey="1">Min side</MenuItem>
+                            <MenuItem href="#admin/edit" eventKey="1">Rediger profil</MenuItem>
+                            <MenuItem href="#admim/newpass" eventKey="2">Forandre Passord</MenuItem>
+                            <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
+                            <MenuItem divider />
+                            <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
+                        </DropdownButton>
+                    </ButtonToolbar>;
+                    <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
                   <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
                 </div>
             );
@@ -150,7 +182,7 @@ class Navbar extends Component {
   }
 
   activate(name) {
-
+/*
     if(name == this.active) return;
 
     if(name != ""){
@@ -163,7 +195,8 @@ class Navbar extends Component {
       from.className = "option";
     }
 
-    this.active = name;
+    this.active = name; */
+return true;
   }
 
   /* Toggle between adding and removing the "responsive" class
@@ -208,8 +241,9 @@ function renderRoot() {
                   <Route exact path="/IssueOverview" component={IssueOverview} />
                   <Route exact path="/reportPage" component={ReportPage} />
                   <Route exact path='/register' component={Register}/>
-                  <Route exact path='/nyansatt' component={NewEmployee}/>
-                  <PrivateRoute
+                    <Route exact path='/nyorg' component={NewOrganization}/>
+                    <Route exact path='/nyansatt' component={NewEmployee}/>
+                    <PrivateRoute
                       exact
                       path="/profile"
                       component={ProfilePage}

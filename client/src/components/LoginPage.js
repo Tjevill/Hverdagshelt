@@ -81,8 +81,8 @@ export default class LoginPage extends React.Component {
         if (!(email1 && password1)) return;
         const login = {
 
-            email1: "praxiz@gmail.com",
-            password1: "mittpass"
+            email1: this.state.email1,
+            password1: this.state.password1
         };
 
         console.log(" ------ ");
@@ -116,19 +116,20 @@ export default class LoginPage extends React.Component {
 
     handleSubmitBedrift(e) {
         this.setState({submitted: true});
-        const { email1, password1, returnUrl } = this.state;
-        if (!(email1 && password1)) return;
-        const login = {
+        const { email2, password2, returnUrl } = this.state;
+        if (!(email2 && password2)) return;
+        const login2 = {
 
-            email1: "praxiz@gmail.com",
-            password1: "mittpass"
+
+            email2: this.state.email2,
+            password2: this.state.password2
         };
 
         console.log(" ------ ");
         this.message = "Login successful";
-        console.log("this login: ", login);
+        console.log("this login2: ", login2);
         userService
-            .loginHverdagshelt(login)
+            .loginBedrift(login2)
             .then(response => {
                 this.message = response.reply;
                 let info = JSON.stringify(response);
@@ -136,10 +137,10 @@ export default class LoginPage extends React.Component {
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
-                sessionStorage.setItem('access', 'user');
-                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                //console.log("email: " + sessionStorage.getItem("email"));
-                //console.log("user: " + sessionStorage.getItem("userid"));
+                sessionStorage.setItem('access', 'bedrift');
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("email: " + sessionStorage.getItem("email"));
+                console.log("user: " + sessionStorage.getItem("userid"));
 
 
             })
@@ -152,7 +153,6 @@ export default class LoginPage extends React.Component {
                 error => console.log({ error, loading: false })
             );
     }
-
 
     handleSubmitKommune(e) {
         this.setState({submitted: true});
@@ -268,7 +268,7 @@ export default class LoginPage extends React.Component {
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="form2" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
+                                <form name="form2" onSubmit={() => {this.handleSubmitBedrift()}}>
                                     <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
                                         <label htmlFor="email2">E-mail</label>
                                         <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
