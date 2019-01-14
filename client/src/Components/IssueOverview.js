@@ -35,10 +35,12 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   categories = [];
   sepacategories = [];
   cases = [];
+  casesbyKommune= [];
   cateside  = [];
   fylker = [];
   kommuner = [];
   kommune = "";
+  Meldning = "";
 
   handleChangeFylke = event =>{
     console.log("FYLKE VALGT: " + event.target.value);
@@ -47,12 +49,28 @@ export default class IssueOverview extends Component <{ match: { params: { name:
         .then(response => {
             this.kommuner = response;
             console.log("kommuner: ", this.kommuner);
+            this.forceUpdate();
         })
         .catch((error: Error) => Alert.danger(error.message));
   }
 
   handleChangeKommune = event => {
+      let meldning;
       this.kommune = event.target.value;
+        caseService
+          .searchCaseByProv(event.target.value)
+          .then(response => {
+              this.casesbyKommune = response;
+              this.forceUpdate();
+          })
+          .catch((error: Error) => Alert.danger(error.message));
+          console.log(this.casesbyKommune);
+       if(this.casesbyKommune.length==0){
+         this.Meldning =(
+            <h>Finnes ikke noe saker under Kommune {event.target.value}</h>
+          );
+          console.log("hahaha");
+       }
 
   }
 
@@ -62,8 +80,8 @@ export default class IssueOverview extends Component <{ match: { params: { name:
     let sidebuttons;
 
     if(this.props.match.params.name=="All"){
-      console.log(this.props.match.params.id);
-      this.cateside = this.cases.slice((this.props.match.params.id-1)*16,(this.props.match.params.id-1)*16+15);
+      console.log(this.props.match.params.name);
+      this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
 
       lists = (
         <div>
@@ -82,13 +100,16 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       );
 
      } else {
-      lists = (
-        <div>
-        {this.caseofCat.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.headline} : {casen.category_id} </ListGroup.Item>
+       console.log(this.caseofCat);
+
+       lists = (
+         <div>
+        {this.cateside.map(casen =>(
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} </ListGroup.Item>
         ))}
         </div>);
-      sidebuttons = (
+
+       sidebuttons = (
         <div>
         {(count(sliceArray(this.caseofCat, 15))).map(sidetall => (
             <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/Issues/'+this.props.match.params.name+'/'+sidetall)}>{sidetall}</button>
@@ -110,26 +131,31 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                   <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
                 ))}
           </div><br/><br/>
-          <div class="form-group">
-            Velg fylke:{" "}
-            <select class="form-control" name="fylke" id="fylke" onChange={this.handleChangeFylke}>
-                <option>Velg fylke</option>
-                {this.fylker.map(fylke => {
-                    return(<option value={fylke.ID}>{fylke.navn}</option>)
-                })}
-            </select>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="inputFylke">Velg Fylke</label>
+                <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
+                  <option selected>Velg fylke</option>
+                  {this.fylker.map(fylke => {
+                      return(<option value={fylke.ID}>{fylke.navn}</option>)
+                  })}
+                </select>
+            </div>
+            <div class="form-group col-6">
+              <label for="inputKommune">Velg Kommune</label>
+                <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
+                  <option selected>Velg Kommune</option>
+                  {this.kommuner.map(kommune => {
+                      return(<option value={kommune.Name}>{kommune.navn}</option>)
+                  })}
+                </select>
+            </div>
           </div>
-          <div class="form-group">
-            Velg Kommune:{" "}
-            <select class="form-control" name="kommune" id="kommune" onChange={this.handleChangeKommune}>
-                <option>Velg Kommune</option>
-                {this.kommuner.map(kommune => {
-                    return(<option value={kommune.ID}>{kommune.navn}</option>)
-                })}
-            </select>
-          </div>
+          {this.Meldning}
         </div>
       </div>
+
+
 
       <p>Nyeste Meldte Feil</p>
         <Router history={history}>
