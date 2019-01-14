@@ -25,6 +25,10 @@ beforeAll(done => {
     });
 });
 
+afterAll( () => {
+    pool.end();
+});
+
 /** Get all employees in the db */
 test('getAllEmployees from db', done =>{
     
