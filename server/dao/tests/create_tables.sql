@@ -1,5 +1,9 @@
 DROP TABLE IF EXISTS Cases;
 DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Events;
+DROP TABLE IF EXISTS Cases;
+DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS StatusTable;
 
 CREATE TABLE `Cases` (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
@@ -18,8 +22,6 @@ CREATE TABLE `Cases` (
   PRIMARY KEY (case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `Cases`
-  ADD PRIMARY KEY (`case_id`);
 
 
   CREATE TABLE `Employee` (
@@ -34,3 +36,12 @@ ALTER TABLE `Cases`
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE `StatusTable` (
+  `status_id` int(8) NOT NULL AUTO_INCREMENT,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+  
