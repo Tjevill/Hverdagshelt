@@ -17,9 +17,6 @@ CREATE TABLE `Cases` (
   PRIMARY KEY (case_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-ALTER TABLE `Cases`
-  ADD PRIMARY KEY (`case_id`);
-
 
 DROP TABLE IF EXISTS Category;
 
@@ -57,3 +54,15 @@ CREATE TABLE Organization (
   secret varchar(32) NOT NULL,
   PRIMARY KEY (org_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+
+DROP TABLE IF EXISTS Events;
+
+CREATE TABLE Events (
+    event_id int(8) NOT NULL AUTO_INCREMENT,
+    name varchar(100) NOT NULL,
+    date DATETIME NOT NULL,
+    description text NOT NULL,
+    zipcode int(4) NOT NULL,
+    PRIMARY KEY (event_id) 
+)
