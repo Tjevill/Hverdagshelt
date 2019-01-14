@@ -27,6 +27,10 @@ beforeAll(done => {
   });
 });
 
+afterAll( () => {
+    pool.end();
+});
+
 test('getAllCases', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
@@ -93,15 +97,15 @@ test('searchCaseDescription', done => {
 });
 
 // will be uncommented when we manage to test the data received from a sql function call
-/*
+
 test('getNumberOfCases', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data[0]).toBe({"x": 11});
+    expect(data[0].x).toBe(11);
     done();
   }
   casedao.getNumberOfCases(callback);
-}); */
+});
 
 
 
@@ -158,9 +162,7 @@ test('updateCase', done => {
   );
 });
 
-
 */
-
 test('deleteCase', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
@@ -168,4 +170,4 @@ test('deleteCase', done => {
     done();
   }
   casedao.deleteCase(11,callback);
-});
+}); 
