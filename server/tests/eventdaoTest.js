@@ -17,9 +17,18 @@ let pool = mysql.createPool({
   multipleStatements: true
 });
 
-let casedao = new Casedao(pool);
+let eventdao = new Eventdao(pool);
 beforeAll(done => {
   runsqlfile('dao/tests/create_tables.sql', pool, () => {
     runsqlfile('dao/tests/create_testdata.sql', pool, done);
   });
+});
+
+test('getAllEvents', done => {
+  function callback(status, data) {
+    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+    expect(data.length).toBe(3);
+    done();
+  }
+  eventdao.getAllEvents(callback);
 });

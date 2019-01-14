@@ -69,6 +69,7 @@ const Userdao = require("../dao/userdao.js");
 const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
+const Statusdao = require("../dao/statusdao.js");
 
 
 
@@ -90,6 +91,7 @@ let caseDao = new Casedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
+let statusDao = new Statusdao(pool);
 
 
 
@@ -846,6 +848,24 @@ app.delete("/admin/delete/:id", (req, res) => {
         res.json(data[0]);
     });
 });
+
+/** Get all status */
+    app.get("/status", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getAllStatuses((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Get status by ID */
+    app.get("/status/:id", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getOneById( req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
 
 
 
