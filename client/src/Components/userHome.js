@@ -6,7 +6,7 @@ import {
 	CardTitle,
 	CardActions,
 	CardText,
-	Button,
+
 	IconButton,
 	Icon,
 	Grid,
@@ -14,104 +14,93 @@ import {
 } from "react-mdl";
 import { eventService } from "../services.js";
 
+//hver gang det dukke opp en ny artikkel opprettes det en boks
+
 export default class userHome extends Component {
 	events = [];
+
 	render() {
 		return (
 			<div className="userHome-body">
-				<div className="userHome-banner">
-					<div className="userHome-banner-background">
-						<Grid className="userHome-grid">
-							<Cell col={12}>
-								Vær en hverdagshelt - varsle dine medborgere om
-								en feil i kommunen!
-							</Cell>
-
-							<Cell col={12}>
-								<Button
-									raised
-									colored
-									className="userHome-button"
-									 onClick={() => {
-                       				 window.location.href = "/#/reportPage";
-                       				}}
-								>
-									Meld Feil
-								</Button>
-							</Cell>
-
-							<Cell col={12}>
-							<a href="/#/IssueOverview">
-								<p>Oversikt over alle feil i Trondheim </p>
-							</a>
-							</Cell>
-						</Grid>
-					</div>
-				</div>
-
-				<div className="userHome-cards">
-					Events
-					{this.events.map( event => (
-					<Card
-						shadow={0}
-						style={{
-							width: "120px",
-							height: "120px",
-							margin: "auto"
-						}}
-					>
-						<CardTitle
-							expand
-							style={{
-								color: "#fff",
-								background:
-								"url(http://www.getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat #46B6AC"
+				
+				<div className="userHome-container">
+					
+					<div className="userHome-banner">
+					
+						<div className="userHome-button1">
+						<h5> 	Vær en hverdagshelt - varsle dine medborgere om en feil
+						i kommunen!</h5>
+						<button
+							onClick={() => {
+								window.location.href = "/#/reportPage";
 							}}
 						>
-							{event.date.substring(0, 16)
-                            .replace("20", "")
-                            .replace("T", " ")}
-						</CardTitle>
-						<CardText>
-							<Icon name="home" />	{event.zipcode}
-						</CardText>
-						<CardActions border>
-							<Button colored>{event.name}</Button>
-						</CardActions>
-					</Card>
-					))}
+							Meld Feil
+						</button>
+							</div>
+						
+					</div>
+					<div className="userHome-events">
+						<h4>Events</h4>
+						{this.events.map(e => (
+							<div className="userHome-event">
+								<Grid className="grid1">
+									<Cell col={2}>
+										<div className="cell1">
+											<div className="calender">
+												<p>
+													{this.getMonth(
+														e.date
+															.substring(0, 16)
+															.replace("20", "")
+															.replace("T", " ")
+															.substring(0, 8)
+															.substring(3, 5)
+													)}
+												</p>
 
+												<h4>  
+													{e.date
+														.substring(0, 16)
+														.replace("20", "")
+														.replace("T", " ")
+														.substring(0, 8)
+														.substring(0, 2)}
+												</h4>
 
+											</div>
+										</div>
+									</Cell>
 
-					{/*
-					<Card shadow={0} style={{ width: "150px", margin: "auto" }}>
-						<CardTitle
-							style={{
-								color: "#fff",
-								height: "150px",
-								background:
-									"url(https://trdevents.no/wp-content/uploads/2018/12/5237814edb753e856422b69cfc107398_apent-treff-bipolarforeningen-4-1-220x128.jpeg) center / cover"
-							}}
-						/>
-						<CardText>
-							<p>
-								<Icon name="timer" />
-								Adresse
-							</p>
-							<p>
-								<Icon name="timer" />
-								Bygning
-							</p>
-							<p>
-								<Icon name="timer" />
-								Tidspunkt
-							</p>
-						</CardText>
-						<CardActions border>
-							<Button colored>Overskrift</Button>
-						</CardActions>
-					</Card>
-				*/}
+									<Cell col={6}>
+										<div className="cell2">
+											<h5>{e.name}</h5>
+											<p>
+												{" "}
+												<Icon name="home" />
+												{e.zipcode}
+											</p>
+											<p>
+												{" "}
+												<Icon name="access_time" />
+												{e.date
+													.substring(0, 16)
+													.replace("20", "")
+													.replace("T", " ")
+													.substring(9)}
+											</p>
+										</div>
+									</Cell>
+
+									<Cell col={4}>
+										<div className="cell3">
+										<img src="https://www.magical-planet.com/wp-content/uploads/2018/03/Duomo-of-Milan-696x366.jpg"/>
+										</div>
+									</Cell>
+								</Grid>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 		);
@@ -122,5 +111,54 @@ export default class userHome extends Component {
 			.getAllEvents()
 			.then(sak => (this.events = sak))
 			.catch((error: Error) => console.log(error.message));
+	}
+
+	getMonth(month) {
+		let rMonth = ""; // BYTTE UT MED SWITCH
+		if (month == "01") {
+			rMonth = "JAN";
+		}
+		if (month == "02") {
+			rMonth = "FEB";
+		}
+		if (month == "03") {
+			rMonth = "MARS";
+		}
+		if (month == "04") {
+			rMonth = "APR";
+		}
+
+		if (month == "05") {
+			rMonth = "MAI";
+		}
+
+		if (month == "06") {
+			rMonth = "JUNI";
+		}
+
+		if (month == "07") {
+			rMonth = "JULI";
+		}
+
+		if (month == "08") {
+			rMonth = "AUG";
+		}
+
+		if (month == "09") {
+			rMonth = "SEPT";
+		}
+
+		if (month == "10") {
+			rMonth = "OKT";
+		}
+
+		if (month == "11") {
+			rMonth = "NOV";
+		}
+
+		if (month == "12") {
+			rMonth = "DES";
+		}
+		return rMonth;
 	}
 }
