@@ -66,6 +66,12 @@ class UserUpdatePWord {
   password: string;
 }
 
+class UserVerifyOldPWordAndUpdate {
+	user_id: number;
+	oldPassword: string;
+	newpassword: string;
+}
+
 class Organization {
   org_id: number;
   organizationnumber: string;
@@ -250,6 +256,21 @@ class UserService {
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.put(url + '/userProvince/' + id);
   }
+	
+	/**
+	 * Service object for verifying and changing password for logged in users.
+	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
+	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
+	 */
+  verifyOldPasswordAndUpdatePWord(updatePassword: UserVerifyOldPWordAndUpdate): Promise<number>{
+  	const res = axios.get(url + '/userVerification', updatePassword);
+  	if(res === 1){
+  		axios.put(url + '/updateUserPword', {"user_id": updatePassword.user_id, "password": updatePassword.newpassword});
+			return 1;
+		}else{
+  		return 0;
+		}
+	}
 
 }
 

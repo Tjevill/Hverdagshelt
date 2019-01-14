@@ -84,7 +84,7 @@ module.exports = class UserDao extends Dao {
 	
 	getHashedPWord(id: number, callback: mixed){
 		super.query(
-			"select password, secret from User where user_id = ?",
+			"select user_id, password, secret from User where user_id = ?",
 			[id],
 			callback
 		);

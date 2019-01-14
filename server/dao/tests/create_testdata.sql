@@ -28,3 +28,28 @@ INSERT INTO Events (name, date, description, zipcode) VALUES
 
 
 
+
+INSERT INTO Events (name, date, description, zipcode) VALUES 
+    ('Test Event 1', "2019-12-03", 'description 1', 7001),
+    ('Test Event 2', "2019-12-03", 'description 2', 7002),
+    ('Test Event 3', "2019-12-03", 'description 3', 7003);
+
+
+INSERT INTO Category (description)
+VALUES ('Elektrisitet'),
+       ('Hullfylling');
+
+INSERT INTO User
+VALUES (DEFAULT,
+        'Mari',
+        'Testgate 10',
+        98765456,
+        'mari@mail.com',
+        '895ae3365df8cf877b3604275efb1972cd821903fa0788235660db95b5fbf651a5bb19b3ed8a74aa3eb04d1a213304f59431a60da00508ec05b7af76a5d7631a',
+        '4ec151157aab83c9faee825e80a767de',
+        1,
+        '7710');
+
+INSERT INTO Organization
+VALUES (DEFAULT , 12345678, 'BENisasjon', '', '', ''),
+       (DEFAULT , 23456789, 'SIMisasjon', '', '', '');

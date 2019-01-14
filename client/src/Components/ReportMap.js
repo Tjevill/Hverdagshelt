@@ -11,7 +11,8 @@ export class MapContainer extends Component<{lat: number, long: number}> {
 
     infoShowing = false;
     activeMarker: {};
-
+    lat = 63;
+    lng = 10;
 
     render() {
         return (
@@ -29,9 +30,8 @@ export class MapContainer extends Component<{lat: number, long: number}> {
                     onClick={this.onMarkerClick}
                     name={"current location"}
                     draggable={true}
-                    position={{ lat: 63, lng: 10}}
-                    ref={this.onMarkerMounted}
-                    onDragend={() => this.onPositionChanged()}
+                    position={{ lat: this.lat, lng: this.lng }}
+                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
                 />
 
                 <InfoWindow
@@ -48,16 +48,18 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         );
     }
 
-    onMarkerMounted= ref => {
-        this.marker = ref;
-        console.log('Marker mounted')
-    }
+    onMarkerDragEnd = (coord, index) => {
+      console.log(coord.latLng.lat());
+      console.log(coord.latLng.lng());
+    };
 
-    onPositionChanged(){
+
+    onPositionChanged(e){
         console.log('Changed position');
-        const position = this.marker.getPosition();
-        console.log(position.toString());
-        console.log('position changed test');
+        console.log(this.refs.marker.getPosition());
+        //const position = this.refs.getPosition();
+        //console.log(position.toString());
+        //console.log('position changed test');
     }
 
     onMarkerClick = (props, marker, e) => {
@@ -66,7 +68,7 @@ export class MapContainer extends Component<{lat: number, long: number}> {
         this.infoShowing = true;
     }
 
-    onMapClick(){
+    onMapClick(props, map, e){
         console.log("onMapClick");
         this.infoShowing = false;
         this.activeMarker = {};
