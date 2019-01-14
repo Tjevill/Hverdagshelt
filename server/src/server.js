@@ -603,17 +603,17 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             console.log(req.body);
         });
 
-        let email = req.body.email;    
+        let email = req.body.email;
         const mailOptionsUpdateCase = {
             from: 'bedrehverdagshelt@gmail.com',
             to: email,
             subject: 'Saken er oppdatert!',
-            html: 
-                '<h1> Status: ' + req.body.status_id + '</h1>' + 
+            html:
+                '<h1> Status: ' + req.body.status_id + '</h1>' +
                 '<p><b> HverdagsHelt Support Team </b></p>' +
                 '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
                 '<p> <b> HverdagsHelt AS </b> </p>' +
-                '<p> 72 59 50 00 </p>' 
+                '<p> 72 59 50 00 </p>'
         };
 
         transporter.sendMail(mailOptionsUpdateCase, function(error, info){
@@ -624,7 +624,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             }
         });
     });
-    
+
 
     /** search case by category description */
     app.get("/searchCaseCategory/:description", (req, res) =>{
@@ -663,7 +663,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-  
+
 
     /** create case and send confirmation mail */
     app.post("/cases", (req, res) => {
