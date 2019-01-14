@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Cases;
+DROP TABLE IF EXISTS CasesTest;
 
 CREATE TABLE `Cases` (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
