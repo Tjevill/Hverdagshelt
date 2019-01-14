@@ -5,7 +5,7 @@ module.exports = class StatusDao extends Dao {
     /** Get all statuses from the db. */
     getAllStatuses(callback:any) {
         super.query(
-            "SELECT * FROM Status",
+            "SELECT * FROM StatusTable",
             [],
             callback
         );
@@ -13,7 +13,7 @@ module.exports = class StatusDao extends Dao {
 
     /** Get one status from the db based on the status_id. */
     getOneById(id:number, callback:any){
-        super.query("SELECT * FROM Status WHERE status_id = ?",[id],callback);
+        super.query("SELECT * FROM StatusTable WHERE status_id = ?",[id],callback);
     }
 
      /** Get one status from the db based on the description.
