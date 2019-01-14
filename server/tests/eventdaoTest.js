@@ -73,7 +73,7 @@ test('onDateDesc', done => {
 test('createEvent', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.affectedrows).toBe(1);
+    expect(data.affectedRows).toBe(1);
     done();
   }
   eventdao.createEvent(

@@ -1,4 +1,6 @@
 DROP TABLE IF EXISTS Cases;
+DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Events;
 
 CREATE TABLE `Cases` (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
@@ -18,45 +20,17 @@ CREATE TABLE `Cases` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-DROP TABLE IF EXISTS Category;
-
-CREATE TABLE Category (
-  category_id int(8) NOT NULL AUTO_INCREMENT,
-  description VARCHAR(240) NOT NULL,
-  PRIMARY KEY (category_id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1;
-
-
-DROP TABLE IF EXISTS User;
-
-CREATE TABLE User (
-  user_id int(8) NOT NULL AUTO_INCREMENT,
-  name varchar(200) NOT NULL,
-  address varchar(200) NOT NULL,
-  zipcode varchar(4) NOT NULL,
-  tel INT(8) NOT NULL,
-  email varchar(100) NOT NULL,
-  password text NOT NULL,
-  secret varchar(32) NOT NULL,
-  subscription tinyint(1) NOT NULL,
-  PRIMARY KEY (user_id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1;
-
-
-DROP TABLE IF EXISTS Organization;
-
-CREATE TABLE Organization (
-  org_id int(8) NOT NULL AUTO_INCREMENT,
-  organizationnumber int(12) NOT NULL,
-  name varchar(100) NOT NULL,
-  email varchar(50) NOT NULL,
-  password text NOT NULL,
-  secret varchar(32) NOT NULL,
-  PRIMARY KEY (org_id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1;
-
-
-DROP TABLE IF EXISTS Events;
+  CREATE TABLE `Employee` (
+  `employee_id` int(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `tel` int(8) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` text NOT NULL,
+  `secret` varchar(32) NOT NULL,
+  `province` int(3) NOT NULL,
+  `district` int(3) NOT NULL,
+  PRIMARY KEY (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE Events (
     event_id int(8) NOT NULL AUTO_INCREMENT,

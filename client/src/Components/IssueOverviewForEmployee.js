@@ -67,11 +67,15 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           console.log(this.casesbyKommune);
        if(this.casesbyKommune.length==0){
          this.Meldning =(
-            <p>Finnes ingen saker under Kommune {event.target.value}</p>
+            <h>Finnes ingen saker under Kommune {event.target.value}</h>
           );
           console.log("hahaha");
        }
+  }
 
+  handleChangeStatus = event => {
+    console.log(event.target.value);
+    this.cases = this.cases.map(casen =>)
   }
 
   render(){
@@ -150,6 +154,22 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                   })}
                 </select>
             </div>
+          </div>
+          <div class="col align-self-center">
+          <form class="form-inline well">
+            <div class="form-group">
+              <label for="inputKommune">Status &nbsp;</label>
+                <select class="w-auto" id="kommune" name="kommune" class="form-control" onChange={this.handleChangeStatus}>
+                  <option selected>Velg Status</option>
+                  <option value={1}>Registrert</option>
+                  <option value={2}>Under Vurdering</option>
+                  <option value={3}>Satt på vent</option>
+                  <option value={4}>Arbeid pågår</option>
+                  <option value={5}>Avvist</option>
+                  <option value={6}>Løst</option>
+              </select>
+            </div>
+          </form>
           </div>
           {this.Meldning}
         </div>
