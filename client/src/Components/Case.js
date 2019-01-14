@@ -43,23 +43,28 @@ export default class Case extends Component {
     if(this.openMap) document.location.reload();
     this.openMap = true;
     let casePromise = caseService.getCaseById(this.props.match.params.id);
-    casePromise.then(caseData => (
-      //console.log(caseData[0]),
-      this.case = caseData[0],
+    casePromise.then(caseData => {
+      //console.log(caseData[0]);
+      this.case = caseData[0];
+      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>;
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
-        mapData => (
-          this.mapData = mapData.results[0],
-          //console.log(this.mapData),
+        mapData => {
+          this.mapData = mapData.results[0];
+          console.log(this.mapData);
+          if(this.mapData == null){
+            this.mapData = {
+              formatted_address: "none"
+            }
+          }
           mapService.getProvince(this.case.zipcode).then(
-            zipData => (
-              this.province = zipData.result.postnr[0].kommune,
-              this.loaded = true
-            )
-          )
-        )
-      ),
-      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
-    ));
+            zipData => {
+              this.province = zipData.result.postnr[0].kommune;
+              this.loaded = true;
+            }
+          );
+        }
+      );
+    });
 
   }
 
