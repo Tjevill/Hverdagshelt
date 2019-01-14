@@ -1,4 +1,6 @@
-INSERT INTO Cases ( description, longitude, latitude, status_id, user_id, category_id, zipcode, timestamp, headline, picture, employee_id, org_id) VALUES
+
+
+INSERT INTO `Cases` ( `description`, `longitude`, `latitude`, `status_id`, `user_id`, `category_id`, `zipcode`, `timestamp`, `headline`, `picture`, `employee_id`, `org_id`) VALUES
 ('test One', '10.38769950', '63.42830650', 1, 31, 1, '7012', '2019-01-09 08:09:06', 'aliens are invading send help', 'url', 1, 1),
 ( 'tætt vannhøll', '112.92326821', '43.29427921', 2, 31, 1, '7021', '2019-01-09 08:09:06', 'tætt vannhøl, fix pls', NULL, NULL, NULL),
 ( 'test sak', '1.00000000', '2.00000000', 1, 1, 1, '7012', '2019-01-09 12:26:48', 'test headline', 'url', 1, 1),
@@ -9,7 +11,13 @@ INSERT INTO Cases ( description, longitude, latitude, status_id, user_id, catego
 ( 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:21:20', 'test headline', 'url', NULL, NULL),
 ( 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:24:03', 'test headline', 'url', NULL, NULL),
 ( 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:27:43', 'test headline', 'url', NULL, NULL),
-( 'test asdasda, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:36:00', 'test headline', 'url', NULL, NULL);
+( 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:36:00', 'test headline', 'url', NULL, NULL);
+
+
+
+INSERT INTO Employee (`name`, `tel`, `email`, `password`, `secret`, `province`, `district`) VALUES
+ ('Odd Ronny Grustak', 24681012, 'oddronny@gmail.com', '66a6530c6943ff75238f0bef371af70929c899b12d08ffefeefa33fb1cc328c36925b5918520b20d82a2745845f650f633ec6120e3ca1a1bce4aed0e08c39118', '65aaacb1161c919729fdf2fecedbae72', 74, 5),
+ ('Bentoooo', 4123444, 'test@test.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 22);
 
 
 INSERT INTO Events (name, date, description, zipcode) VALUES 
@@ -17,19 +25,8 @@ INSERT INTO Events (name, date, description, zipcode) VALUES
     ('Test Event 2', "2019-12-03", 'description 2', 7002),
     ('Test Event 3', "2019-12-03", 'description 3', 7003);
 
-
-INSERT INTO Employee (name, tel, email, password, secret, province, district) VALUES
- ('Odd Ronny Grustak', 24681012, 'oddronny@gmail.com', '66a6530c6943ff75238f0bef371af70929c899b12d08ffefeefa33fb1cc328c36925b5918520b20d82a2745845f650f633ec6120e3ca1a1bce4aed0e08c39118', '65aaacb1161c919729fdf2fecedbae72', 74, 5),
- ('Bentoooo', 4123444, 'test@test.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 22);
-
-
 INSERT INTO StatusTable (description) VALUES
-      ("Ubehandlet"), 
-      ("Under behandlet"), 
-      ("Behandlet"), 
-      ("Under arbeid"), 
-      ("Fullført"), 
-      ("Avvist") ;
+      ('Test Description');
 
 INSERT INTO Category (description) VALUES
       ('Elektrisitet'),

@@ -6,8 +6,6 @@ DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS StatusTable;
 DROP TABLE IF EXISTS Organization;
 
-
-
 CREATE TABLE Cases (
   case_id int(8) NOT NULL AUTO_INCREMENT,
   description text NOT NULL,
