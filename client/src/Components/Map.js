@@ -1,79 +1,58 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
+import { caseService } from "../services";
+
 
 const style = {
-  width: '80%',
-  height: '60%'
+    width: '100%',
+    height: '100%'
 }
 
-export class MapContainer extends Component<{lat: number, long: number}> {
+export class MapContainer extends Component{
 
-  infoShowing = false;
-  activeMarker: {};
+    infoShowing = false;
+    activeMarker: {};
+    cases = [];
 
-
-  render() {
-      return (
-        <Map
-          google={this.props.google}
-          style={style}
-          zoom={14}
-          initialCenter={{
-            lat: this.props.lat,
-            lng: this.props.long
-          }}
-          onClick={this.onMapClick}
-        >
-          <Marker
-            onClick={this.onMarkerClick}
-            name={"current location"}
-            draggable={true}
-            position={{ lat: this.props.lat, lng: this.props.long}}
-            ref={this.onMarkerMounted}
-            onPositionChanged={() => this.onPositionChanged()}
-          />
-
-          <InfoWindow
-            marker={this.activeMarker}
-            visible={this.infoShowing}
-          >
-              <div>
-                <h6>Lat: {this.props.lat}</h6>
-                <h6>long: {this.props.long}</h6>
-              </div>
-          </InfoWindow>
-
-        </Map>
-      );
-  }
-
-    onMarkerMounted= ref => {
-        this.marker = ref;
-        console.log('Marker mounted')
+    render() {
+        return (
+            <div className="max">
+                <Map
+                    google={this.props.google}
+                    style={style}
+                    zoom={2}
+                    initialCenter={{
+                        lat: 63.4283065,
+                        lng: 10.3876995
+                    }}
+                    onClick={this.onMapClick}
+                >
+                    {this.cases.map(caseItem => (
+                        <Marker
+                            key={caseItem.case_id}
+                            position={{
+                                lat: caseItem.latitude,
+                                lng: caseItem.longitude
+                            }}
+                            name={caseItem.case_id}
+                        />
+                    ))}
+                </Map>
+            </div>
+        );
     }
 
-    onPositionChanged(){
-        console.log('Changed position');
-        const position = this.marker.getPosition();
-        console.log(position.toString());
-        console.log('position changed test');
+    componentDidMount(){
+        caseService.getAllCases().then(
+            cases => {
+                this.cases = cases;
+            }
+        );
     }
-
-  onMarkerClick = (props, marker, e) => {
-    console.log("onMarkerClick");
-    this.activeMarker = marker;
-    this.infoShowing = true;
-  }
-
-  onMapClick(){
-    console.log("onMapClick");
-    this.infoShowing = false;
-    this.activeMarker = {};
-  }
 
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
+    apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
 })(MapContainer);
