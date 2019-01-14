@@ -58,7 +58,7 @@ export default class Case extends Component {
           )
         )
       ),
-      this.map = <div id="case-map"><Map lat={this.case.latitude} long={this.case.longitude}/></div>
+      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
     ));
 
   }

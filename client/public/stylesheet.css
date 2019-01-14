@@ -87,8 +87,8 @@ body,
 #case-page {
   height: 100%;
   width: 100%;
-  margin-right: 10%;
-  margin-left: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
   text-align: center;
 }
 
@@ -110,11 +110,6 @@ body,
 
 #case-page #description {
   padding-top: 2%;
-}
-
-#case-map {
-  background-color: red;
-  width: 100px;
 }
 
 .max {
