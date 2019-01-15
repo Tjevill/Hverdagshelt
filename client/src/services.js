@@ -203,15 +203,18 @@ class UserService {
     return axios.put(url + "/newuser", newuser);
   }
 
-  getUserByUsername(username: string): Promise<void> {
-    // console.log(axios.get(domain + "/news/artikkel/" + id));
-    return axios.get(url + "/user/" + username);
-  }
 
-  login(login: Login): Promise<void> {
-    // console.log(axios.post(domain + "/login", login));
-    return axios.post(url + "/login", login);
-  }
+    loginHverdagshelt(login: Login[]): Promise<void> {
+        return axios.post(url + "/loginhh", login);
+    }
+
+    loginBedrift(login: Login): Promise<void> {
+        return axios.post(url + "/loginb", login);
+    }
+
+    loginKommune(login: Login): Promise<void> {
+        return axios.post(url + "/logink", login);
+    }
 
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
@@ -256,7 +259,7 @@ class UserService {
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.put(url + '/userProvince/' + id);
   }
-	
+
 	/**
 	 * Service object for verifying and changing password for logged in users.
 	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
@@ -339,7 +342,25 @@ class CategoryService {
 export let categoryService = new CategoryService();
 
 class EmployeeService {
+    getCategories(): Promise<Category[]> {
+        return axios.get(url + '/getAllCategories');
+    }
 
+    addOrganization(newemployee: Register): Promise<void> {
+        console.log("ORG TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworganization", newemployee);
+    }
+
+    addEmployee(newemployee: Register): Promise<void> {
+        console.log("EMPLOYEE TIL SERVICE: ", newemployee);
+        return axios.put(url + "/newemployee", newemployee);
+    }
+
+
+    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
+        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworgcat/" + company_id, newemployee);
+    }
   /** Create employee
   * JSON sent in postman:
   * { "name": "Ben Oscar Strømstrømstrøm",
@@ -349,11 +370,6 @@ class EmployeeService {
       "province":1,
       "district":1 }
   */
-  addEmployee(emp: Employee): Promise<void> {
-      console.log("DATA TIL SERVICE: ", emp);
-      // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-      return axios.put(url + "/employee", emp);
-  }
 
 
   /** Delete an employee with employee_id. Yolo */

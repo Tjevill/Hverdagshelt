@@ -2,17 +2,84 @@
 .navbar-nav > li > a {
     padding-top:5px !important;
     padding-bottom:5px !important;
+    overflow: visible; !important;
+    z-index: 999;
 }
 .navbar {
-    min-height:100px !important
+    min-height:100px !important;
+    overflow: visible; !important;
+
+
 }
+
+.dropdownmenus {
+    position:fixed;
+    left:310px;
+}
+
+.dropdownmenus1 {
+    position:fixed;
+    left:380px;
+}
+
+.dropdown{
+    z-index:-1;
+    border: 0px solid white;
+    overflow: visible;
+}
+
+.open {
+    color: #ffffff; !important;
+
+    background-color: white;
+}
+
+
+.logged-in-as {
+    position: fixed;
+    right:10px;
+    color: #fff;
+    padding-top:5px !important;
+    padding-bottom:15px !important;
+}
+
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+
+.dropdown-menu_left {
+    border: 2px solid red;
+}
+
+
+.dropdown-toggle {
+    padding-top:13px !important;
+    padding-bottom:13px !important;
+    background: none;
+    color: #ffffff;
+    font-size:16px;
+    border:none;
+}
+.dropdown-toggle:hover {
+    background: white;
+    color: #004400;
+}
+
+.dropdown-toggle:active  {
+    background: white; !important
+    color: #ff0000; !important
+}
+
+
+
 .card {
     width:40%;
     border:none;
 }
 .right {
     position: absolute;
-
     right: 0px;
     padding: 5%;
 }
@@ -57,6 +124,23 @@
 
 }
 
+.row {
+    height:100%;
+}
+
+.loginoption1, .loginoption2, .loginoption3 {
+    border-radius: 25px;
+    border: 1px solid black;
+    background-color: #eeeeee;
+    width:350px;
+    height: inherit;
+    text-align:center;
+    padding:14px;
+    margin:10px;
+    box-shadow: 4px 4px 20px #686868;
+    cursor: pointer;
+
+}
 .userHome-container{
     background-color:#fff; /* BYTTES UT MED HVIT */
     width: 1000px;
@@ -174,6 +258,17 @@
   cursor: pointer;
 
 
+}
+
+.loginoption1 img, .loginoption2 img, .loginoption3 img {
+    height:300px;
+}
+/* Optional styling */
+summary::-webkit-details-marker {
+    color: blue;
+}
+summary:focus {
+    outline-style: none;
 }
 
 .userHome-button1 button:hover{
