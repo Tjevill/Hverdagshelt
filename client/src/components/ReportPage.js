@@ -113,9 +113,7 @@ export class Report extends Component {
                                     position={{ lat: this.lat, lng: this.lng }}
                                     onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
                                 />
-
                             </Map>
-
                         </div>
 
                         <div className="form-group form-group-style">
