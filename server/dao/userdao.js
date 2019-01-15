@@ -175,7 +175,7 @@ module.exports = class UserDao extends Dao {
 			"select province from Place where zipcode = (select zipcode from User where user_id = ?)",
 			[id],
 			callback
-		)
+		);
 	}
 
 	/**	Add a new user to the db

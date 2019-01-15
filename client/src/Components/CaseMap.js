@@ -20,6 +20,7 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           google={this.props.google}
           style={style}
           zoom={14}
+          gestureHandling="cooperative"
           initialCenter={{
             lat: this.props.lat,
             lng: this.props.long
@@ -29,9 +30,6 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           <Marker
             onClick={this.onMarkerClick}
             name={"current location"}
-            // draggable={true}
-            // ref={this.onMarkerMounted}
-            // onPositionChanged={this.onPositionChanged}
           />
 
           <InfoWindow

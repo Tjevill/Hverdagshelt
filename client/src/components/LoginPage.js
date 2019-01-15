@@ -107,6 +107,12 @@ export default class LoginPage extends React.Component {
 
                 // error1.message.includes("401") ? this.message = "Feil brukernavn eller passord." : history.push('/');
 
+            })
+            .then(
+                //history.push('/', { some: 'state' }),
+                console.log("error?"),
+                //error => console.log("Error! " + { error, loading: false })
+            );
     }
 
     handleSubmitBedrift(e) {
@@ -231,6 +237,9 @@ export default class LoginPage extends React.Component {
                         </div>
                         </AnimateHeight>
                     </div>
+
+
+
                     <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
                         <h3>BEDRIFT</h3>
@@ -274,6 +283,7 @@ export default class LoginPage extends React.Component {
                             </div>
                         </AnimateHeight>
                     </div>
+
                     <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
                         <h3>KOMMUNE</h3>

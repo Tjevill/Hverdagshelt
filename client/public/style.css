@@ -305,7 +305,7 @@ summary:focus {
 /*}*/
 
 .form-group-style {
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 
@@ -322,16 +322,17 @@ light green: #A3C4BC
 */
 
 .caseEdit-wrapper{
-  height: 100vh;
+  height: 1000px;
   width: 100%;
   display: flex;
-
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: #258ea6;
 }
 
 .caseEdit-wrapper .form-wrapper {
-  width: 400px;
-  height: 550px;
+  width: 600px;
   display: flex;
   flex-direction: column;
   padding: 20px 40px;
@@ -389,8 +390,8 @@ light green: #A3C4BC
 
 .caseEdit-wrapper
 .headline,
-.address,
-.zip,
+
+
 .description{
   display: flex;
   flex-direction: column;
@@ -398,13 +399,20 @@ light green: #A3C4BC
 }
 
 .caseEdit-wrapper .headline,
-.address ,
-.zip,
+
+
 .description {
   width: 100%;
 }
 
 .caseEdit-wrapper .editCase {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caseEdit-wrapper .deleteCase {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -430,8 +438,42 @@ light green: #A3C4BC
   border: 2px solid #519e8a;
 }
 
+.deleteCase  button {
+  background-color: #9e5165;
+  color: #fff;
+  border: 2px solid #fff;
+  width: 100%;
+  margin-top: 1em;
+  padding: 8px 0px;
+  font-size: 1em;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  margin-bottom: 0.25em;
+}
+
+.deleteCase  button:hover {
+  color:#9e5165;
+  background-color: #fff;
+  border: 2px solid #9e5165;
+}
+
 ListItem {
     height: 200px;
 }
 
+.fullfør {
+    margin-top: 3%;
+}
+
+.address-field {
+    margin-bottom: 2%;
+}
+
+.report-map {
+    margin-bottom: 2%;
+}
+
+.feilmelding {
+    color: red;
+}
 

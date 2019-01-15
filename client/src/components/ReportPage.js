@@ -13,7 +13,12 @@ const style = {
     position: "relative"
 }
 
+
+
 export class Report extends Component {
+    message = " ";
+    error = " ";
+
     categories = [];
     selectedFile: null;
     infoShowing = false;
@@ -33,8 +38,11 @@ export class Report extends Component {
         picture: "",
         zipcode: "",
         category_id: "",
-        user_id:"",
+        user_id: sessionStorage.getItem("userid"),
     };
+
+    // isEnabled = this.state.headline == '' || this.state.description == ''  || this.state.headline.length > 64 || this.state.category_id.trim() == '' ||
+    //     this.state.picture.trim() == '' || (this.country.trim() != 'Norge' || this.country.trim() != 'Norway');
 
     fileSelectedHandler = event => {
         console.log(event.target.files[0]);
@@ -44,7 +52,7 @@ export class Report extends Component {
     fileUploadHandler(){
         let fd = new FormData();
         if (this.selectedFile == null) {
-            Alert.danger('Vennligst last opp bilde');
+            this.error = "Vennligst last opp bilde!";
             console.log('Last opp fil');
         } else {
             fd.append('file', this.selectedFile, this.selectedFile.name);
@@ -56,6 +64,7 @@ export class Report extends Component {
                 });
         }
     };
+
     handleChange = event => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -66,6 +75,7 @@ export class Report extends Component {
             [name]: value
         }));
     };
+
     render(){
         return(
             <div className="row row-style" style={style}>
@@ -87,7 +97,7 @@ export class Report extends Component {
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
                             <input
-                                className="form-control"
+                                className="form-control address-field"
                                 type="text"
                                 name="headline"
                                 defaultValue={this.address}
@@ -102,7 +112,7 @@ export class Report extends Component {
                                     lng: this.lng
                                 }}
                                 style={style}
-                                onClick={this.onMapClick}
+                                onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
                             >
                                 <Marker
                                     name={"current location"}
@@ -110,9 +120,7 @@ export class Report extends Component {
                                     position={{ lat: this.lat, lng: this.lng }}
                                     onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
                                 />
-
                             </Map>
-
                         </div>
 
                         <div className="form-group form-group-style">
@@ -130,16 +138,6 @@ export class Report extends Component {
                             <label className="file-upload-container" htmlFor="file-upload"></label>
                             <input id="file-upload" type="file" name="file-upload" onChange={this.fileSelectedHandler}></input>
                         </div>
-                        <div className="form-group form-group-style">
-                            Hvilken bruker? (temp):{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue=""
-                                name="user_id"
-                                onChange={this.handleChange}
-                            />
-                        </div>
                         <select className='selectpicker browser-default custom-select'
                                 onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.category_id = event.target.value)}
                                 defaultValue=''>
@@ -150,10 +148,10 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary">
+                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
-                        <h1>{this.message}</h1>
+                        <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
             </div>
@@ -192,39 +190,51 @@ export class Report extends Component {
                 console.log(this.zipcode);
                 let countryFilter = [];
                 let help = [];
-                help = this.mapData.address_components.filter(e =>
-                e.types[0] == 'country');
-                this.country = help[0].long_name;
+                if (this.mapData.address_components == null) {
+                    this.error = 'Fant ingen gyldig addresse her, vennligst velg et annet sted';
+                } else {
+                    this.error = "";
+                    help = this.mapData.address_components.filter(e =>
+                        e.types[0] == 'country');
+                    this.country = help[0].long_name;
+                }
+
             }
         );
     };
 
-    onMapClick(props, map, e){
-        console.log("onMapClick");
-        this.infoShowing = false;
-        this.activeMarker = {};
-    }
-
     register(){
         var valid = true;
         if (this.state.headline == ''){
-            valid = false;
-            Alert.danger('Tittel må fylles inn!');
+            // valid = false;
+            // Alert.danger('Tittel må fylles inn!');
+            this.error = "Tittel må fylles inn!";
+            return null;
         } else if (this.state.headline.length > 64){
-            valid = false;
-            Alert.danger('Max tittel lengde: 64 tegn');
+            // valid = false;
+            // Alert.danger('Max tittel lengde: 64 tegn');
+            this.error = "Max tittel lengde: 64 tegn";
+            return null;
+        } else {
+            this.error = "";
         }
         if (this.state.category_id.trim() == ''){
-            valid = false;
-            Alert.danger('Kategori er påkrevd!');
+            this.error = "Kategori er påkrevd!";
+            return null;
+        } else {
+            this.error = "";
         }
         if (this.state.picture.trim() == '') {
-            valid = false;
-            Alert.danger('Vennligst last opp et bilde');
+            this.error = "Vennligst last opp et bilde";
+            return null;
+        } else {
+            this.error = "";
         }
-        if (this.country.trim() != 'Norway') {
-            valid = false;
-            Alert.danger('Vennligst plasser nåla innenfor Norge!');
+        if (this.country.trim() == 'Norge' || this.country.trim() == 'Norway') {
+            this.error = "";
+        } else {
+            this.error = "Vennligst velg et sted i Norge";
+            return null;
         }
 
 
@@ -248,12 +258,10 @@ export class Report extends Component {
                 this.state.picture = res.url;
             });
 
-        if(valid){
             if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
             caseService.createUserCase(casedata)
                 .then(window.location.reload())
                 .catch((error: Error) => Alert.danger(error.message));
-        }
     }
 
     componentDidMount(){
