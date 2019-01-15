@@ -601,6 +601,15 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    /** Get every case with status_id = 1. */
+    app.get("/allCases/status/:status_id", (req, res) =>{
+        console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
+        caseDao.getStatus(req.params.status_id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
     /** Get the province of every case*/
     app.get("/allCases/:province", (req, res) =>{
         console.log("Received get-request on endpoint /allCases/"+req.params.province);

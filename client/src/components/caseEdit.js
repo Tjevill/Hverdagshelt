@@ -12,8 +12,15 @@ import {
 	Cell
 } from "react-mdl";
 import { caseService, mapService } from "../services.js";
-import Map from "./Map";
+
 import {Alert} from './widgets';
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+
+const style = {
+    width: '80%',
+    height: '80%',
+    position: "relative"
+}
 
 const formValid = ({ formErrors, ...rest }) => {
 	let valid = true;
@@ -32,28 +39,25 @@ const formValid = ({ formErrors, ...rest }) => {
 	return valid;
 };
 
-export default class caseEdit extends Component<{
+export class caseEdit extends Component<{
 	match: { params: { id: number } }
 }> {
 	case = new Object();
-	loaded = false;
-  openMap = false;
-  case = {};
-  map = <></>;
-  mapData = {};
+	lat =63.4283065;
+	lng = 10.3876995;
+	  mapData = {};
   province = "";
-  test = <h1>test</h1>;
+  address= "";
+  	zipcode= "";
 	constructor(props) {
 		super(props);
 		this.state = {
 			headline: "",
-			address: "",
-			zip: "",
+			
+		
 			description: "",
 			formErrors: {
 				headline: "",
-				address: "",
-				zip: "",
 				description: ""
 			}
 		};
@@ -63,13 +67,54 @@ export default class caseEdit extends Component<{
 		e.preventDefault();
 
 		if (formValid(this.state)) {
-			console.log(` --SUBMITTING--
-				Tittel: ${this.state.headline}
-				Adresse: ${this.state.address}
-			Postnummer: ${this.state.zip}
-			`);
+
+			 console.log(`
+        --SUBMITTING--
+         description: ${this.state.description} 
+          longitude:  ${this.lng}
+          latitude:  ${this.lat}
+          status_id:  ${this.case.status_id}
+          user_id:  ${this.case.user_id}
+          category_id:  ${this.case.category_id}
+          zipcode:  ${this.zipcode}
+          headline: ${this.state.headline}
+          picture:  ${this.case.picture}
+          employee_id:  ${this.case.employee_id}
+          org_id:  ${this.case.org_id}
+          
+          case_id:  ${this.props.match.params.id}
+      `);
+
+		caseService.updateCase({
+          description: this.state.description ,
+          longitude: this.lng,
+          latitude: this.lat,
+          status_id: this.case.status_id,
+          user_id: this.case.user_id,
+          category_id: this.case.category_id,
+          zipcode: this.zipcode,
+          headline:this.state.headline,
+          picture: this.case.picture,
+          employee_id: this.case.employee_id,
+          org_id: this.case.org_id,
+
+          case_id: this.props.match.params.id
+        })
+        .then(res => {
+          console.log("Response recieved:", res);
+        })
+        .catch(err => {
+          console.log("AXIOS ERROR:", err);
+        });
+
+         window.alert("Saken har nå blitt endret");
+
+
+
+
+
 		} else {
-			 Alert.danger("Ingen endringer ble utført");
+			 window.alert("Ingen endringer ble utført");
 			console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
 
 		}
@@ -88,15 +133,9 @@ export default class caseEdit extends Component<{
 					value.length < 3 ? "minimum 3 bokstaver headline" : "";
 				break;
 
-			case "address":
-				formErrors.address =
-					value.length < 3 ? "minimum 3 bokstaver adress" : "";
-				break;
+			
 
-			case "zip":
-				formErrors.zip =
-					value.length !== 4 ? "Oppgi gyldig postnr" : "";
-				break;
+			
 
 			case "description":
 				formErrors.description =
@@ -114,8 +153,8 @@ export default class caseEdit extends Component<{
 
 	render() {
 
-		const { formErrors } = this.state;
-		if(this.loaded){
+		const {formErrors} = this.state;
+		
 		return (
 			<div className="caseEdit-wrapper">
 
@@ -124,7 +163,7 @@ export default class caseEdit extends Component<{
 
 					<form onSubmit={this.handleSubmit} noValidate>
 						<div className="headline">
-
+						{console.log(this.lat)}
 							<label htmlFor="headline"> Tittel </label>
 							<input
 								className={formErrors.headline.length > 0 ? "error" : null}
@@ -145,22 +184,31 @@ export default class caseEdit extends Component<{
 
 						<div className="address">
 							<label htmlFor="address"> Adresse </label>
-							<input
-							className={formErrors.address.length > 0 ? "error" : null}
-								type="text"
-								defaultValue={this.mapData.formatted_address.split(",")[0]}
+							 <div className="map-container">
+                            Spesifiser hvor problemet befinner seg:
+                           
+                            <Map
+                                className="report-map"
+                                google={this.props.google}
+                                zoom={8}
+                                initialCenter={{
+                                    lat: this.lat,
+                                    lng: this.lng
+                                }}
+                                style={style}
+                                onClick={this.onMapClick}
+                            >
+                                <Marker
+                                    name={"current location"}
+                                    draggable={true}
+                                    position={{ lat:this.lat, lng:this.lng }}
+                                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                                />
 
-								placeholder="Adresse"
+                            </Map>
 
-								name="address"
-								noValidate
-								onChange={this.handleChange}
-							/>
-							{formErrors.address.length > 0 && (
-								<span className="errorMessage">
-									{formErrors.address}
-								</span>
-							)}
+                        </div>
+							
 						</div>
 
 							<div className="description">
@@ -183,27 +231,16 @@ export default class caseEdit extends Component<{
 							)}
 						</div>
 
-						<div className="zip">
-							<label htmlFor="zip"> Postnummer </label>
-							<input
-								className={formErrors.zip.length > 0 ? "error" : null}
-								type="text"
-								defaultValue={this.case.zipcode}
-								placeholder="Postnummer"
-
-								name="zip"
-								noValidate
-								onChange={this.handleChange}
-							/>
-
-							{formErrors.zip.length > 0 && (
-								<span className="errorMessage">
-									{formErrors.zip}
-								</span>
-							)}
-						</div>
+						
 						<div className="editCase">
 							<button type="submit"> Lagre endringer </button>
+						</div>
+
+							<div className="deleteCase">
+
+							<button onClick={() => {
+											this.delete();
+										}}> Slett sak </button> 
 						</div>
 
 					</form>
@@ -212,17 +249,13 @@ export default class caseEdit extends Component<{
 				</div>
 
 
-				<div className="caseEdit-map">
-			{this.map}
-			</div>
+				 
+
 
 			</div>
 			);
-	} else {
-		return (
-		<h1> Loading </h1>
-		);
-	}
+	
+	
 	}
 
 	componentDidMount() {
@@ -230,32 +263,93 @@ export default class caseEdit extends Component<{
 			.getCaseById(this.props.match.params.id)
 			.then(sak => {
 				this.case = sak[0];
-				this.forceUpdate();
+				this.lng = sak[0].longitude;
+				this.lat=sak[0].latitude;
+				this.zipcode=sak[0].zipcode;
+								this.forceUpdate();
 			})
 			.catch((error: Error) => console.log(error.message));
 
 
+		mapService
+        .getMapInfo(this.latitude, this.longitude)
+        .then(mapData => {
+          this.mapData = mapData.results[0];
+          //console.log(this.mapData);
+          if (this.mapData == null) {
+            this.mapData = {
+              formatted_address: "none"
+            };
+          }
+          mapService.getProvince(this.zipcode).then(zipData => {
+            this.province = zipData.result.postnr[0].kommune;
+            this.loaded = true;
+          });
+        })
+    
 
 
-	if(this.openMap) document.location.reload();
-    this.openMap = true;
-    let casePromise = caseService.getCaseById(this.props.match.params.id);
-    casePromise.then(caseData => (
-      //console.log(caseData[0]),
-      this.case = caseData[0],
-      mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
-        mapData => (
-          this.mapData = mapData.results[0],
-          //console.log(this.mapData),
-          mapService.getProvince(this.case.zipcode).then(
-            zipData => (
-              this.province = zipData.result.postnr[0].kommune,
-              this.loaded = true
-            )
-          )
-        )
-      ),
-      this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>
-    ));
+
+
+	
+	}
+
+	 onMarkerDragEnd = (coord) => {
+        console.log(coord.latLng.lat());
+        this.lat = coord.latLng.lat();
+        console.log(coord.latLng.lng());
+        this.lng = coord.latLng.lng();
+        mapService.getMapInfo(this.lat, this.lng).then(
+            mapData => {
+                this.mapData = mapData.results[0];
+                console.log(this.mapData);
+                if(this.mapData == null){
+                    this.mapData = {
+                        formatted_address: "none"
+                    }
+                }
+                let filter = [];
+                this.address = this.mapData.formatted_address;
+                if (this.mapData.address_components == null) {
+                    console.log('Ikke i Norge!');
+                } else {
+                    filter = this.mapData.address_components.filter(e =>
+                        e.types[0] == 'postal_code');
+                }
+
+                console.log(filter);
+                if(filter[0] == null) {
+                    this.zipcode = '0000';
+                } else {
+                    this.zipcode = filter[0].long_name;
+                }
+                console.log(this.zipcode);
+            }
+        );
+    };
+
+      onMapClick(props, map, e){
+        console.log("onMapClick");
+        this.infoShowing = false;
+        this.activeMarker = {};
+    }
+
+    delete() {
+		console.log("Er du sikker på at du vil slette følgende sak?");
+		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+			caseService.deleteById(this.case.case_id) .then(res => {
+          console.log("Response recieved:", res);
+        })
+        .catch(err => {
+          console.log("AXIOS ERROR:", err);
+        });
+			window.alert("Din sak har blitt slettet");
+			//window.location.reload();
+		}
 	}
 }
+
+
+export default GoogleApiWrapper({
+    apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
+})(caseEdit);
