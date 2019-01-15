@@ -24,7 +24,10 @@ export default class LoginPage extends React.Component {
             password: '',
             submitted: false,
             loading: false,
-            error: ''
+            error: '',
+            message1: '',
+            message2: '',
+            message3: ''
         };
 
 
@@ -84,30 +87,26 @@ export default class LoginPage extends React.Component {
             password1: this.state.password1
         };
 
-        console.log(" ------ ");
-        this.message = "Login successful";
-        console.log("this login: ", login);
+        //console.log(" ------ ");
+        // console.log("this login: ", login);
         userService
             .loginHverdagshelt(login)
             .then(response => {
-                this.message = response.reply;
-                let info = JSON.stringify(response);
-                console.log("Response: " + info)
+                console.log("response: " + response.reply)
+                this.setState({message1: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'user');
-                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                console.log("email: " + sessionStorage.getItem("email"));
-                console.log("user: " + sessionStorage.getItem("userid"));
-
-
+                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                // console.log("email: " + sessionStorage.getItem("email"));
+                // console.log("user: " + sessionStorage.getItem("userid"));
+                if (this.state.message1 === "Success") history.push('/');
             })
-            .then(
-                // history.push('/', { some: 'state' }),
-                console.log("error?"),
-                //error => console.log("Error! " + { error, loading: false })
-            );
+            .catch((error: Error) => console.error("Error message: " + error.message));
+
+                // error1.message.includes("401") ? this.message = "Feil brukernavn eller passord." : history.push('/');
+
     }
 
     handleSubmitBedrift(e) {
@@ -121,31 +120,26 @@ export default class LoginPage extends React.Component {
             password2: this.state.password2
         };
 
-        console.log(" ------ ");
-        this.message = "Login successful";
-        console.log("this login2: ", login2);
+        // console.log(" ------ ");
+        // console.log("this login2: ", login2);
         userService
             .loginBedrift(login2)
             .then(response => {
-                this.message = response.reply;
-                let info = JSON.stringify(response);
-                console.log("Response: " + info)
+                this.setState({message2: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'bedrift');
-                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                console.log("email: " + sessionStorage.getItem("email"));
-                console.log("user: " + sessionStorage.getItem("userid"));
-
+                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                //console.log("email: " + sessionStorage.getItem("email"));
+                //console.log("user: " + sessionStorage.getItem("userid"));
+                if (this.state.message2 === "Success") history.push('/');
 
             })
-            .then(
-
-               //  history.push('/', { some: 'state' }),
-                // error => this.setState({ error, loading: false })
-                error => console.log("error?: " + { error, loading: false })
-            );
+            .catch((error: Error) => {
+                if (error.message.includes("401"))
+                    this.message = "Feil brukernavn eller passord.";
+            });
     }
 
     handleSubmitKommune(e) {
@@ -158,31 +152,26 @@ export default class LoginPage extends React.Component {
             password3: this.state.password3
         };
 
-        console.log(" ------ ");
-        this.message = "Login successful";
-        console.log("this login: ", login3);
+        // console.log(" ------ ");
+        // console.log("this login: ", login3);
         userService
             .loginKommune(login3)
             .then(response => {
-                this.message = response.reply;
-                let info = JSON.stringify(response);
-                console.log("Response: " + info)
+                this.setState({message3: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'kommune');
-                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                console.log("email: " + sessionStorage.getItem("email"));
-                console.log("user: " + sessionStorage.getItem("userid"));
-
+                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                //console.log("email: " + sessionStorage.getItem("email"));
+                //console.log("user: " + sessionStorage.getItem("userid"));
+                if (this.state.message3 === "Success") history.push('/');
 
             })
-            .then(
-
-                // history.push('/', { some: 'state' }),
-                // error => this.setState({ error, loading: false })
-                error => console.log({ error, loading: false })
-            );
+            .catch((error: Error) => {
+                if (error.message.includes("401"))
+                    this.message = "Feil brukernavn eller passord.";
+            });
     }
 
     componentDidMount() {
@@ -214,7 +203,7 @@ export default class LoginPage extends React.Component {
 
                             <h4>Logg inn:</h4>
 
-                                <form name="formuser">
+                                <form name="formuser" id="formuser">
                                 <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
                                     <label htmlFor="email1">E-mail</label>
                                     <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
@@ -224,7 +213,7 @@ export default class LoginPage extends React.Component {
                                 </div>
                                 <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
                                     <label htmlFor="password1">Password</label>
-                                    <input type="password" className="form-control" name="password1" onChange={this.handleChange} />
+                                    <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
                                     {submitted1 && !password1 &&
                                     <div className="help-block">Password is required</div>
                                     }
@@ -234,6 +223,7 @@ export default class LoginPage extends React.Component {
                                     {loading1 &&
                                     <div>Loading</div>}
                                 </div>
+                                    <div className="form-group"><h3>{this.state.message1}</h3></div>
                                 {error1 &&
                                 <div className={'alert alert-danger'}>{error1}</div>
                                 }
@@ -256,7 +246,7 @@ export default class LoginPage extends React.Component {
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="formbedrift">
+                                <form name="formbedrift" id="formbedrift">
                                     <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
                                         <label htmlFor="email2">E-mail</label>
                                         <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
@@ -266,7 +256,7 @@ export default class LoginPage extends React.Component {
                                     </div>
                                     <div className={'form-group' + (submitted2 && !password2 ? ' has-error' : '')}>
                                         <label htmlFor="password2">Password</label>
-                                        <input type="password" className="form-control" name="password2" onChange={this.handleChange} />
+                                        <input type="password" className="form-control" name="password2" autoComplete="password2" onChange={this.handleChange} />
                                         {submitted2 && !password2 &&
                                         <div className="help-block">Password is required</div>
                                         }
@@ -276,6 +266,7 @@ export default class LoginPage extends React.Component {
                                         {loading2 &&
                                         <div>Loading</div>}
                                     </div>
+                                    <div className="form-group"><h3>{this.state.message2}</h3></div>
                                     {error2 &&
                                     <div className={'alert alert-danger'}>{error2}</div>
                                     }
@@ -298,7 +289,7 @@ export default class LoginPage extends React.Component {
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="formkommune">
+                                <form name="formkommune" id="formkommune">
                                     <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
                                         <label htmlFor="email3">E-mail</label>
                                         <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
@@ -308,7 +299,7 @@ export default class LoginPage extends React.Component {
                                     </div>
                                     <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
                                         <label htmlFor="password3">Password</label>
-                                        <input type="password" className="form-control" name="password3" onChange={this.handleChange} />
+                                        <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
                                         {submitted3 && !password3 &&
                                         <div className="help-block">Password is required</div>
                                         }
@@ -318,6 +309,7 @@ export default class LoginPage extends React.Component {
                                         {loading3 &&
                                         <div> Loading </div>}
                                     </div>
+                                    <div className="form-group"><h3>{this.state.message3}</h3></div>
                                     {error3 &&
                                     <div className={'alert alert-danger'}>{error3}</div>
                                     }

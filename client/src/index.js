@@ -78,7 +78,7 @@ class Navbar extends Component {
         return (
             <div className="topnav" id="navbar">
               <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-              <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Rapporter feil</a>
+              <a className="option" id="reportPage" href="#reportPage" onClick={() => this.activate("reportPage")}>Rapporter feil</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                 <ButtonToolbar className="dropdownmenus1">
                     <DropdownButton
@@ -88,10 +88,9 @@ class Navbar extends Component {
                         id="dropdown-basic-2"
                         noCaret
                     >
-                        <MenuItem href="#user/" eventKey="1">Min side</MenuItem>
+                        <MenuItem href="#user/" eventKey="1">Min side (med alle rapporter)</MenuItem>
                         <MenuItem href="#user/edit" eventKey="1">Rediger profil</MenuItem>
                         <MenuItem href="#user/newpass" eventKey="2">Forandre Passord</MenuItem>
-                        <MenuItem href="#user/rapporter" eventKey="3">Feilrapporter</MenuItem>
                         <MenuItem divider />
                         <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
                     </DropdownButton>
@@ -120,7 +119,6 @@ class Navbar extends Component {
                             <MenuItem href="#bedrift/" eventKey="1">Min side</MenuItem>
                             <MenuItem href="#bedrift/edit" eventKey="1">Rediger profil</MenuItem>
                             <MenuItem href="#bedrift/newpass" eventKey="2">Forandre Passord</MenuItem>
-                            <MenuItem href="#bedrift/rapporter" eventKey="3">Feilrapporter</MenuItem>
                             <MenuItem divider />
                             <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
                         </DropdownButton>
@@ -246,7 +244,7 @@ function renderRoot() {
                 <Navbar loggedin={value}/>
                 <div id="page">
                   <Route exact path="/" component={UserHome} />
-                  <Route exact path="/case" component={Case} />
+                  <Route exact path="/case/:id" component={Case} />
                   <Route exact path="/profile" component={ProfilePage} />
                     <Route exact path="/profile/:id/edit" component={UserEdit} />
                     <Route exact path="/issues" component={IssueOverview} />
