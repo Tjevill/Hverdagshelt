@@ -13,7 +13,7 @@ type jsonUpdate = {
 	tel: number,
 	email: string,
 	subscription: number
-	
+
 };
 
 type jsonUpdateSub = {
@@ -45,7 +45,7 @@ var sha512 = function (password, salt) {
 };
 
 module.exports = class UserDao extends Dao {
-	
+
 	/**	Get all districts. */
 	getAllDistricts (callback: mixed) {
 		super.query(
@@ -53,7 +53,7 @@ module.exports = class UserDao extends Dao {
 			[],
 			callback);
 	}
-	
+
 	/** Get all provinces on district_id. */
 	getProvincesFromFylke (id: number, callback: mixed) {
 		super.query(
@@ -62,7 +62,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**	Get all users in the db. */
 	getAll (callback: mixed) {
 		super.query(
@@ -70,7 +70,7 @@ module.exports = class UserDao extends Dao {
 			[],
 			callback);
 	}
-	
+
 	/**	Get one user from the db based on user_id.
 	*	@param id - User_id for the user you wish to retrieve from the db.
 	*/
@@ -81,16 +81,16 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
 	getHashedPWord(id: number, callback: mixed){
 		super.query(
-			"select user_id, password, secret from User where user_id = ?",
+			"select * from User where user_id = ?",
 			[id],
 			callback
 		);
-		
+
 	}
-	
+
 	/**
 	 * Use this method for updating personal data, except password
 	 * @param json
@@ -104,7 +104,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**
 	 * Use this method for changing password for the user
 	 * @param json
@@ -121,7 +121,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**	 Update the subscription on the given user.
 	*	@param json - json-object with the edited subscription level and user_id.
 	*/
@@ -133,8 +133,8 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
-	/**	Delete user in the db on user_id. 
+
+	/**	Delete user in the db on user_id.
 	*	@param id - user_id for the user you wish to delete from db.
 	*/
 	deleteUserByID (id: number, callback: mixed) {
@@ -145,7 +145,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**	Get the number of users in the db. */
 	getCountUsers (callback: mixed) {
 		super.query(
@@ -154,8 +154,8 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
-	/**	Get the email for a given user 
+
+	/**	Get the email for a given user
 	*	@param id - user_id of the user you wish to retrieve the mail for.
 	*/
 	getEmailUserByID (id: number, callback: mixed) {
@@ -166,8 +166,8 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
-	/**	Get the province from the user based on user_id 
+
+	/**	Get the province from the user based on user_id
 	*	@param id - the user_id you wish the province for.
 	*/
 	getUsersProvinceByUserID (id: number, callback: mixed) {
@@ -177,7 +177,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		)
 	}
-	
+
 	/**	Add a new user to the db
 	 *	@param json - json-object with the new data needed to create a new user in the db.
 	 */
@@ -185,12 +185,22 @@ module.exports = class UserDao extends Dao {
 		var salt = genRandomString(32);
 		/** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
 		var passwordData = sha512(json.password, salt);
-		var val = [json.name, json.address, json.zipcode, json.tel, json.email, json.username, passwordData.passwordHash, passwordData.salt, json.subscription];
+		var val = [json.name, json.address, json.zipcode, json.tel, json.email, passwordData.passwordHash, passwordData.salt, json.subscription];
 		super.query(
-			"insert into User (name, address, zipcode, tel, email, username, password, secret, subscription) values (?,?,?,?,?,?,?,?,?)",
+			"insert into User (name, address, zipcode, tel, email, password, secret, subscription) values (?,?,?,?,?,?,?,?)",
 			val,
 			callback
 		);
 	}
-	
+
+
+    getUserByEmail(email, callback) {
+        super.query(
+            "select * from User where email = ?",
+            [email],
+            callback
+        );
+    }
+
+
 };

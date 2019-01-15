@@ -1,3 +1,4 @@
+// @flow
 /* eslint eqeqeq: "off" */
 const express = require("express");
 const mysql = require("mysql");
@@ -53,12 +54,12 @@ var sha512 = function(password, salt){
 
 
 const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: "mysql.stud.iie.ntnu.no",
-  user: "mariteil",
-  database: "mariteil",
-  password: "Fs7ABKyd",
-  debug: false
+    connectionLimit: 10,
+    host: "mysql.stud.iie.ntnu.no",
+    user: "mariteil",
+    database: "mariteil",
+    password: "Fs7ABKyd",
+    debug: false
 });
 
 // Dao's
@@ -71,6 +72,7 @@ const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
 const Statusdao = require("../dao/statusdao.js");
 
+const Employeedao = require("../dao/employeedao.js");
 
 
 
@@ -88,11 +90,48 @@ let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
+let employeeDao = new Employeedao(pool);
 let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
 let statusDao = new Statusdao(pool);
 
+
+
+
+app.put("/newuser", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    userdao.addUser(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+app.put("/newemployee", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addEmployee(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+app.put("/neworganization", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addOrganization(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.put("/neworgcat/:id", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
+        res.status(status);
+       //  res.json(data);
+    });
+});
 
 
 app.get("/cases", (req, res) => {
@@ -593,7 +632,19 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** update case on case_id */
+
+/** get all categories  */
+
+    app.get("/getAllCategories", (req, res) => {
+        console.log("Received get-request on endpoint /getAllCategories");
+        employeeDao.getAllCategories((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+
+/** update case on case_id */
     app.put("/updateCase/:case_id", (req, res) =>{
         console.log("Received delete-request from client.");
         console.log("Trying to update case with id: "+req.params.case_id);
@@ -713,32 +764,45 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 // End Cases
 
 
-let verifyOldPassword = (id, password) => {
+
+
+
+/**
+ * Verifies old password for user.
+ */
+app.post('/userVerification', (req: Request, res: Response) => {
+	console.log("app.get(/userverification):::::" + req.body.user_id + "----------" + req.body.oldPassword);
 	
-	let promise4 = new Promise((resolve => {
-		userdao.getHashedPWord(id, (status, data) => {
-			console.log("data:  l/p: " + id + " " + password  + "    " + data[0].user_id + "------" + data[0].password + "-------" + data[0].secret);
-			const savedPassword = data[0].password;
-			const passwordData = sha512(password, data[0].secret);
-			
-			if(passwordData.passwordHash === savedPassword){
-				resolve(true);
-			} else {
-				resolve(false);
-			}
-		})
-	}));
-	return promise4;
-};
+	let dbHash;
+	userdao.getHashedPWord(req.body.user_id, (status, data) => {
+		console.log(data[0].password + " DATABASE!******************************");
+		let savedPassword = data[0].password;
+		let passwordData = sha512(req.body.oldPassword, data[0].secret);
+		console.log(passwordData.passwordHash, "NEW***********************");
+		dbHash = passwordData.passwordHash === savedPassword;
+		console.log(dbHash, " FRA VERIFY FALSE TRUE");
+		
+		if (dbHash) {
+			console.log("STATUS: ", "200");
+			res.status(200).json(1);
+		} else {
+			console.log("STATUS: ", "500");
+			res.status(500).json("Wrong password. Try again");
+		}
+		
+	});
+
+});
 
 
-function loginOk(username, password) {
 
-    var promise1 = new Promise(function (resolve, reject) {
-        userdao.getUsername(username, (status, data) => {
-            console.log("data: " + data);
+app.post("/loginhh", (req, res) => {
+
+    let promise1 = new Promise(function (resolve, reject) {
+        userdao.getUserByEmail(req.body.email1, (status, data) => {
+            console.log("data email: " + data[0].password);
             const lagretPass = data[0].password;
-            const passwordData = sha512(password, data[0].secret);
+            const passwordData = sha512(req.body.password1, data[0].secret);
             // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
             if (passwordData.passwordHash == lagretPass) {
@@ -748,43 +812,95 @@ function loginOk(username, password) {
             }
         });
     })
-    return promise1;
-}
 
-/**
- * Verifies old password for user.
- */
-app.get('/userVerification', (req: Request, res: Response) => {
-	let promise4 = verifyOldPassword(req.body.id, req.body.oldPassword);
-	
-	promise4.then((value => {
-		if(value){
-			res.json({login: 1});
-			res.status(200);
-		} else {
-			res.json({login: 0});
-			res.status(401);
-		}
-	}));
-});
-
-app.post("/login", (req, res) => {
-// console.log("LoginOK? : " + (loginOk(req.body.username, req.body.password)));
-    var promiseObject = loginOk(req.body.username, req.body.password);
-    console.log("promiseobject: " + promiseObject);
-
-    promiseObject.then(function (value) {
+    promise1.then(function (value) {
         if (value) {
-            let token = jwt.sign({username: req.body.username}, privateKey, {
-                expiresIn: 60
-            });
-            res.json({jwt: token, reply: "Login successful! Enjoy your stay"});
+            userdao.getUserByEmail(req.body.email1, (status, data) => {
 
-            console.log("Brukernavn & passord ok, velkommen " + req.body.username);
+                let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
+            });
+
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.status(401);
             res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
+        }
+    });
+});
+
+
+app.post("/logink", (req, res) => {
+
+    let promise1 = new Promise(function (resolve, reject) {
+        employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
+            console.log("data email: " + req.body.email3);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(req.body.password3, data[0].secret);
+            // console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    })
+
+    promise1.then(function (value) {
+        if (value) {
+            employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
+
+                let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
+            });
+
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
+        }
+    });
+});
+
+
+
+app.post("/loginb", (req, res) => {
+
+    let promise1 = new Promise(function (resolve, reject) {
+        console.log("data email: ", req.body);
+        employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
+            console.log("data email: " + req.body.email2);
+            const lagretPass = data[0].password;
+            const passwordData = sha512(req.body.password2, data[0].secret);
+            console.log(lagretPass.localeCompare(passwordData.passwordHash));
+
+            if (passwordData.passwordHash == lagretPass) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
+    })
+
+    promise1.then(function (value) {
+        if (value) {
+            employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
+
+                let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
+                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
+            });
+
+        } else {
+            console.log("Brukernavn & passord IKKE ok");
+            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.status(401);
+
         }
     });
 });
@@ -797,12 +913,12 @@ app.use("/refreshtoken", (req, res) => {
     let token = req.headers["x-access-token"];
     jwt.verify(token, privateKey, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok, så du får ikke refreshet");
+            console.log("Token IKKE ok, så du får    ikke refreshet");
             res.status(401);
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
-            let token = jwt.sign({ brukernavn: req.body.brukernavn }, privateKey, {
-                expiresIn: 5
+            let token = jwt.sign({ email: req.body.email }, privateKey, {
+                expiresIn: 60000
             });
             res.json({ jwt: token });
         }
