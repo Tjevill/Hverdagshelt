@@ -11,32 +11,36 @@ export default class Case extends Component {
   map = <></>;
   mapData = {};
   province = "";
-  test = <h1>test</h1>;
 
   render() {
     if(this.loaded){
       return (
         <div id="case-page">
           <div id="info">
-            <Card
-              title={this.case.headline}
-              province={this.province}
-              address={this.mapData.formatted_address.split(",")[0]}
-              zip={this.case.zipcode}
-              date={this.case.timestamp}
-            />
+              <Card
+                title={this.case.headline}
+                province={this.province}
+                address={this.mapData.formatted_address.split(",")[0]}
+                zip={this.case.zipcode}
+                date={this.case.timestamp}
+              />
             <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
-            <p id="description">{this.case.description}</p>
-          </div>
+          <p id="description">{this.case.description}</p>
+        </div>
           {this.map}
         </div>
-        );
-      } else {
-        return (
-          <h1>Loading</h1>
-        );
-      }
+      );
+    } else {
+      return (
+        <h1>Loading</h1>
+      );
     }
+  }
+
+  getTest(value){
+    this.test = value;
+    console.log(value);
+  }
 
   mounted(){
 

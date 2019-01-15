@@ -2,10 +2,78 @@
 .navbar-nav > li > a {
     padding-top:5px !important;
     padding-bottom:5px !important;
+    overflow: visible; !important;
+    z-index: 999;
 }
 .navbar {
-    min-height:100px !important
+    min-height:100px !important;
+    overflow: visible; !important;
+
+
 }
+
+.dropdownmenus {
+    position:fixed;
+    left:310px;
+}
+
+.dropdownmenus1 {
+    position:fixed;
+    left:380px;
+}
+
+.dropdown{
+    z-index:-1;
+    border: 0px solid white;
+    overflow: visible;
+}
+
+.open {
+    color: #ffffff; !important;
+
+    background-color: white;
+}
+
+
+.logged-in-as {
+    position: fixed;
+    right:10px;
+    color: #fff;
+    padding-top:5px !important;
+    padding-bottom:15px !important;
+}
+
+.btn-primary {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    color: #fff;
+}
+
+.dropdown-menu_left {
+    border: 2px solid red;
+}
+
+
+.dropdown-toggle {
+    padding-top:13px !important;
+    padding-bottom:13px !important;
+    background: none;
+    color: #ffffff;
+    font-size:16px;
+    border:none;
+}
+.dropdown-toggle:hover {
+    background: white;
+    color: #004400;
+}
+
+.dropdown-toggle:active  {
+    background: white; !important
+    color: #ff0000; !important
+}
+
+
+
 .card {
     width:40%;
     border:none;
@@ -56,6 +124,23 @@
 
 }
 
+.row {
+    height:100%;
+}
+
+.loginoption1, .loginoption2, .loginoption3 {
+    border-radius: 25px;
+    border: 1px solid black;
+    background-color: #eeeeee;
+    width:350px;
+    height: inherit;
+    text-align:center;
+    padding:14px;
+    margin:10px;
+    box-shadow: 4px 4px 20px #686868;
+    cursor: pointer;
+
+}
 .userHome-container{
     background-color:#fff; /* BYTTES UT MED HVIT */
     width: 1000px;
@@ -112,7 +197,7 @@
 
 .cell3 img{
     height: 150px;
-    width: 
+    width: 150px;
 }
 
 .userHome-event h5{
@@ -175,6 +260,17 @@
 
 }
 
+.loginoption1 img, .loginoption2 img, .loginoption3 img {
+    height:300px;
+}
+/* Optional styling */
+summary::-webkit-details-marker {
+    color: blue;
+}
+summary:focus {
+    outline-style: none;
+}
+
 .userHome-button1 button:hover{
  opacity: 1;
 
@@ -187,6 +283,9 @@
     padding-left: 500px;
 }
 
+.events-container img {
+    width: 100px;
+}
 .calender{
     
     border: 1px solid;
@@ -200,3 +299,139 @@
 .userHome-events h4{
     font-family: 'IBM Plex Sans', sans-serif;
 }
+
+/*.row-style {*/
+    /*width: 500px;*/
+/*}*/
+
+.form-group-style {
+    margin-bottom: 5%;
+}
+
+
+
+
+
+/* Colors */
+/*
+dark blue: #476A6F
+light blue: #258EA6
+dark green: #519E8A
+medium green: #7EB09B
+light green: #A3C4BC
+*/
+
+.caseEdit-wrapper{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+
+  background-color: #258ea6;
+}
+
+.caseEdit-wrapper .form-wrapper {
+  width: 400px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 50px #555;
+  background-color: #ffffff;
+}
+
+.caseEdit-wrapper form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.caseEdit-wrapper .form-wrapper h1 {
+  text-align: center;
+  width: 100%;
+  color: #111;
+  font-weight: lighter;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.caseEdit-wrapper .form-wrapper label {
+  font-size: 0.8em;
+  margin-bottom: 0.25em;
+  color: #222;
+  font-weight: lighter;
+}
+
+.caseEdit-wrapper .form-wrapper input {
+  padding: 10px 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #cfcfcf;
+}
+
+.caseEdit-wrapper .form-wrapper input::placeholder {
+  font-size: 1.2em;
+  font-weight: lighter;
+  color: #999;
+}
+
+.caseEdit-wrapper .form-wrapper input.error {
+  border: 1px solid red;
+}
+
+.caseEdit-wrapper .errorMessage {
+  color: red;
+  font-size: 0.75em;
+  /*display: relative;*/
+}
+
+
+
+.caseEdit-wrapper
+.headline,
+.address,
+.zip,
+.description{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.caseEdit-wrapper .headline,
+.address ,
+.zip,
+.description {
+  width: 100%;
+}
+
+.caseEdit-wrapper .editCase {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editCase  button {
+  background-color: #519e8a;
+  color: #fff;
+  border: 2px solid #fff;
+  width: 100%;
+  margin-top: 1em;
+  padding: 8px 0px;
+  font-size: 1em;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  margin-bottom: 0.25em;
+}
+
+.editCase  button:hover {
+  color: #519e8a;
+  background-color: #fff;
+  border: 2px solid #519e8a;
+}
+
+ListItem {
+    height: 200px;
+}
+
+
