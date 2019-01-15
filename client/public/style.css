@@ -12,6 +12,30 @@
 
 }
 
+.pointer:hover{
+    cursor: pointer;
+}
+
+.deletedCase{
+    display: none;
+}
+
+.headlines{
+    display: grid;
+    grid-template-columns: 2fr;
+    max-width: 30%;
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: Helvetica, serif;
+    font-weight: bold;
+}
+
+.profCard {
+    width: 50%;
+    border: none;
+}
+
 .dropdownmenus {
     position:fixed;
     left:310px;

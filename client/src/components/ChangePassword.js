@@ -32,7 +32,7 @@ export default class ChangePassword extends Component {
                 Gammelt passord:{" "}
                 <input
                 className="form-control"
-                  type="text"
+                  type="password"
                   name="oldPassword"
                   onChange={event => (this.oldPassword = event.target.value)}
                 />
@@ -41,7 +41,7 @@ export default class ChangePassword extends Component {
                 Nytt passord:{" "}
                 <input
                 className="form-control"
-                  type="text"
+                  type="password"
                   name="newPassword1"
                   onChange={event => (this.newPassword1= event.target.value)}
                 />
@@ -50,7 +50,7 @@ export default class ChangePassword extends Component {
                   Gjenta nytt passord:{" "}
                   <input
                   className="form-control"
-                    type="text"
+                    type="password"
                     name="newPassword2"
                     onChange={event => (this.newPassword2 = event.target.value)}
                   />
@@ -115,7 +115,7 @@ export default class ChangePassword extends Component {
        this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
        this.forceUpdate();
 		 });
-   }
+    }
   }
 
   componentDidMount(){
