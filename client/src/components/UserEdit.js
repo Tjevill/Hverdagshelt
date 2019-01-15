@@ -11,7 +11,8 @@ const history = createHashHistory();
 
 
 
-export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
+export default class UserEdit extends Component {
+  userid = -1;
   user = new Object();
   bilde = "https://img.icons8.com/android/1600/user.png";
   _tel = "";
@@ -74,14 +75,14 @@ export default class UserEdit extends Component <{ match: { params: { id: number
       <>
       <div className="jumbotron jumbotron-fluid">
         <div className="container text-center">
-          <h1 class="display-4">Edit</h1>
+          <h1 className="display-4">Edit</h1>
         </div>
       </div>
 
 
-        <div class="container text-center">
-          <div class="row">
-            <div class="col">
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
          <div className="form-group">
           Navn:{" "}
           <input
@@ -146,7 +147,7 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
-          <div class="col">
+          <div className="col">
           <br/><br/><br/><br/>
             <img src={this.bilde} width="200"/>
           </div>
@@ -158,8 +159,9 @@ export default class UserEdit extends Component <{ match: { params: { id: number
 
 
   componentDidMount(){
+    this.userid = sessionStorage.getItem("userid");
     userService
-      .getUserByID(this.props.match.params.id)
+      .getUserByID(this.userid)
       .then(user => {
         this.user = user[0];
         this.state.tel = this.user.tel;
