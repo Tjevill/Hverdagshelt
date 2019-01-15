@@ -446,4 +446,7 @@ ListItem {
     margin-bottom: 2%;
 }
 
+.feilmelding {
+    color: red;
+}
 
