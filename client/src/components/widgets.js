@@ -25,7 +25,7 @@ const checkToken = (req, res, next) => {
 export function refreshToken() {
     const myHeaders = new Headers();
 
-    console.log("Refreshing with: " + sessionStorage.getItem('storedtoken'))
+    // console.log("Refreshing with: " + sessionStorage.getItem('storedtoken'))
     myHeaders.append('x-access-token', sessionStorage.getItem('storedtoken'));
     myHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
@@ -52,7 +52,8 @@ export function refreshToken() {
                 console.log("Refreshtoken: Mangler token. Kan ikke refreshe");
                 resolve(false);
             }
-        });
+        })
+        .catch((error: Error) => console.error("Refresh token error: " + error.message));
     });
 }
 
