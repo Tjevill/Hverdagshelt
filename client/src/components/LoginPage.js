@@ -103,16 +103,10 @@ export default class LoginPage extends React.Component {
                 // console.log("user: " + sessionStorage.getItem("userid"));
                 if (this.state.message1 === "Success") history.push('/');
             })
-            .catch((error: Error) => console.error("Error message: " + error.message));
-
-                // error1.message.includes("401") ? this.message = "Feil brukernavn eller passord." : history.push('/');
-
-            })
-            .then(
-                //history.push('/', { some: 'state' }),
-                console.log("error?"),
-                //error => console.log("Error! " + { error, loading: false })
-            );
+            .catch((error: Error) => {
+                if (error.message.includes("401"))
+                    this.message = "Feil brukernavn eller passord.";
+            });
     }
 
     handleSubmitBedrift(e) {
