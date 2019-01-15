@@ -104,7 +104,7 @@ export default class LoginPage extends React.Component {
 
             })
             .then(
-                //history.push('/', { some: 'state' }),
+                // history.push('/', { some: 'state' }),
                 console.log("error?"),
                 //error => console.log("Error! " + { error, loading: false })
             );
@@ -142,7 +142,7 @@ export default class LoginPage extends React.Component {
             })
             .then(
 
-                history.push('/', { some: 'state' }),
+               //  history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
                 error => console.log("error?: " + { error, loading: false })
             );
@@ -179,7 +179,7 @@ export default class LoginPage extends React.Component {
             })
             .then(
 
-                history.push('/', { some: 'state' }),
+                // history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
                 error => console.log({ error, loading: false })
             );
@@ -214,7 +214,7 @@ export default class LoginPage extends React.Component {
 
                             <h4>Logg inn:</h4>
 
-                                <form name="form1" onSubmit={() => {this.handleSubmitHverdagshelt()}}>
+                                <form name="formuser">
                                 <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
                                     <label htmlFor="email1">E-mail</label>
                                     <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
@@ -230,7 +230,7 @@ export default class LoginPage extends React.Component {
                                     }
                                 </div>
                                 <div className="form-group">
-                                    <button type="submit" className="btn btn-primary">Login</button>
+                                    <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
                                     {loading1 &&
                                     <div>Loading</div>}
                                 </div>
@@ -241,9 +241,6 @@ export default class LoginPage extends React.Component {
                         </div>
                         </AnimateHeight>
                     </div>
-
-
-
                     <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
                         <h3>BEDRIFT</h3>
@@ -259,7 +256,7 @@ export default class LoginPage extends React.Component {
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="form2" onSubmit={() => {this.handleSubmitBedrift()}}>
+                                <form name="formbedrift">
                                     <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
                                         <label htmlFor="email2">E-mail</label>
                                         <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
@@ -275,7 +272,7 @@ export default class LoginPage extends React.Component {
                                         }
                                     </div>
                                     <div className="form-group">
-                                        <button type="submit" className="btn btn-primary">Login</button>
+                                        <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
                                         {loading2 &&
                                         <div>Loading</div>}
                                     </div>
@@ -286,7 +283,6 @@ export default class LoginPage extends React.Component {
                             </div>
                         </AnimateHeight>
                     </div>
-
                     <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
                         <h3>KOMMUNE</h3>
@@ -302,7 +298,7 @@ export default class LoginPage extends React.Component {
 
                                 <h4>Logg inn:</h4>
 
-                                <form name="form3" onSubmit={() => {this.handleSubmitKommune()}}>
+                                <form name="formkommune">
                                     <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
                                         <label htmlFor="email3">E-mail</label>
                                         <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
@@ -318,7 +314,7 @@ export default class LoginPage extends React.Component {
                                         }
                                     </div>
                                     <div className="form-group">
-                                        <button type="submit" className="btn btn-primary">Login</button>
+                                        <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
                                         {loading3 &&
                                         <div> Loading </div>}
                                     </div>
