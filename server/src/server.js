@@ -33,7 +33,7 @@ let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord"
 
 
 'use strict';
-var crypto = require('crypto');
+const crypto = require('crypto');
 
 var genRandomString = function(length){
     return crypto.randomBytes(Math.ceil(length/2))
@@ -95,6 +95,29 @@ let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
 let statusDao = new Statusdao(pool);
+
+
+/** Send password reset link   */
+/* uncomplete
+app.get("/forgotPassword", (req, res) => {
+	console.log("/forgotPassword fikk request.");
+	if ( req.body.email == '') {
+        res.json('E-post feltet må fylles ut')
+    }
+    console.log('forgotten password request for ' + req.body.email);
+    userdao.findUserByEmail(req.params.email, (req,res)=>{
+        res.status(status);
+        res.json(data);
+    });
+
+    if(data.body == null) {
+        console.log('Email does not exist in database');
+        res.json('Email does not exist in database');
+
+    } else {
+        const 
+    } 
+}); */
 
 
 
@@ -578,7 +601,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** Get the province of every */
+    /** Get the province of every case*/
     app.get("/allCases/:province", (req, res) =>{
         console.log("Received get-request on endpoint /allCases/"+req.params.province);
         caseDao.getProvinceOnCase( req.params.province, (status, data) =>{
