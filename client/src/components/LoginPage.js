@@ -3,7 +3,6 @@
 import React from 'react';
 import { authService } from '../authservices';
 import {userService} from "../services";
-import {refreshToken} from './widgets';
 import AnimateHeight from 'react-animate-height';
 import createHistory from 'history/createBrowserHistory'
 
@@ -72,7 +71,7 @@ export default class LoginPage extends React.Component {
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
 
-        console.log(this.state);
+        // console.log(this.state);
     };
 
     handleSubmitHverdagshelt() {
@@ -98,19 +97,16 @@ export default class LoginPage extends React.Component {
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'user');
-                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                //console.log("email: " + sessionStorage.getItem("email"));
-                //console.log("user: " + sessionStorage.getItem("userid"));
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("email: " + sessionStorage.getItem("email"));
+                console.log("user: " + sessionStorage.getItem("userid"));
 
 
             })
             .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/profile" } };
-                    this.props.history.push(from);
-                },
-                // error => this.setState({ error, loading: false })
-                error => console.log({ error, loading: false })
+                //history.push('/', { some: 'state' }),
+                console.log("error?"),
+                //error => console.log("Error! " + { error, loading: false })
             );
     }
 
@@ -145,12 +141,10 @@ export default class LoginPage extends React.Component {
 
             })
             .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/profile" } };
-                    this.props.history.push(from);
-                },
+
+                history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
-                error => console.log({ error, loading: false })
+                error => console.log("error?: " + { error, loading: false })
             );
     }
 
@@ -184,10 +178,8 @@ export default class LoginPage extends React.Component {
 
             })
             .then(
-                user => {
-                    const { from } = this.props.location.state || { from: { pathname: "/admin" } };
-                    this.props.history.push(from);
-                },
+
+                history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
                 error => console.log({ error, loading: false })
             );
@@ -211,7 +203,7 @@ export default class LoginPage extends React.Component {
 
                         <h3>HVERDAGSHELT</h3>
                         <div className="profilbilde">
-                            <img src={ require('./resources/hverdagshelt.png') } />
+                            <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                         </div>
 
                         <AnimateHeight
@@ -240,8 +232,7 @@ export default class LoginPage extends React.Component {
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-primary">Login</button>
                                     {loading1 &&
-                                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                                    }
+                                    <div>Loading</div>}
                                 </div>
                                 {error1 &&
                                 <div className={'alert alert-danger'}>{error1}</div>
@@ -257,7 +248,7 @@ export default class LoginPage extends React.Component {
 
                         <h3>BEDRIFT</h3>
                         <div className="profilbilde">
-                            <img src={ require('./resources/bedriftsansatt.png') } />
+                            <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
                         </div>
 
                         <AnimateHeight
@@ -286,8 +277,7 @@ export default class LoginPage extends React.Component {
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary">Login</button>
                                         {loading2 &&
-                                        <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                                        }
+                                        <div>Loading</div>}
                                     </div>
                                     {error2 &&
                                     <div className={'alert alert-danger'}>{error2}</div>
@@ -301,7 +291,7 @@ export default class LoginPage extends React.Component {
 
                         <h3>KOMMUNE</h3>
                         <div className="profilbilde">
-                            <img src={ require('./resources/kommuneansatt.png') } />
+                            <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                         </div>
 
                         <AnimateHeight
@@ -330,8 +320,7 @@ export default class LoginPage extends React.Component {
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary">Login</button>
                                         {loading3 &&
-                                        <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                                        }
+                                        <div> Loading </div>}
                                     </div>
                                     {error3 &&
                                     <div className={'alert alert-danger'}>{error3}</div>

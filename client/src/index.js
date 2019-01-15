@@ -56,7 +56,7 @@ class Navbar extends Component {
           <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
           <a className="option" id="nyorg" href="#nyorg" onClick={() => this.activate("nyorg")}>Registrer deg som Kommuneansatt!</a>
           <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
-        <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+          <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
       </div>
     );
 
@@ -71,7 +71,7 @@ class Navbar extends Component {
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                 <ButtonToolbar className="dropdownmenus1">
                     <DropdownButton
-                        bsStyle="dropdown_right"
+                        bsStyle="default"
                         title="Min side"
                         key="2"
                         id="dropdown-basic-2"
@@ -85,7 +85,8 @@ class Navbar extends Component {
                         <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
                     </DropdownButton>
                 </ButtonToolbar>;
-              <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+                <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+                <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
             </div>
         );
 
@@ -99,7 +100,7 @@ class Navbar extends Component {
                     <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                     <ButtonToolbar className="dropdownmenus">
                         <DropdownButton
-                            bsStyle="dropdown_right"
+                            bsStyle="default"
                             title="Min side"
                             key="2"
                             id="dropdown-basic-2"
@@ -130,7 +131,7 @@ class Navbar extends Component {
                   <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
                     <ButtonToolbar className="dropdownmenus">
                         <DropdownButton
-                        bsStyle="dropdown_left"
+                        bsStyle="default"
                         title="Administrator"
                         key="1"
                         id="dropdown-basic-1"
