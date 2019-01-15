@@ -2,6 +2,7 @@
 /* eslint eqeqeq: "off" */
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
+import { HashRouter, Redirect, BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHashHistory from "history/createHashHistory";
 
@@ -22,9 +23,8 @@ import NewEmployee from "./components/NewEmployee";
 import AdminMain from "./components/AdminMain";
 import LoginPage from "./components/LoginPage";
 import {refreshToken} from "./components/widgets";
-import { HashRouter, Redirect, BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import PrivateRoute from 'react-private-route'
-import createHistory from 'history/createBrowserHistory'
+import PrivateRoute from 'react-private-route';
+import createHistory from 'history/createBrowserHistory';
 import UserEdit from "./components/UserEdit";
 import ChangePassword from "./components/ChangePassword";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
@@ -214,6 +214,7 @@ return true;
   /* Toggle between adding and removing the "responsive" class
   to topnav when the user clicks on the icon */
   mobileMenu() {
+    console.log("Going responsive");
     let x = document.getElementById("navbar");
     if (x.className === "topnav") {
       x.className += " responsive";
@@ -246,28 +247,28 @@ function renderRoot() {
                 <Navbar loggedin={value}/>
                 <div id="page">
                   <Route exact path="/" component={UserHome} />
-                  <Route exact path="/case" component={Case} />
+                  <Route exact path="/case/:id" component={Case} />
                   <Route exact path="/profile" component={ProfilePage} />
-                    <Route exact path="/profile/:id/edit" component={UserEdit} />
-                    <Route exact path="/issues" component={IssueOverview} />
+                  <Route exact path="/profile/:id/edit" component={UserEdit} />
+                  <Route exact path="/issues" component={IssueOverview} />
                   <Route exact path="/events" component={Events}/>
-                    <Route exact path="/events/:id/edit" component={EventsEdit}/>
-                    <Route exact path="/IssueOverview" component={IssueOverview} />
+                  <Route exact path="/events/:id/edit" component={EventsEdit}/>
+                  <Route exact path="/IssueOverview" component={IssueOverview} />
                   <Route exact path="/reportPage" component={ReportPage} />
                   <Route exact path='/register' component={Register}/>
-                    <Route exact path="/issues/:name/:id" component={IssueOverview} />
-                    <Route exact path='/nyorg' component={NewOrganization}/>
-                    <Route exact path='/nyansatt' component={NewEmployee}/>
-                    <Route exact path="/nypassord/:id" component={ChangePassword} />
-                    <Route exact path="/case/:id/edit" component={CaseEdit} />
-                    <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
-                    <Route exact path="/map" component={Map} />
-                    <PrivateRoute
-                      exact
-                      path="/profile"
-                      component={ProfilePage}
-                      isAuthenticated={value}
-                      redirect="/login"
+                  <Route exact path="/issues/:name/:id" component={IssueOverview} />
+                  <Route exact path='/nyorg' component={NewOrganization}/>
+                  <Route exact path='/nyansatt' component={NewEmployee}/>
+                  <Route exact path="/nypassord/:id" component={ChangePassword} />
+                  <Route exact path="/case/:id/edit" component={CaseEdit} />
+                  <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
+                  <Route exact path="/map" component={Map} />
+                  <PrivateRoute
+                    exact
+                    path="/profile"
+                    component={ProfilePage}
+                    isAuthenticated={value}
+                    redirect="/login"
                   />
                   <PrivateRoute
                       exact
@@ -283,7 +284,6 @@ function renderRoot() {
                       isAuthenticated={!value}
                       redirect="/admin/main"
                   />
-
                 </div>
               </div>
             </HashRouter>,
