@@ -13,19 +13,57 @@ const history = createHashHistory();
 
 export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
   user = new Object();
+  bilde = "https://img.icons8.com/android/1600/user.png";
+  _tel = "";
+  _zip = "";
+  state = {
+    info: "",
+    tel: "",
+    zip: ""
+  };
+
+  changeVal = event =>{
+      this.user.tel = event.target.value;
+      var tel = event.target.value;
+      if(isNaN(tel)){
+          tel = this._tel;
+          this.setState({"info":"Kun skriv inn nummer"});
+          setTimeout(function(){
+             this.setState({"info":""});
+          }.bind(this),1000);
+      }else{
+          this._tel=tel;
+      }
+      this.setState({"tel":tel});
+  }
+
+  changeZip = event =>{
+      this.user.zipcode = event.target.value;
+      var zip = event.target.value;
+      if(isNaN(zip)){
+          zip = this._zip;
+          this.setState({"info":"Kun skriv inn nummer"});
+          setTimeout(function(){
+             this.setState({"info":""});
+          }.bind(this),1000);
+      }else{
+          this._zip=zip;
+      }
+      this.setState({"zip":zip});
+  }
 
   render(){
     let button;
     if(this.user.subscription==1){
       button = (
-        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-primary">
+        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-danger">
           Subscribe
         </button>
       );
       this.user_id = this.user.user_id;
     } else {
       button = (
-        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-primary">
+        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success">
           Unsubscribe
         </button>
       );
@@ -69,20 +107,26 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           <input
           className="form-control"
             type="text"
-            defaultValue={this.user.zipcode}
+            defaultValue={this.state.zip}
+            value = {this.state.zip}
+            maxlength ="4"
             name="zipcode"
-            onChange={event => (this.user.zipcode = event.target.value)}
+            onChange={this.changeZip}
           />
+          <p color="red">{this.state.info} </p>
         </div>
         <div className="form-group">
           Telefon:{" "}
           <input
           className="form-control"
             type="text"
-            defaultValue={this.user.tel}
+            defaultValue={this.state.tel}
             name="tel"
-            onChange={event => (this.user.tel = event.target.value)}
+            value={this.state.tel}
+            maxlength ="8"
+            onChange={this.changeVal}
           />
+            <p color="red">{this.state.info} </p>
         </div>
         <div className="form-group">
           Email:{" "}
@@ -104,7 +148,7 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           </div>
           <div class="col">
           <br/><br/><br/><br/>
-            <img src="https://img.icons8.com/android/1600/user.png" width="200"/>
+            <img src={this.bilde} width="200"/>
           </div>
         </div>
       </div>
@@ -118,6 +162,8 @@ export default class UserEdit extends Component <{ match: { params: { id: number
       .getUserByID(this.props.match.params.id)
       .then(user => {
         this.user = user[0];
+        this.state.tel = this.user.tel;
+        this.state.zip = this.user.zipcode;
         this.forceUpdate();
       })
       .catch((error: Error) => Alert.danger(error.message));
@@ -161,13 +207,19 @@ export default class UserEdit extends Component <{ match: { params: { id: number
   save(user){
     console.log("this.user.name:" + user.name);
     if(user.name==""||user.name==null||user.name==" "){
-      return alert("Vennligst oppgi navn");
+      return console.log("null name");
     }
     userService
       .updateOne(user)
-      .then(()=> console.log("happy")
-        //history.push('/profile/'+user.user_id)
-        )
-      .catch((error: Error) => Alert.danger(error.message));
-  }
+      .then(()=>{
+          console.log("happy");
+          this.bilde ="https://visualpharm.com/assets/191/Checked%20User%20Male-595b40b75ba036ed117d6ed4.svg";
+          this.forceUpdate();
+        })
+      .catch((error: Error) => {
+        Alert.danger(error.message);
+        this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
+        this.forceUpdate();
+      })
+    }
 }

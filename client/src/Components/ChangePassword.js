@@ -12,7 +12,8 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
   oldPassword = "";
   newPassword1 = "";
   newPassword2 = "";
-
+  meldning = "";
+  bilde ="https://png.pngtree.com/svg/20170213/password_reset_369656.png";
 
   render(){
     return(
@@ -22,8 +23,10 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
           <h5>Endre passord</h5>
         </div>
       </div>
-      <div className="container text-center">
+
         <div class="container text-center">
+        <div class="row">
+          <div class="col">
         <div className="form-group">
           Gammelt passord:{" "}
           <input
@@ -56,6 +59,11 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
           <Button.Success onClick={() => this.save()}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
+          <div class="col">
+          <p>{this.meldning}</p>
+          <img src={this.bilde} width="200"/>
+          </div>
+        </div>
       </div>
       </>
     );
@@ -75,7 +83,7 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
       user_id : this.props.match.params.id,
     	password: this.newPassword1
     };
-    
+
     userService
       .verifyOldPasswordAndUpdatePWord(passwordInfo)
       .then((response) => {
@@ -83,15 +91,22 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
           userService.updateUserPWord(passwordInfoUpdatePasswordInDB)
             .then(response => {
 							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+              this.meldning = "Passord endring er vellyket";
+              this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
+              console.log("this.meldning =" + this.meldning);
+              this.forceUpdate();
 						})
             .catch(err => {
               console.log(err, "REJECTED FEIL I DATABASE");
             })
         })
      .catch((error: Error) => {
-       Alert.danger(error.message)
+       Alert.danger("noooooo");
+       this.meldning = "Feil ved endring av passord,Prøv på nytt";
+       this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
+       this.forceUpdate();
 		 });
-   
+
   }
 
   componentDidMount(){
