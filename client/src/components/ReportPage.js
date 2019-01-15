@@ -87,7 +87,7 @@ export class Report extends Component {
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
                             <input
-                                className="form-control"
+                                className="form-control address-field"
                                 type="text"
                                 name="headline"
                                 defaultValue={this.address}
@@ -150,7 +150,7 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary">
+                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
                         <h1>{this.message}</h1>
@@ -192,6 +192,9 @@ export class Report extends Component {
                 console.log(this.zipcode);
                 let countryFilter = [];
                 let help = [];
+                if (this.mapData.address_components == null) {
+                    console.log('Fant ingen gyldig addresse her, vennligst velg et annet sted');
+                }
                 help = this.mapData.address_components.filter(e =>
                 e.types[0] == 'country');
                 this.country = help[0].long_name;

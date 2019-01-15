@@ -305,7 +305,7 @@ summary:focus {
 /*}*/
 
 .form-group-style {
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 
@@ -432,6 +432,18 @@ light green: #A3C4BC
 
 ListItem {
     height: 200px;
+}
+
+.fullfør {
+    margin-top: 3%;
+}
+
+.address-field {
+    margin-bottom: 2%;
+}
+
+.report-map {
+    margin-bottom: 2%;
 }
 
 
