@@ -75,7 +75,7 @@ test('getOneZip', done => {
   }
   casedao.getOneZip(7012,callback);
 });
-/* Dependent on category, will be reworked in some pushes.
+
 test('searchCaseCategory', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
@@ -83,7 +83,7 @@ test('searchCaseCategory', done => {
     done();
   }
   casedao.searchCaseCategory("Elektrisitet",callback);
-});*/
+});
 
 test('searchCaseDescription', done => {
   function callback(status, data) {
@@ -132,7 +132,7 @@ test('create', done => {
   );
 });
 
-/*  Test uncommented until we are able to find why its failing.
+//  Test uncommented until we are able to find why its failing.
 test('updateCase', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
@@ -161,7 +161,7 @@ test('updateCase', done => {
   );
 });
 
-*/
+
 test('deleteCase', done => {
   function callback(status, data) {
     console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));

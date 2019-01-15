@@ -175,7 +175,7 @@ module.exports = class UserDao extends Dao {
 			"select province from Place where zipcode = (select zipcode from User where user_id = ?)",
 			[id],
 			callback
-		)
+		);
 	}
 	
 	/**	Add a new user to the db
@@ -192,5 +192,12 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
-	
+
+	findUserByEmail(email: string, callback:any) {
+		super.query(
+			"SELECT * FROM User WHERE email = ?",
+		[id],
+		callback
+		);
+	}
 };

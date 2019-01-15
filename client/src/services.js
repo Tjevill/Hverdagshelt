@@ -256,6 +256,10 @@ class UserService {
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.put(url + '/userProvince/' + id);
   }
+
+  findUserByEmail(email: string): Promise<User>{
+    return axios.get(url+ '/forgotPassword/'+ email);
+  }
 	
 	/**
 	 * Service object for verifying and changing password for logged in users.
