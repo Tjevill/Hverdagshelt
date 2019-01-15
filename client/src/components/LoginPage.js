@@ -340,3 +340,5 @@ export default class LoginPage extends React.Component {
 }
 
 export { LoginPage };
+
+// <a href="https://www.freepik.com/free-vector/variety-of-cartoon-characters_766801.htm">Designed by Freepik</a>
