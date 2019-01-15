@@ -23,6 +23,7 @@ export class Report extends Component {
     address = '';
     zipcode = '';
     mapData = {};
+    country = '';
 
     state = {
         headline: "",
@@ -41,14 +42,19 @@ export class Report extends Component {
     };
 
     fileUploadHandler(){
-        const fd = new FormData();
-        fd.append('file', this.selectedFile, this.selectedFile.name);
-        fd.append('upload_preset', 'elo47cnr');
-        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
-            .then(res => {
-                this.state.picture = res.url;
-                this.register();
-            });
+        let fd = new FormData();
+        if (this.selectedFile == null) {
+            Alert.danger('Vennligst last opp bilde');
+            console.log('Last opp fil');
+        } else {
+            fd.append('file', this.selectedFile, this.selectedFile.name);
+            fd.append('upload_preset', 'elo47cnr');
+            axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+                .then(res => {
+                    this.state.picture = res.url;
+                    this.register();
+                });
+        }
     };
     handleChange = event => {
         const target = event.target;
@@ -184,6 +190,11 @@ export class Report extends Component {
                     this.zipcode = filter[0].long_name;
                 }
                 console.log(this.zipcode);
+                let countryFilter = [];
+                let help = [];
+                help = this.mapData.address_components.filter(e =>
+                e.types[0] == 'country');
+                this.country = help[0].long_name;
             }
         );
     };
@@ -207,6 +218,14 @@ export class Report extends Component {
             valid = false;
             Alert.danger('Kategori er påkrevd!');
         }
+        if (this.state.picture.trim() == '') {
+            valid = false;
+            Alert.danger('Vennligst last opp et bilde');
+        }
+        if (this.country.trim() != 'Norway') {
+            valid = false;
+            Alert.danger('Vennligst plasser nåla innenfor Norge!');
+        }
 
 
 
@@ -215,7 +234,7 @@ export class Report extends Component {
             description: this.state.description,
             latitude: this.lat,
             longitude: this.lng,
-            zipcode: 7050,
+            zipcode: this.zipcode,
             picture: this.state.picture,
             category_id: this.state.category_id,
             user_id: this.state.user_id
