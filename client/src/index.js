@@ -36,13 +36,14 @@ import NewEvents from "./components/NewEvents";
 const root = document.getElementById("root");
 
 function renderRoot() {
+
   if (root) {
 
     const promiseObject = refreshToken();
-    promiseObject.then(function (value) {
 
-      if (value !== 'undefined') {
+    promiseObject.then(value => {
 
+      if (value != 'undefined') {
 
         ReactDOM.render(
             <HashRouter>
