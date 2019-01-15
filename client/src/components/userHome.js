@@ -32,7 +32,7 @@ export default class userHome extends Component {
 						i kommunen!</h5>
 						<button
 							onClick={() => {
-								window.location.href = "/#/reportPage";
+								window.location.href = "/#/report";
 							}}
 						>
 							Meld Feil
