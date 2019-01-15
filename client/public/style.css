@@ -286,7 +286,7 @@ light green: #A3C4BC
 .caseEdit-wrapper .errorMessage {
   color: red;
   font-size: 0.75em;
-  display: relative;
+  /*display: relative;*/
 }
 
 
