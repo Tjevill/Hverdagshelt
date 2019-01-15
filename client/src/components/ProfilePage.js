@@ -9,8 +9,8 @@ export default class ProfilePage extends Component {
     render() {
         return(
             <div className="main-background">
-                <ProfileCard id={31}/>
-                <CaseListCard id={31}/>
+                <ProfileCard id={sessionStorage.getItem("userid")}/>
+                <CaseListCard id={sessionStorage.getItem("userid")}/>
             </div>
 
         );
