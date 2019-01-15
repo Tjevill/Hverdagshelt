@@ -21,7 +21,7 @@ import Register from "./components/Register";
 import NewOrganization from "./components/NewOrganization";
 import NewEmployee from "./components/NewEmployee";
 import AdminMain from "./components/AdminMain";
-import LoginPage from "./components/LoginPage2";
+import LoginPage from "./components/LoginPage";
 import {refreshToken} from "./components/widgets";
 import PrivateRoute from 'react-private-route';
 import createHistory from 'history/createBrowserHistory';

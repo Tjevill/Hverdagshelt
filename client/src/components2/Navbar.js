@@ -19,7 +19,7 @@ import Register from "./Register";
 import NewOrganization from "./NewOrganization";
 import NewEmployee from "./NewEmployee";
 import AdminMain from "./AdminMain";
-import LoginPage from "./LoginPage2";
+import LoginPage from "./LoginPage";
 import PrivateRoute from 'react-private-route';
 import UserEdit from "./UserEdit";
 import ChangePassword from "./ChangePassword";
