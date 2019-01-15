@@ -25,19 +25,25 @@ body,
 
 /* Style the links inside the navigation bar */
 .topnav a {
+  height: 50px;
   float: left;
   display: block;
   color: #f2f2f2;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 /* Change the color of links on hover */
 .topnav .option:hover {
   background-color: #ddd;
   color: black;
+}
+
+.topnav #report {
+  background-color: #FD6A02;
+  font-weight: bold;
 }
 
 /* Add an active class to highlight the current page */
@@ -81,23 +87,40 @@ body,
 #case-page {
   height: 100%;
   width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
   text-align: center;
 }
 
-#case-page .info {
-  width: 50%;
-  float: left;
+#case-page #info {
+
+}
+
+#case-page .details {
+  left: 0px;
+  width: 60%;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 #case-page #picture {
-  width: 50%;
+  padding-top: 60px;
+  width: 35%;
 }
 
 #case-page #description {
   padding-top: 2%;
 }
 
-#case-page h1 {
+.report-map {
+  position: relative !important;
+  width: 100% !important;
+  height: 300px !important;
+}
+
+.max {
+  height: 100%;
+  width: 100%;
 }
 
 .right {

@@ -3,95 +3,163 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
+import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 
-export default class UserEdit extends Component {
-  user = null;
-  x =1 ;
+const history = createHashHistory();
+
+
+
+
+export default class UserEdit extends Component <{ match: { params: { id: number } } }> {
+  user = new Object();
+
   render(){
     let button;
-    if(this.x==2){
+    if(this.user.subscription==1){
       button = (
-        <Button.Success onClick={this.subscribe}>Subscribe</Button.Success>
-      )
+        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-primary">
+          Subscribe
+        </button>
+      );
+      this.user_id = this.user.user_id;
     } else {
-        button =( <Button.Danger onClick={this.unsubscribe}>Unsubscribe</Button.Danger>
-      )
+      button = (
+        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-primary">
+          Unsubscribe
+        </button>
+      );
+      this.user_id = this.user.user_id;
     }
+
     return (
       <>
-      <Card title="Edit" class="container text-center">
-      <div class="container text-center">
-        <form ref={e => (this.form = e)}>
-          <Form.Input
+      <div className="jumbotron">
+        <div className="container text-center">
+          <h5>Edit</h5>
+        </div>
+      </div>
+      <div className="container text-center">
+        <div class="container text-center">
+        <div className="form-group">
+          Navn:{" "}
+          <input
+          className="form-control"
             type="text"
-            label="Navn"
-            //value={this.user.name}
+            name="name"
+            defaultValue={this.user.name}
             onChange={event => (this.user.name = event.target.value)}
-            required
           />
-          <Form.Input
+        </div>
+        <div className="form-group">
+          Adresse:{" "}
+          <input
+          className="form-control"
             type="text"
-            label="Address"
-            //value={this.user.address}
+            defaultValue={this.user.address}
+            name="address"
             onChange={event => (this.user.address = event.target.value)}
-            required
           />
-          <Form.Input
+        </div>
+        <div className="form-group">
+          Postnummer:{" "}
+          <input
+          className="form-control"
             type="text"
-            label="Mobilnummer"
-            //value={this.user.mobilnummer}
+            defaultValue={this.user.zipcode}
+            name="zipcode"
+            onChange={event => (this.user.zipcode = event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          Telefon:{" "}
+          <input
+          className="form-control"
+            type="text"
+            defaultValue={this.user.tel}
+            name="tel"
             onChange={event => (this.user.tel = event.target.value)}
-            required
           />
-          <Form.Input
+        </div>
+        <div className="form-group">
+          Email:{" "}
+          <input
+          className="form-control"
             type="text"
-            label="Email"
-            //value={this.user.email}
+            defaultValue={this.user.email}
+            name="email"
             onChange={event => (this.user.email = event.target.value)}
-            required
           />
-          <Form.Input
-            type="text"
-            label="Postnummer"
-            //value={this.user.email}
-            onChange={event => (this.user.zipcode= event.target.value)}
-            required
-          />
-          <Form.Input
-            type="text"
-            label="Passord"
-            //value={this.user.email}
-            onChange={event => (this.user.password = event.target.value)}
-            required
-          />
-          <Form.Input
-            type="text"
-            label="GjentaPassord"
-            //value={this.user.email}
-            onChange={event => (this.user.password = event.target.value)}
-            required
-          />
-          {button}<br/><br/>
-          <Button.Success onClick={this.save}>Save</Button.Success>
-          <Button.Light onClick={() => history.push('/')}>Cancel</Button.Light>
-          </form>
+        </div>
+          <br/>
+          <br/>
+          {button}
+          <br/>
+          <br/>
+          <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
+          <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
-        </Card>
+      </div>
       </>
     );
   }
-  mounted(){
 
+
+  componentDidMount(){
+    userService
+      .getUserByID(this.props.match.params.id)
+      .then(user => {
+        this.user = user[0];
+        this.forceUpdate();
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
-  subscribe(){
+  subscribe(user){
+    //console.log("this.user.name:" + user.name);
+    if(!user){
+      console.log("Returning null!");
+      this.message = "Error";
+      return null;
+    }
+    const sub = {
+      user_id: user.user_id,
+      subscription: 0
+    };
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        console.log("Subscription now"+{sub});
+        if(user) window.location.reload();
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
-  unsubscribe(){
+  unsubscribe(user){
+    const sub = {
+      user_id: user.user_id,
+      subscription: 1
+    };
+
+    userService
+      .updateSubscription(sub)
+      .then(sub => {
+        console.log("Subscription now"+{sub});
+        if(user) window.location.reload();
+      })
+      .catch((error: Error) => Alert.danger(error.message));
   }
 
-  save(){
-    if(this.user.name==""||this.user.name==null||this.user.name==" ")return alert("Vennligst oppgi navn");
+  save(user){
+    console.log("this.user.name:" + user.name);
+    if(user.name==""||user.name==null||user.name==" "){
+      return alert("Vennligst oppgi navn");
+    }
+    userService
+      .updateOne(user)
+      .then(()=> console.log("happy")
+        //history.push('/profile/'+user.user_id)
+        )
+      .catch((error: Error) => Alert.danger(error.message));
   }
 }

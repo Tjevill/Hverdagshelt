@@ -69,6 +69,11 @@ const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
+const Orgdao = require("../dao/orgdao.js");
+const Categorydao = require("../dao/categorydao.js");
+const Empdao = require("../dao/employeedao.js");
+const Statusdao = require("../dao/statusdao.js");
+
 const Employeedao = require("../dao/employeedao.js");
 
 
@@ -88,6 +93,11 @@ let eventDao = new eventdao(pool);
 let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let employeeDao = new Employeedao(pool);
+let orgDao = new Orgdao(pool);
+let categoryDao = new Categorydao(pool);
+let empDao = new Empdao(pool);
+let statusDao = new Statusdao(pool);
+
 
 
 
@@ -124,7 +134,6 @@ app.put("/neworgcat/:id", (req, res) => {
        //  res.json(data);
     });
 });
-
 
 
 app.get("/cases", (req, res) => {
@@ -174,7 +183,7 @@ app.get('/user/:id', (req: Request, res: Response) => {
 	userdao.getOneByID(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
-    
+
 	})
 });
 
@@ -207,6 +216,263 @@ app.get('/userCount', (req: Request, res: Response) => {
 		res.json(data);
 	})
 });
+
+/**
+ * Gets email from user by ID
+ */
+app.get('/userEmail/:id', (req: Request, res: Response) => {
+  userdao.getEmailUserByID(req.params.id, (status, data) => {
+    res.status(status);
+    res.json(data);
+  })
+});
+
+/**
+ * For updating subscription for one user
+ */
+app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
+	userdao.updateSubription(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * For updating users password. Send object with user_id and new password
+ */
+app.put('/updateUserPWord', (req: Request, res: Response) => {
+	userdao.updateUserPassword(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get province from User by users ID
+ */
+app.get('/userProvince/:id', (req: Request, res: Response) => {
+	userdao.getUsersProvinceByUserID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+// Organization
+
+/**
+ * Get all organisations from DB
+ */
+app.get("/org", (req: Request, res: Response) =>{
+	orgDao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one org by ID
+ */
+app.get('/org/:id', (req: Request, res: Response) => {
+	orgDao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update org by ID (does not include password update)
+ */
+app.put('/org/:id', (req: Request, res: Response) => {
+	orgDao.updateOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update org password by ID send object including new password and org_id
+ */
+app.put('/updateOrgPWord', (req: Request, res: Response) => {
+	orgDao.updateOrgPassword(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Delete one org by ID
+ */
+app.delete('/org/:id', (req: Request, res: Response) => {
+	orgDao.deleteOrgByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Add new organization
+ */
+app.post("/newOrg", (req, res) => {
+	orgDao.addOrg(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Get count of all organizations from DB
+ */
+app.get('/orgCount', (req: Request, res: Response) => {
+	orgDao.getCountOrg((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+// Category
+/**
+ * Get all categories from DB
+ */
+app.get("/category", (req: Request, res: Response) =>{
+	categoryDao.getAll((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get one category by ID
+ */
+app.get("/category/:id", (req: Request, res: Response) =>{
+	categoryDao.getOneByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Update category
+ */
+app.put('/category/:id', (req: Request, res: Response) => {
+	categoryDao.updateCategory(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Deletes one category by ID
+ */
+app.delete('/category/:id', (req: Request, res: Response) => {
+	categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Get count of categories in DB
+ */
+app.get('/categoryCount', (req: Request, res: Response) => {
+	categoryDao.getCountCategories((status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+
+// End user
+
+
+
+// Employee
+
+/** Get all employees from the db */
+app.get("/employee", (req, res) => {
+	console.log("Received get-request on endpoint /employee.");
+	empDao.getAllEmp( (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Get one employee matched on employee_id */
+app.get("/employee/:employee_id", (req, res) =>{
+	console.log("Received get-request on endpoint /employee/"+req.params.employee_id);
+	empDao.getOne(req.params.employee_id, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Get all employees in one province */
+app.get("/employee/province/:province_id", (req, res) =>{
+	console.log("Received get-request on endpoint /employee/"+req.params.province_id);
+	empDao.getAllEmpProvince(req.params.province_id, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**  Create an employee in the db*/
+app.put("/employee", (req, res) =>{
+	console.log("Received put-request on endpoint /employee");
+	empDao.addEmployee(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Delete an employee in the db on employee_id */
+app.delete("/employee/:employee_id", (req, res) =>{
+	console.log("Received delete-request on endpoint /employee/"+req.employee_id);
+	empDao.deleteEmpById(req.params.employee_id, (status, data)=>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Update an employee in db on employee_id. Does NOT include password change. */
+app.put("/employee/:employee_id", (req: Request, res: Response) =>{
+    console.log("Received put-request on endpoint /employee/"+req.params.employee_id);
+    console.log("body & soul "+req.body.email);
+    empDao.updateEmp(req.body, req.params.employee_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Update an employee password in the db on employee_id */
+app.put("/updateEmpPW", (req: Request, res: Response) =>{
+	console.log("Received post-request on endpoint /updateEmpPw");
+	empDao.updateEmpPassword(req.body, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/** Count every employee in the db */
+app.get("/countEmp", (req: Request, res: Response) =>{
+	console.log("Received get-request on endpoint /countEmp");
+	empDao.countEmps( (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**  Count every employee in a specific province*/
+app.get("/countEmp/:province", (req: Request, res: Response) =>{
+	console.log("Received get-request on endpoint /countEmp/"+req.params.province);
+	empDao.countEmpsProvince(req.params.province, (status, data) =>{
+		res.status(status);
+		res.json(data);
+	});
+});
+
+// End employee
+
+
+
 
 // Events
 
@@ -241,7 +507,6 @@ app.get("/eventSearch/:keyword", (req, res) =>{
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
-        console.log("/cases fikk request.");
         hverdagsDao.getAllCases((status, data) => {
             res.status(status);
             res.json(data);
@@ -306,7 +571,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 // Cases
 
-    /** get all cases */
+    /** Get all cases */
     app.get("/allCases", (req, res) => {
         console.log("Received get-request on endpoint /allCases");
         caseDao.getAllCases((status, data) => {
@@ -315,7 +580,16 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** count all cases in db */
+    /** Get the province of every */
+    app.get("/allCases/:province", (req, res) =>{
+        console.log("Received get-request on endpoint /allCases/"+req.params.province);
+        caseDao.getProvinceOnCase( req.params.province, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+    /** Count all cases in db */
     app.get("/countCases", (req, res) =>{
         console.log("Received get-request on endpoint /countCases");
         caseDao.getNumberOfCases( (status, data) =>{
@@ -324,7 +598,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
-    /** get case by id */
+    /** Get case by id */
     app.get("/getCase/:id", (req, res) => {
         console.log("Received get-request on endpoint /getCase/" + req.params.id);
         caseDao.getOne(req.params.id, (status, data) => {
@@ -332,6 +606,15 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
+
+    /** Get case on user id */
+    app.get("/getCaseUserId/:user_id", (req, res) =>{
+        console.log("Received get-request on endpoint /getCaseUserId/"+req.params.user_id);
+        caseDao.getCaseOnUser(req.params.user_id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    })
 
     /** get case on zip */
     app.get("/getOnZip/:zipcode", (req, res) => {
@@ -365,19 +648,41 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 /** update case on case_id */
     app.put("/updateCase/:case_id", (req, res) =>{
-      console.log("Received delete-request from client.");
-      console.log("Trying to update case with id: "+req.params.case_id);
-      caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
-        res.status(status);
-        res.json(data);
-        console.log(req.body);
-      });
+        console.log("Received delete-request from client.");
+        console.log("Trying to update case with id: "+req.params.case_id);
+        caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+            res.status(status);
+            res.json(data);
+            console.log(req.body);
+        });
+
+        let email = req.body.email;
+        const mailOptionsUpdateCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Saken er oppdatert!',
+            html:
+                '<h1> Status: ' + req.body.status_id + '</h1>' +
+                '<p><b> HverdagsHelt Support Team </b></p>' +
+                '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
+                '<p> <b> HverdagsHelt AS </b> </p>' +
+                '<p> 72 59 50 00 </p>'
+        };
+
+        transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
     });
 
-    /** search case by category */
-    app.get("/searchCaseCategory/:category_id", (req, res) =>{
+
+    /** search case by category description */
+    app.get("/searchCaseCategory/:description", (req, res) =>{
         console.log("Received get-request from client.");
-        caseDao.searchCaseCategory(req.params.category_id, (status, data)=>{
+        caseDao.searchCaseCategory(req.params.description, (status, data)=>{
             res.status(status);
             res.json(data);
         });
@@ -412,58 +717,90 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
     });
 
 
-  //End Case
 
+    /** create case and send confirmation mail */
+    app.post("/cases", (req, res) => {
+        console.log("/cases received POST-request");
+        console.log(req.body.description);
 
-app.post("/cases", (req, res) => {
-  console.log("/cases received POST-request");
-  console.log(req.body.description);
+        if(!req.body) {
+            return res.sendStatus(400);
+        } else {
+            caseDao.create({
+                headline: req.body.headline,
+                description: req.body.description,
+                longitude: req.body.longitude,
+                latitude: req.body.latitude,
+                zipcode: req.body.zipcode,
+                user_id: req.body.user_id,
+                category_id: req.body.category_id,
+                picture: req.body.picture,
+                email: req.body.email
+            },
+            (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("json.data:" + data[0]);
+        });
+        }
+        // mail
+        let sub = req.body.headline;
+        let des = req.body.description;
+        let email = req.body.email;
+        const mailOptionsCreateCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Takk for din henvendelse, saken er registert!',
+            html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+        };
 
-  if(!req.body) {
-    return res.sendStatus(400);
-  } else {
-      caseDao.create({
-        headline: req.body.headline,
-        description: req.body.description,
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
-        zipcode: req.body.zipcode,
-        user_id: req.body.user_id,
-        category_id: req.body.category_id,
-        picture: req.body.picture,
-        email: req.body.email
-        
-        
-      },
-      (status, data) => {
-        res.status(status); 
-        res.json(data);
-        console.log("json.data:" + data[0]);
-  });
-}
-  // mail
-  let sub = req.body.headline;
-  let des = req.body.description;
-  let email = req.body.email;
-  
-    
-  const mailOptionsCase = {
-    from: 'bedrehverdagshelt@gmail.com',
-    to: email,
-    subject: 'Takk for din henvendelse, saken er registert!',
-    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
-  };
-
-  transporter.sendMail(mailOptionsCase, function(error, info){
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Email sent: ' + info.response);
-    }
-  });
-});
+        transporter.sendMail(mailOptionsCreateCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    });
 
 // End Cases
+
+let verifyOldPassword = (id, password) => {
+
+    let promise4 = new Promise((resolve => {
+        userdao.getHashedPWord(id, (status, data) => {
+            console.log("data:  l/p: " + id + " " + password  + "    " + data[0].user_id + "------" + data[0].password + "-------" + data[0].secret);
+            const savedPassword = data[0].password;
+            const passwordData = sha512(password, data[0].secret);
+
+            if(passwordData.passwordHash === savedPassword){
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        })
+    }));
+    return promise4;
+};
+
+
+/**
+ * Verifies old password for user.
+ */
+app.get('/userVerification', (req: Request, res: Response) => {
+    let promise4 = verifyOldPassword(req.body.id, req.body.oldPassword);
+
+    promise4.then((value => {
+        if(value){
+            res.json({login: 1});
+            res.status(200);
+        } else {
+            res.json({login: 0});
+            res.status(401);
+        }
+    }));
+});
+
 
 
 app.post("/loginhh", (req, res) => {
@@ -615,7 +952,6 @@ app.use("/admin", (req, res, next) => {
     });
 });
 
-
 app.post("/admin/legginn", (req, res) => {
     console.log("Fikk POST-request fra klienten");
     artikkelDao.addArtikkel(req.body, (status, data) => {
@@ -640,9 +976,27 @@ app.delete("/admin/delete/:id", (req, res) => {
     });
 });
 
-
-
-    const server = app.listen(process.env.PORT || "8080", function () {
-        console.log("App listening on port %s", server.address().port);
-        console.log("Press Ctrl+C to quit");
+/** Get all status */
+    app.get("/status", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getAllStatuses((status, data) => {
+            res.status(status);
+            res.json(data);
+        });
     });
+
+    /** Get status by ID */
+    app.get("/status/:id", (req, res) => {
+        console.log("Received get-request on endpoint /allCases");
+        statusDao.getOneById( req.params.id, (status, data) => {
+            res.status(status);
+            res.json(data);
+        });
+    });
+
+
+
+const server = app.listen(process.env.PORT || "8080", function () {
+    console.log("App listening on port %s", server.address().port);
+    console.log("Press Ctrl+C to quit");
+});

@@ -106,27 +106,7 @@
     width: 25%;
 }
 
-.userHome-banner  {
-    background-color: #50BBE6;
 
-
-}
-
-
-
-.userHome-banner-background{
-	width: 400px;
-
-	background-color: #F7F7F7;
-	text-align: center;
-	margin: 0 auto;
-
-
-}
-
-.userHome-cards{
-	text-align: center;
-}
 
 .events-body li{
 	  margin-bottom: 80px;
@@ -135,8 +115,6 @@
 .events-body img{
   width: 200px;
   position: absolute;
-  right: 0px;
-
   padding: 10px;
 }
 

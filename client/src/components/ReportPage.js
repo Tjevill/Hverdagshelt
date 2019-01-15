@@ -2,110 +2,253 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import {caseService} from '../services';
-import {Alert} from "./widgets";
+import {caseService, categoryService, mapService} from '../services';
+import {Alert} from "./widgets"
+import axios from 'axios';
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
-export default class Report extends Component {
-    // categories = [];
-    // title = '';
-    // picture = '';
-    // content = '';
-    // category = '';
-    // importance = 0;
-    headline = '';
-    description = '';
-    longitude = 0;
-    latitude = 0;
-    picture = '';
-    category_id = 0;
+const style = {
+    width: '100%',
+    height: '100%',
+    position: "relative"
+}
+
+export class Report extends Component {
     categories = [];
+    selectedFile: null;
+    infoShowing = false;
+    activeMarker: {};
+    lat = 63.4283065;
+    lng = 10.3876995;
+    address = '';
+    zipcode = '';
+    mapData = {};
 
+    state = {
+        headline: "",
+        description: "",
+        latitude: "",
+        longitude: "",
+        picture: "",
+        zipcode: "",
+        category_id: "",
+        user_id:"",
+    };
+
+    fileSelectedHandler = event => {
+        console.log(event.target.files[0]);
+        this.selectedFile = event.target.files[0];
+    };
+
+    fileUploadHandler(){
+        const fd = new FormData();
+        fd.append('file', this.selectedFile, this.selectedFile.name);
+        fd.append('upload_preset', 'elo47cnr');
+        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+            .then(res => {
+                this.state.picture = res.url;
+                this.register();
+            });
+    };
+    handleChange = event => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+
+        this.setState((state, props) => ({
+            [name]: value
+        }));
+    };
     render(){
         return(
-            <div id='report' class="main-background">
-                <Alert />
-                <div id='report-wrapper' class="main-background">
-                    <div id='report-form' className='card main-background'>
-                        <form style={{margin: '20px'}}>
-                            <div style={{textAlign: 'left'}}>
-                                <h5 className='card-title'>Rapporter et problem</h5>
-                            </div>
-                            <div className='form-group'>
-                                <label style={{float: 'left'}}>Tittel</label>
-                                <input
-                                    type='text'
-                                    className='form-control'
-                                    value={this.headline}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.headline = event.target.value.trim())}
-                                ></input>
-                            </div>
-                            <div className='form-group'>
-                                <label style={{float: 'left'}}>Last opp bilde (link midlertidig)</label>
-                                <input
-                                    type='text'
-                                    className='form-control'
-                                    value={this.picture}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.picture = event.target.value.trim())}
-                                ></input>
-                            </div>
-                            <div className='form-group'>
-                                <label>Beskrivelse</label>
-                                <textarea
-                                    className='form-control'
-                                    rows='10'
-                                    value={this.description}
-                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.description = event.target.value.trim())}
-                                ></textarea>
-                            </div>
-                            <label>Kategori</label>
-                            <select
-                                className='selectpicker browser-default custom-select'
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.category_id = event.target.value)}
-                                defaultValue=''
-                            ><option disabled value=''> -- velg kategori -- </option>
-                                {this.categories.map(category => (
-                                    <option key={category.category_id} value={category.description}>
-                                        {category.description}
-                                    </option>
-                                ))}
-                            </select>
-                            <button
-                                type='button'
-                                className='btn btn-dark'
-                                style={{marginTop: '20px'}}
-                                onClick={() => this.register()}>Fullfør</button>
-                        </form>
+            <div className="row row-style" style={style}>
+                <div className="col-sm-4"></div>
+                <div className="col-sm-4">
+                    <div className="Rapporter">
+                        <h1>Meld feil</h1>
+                        <div className="form-group form-group-style">
+                            Tittel:{" "}
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="headline"
+                                defaultValue=""
+                                onChange={this.handleChange}
+                            />
+                        </div>
+
+                        <div className="map-container">
+                            Spesifiser hvor problemet befinner seg:
+                            <input
+                                className="form-control"
+                                type="text"
+                                name="headline"
+                                defaultValue={this.address}
+                                readOnly={true}
+                            />
+                            <Map
+                                className="report-map"
+                                google={this.props.google}
+                                zoom={8}
+                                initialCenter={{
+                                    lat: this.lat,
+                                    lng: this.lng
+                                }}
+                                style={style}
+                                onClick={this.onMapClick}
+                            >
+                                <Marker
+                                    name={"current location"}
+                                    draggable={true}
+                                    position={{ lat: this.lat, lng: this.lng }}
+                                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                                />
+
+                            </Map>
+
+                        </div>
+
+                        <div className="form-group form-group-style">
+                            Beskrivelse:{" "}
+                            <input
+                                className="form-control"
+                                type="text"
+                                defaultValue=""
+                                name="description"
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                        <div className="form-group form-group-style">
+                            Last opp bilde:
+                            <label className="file-upload-container" htmlFor="file-upload"></label>
+                            <input id="file-upload" type="file" name="file-upload" onChange={this.fileSelectedHandler}></input>
+                        </div>
+                        <div className="form-group form-group-style">
+                            Hvilken bruker? (temp):{" "}
+                            <input
+                                className="form-control"
+                                type="text"
+                                defaultValue=""
+                                name="user_id"
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                        <select className='selectpicker browser-default custom-select'
+                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.category_id = event.target.value)}
+                                defaultValue=''>
+                            <option disabled value=''> -- velg kategori -- </option>
+                            {this.categories.map(category => (
+                                <option key={category.category_id} value={category.category_id}>
+                                    {category.description}
+                                </option>
+                            ))}
+                        </select>
+                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary">
+                            Fullfør
+                        </button>
+                        <h1>{this.message}</h1>
                     </div>
                 </div>
             </div>
         );
     }
 
-    async register(){
+    onMarkerDragEnd = (coord) => {
+        console.log(coord.latLng.lat());
+        this.lat = coord.latLng.lat();
+        console.log(coord.latLng.lng());
+        this.lng = coord.latLng.lng();
+        mapService.getMapInfo(this.lat, this.lng).then(
+            mapData => {
+                this.mapData = mapData.results[0];
+                console.log(this.mapData);
+                if(this.mapData == null){
+                    this.mapData = {
+                        formatted_address: "none"
+                    }
+                }
+                let filter = [];
+                this.address = this.mapData.formatted_address;
+                if (this.mapData.address_components == null) {
+                    console.log('Ikke i Norge!');
+                } else {
+                    filter = this.mapData.address_components.filter(e =>
+                        e.types[0] == 'postal_code');
+                }
+
+                console.log(filter);
+                if(filter[0] == null) {
+                    this.zipcode = '0000';
+                } else {
+                    this.zipcode = filter[0].long_name;
+                }
+                console.log(this.zipcode);
+            }
+        );
+    };
+
+    onMapClick(props, map, e){
+        console.log("onMapClick");
+        this.infoShowing = false;
+        this.activeMarker = {};
+    }
+
+    register(){
         var valid = true;
-        if (this.headline == ''){
+        if (this.state.headline == ''){
             valid = false;
             Alert.danger('Tittel må fylles inn!');
-        } else if (this.headline.length > 64){
+        } else if (this.state.headline.length > 64){
             valid = false;
-            Alert.danger('Max tittel karakterer: 64');
+            Alert.danger('Max tittel lengde: 64 tegn');
         }
-        if (this.category.trim() == ''){
+        if (this.state.category_id.trim() == ''){
             valid = false;
             Alert.danger('Kategori er påkrevd!');
         }
 
+
+
+        const casedata = {
+            headline: this.state.headline,
+            description: this.state.description,
+            latitude: this.lat,
+            longitude: this.lng,
+            zipcode: 7050,
+            picture: this.state.picture,
+            category_id: this.state.category_id,
+            user_id: this.state.user_id
+        };
+
+        const fd = new FormData();
+        fd.append('file', this.selectedFile, this.selectedFile.name);
+        fd.append('upload_preset', 'elo47cnr');
+        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+            .then(res => {
+                this.state.picture = res.url;
+            });
+
         if(valid){
-            if (this.picture.trim() == '') this.picture = 'https://tinyurl.com/y73nxqn9';
-            caseService.createCase(this.headline.trim(), this.description.trim(), 0, 0, this.picture.trim(), this.category_id)
+            if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
+            caseService.createUserCase(casedata)
                 .then(window.location.reload())
                 .catch((error: Error) => Alert.danger(error.message));
         }
     }
 
-    mounted(){
-        caseService.getCategories()
+    componentDidMount(){
+        categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));
+
+
     }
+
+
 }
+
+export default GoogleApiWrapper({
+    apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
+})(Report);
+
