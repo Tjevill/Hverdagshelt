@@ -74,6 +74,7 @@ export default class ChangePassword extends Component {
     //if(this.newPassword1!=this.newPassword2) return Alert.danger("Passord er feil, Prøv igjen");
     console.log(this.oldPassword, "OLD PASSWORD");
     console.log(this.newPassword1, "NEW PASSWORD");
+<<<<<<< HEAD
 
     if(this.newPassword1!=this.newPassword2){
       this.meldning = "Passordene må være like"
@@ -83,13 +84,16 @@ export default class ChangePassword extends Component {
       this.meldning = "Nytt passord må være ulik det gamle passordet"
       this.forceUpdate();
     }else{
+=======
+    console.log(this.userid);
+>>>>>>> df757acd1f3969cadfb1403a9e2898f61b09f747
     const passwordInfo = {
-      user_id : this.id,
+      user_id : this.userid,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
     };
     const passwordInfoUpdatePasswordInDB = {
-      user_id : this.id,
+      user_id : this.userid,
     	password: this.newPassword1
     };
 

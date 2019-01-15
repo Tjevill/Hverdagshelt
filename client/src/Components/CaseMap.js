@@ -30,9 +30,6 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           <Marker
             onClick={this.onMarkerClick}
             name={"current location"}
-            // draggable={true}
-            // ref={this.onMarkerMounted}
-            // onPositionChanged={this.onPositionChanged}
           />
 
           <InfoWindow
