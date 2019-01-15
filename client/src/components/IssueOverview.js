@@ -28,8 +28,6 @@ function count(array) {
   return result;
 }
 
-//<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
-
 export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
@@ -41,6 +39,8 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   kommuner = [];
   kommune = "";
   Meldning = "";
+  categoryid = 11;
+  categoryname ="";
 
   handleChangeFylke = event =>{
     console.log("FYLKE VALGT: " + event.target.value);
@@ -55,38 +55,55 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   }
 
   handleChangeKommune = event => {
-      let meldning;
-      this.kommune = event.target.value;
+        let meldning;
+        this.kommune = event.target.value;
         caseService
           .searchCaseByProv(event.target.value)
           .then(response => {
               this.casesbyKommune = response;
+              this.cases = response;
+              if(this.props.match.params.name!="All"){
+                console.log("hahaha",this.casesbyKommune);
+                this.caseofCat = this.casesbyKommune.filter(function(element){
+                      return element.category_id == 11;
+                });
+              }
+              console.log("1.cases kommuner: ",this.caseofCat);
               this.forceUpdate();
-          })
-          .catch((error: Error) => Alert.danger(error.message));
-          console.log(this.casesbyKommune);
-       if(this.casesbyKommune.length==0){
-         this.Meldning =(
-            <p>Finnes ingen saker under Kommune {event.target.value}</p>
-          );
-          console.log("hahaha");
-       }
+              console.log("1.cases kommuner: ",this.caseofCat);
 
-  }
+          })
+          .catch((error: Error) => console.log("feilfeilfeil"));
+   }
+
+   checkName(){
+     console.log("checkcheck");
+     caseService
+       .searchCaseByCat(this.props.match.params.name)
+       .then(cases => {
+           this.caseofCat = cases;
+           this.categoryname = this.props.match.params.name;
+           console.log("name :"+this.props.match.params.name);
+           this.forceUpdate();
+         })
+       .catch((error: Error) => Alert.danger(error.message));
+   }
+
+
 
   render(){
-    console.log(this.caseofCat);
     let lists;
     let sidebuttons;
+    this.categoryname = this.props.match.params.name;
 
     if(this.props.match.params.name=="All"){
-      console.log(this.props.match.params.name);
+      /* console.log(this.props.match.params.name);*/
       this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
 
       lists = (
         <div>
         {this.cateside.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} </ListGroup.Item>
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} : {casen.zipcode} </ListGroup.Item>
         ))}
         </div>
       );
@@ -100,12 +117,12 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       );
 
      } else {
-       console.log(this.caseofCat);
+
 
        lists = (
          <div>
         {this.caseofCat.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} </ListGroup.Item>
+          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} : {casen.zipcode} </ListGroup.Item>
         ))}
         </div>);
 
@@ -118,17 +135,15 @@ export default class IssueOverview extends Component <{ match: { params: { name:
      };
 
 
-
-
     return (
     <>
       <div className="jumbotron">
         <div className="container text-center">
           <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
                 {this.categories.map(categori =>(
-                  <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}}className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
                 ))}
           </div><br/><br/>
           <div class="form-row">
@@ -184,7 +199,6 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCases()
         .then(cases => {
             this.cases = cases;
-            console.log(this.cases);
             this.forceUpdate();
           })
       .catch((error: Error) => Alert.danger(error.message));
@@ -193,22 +207,19 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCategories()
       .then(categories =>{
           this.categories = categories;
-          console.log(this.categories);
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
 
-    caseService
-      .searchCaseByCat(this.props.match.params.name)
-      .then(cases => {
-          this.caseofCat = cases;
-          console.log("name :"+this.props.match.params.name);
-          this.forceUpdate();
-        })
-      .catch((error: Error) => Alert.danger(error.message));
-
-    caseService
-      .searchCaseByProv(this.props.match.params.name)
+      caseService
+        .searchCaseByCat(this.props.match.params.name)
+        .then(cases => {
+            this.caseofCat = cases;
+            this.categoryname = this.props.match.params.name;
+            console.log("name :"+this.props.match.params.name);
+            this.forceUpdate();
+          })
+        .catch((error: Error) => Alert.danger(error.message));
 
     userService
       .getDistricts()
