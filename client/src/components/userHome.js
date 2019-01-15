@@ -22,28 +22,28 @@ export default class userHome extends Component {
 	render() {
 		return (
 			<div className="userHome-body">
-				
+
 				<div className="userHome-container">
-					
+
 					<div className="userHome-banner">
-					
+
 						<div className="userHome-button1">
 						<h5> 	Vær en hverdagshelt - varsle dine medborgere om en feil
 						i kommunen!</h5>
 						<button
 							onClick={() => {
-								window.location.href = "/#/reportPage";
+								window.location.href = "/#/report";
 							}}
 						>
 							Meld Feil
 						</button>
 							</div>
-						
+
 					</div>
 					<div className="userHome-events">
 						<h4>Events</h4>
 						{this.events.map(e => (
-							<div className="userHome-event">
+							<div className="userHome-event" key={e.event_id}>
 								<Grid className="grid1">
 									<Cell col={2}>
 										<div className="cell1">
@@ -59,7 +59,7 @@ export default class userHome extends Component {
 													)}
 												</p>
 
-												<h4>  
+												<h4>
 													{e.date
 														.substring(0, 16)
 														.replace("20", "")

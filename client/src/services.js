@@ -118,6 +118,13 @@ class CaseService {
     return axios.get(url+'/countCases');
   }
 
+  /** Get every case with a certain status_id 
+  * Status number range is 1 - 4.
+  */
+  getCaseOnStatus(status_id: number): Promise <Case[]>{
+    return axios.get(url+'/allCases/status/'+status_id);
+  }
+
   /** Get case by id */
   getCaseById(case_id : number): Promise <Case[]>{
     return axios.get(url+'/getCase/'+case_id);

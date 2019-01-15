@@ -19,7 +19,8 @@ export class MapContainer extends Component {
     infoShowing = false;
     activeMarker: {};
     cases = [];
-    info = [];
+    infoTitle = "Ukjent";
+    infoId = -1;
 
     render() {
         return (
@@ -27,24 +28,32 @@ export class MapContainer extends Component {
                 <Map
                     google={this.props.google}
                     style={style}
-                    zoom={2}
+                    zoom={6}
                     initialCenter={{
                         lat: 63.4283065,
                         lng: 10.3876995
                     }}
                     onClick={this.onMapClick}
                 >
-                    {this.cases.map(caseItem => (
-                      <Marker
-                          key={caseItem.case_id}
-                          position={{
-                              lat: caseItem.latitude,
-                              lng: caseItem.longitude
-                          }}
-                          name={caseItem.case_id}
-                          onClick={this.onMarkerClick}
-                      />
-                    ))}
+                  {this.cases.map(caseItem => (
+                    <Marker
+                        key={caseItem.case_id}
+                        position={{
+                            lat: caseItem.latitude,
+                            lng: caseItem.longitude
+                        }}
+                        name={caseItem.case_id}
+                        onClick={this.onMarkerClick}
+                    />
+                  ))}
+                  <InfoWindow
+                    marker={this.activeMarker}
+                    visible={this.infoShowing}
+                  >
+                    <div>
+                      <a href={"#case/" + this.infoId}>{this.infoTitle}</a>
+                    </div>
+                  </InfoWindow>
                 </Map>
             </div>
         );
@@ -54,19 +63,20 @@ export class MapContainer extends Component {
         caseService.getAllCases().then(
             cases => {
                 this.cases = cases;
-                this.cases.map(caseItem => {
-                  this.info.push(
-                    {
-
-                    }
-                  );
-                });
+                console.log(this.cases);
             }
         );
     }
 
     onMarkerClick = (props, marker, e) => {
       console.log("onMarkerClick");
+      let selectedCase = this.cases.find(caseItem => {
+        return caseItem.case_id == marker.name;
+      });
+      console.log(selectedCase);
+
+      this.infoTitle = selectedCase.headline;
+      this.infoId = selectedCase.case_id;
       this.activeMarker = marker;
       this.infoShowing = true;
     }

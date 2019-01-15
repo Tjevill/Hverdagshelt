@@ -608,6 +608,15 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 			})
 		});
     
+    /** Get every case with status_id = 1. */
+    app.get("/allCases/status/:status_id", (req, res) =>{
+        console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
+        caseDao.getStatus(req.params.status_id, (status, data) =>{
+            res.status(status);
+            res.json(data);
+        });
+    });
+
     /** Get the province of every case*/
     app.get("/allCases/:province", (req, res) =>{
         console.log("Received get-request on endpoint /allCases/"+req.params.province);
@@ -830,7 +839,11 @@ app.post("/loginhh", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
         userdao.getUserByEmail(req.body.email1, (status, data) => {
+
+            if (data[0] != undefined) {
+
             console.log("data email: " + data[0].password);
+
             const lagretPass = data[0].password;
             const passwordData = sha512(req.body.password1, data[0].secret);
             // console.log(lagretPass.localeCompare(passwordData.passwordHash));
@@ -840,21 +853,24 @@ app.post("/loginhh", (req, res) => {
             } else {
                 resolve(false);
             }
+            } else { resolve(false); }
+
         });
     })
 
     promise1.then(function (value) {
         if (value) {
             userdao.getUserByEmail(req.body.email1, (status, data) => {
-
+                console.log("STATUS: ", status);
                 let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
             });
 
         } else {
+
             console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.json({reply: "Brukernavn eller passord er ikke riktig"});
             res.status(401);
 
         }
@@ -866,6 +882,10 @@ app.post("/logink", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
         employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
+
+            if (data[0] != undefined) {
+
+
             console.log("data email: " + req.body.email3);
             const lagretPass = data[0].password;
             const passwordData = sha512(req.body.password3, data[0].secret);
@@ -875,7 +895,7 @@ app.post("/logink", (req, res) => {
                 resolve(true);
             } else {
                 resolve(false);
-            }
+            }} else { resolve(false); }
         });
     })
 
@@ -884,7 +904,7 @@ app.post("/logink", (req, res) => {
             employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
 
                 let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
             });
 
@@ -902,8 +922,10 @@ app.post("/logink", (req, res) => {
 app.post("/loginb", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
-        console.log("data email: ", req.body);
         employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
+            if (data[0] != undefined) {
+
+
             console.log("data email: " + req.body.email2);
             const lagretPass = data[0].password;
             const passwordData = sha512(req.body.password2, data[0].secret);
@@ -913,7 +935,7 @@ app.post("/loginb", (req, res) => {
                 resolve(true);
             } else {
                 resolve(false);
-            }
+            }} else { resolve(false); }
         });
     })
 
@@ -922,7 +944,7 @@ app.post("/loginb", (req, res) => {
             employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
 
                 let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Login successful! Enjoy your stay", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
             });
 

@@ -13,6 +13,8 @@ const style = {
     position: "relative"
 }
 
+
+
 export class Report extends Component {
     message = " ";
     error = " ";
@@ -39,6 +41,9 @@ export class Report extends Component {
         user_id: sessionStorage.getItem("userid"),
     };
 
+    // isEnabled = this.state.headline == '' || this.state.description == ''  || this.state.headline.length > 64 || this.state.category_id.trim() == '' ||
+    //     this.state.picture.trim() == '' || (this.country.trim() != 'Norge' || this.country.trim() != 'Norway');
+
     fileSelectedHandler = event => {
         console.log(event.target.files[0]);
         this.selectedFile = event.target.files[0];
@@ -59,6 +64,7 @@ export class Report extends Component {
                 });
         }
     };
+
     handleChange = event => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -69,6 +75,7 @@ export class Report extends Component {
             [name]: value
         }));
     };
+
     render(){
         return(
             <div className="row row-style" style={style}>
@@ -105,7 +112,7 @@ export class Report extends Component {
                                     lng: this.lng
                                 }}
                                 style={style}
-                                onClick={this.onMapClick}
+                                onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
                             >
                                 <Marker
                                     name={"current location"}
@@ -113,9 +120,7 @@ export class Report extends Component {
                                     position={{ lat: this.lat, lng: this.lng }}
                                     onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
                                 />
-
                             </Map>
-
                         </div>
 
                         <div className="form-group form-group-style">
@@ -186,20 +191,17 @@ export class Report extends Component {
                 let countryFilter = [];
                 let help = [];
                 if (this.mapData.address_components == null) {
-                    console.log('Fant ingen gyldig addresse her, vennligst velg et annet sted');
+                    this.error = 'Fant ingen gyldig addresse her, vennligst velg et annet sted';
+                } else {
+                    this.error = "";
+                    help = this.mapData.address_components.filter(e =>
+                        e.types[0] == 'country');
+                    this.country = help[0].long_name;
                 }
-                help = this.mapData.address_components.filter(e =>
-                e.types[0] == 'country');
-                this.country = help[0].long_name;
+
             }
         );
     };
-
-    onMapClick(props, map, e){
-        console.log("onMapClick");
-        this.infoShowing = false;
-        this.activeMarker = {};
-    }
 
     register(){
         var valid = true;

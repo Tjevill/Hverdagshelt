@@ -1,7 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import * as React from "react";
-import {Component} from "react-simplified";
+import { Component } from "react-simplified";
 import CaseListCard from "./CaseListCard";
 import ProfileCard from "./ProfileCard";
 import {caseService, userService} from "../services";
