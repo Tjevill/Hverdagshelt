@@ -199,36 +199,36 @@ export default class LoginPage extends React.Component {
                             duration={ 500 }
                             height={ height1 } // see props documentation bellow
                         >
-                        <div id="option1" className="login">
+                            <div id="option1" className="login">
 
-                            <h4>Logg inn:</h4>
+                                <h4>Logg inn:</h4>
 
                                 <form name="formuser" id="formuser">
-                                <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
-                                    <label htmlFor="email1">E-mail</label>
-                                    <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
-                                    {submitted1 && !email1 &&
-                                    <div className="help-block">E-mail is required</div>
-                                    }
-                                </div>
-                                <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
-                                    <label htmlFor="password1">Password</label>
-                                    <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
-                                    {submitted1 && !password1 &&
-                                    <div className="help-block">Password is required</div>
-                                    }
-                                </div>
-                                <div className="form-group">
-                                    <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                    {loading1 &&
-                                    <div>Loading</div>}
-                                </div>
+                                    <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
+                                        <label htmlFor="email1">E-mail</label>
+                                        <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
+                                        {submitted1 && !email1 &&
+                                        <div className="help-block">E-mail is required</div>
+                                        }
+                                    </div>
+                                    <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
+                                        <label htmlFor="password1">Password</label>
+                                        <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
+                                        {submitted1 && !password1 &&
+                                        <div className="help-block">Password is required</div>
+                                        }
+                                    </div>
+                                    <div className="form-group">
+                                        <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
+                                        {loading1 &&
+                                        <div>Loading</div>}
+                                    </div>
                                     <div className="form-group"><h3>{this.state.message1}</h3></div>
-                                {error1 &&
-                                <div className={'alert alert-danger'}>{error1}</div>
-                                }
-                            </form>
-                        </div>
+                                    {error1 &&
+                                    <div className={'alert alert-danger'}>{error1}</div>
+                                    }
+                                </form>
+                            </div>
                         </AnimateHeight>
                     </div>
 
