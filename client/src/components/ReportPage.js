@@ -41,8 +41,8 @@ export class Report extends Component {
         user_id: sessionStorage.getItem("userid"),
     };
 
-    isEnabled = this.state.headline == '' && this.state.description == ''  && this.state.headline.length > 64 && this.state.category_id.trim() == '' &&
-        this.state.picture.trim() == '' && (this.country.trim() == 'Norge' || this.country.trim() == 'Norway');
+    // isEnabled = this.state.headline == '' || this.state.description == ''  || this.state.headline.length > 64 || this.state.category_id.trim() == '' ||
+    //     this.state.picture.trim() == '' || (this.country.trim() != 'Norge' || this.country.trim() != 'Norway');
 
     fileSelectedHandler = event => {
         console.log(event.target.files[0]);
@@ -65,19 +65,17 @@ export class Report extends Component {
         }
     };
 
-    handleChange() {
+    handleChange = event => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
-    }
-    // handleChange = event => {
-    //     const target = event.target;
-    //     const value = target.type === 'checkbox' ? target.checked : target.value;
-    //     const name = target.name;
-    //
-    //
-    //     this.setState((state, props) => ({
-    //         [name]: value
-    //     }));
-    // };
+
+        this.setState((state, props) => ({
+            [name]: value
+        }));
+    };
+
     render(){
         return(
             <div className="row row-style" style={style}>
@@ -150,7 +148,7 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør" disabled={!this.isEnabled}>
+                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
                         <h2 className="feilmelding">{this.error}</h2>
@@ -204,12 +202,6 @@ export class Report extends Component {
             }
         );
     };
-
-    onMapClick(props, map, e){
-        console.log("onMapClick");
-        this.infoShowing = false;
-        this.activeMarker = {};
-    }
 
     register(){
         var valid = true;
