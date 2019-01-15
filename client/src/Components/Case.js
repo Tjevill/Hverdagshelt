@@ -103,7 +103,7 @@ export class Card extends Component<{
 }
 
 function getDate(date) {
-  if(date == "" || date == null) return "";
+  if(date === "" || date == null) return "";
   var dateObject = new Date(date);
   dateObject.setSeconds(0, 0);
   return dateObject
