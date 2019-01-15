@@ -7,7 +7,8 @@ import { userService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
-export default class ChangePassword extends Component <{ match: { params: { id: number } } }> {
+export default class ChangePassword extends Component {
+  userid = -1;
   user = new Object();
   oldPassword = "";
   newPassword1 = "";
@@ -23,7 +24,7 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
         </div>
       </div>
       <div className="container text-center">
-        <div class="container text-center">
+        <div className="container text-center">
         <div className="form-group">
           Gammelt passord:{" "}
           <input
@@ -65,17 +66,17 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
     //if(this.newPassword1!=this.newPassword2) return Alert.danger("Passord er feil, Prøv igjen");
     console.log(this.oldPassword, "OLD PASSWORD");
     console.log(this.newPassword1, "NEW PASSWORD");
-    console.log(this.props.match.params.id);
+    console.log(this.id);
     const passwordInfo = {
-      user_id : this.props.match.params.id,
+      user_id : this.id,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
     };
     const passwordInfoUpdatePasswordInDB = {
-      user_id : this.props.match.params.id,
+      user_id : this.id,
     	password: this.newPassword1
     };
-    
+
     userService
       .verifyOldPasswordAndUpdatePWord(passwordInfo)
       .then((response) => {
@@ -91,12 +92,14 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
      .catch((error: Error) => {
        Alert.danger(error.message)
 		 });
-   
+
   }
 
   componentDidMount(){
+    this.userid = sessionStorage.getItem("userid");
+    console.log(this.userid);
     userService
-      .getUserByID(this.props.match.params.id)
+      .getUserByID(this.id)
       .then(user => {
         this.user = user[0];
         if(user) console.log("available user"+this.user.name);
