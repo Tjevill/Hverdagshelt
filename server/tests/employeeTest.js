@@ -1,7 +1,7 @@
 // @flow
 
 let mysql = require('mysql');
-jest.setTimeout(10000);
+jest.setTimeout(50000);
 
 const EmplDao = require("../dao/employeedao.js");
 const runsqlfile = require('./runsqlfile.js');
@@ -25,9 +25,10 @@ beforeAll(done => {
     });
 });
 
-afterAll( () => {
-    pool.end();
+afterAll(done => {
+	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
 });
+
 
 /** Get all employees in the db */
 test('getAllEmployees from db', done =>{

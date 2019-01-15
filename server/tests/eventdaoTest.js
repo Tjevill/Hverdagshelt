@@ -1,7 +1,7 @@
 // @flow
 
 let mysql = require('mysql');
-jest.setTimeout(10000);
+jest.setTimeout(50000);
 
 const Eventdao = require("../dao/eventdao.js");
 const runsqlfile = require('./runsqlfile.js');
@@ -24,9 +24,15 @@ beforeAll(done => {
   });
 });
 
+<<<<<<< HEAD
 afterEach(() => {
  pool.end();
+=======
+afterAll(done => {
+	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
+>>>>>>> 39a69aa859c5f784c739ec3b8299d35d23df894f
 });
+
 
 test('getAllEvents', done => {
   function callback(status, data) {

@@ -1,7 +1,7 @@
 // @flow
 
 let mysql = require('mysql');
-jest.setTimeout(10000);
+jest.setTimeout(50000);
 
 const Statusdao = require("../dao/statusdao.js");
 const runsqlfile = require("./runsqlfile.js");
@@ -25,8 +25,8 @@ beforeAll(done =>{
     });
 });
 
-afterAll( () => {
-    pool.end();
+afterAll(done => {
+	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
 });
 
 test("Get every status from db", done =>{
