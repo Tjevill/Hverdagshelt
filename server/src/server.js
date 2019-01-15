@@ -713,23 +713,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 // End Cases
 
 
-let verifyOldPassword = (id, password) => {
-	
-	let promise4 = new Promise((resolve => {
-		userdao.getHashedPWord(id, (status, data) => {
-			console.log("data:  l/p: " + id + " " + password  + "    " + data[0].user_id + "------" + data[0].password + "-------" + data[0].secret);
-			const savedPassword = data[0].password;
-			const passwordData = sha512(password, data[0].secret);
-			
-			if(passwordData.passwordHash === savedPassword){
-				resolve(true);
-			} else {
-				resolve(false);
-			}
-		})
-	}));
-	return promise4;
-};
+
 
 
 function loginOk(username, password) {
@@ -754,18 +738,28 @@ function loginOk(username, password) {
 /**
  * Verifies old password for user.
  */
-app.get('/userVerification', (req: Request, res: Response) => {
-	let promise4 = verifyOldPassword(req.body.id, req.body.oldPassword);
+app.post('/userVerification', (req: Request, res: Response) => {
+	console.log("app.get(/userverification):::::" + req.body.user_id + "----------" + req.body.oldPassword);
 	
-	promise4.then((value => {
-		if(value){
-			res.json({login: 1});
-			res.status(200);
+	let dbHash;
+	userdao.getHashedPWord(req.body.user_id, (status, data) => {
+		console.log(data[0].password + " DATABASE!******************************");
+		let savedPassword = data[0].password;
+		let passwordData = sha512(req.body.oldPassword, data[0].secret);
+		console.log(passwordData.passwordHash, "NEW***********************");
+		dbHash = passwordData.passwordHash === savedPassword;
+		console.log(dbHash, " FRA VERIFY FALSE TRUE");
+		
+		if (dbHash) {
+			console.log("STATUS: ", "200");
+			res.status(200).json(1);
 		} else {
-			res.json({login: 0});
-			res.status(401);
+			console.log("STATUS: ", "500");
+			res.status(500).json("Wrong password. Try again");
 		}
-	}));
+		
+	});
+
 });
 
 app.post("/login", (req, res) => {

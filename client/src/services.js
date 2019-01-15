@@ -262,27 +262,10 @@ class UserService {
 	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
 	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
 	 */
-		verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
-			const res = axios.get(url + '/userVerification', updatePassword);
-			
-			res.then((result) => {
-				const promise = new Promise((resolve) => {
-					if (result) {
-						axios.put(url + '/updateUserPword', {
-							"user_id": updatePassword.user_id,
-							"password": updatePassword.newpassword
-						});
-						resolve(1);
-					} else {
-						resolve(0);
-					}
-					
-				});
-				return promise;
-			});
-			
-			
-		}
+	verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
+		return axios.post(url + '/userVerification', updatePassword);
+    
+	}
 
 }
 
