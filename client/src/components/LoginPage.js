@@ -142,7 +142,7 @@ export default class LoginPage extends React.Component {
             })
             .then(
 
-                history.push('/', { some: 'state' }),
+               //  history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
                 error => console.log("error?: " + { error, loading: false })
             );
@@ -179,7 +179,7 @@ export default class LoginPage extends React.Component {
             })
             .then(
 
-                history.push('/', { some: 'state' }),
+                // history.push('/', { some: 'state' }),
                 // error => this.setState({ error, loading: false })
                 error => console.log({ error, loading: false })
             );
