@@ -24,7 +24,7 @@ beforeAll(done => {
   });
 });
 
-afterAll(() => {
+afterEach(() => {
  pool.end();
 });
 

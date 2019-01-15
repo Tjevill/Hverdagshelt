@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS Organization;
 DROP TABLE IF EXISTS User;
 
 
-CREATE TABLE `Cases` (
+CREATE TABLE Cases (
   `case_id` int(8) NOT NULL AUTO_INCREMENT,
   `description` text NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `Cases` (
 
 
 
-  CREATE TABLE `Employee` (
+  CREATE TABLE Employee (
   `employee_id` int(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `tel` int(8) NOT NULL,
