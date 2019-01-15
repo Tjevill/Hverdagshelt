@@ -282,7 +282,7 @@ function renderRoot() {
                       path="/login"
                       component={LoginPage}
                       isAuthenticated={!value}
-                      redirect="/admin/main"
+                      redirect="/"
                   />
                 </div>
               </div>
