@@ -9,17 +9,11 @@ const style = {
     height: '100%'
 }
 
-class Info {
-  index: number;
-  html: string;
-}
+export class MapContainer extends Component{
 
-export class MapContainer extends Component {
-
-    infoShowing = false;
     activeMarker: {};
     cases = [];
-    info = [];
+    showing = [];
 
     render() {
         return (
@@ -36,6 +30,7 @@ export class MapContainer extends Component {
                 >
                     {this.cases.map(caseItem => (
                       <Marker
+                          id={caseItem.case_id}
                           key={caseItem.case_id}
                           position={{
                               lat: caseItem.latitude,
@@ -44,6 +39,19 @@ export class MapContainer extends Component {
                           name={caseItem.case_id}
                           onClick={this.onMarkerClick}
                       />
+                    ))}
+                    {console.log("remarking"), this.cases.map(caseItem => (
+                      this.showing.includes(caseItem.case_id) &&
+                      <InfoWindow
+                        id={"case-info-" + caseItem.case_id}
+                        key={caseItem.case_id}
+                        marker={this.activeMarker}
+                        visible={true}
+                      >
+                        <div>
+                          <h6>Id: {caseItem.case_id}</h6>
+                        </div>
+                      </InfoWindow>
                     ))}
                 </Map>
             </div>
@@ -54,27 +62,22 @@ export class MapContainer extends Component {
         caseService.getAllCases().then(
             cases => {
                 this.cases = cases;
-                this.cases.map(caseItem => {
-                  this.info.push(
-                    {
-
-                    }
-                  );
-                });
             }
         );
     }
 
     onMarkerClick = (props, marker, e) => {
-      console.log("onMarkerClick");
-      this.activeMarker = marker;
-      this.infoShowing = true;
+      //console.log("onMarkerClick");
+      console.log(this.showing);
+      if(!this.showing.includes(marker.id)){
+        this.activeMarker = marker;
+        this.showing.push(marker.id);
+      }
+      this.forceUpdate();
     }
 
     onMapClick(){
       console.log("onMapClick");
-      this.infoShowing = false;
-      this.activeMarker = {};
     }
 
 }
