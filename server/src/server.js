@@ -601,6 +601,13 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
         });
     });
 
+    app.put("/changeCaseStatus/:id", (req, res) => {
+    	caseDao.updateCaseStatus(req.params.id, (status, data) => {
+    		res.status(status);
+    		res.json(data);
+			})
+		});
+    
     /** Get the province of every case*/
     app.get("/allCases/:province", (req, res) =>{
         console.log("Received get-request on endpoint /allCases/"+req.params.province);
