@@ -37,15 +37,11 @@ export default class Case extends Component {
     }
   }
 
-  getTest(value){
-    this.test = value;
-    console.log(value);
-  }
-
   mounted(){
 
     if(this.openMap) document.location.reload();
     this.openMap = true;
+
     let casePromise = caseService.getCaseById(this.props.match.params.id);
     casePromise.then(caseData => {
       //console.log(caseData[0]);
@@ -54,11 +50,16 @@ export default class Case extends Component {
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
         mapData => {
           this.mapData = mapData.results[0];
-          //console.log(this.mapData);
+          console.log(this.mapData);
           if(this.mapData == null){
             this.mapData = {
               formatted_address: "none"
             }
+          }
+          if(this.case.zipcode == "0000"){
+            this.province = "Ukjent"
+            this.loaded = true;
+            return;
           }
           mapService.getProvince(this.case.zipcode).then(
             zipData => {
@@ -104,7 +105,7 @@ export class Card extends Component<{
 
 function getDate(date) {
   if(date === "" || date == null) return "";
-  var dateObject = new Date(date);
+  let dateObject = new Date(date);
   dateObject.setSeconds(0, 0);
   return dateObject
     .toISOString()
