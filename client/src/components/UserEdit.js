@@ -34,14 +34,17 @@ export default class UserEdit extends Component <{ match: { params: { id: number
 
     return (
       <>
-      <div className="jumbotron">
+      <div className="jumbotron jumbotron-fluid">
         <div className="container text-center">
-          <h5>Edit</h5>
+          <h1 class="display-4">Edit</h1>
         </div>
       </div>
-      <div className="container text-center">
+
+
         <div class="container text-center">
-        <div className="form-group">
+          <div class="row">
+            <div class="col">
+         <div className="form-group">
           Navn:{" "}
           <input
           className="form-control"
@@ -90,7 +93,7 @@ export default class UserEdit extends Component <{ match: { params: { id: number
             name="email"
             onChange={event => (this.user.email = event.target.value)}
           />
-        </div>
+          </div>
           <br/>
           <br/>
           {button}
@@ -99,8 +102,13 @@ export default class UserEdit extends Component <{ match: { params: { id: number
           <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
+          <div class="col">
+          <br/><br/><br/><br/>
+            <img src="https://img.icons8.com/android/1600/user.png" width="200"/>
+          </div>
+        </div>
       </div>
-      </>
+    </>
     );
   }
 

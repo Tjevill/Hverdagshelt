@@ -63,25 +63,35 @@ export default class ChangePassword extends Component <{ match: { params: { id: 
 
   save(){
     //if(this.newPassword1!=this.newPassword2) return Alert.danger("Passord er feil, Prøv igjen");
-    console.log(this.oldPassword);
-    console.log(this.newPassword1)
+    console.log(this.oldPassword, "OLD PASSWORD");
+    console.log(this.newPassword1, "NEW PASSWORD");
+    console.log(this.props.match.params.id);
     const passwordInfo = {
       user_id : this.props.match.params.id,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
     };
-
+    const passwordInfoUpdatePasswordInDB = {
+      user_id : this.props.match.params.id,
+    	password: this.newPassword1
+    };
+    
     userService
       .verifyOldPasswordAndUpdatePWord(passwordInfo)
-      .then(response => {
-          console.log(response);
+      .then((response) => {
+          console.log(response + "Skal oppdatere passord");
+          userService.updateUserPWord(passwordInfoUpdatePasswordInDB)
+            .then(response => {
+							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+						})
+            .catch(err => {
+              console.log(err, "REJECTED FEIL I DATABASE");
+            })
         })
-     .catch((error: Error) => Alert.danger(error.message));
-
-
-
-
-
+     .catch((error: Error) => {
+       Alert.danger(error.message)
+		 });
+   
   }
 
   componentDidMount(){

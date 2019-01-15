@@ -203,15 +203,18 @@ class UserService {
     return axios.put(url + "/newuser", newuser);
   }
 
-  getUserByUsername(username: string): Promise<void> {
-    // console.log(axios.get(domain + "/news/artikkel/" + id));
-    return axios.get(url + "/user/" + username);
-  }
 
-  login(login: Login): Promise<void> {
-    // console.log(axios.post(domain + "/login", login));
-    return axios.post(url + "/login", login);
-  }
+    loginHverdagshelt(login: Login[]): Promise<void> {
+        return axios.post(url + "/loginhh", login);
+    }
+
+    loginBedrift(login: Login): Promise<void> {
+        return axios.post(url + "/loginb", login);
+    }
+
+    loginKommune(login: Login): Promise<void> {
+        return axios.post(url + "/logink", login);
+    }
 
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
@@ -266,14 +269,9 @@ class UserService {
 	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
 	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
 	 */
-  verifyOldPasswordAndUpdatePWord(updatePassword: UserVerifyOldPWordAndUpdate): Promise<number>{
-  	const res = axios.get(url + '/userVerification', updatePassword);
-  	if(res === 1){
-  		axios.put(url + '/updateUserPword', {"user_id": updatePassword.user_id, "password": updatePassword.newpassword});
-			return 1;
-		}else{
-  		return 0;
-		}
+	verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
+		return axios.post(url + '/userVerification', updatePassword);
+    
 	}
 
 }
@@ -343,7 +341,25 @@ class CategoryService {
 export let categoryService = new CategoryService();
 
 class EmployeeService {
+    getCategories(): Promise<Category[]> {
+        return axios.get(url + '/getAllCategories');
+    }
 
+    addOrganization(newemployee: Register): Promise<void> {
+        console.log("ORG TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworganization", newemployee);
+    }
+
+    addEmployee(newemployee: Register): Promise<void> {
+        console.log("EMPLOYEE TIL SERVICE: ", newemployee);
+        return axios.put(url + "/newemployee", newemployee);
+    }
+
+
+    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
+        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworgcat/" + company_id, newemployee);
+    }
   /** Create employee
   * JSON sent in postman:
   * { "name": "Ben Oscar Strømstrømstrøm",
@@ -353,11 +369,6 @@ class EmployeeService {
       "province":1,
       "district":1 }
   */
-  addEmployee(emp: Employee): Promise<void> {
-      console.log("DATA TIL SERVICE: ", emp);
-      // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-      return axios.put(url + "/employee", emp);
-  }
 
 
   /** Delete an employee with employee_id. Yolo */
