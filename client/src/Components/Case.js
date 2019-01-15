@@ -24,7 +24,7 @@ export default class Case extends Component {
                 zip={this.case.zipcode}
                 date={this.case.timestamp}
               />
-            <img id="picture" src="https://tinyurl.com/y9qzpzwy" alt="Case" />
+            <img id="picture" src={this.case.picture} alt="Case" />
           <p id="description">{this.case.description}</p>
         </div>
           {this.map}
