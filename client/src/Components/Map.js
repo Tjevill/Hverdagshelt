@@ -40,7 +40,7 @@ export class MapContainer extends Component{
                           onClick={this.onMarkerClick}
                       />
                     ))}
-                    {console.log("remarking"), this.cases.map(caseItem => (
+                    {this.cases.map(caseItem => (
                       this.showing.includes(caseItem.case_id) &&
                       <InfoWindow
                         id={"case-info-" + caseItem.case_id}
@@ -50,6 +50,7 @@ export class MapContainer extends Component{
                       >
                         <div>
                           <h6>Id: {caseItem.case_id}</h6>
+                          {console.log(caseItem.case_id)}
                         </div>
                       </InfoWindow>
                     ))}
@@ -73,7 +74,6 @@ export class MapContainer extends Component{
         this.activeMarker = marker;
         this.showing.push(marker.id);
       }
-      this.forceUpdate();
     }
 
     onMapClick(){
