@@ -5,6 +5,58 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
+
+
+const checkToken = (req, res, next) => {
+    const header = req.headers['authorization'];
+
+    if(typeof header !== 'undefined') {
+        const bearer = header.split(' ');
+        const token = bearer[1];
+
+        req.token = token;
+        next();
+    } else {
+        //If header is undefined return Forbidden (403)
+        res.sendStatus(403)
+    }
+}
+
+export function refreshToken() {
+    const myHeaders = new Headers();
+
+    console.log("Refreshing with: " + sessionStorage.getItem('storedtoken'))
+    myHeaders.append('x-access-token', sessionStorage.getItem('storedtoken'));
+    myHeaders.append('Content-Type', 'application/json; charset=utf-8');
+
+    let url = 'http://localhost:8080/refreshtoken';
+    let fetchData = {
+        method: 'POST',
+        headers: myHeaders
+    }
+
+    return new Promise(resolve => {
+    fetch(url, fetchData)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (myJson) {
+            let mytoken = myJson.jwt;
+            sessionStorage.setItem('storedtoken', mytoken);
+            if (mytoken != undefined) {
+
+                console.log("Refreshtoken: Token refreshed!");
+                resolve(true);
+            }
+            else {
+                console.log("Refreshtoken: Mangler token. Kan ikke refreshe");
+                resolve(false);
+            }
+        });
+    });
+}
+
+
 /**
  * Renders alert messages using Bootstrap classes.
  */

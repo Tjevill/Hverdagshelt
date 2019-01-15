@@ -24,8 +24,13 @@ beforeAll(done => {
   });
 });
 
+<<<<<<< HEAD
+afterEach(() => {
+ pool.end();
+=======
 afterAll(done => {
 	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
+>>>>>>> 39a69aa859c5f784c739ec3b8299d35d23df894f
 });
 
 

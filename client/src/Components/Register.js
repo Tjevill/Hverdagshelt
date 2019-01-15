@@ -19,7 +19,6 @@ export default class Register extends Component {
     zipcode: "",
     tel: "",
     email: "",
-    username: "",
     password: "",
     password2: "",
     subscription: true
@@ -73,10 +72,11 @@ export default class Register extends Component {
         <div className="form-group">
           Postnummer:{" "}
           <input
-          className="form-control"
+            className="form-control"
             type="text"
             defaultValue=""
             name="zipcode"
+            maxLength="4"
             onChange={this.handleChange}
           />
         </div>
@@ -87,6 +87,7 @@ export default class Register extends Component {
             type="text"
             defaultValue=""
             name="tel"
+          maxLength="8"
             onChange={this.handleChange}
           />
         </div>
@@ -97,16 +98,6 @@ export default class Register extends Component {
             type="text"
             defaultValue=""
             name="email"
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="form-group">
-          Brukernavn:{" "}
-          <input
-          className="form-control"
-            type="text"
-            defaultValue=""
-            name="username"
             onChange={this.handleChange}
           />
         </div>
@@ -191,7 +182,6 @@ export default class Register extends Component {
       zipcode: this.state.zipcode,
       tel: this.state.tel,
       email: this.state.email,
-      username: this.state.username,
       password: this.state.password,
       password2: this.state.password2,
       subscription: this.state.subscription
