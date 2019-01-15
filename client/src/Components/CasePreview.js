@@ -15,6 +15,9 @@ export default class CasePreview extends Component <{title: string, status: numb
                     {this.props.title}
                 </NavLink>
                 <span className={this.y}>{this.x}</span>
+                <NavLink to={'/case/' + this.props.id + '/edit'}>
+                    rediger
+                </NavLink>
             </li>
         )
     }

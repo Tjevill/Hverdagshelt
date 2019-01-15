@@ -114,7 +114,7 @@ body,
 
 .report-map {
   position: relative !important;
-  width: 300px !important;
+  width: 100% !important;
   height: 300px !important;
 }
 
