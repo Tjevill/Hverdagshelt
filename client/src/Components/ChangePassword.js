@@ -74,14 +74,14 @@ export default class ChangePassword extends Component {
     //if(this.newPassword1!=this.newPassword2) return Alert.danger("Passord er feil, Prøv igjen");
     console.log(this.oldPassword, "OLD PASSWORD");
     console.log(this.newPassword1, "NEW PASSWORD");
-    console.log(this.id);
+    console.log(this.userid);
     const passwordInfo = {
-      user_id : this.id,
+      user_id : this.userid,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
     };
     const passwordInfoUpdatePasswordInDB = {
-      user_id : this.id,
+      user_id : this.userid,
     	password: this.newPassword1
     };
 
