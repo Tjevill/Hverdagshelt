@@ -105,7 +105,7 @@ export class Report extends Component {
                                     lng: this.lng
                                 }}
                                 style={style}
-                                onClick={this.onMapClick}
+                                onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
                             >
                                 <Marker
                                     name={"current location"}
