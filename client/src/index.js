@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHashHistory from "history/createHashHistory";
 
-import Navbar from "./components/Navbar";
+//import Navbar from "./components/Navbar";
 import Case from "./components/Case";
 import CaseListCard from "./components/CaseListCard";
 import ProfileCard from "./components/ProfileCard";
@@ -246,7 +246,7 @@ function renderRoot() {
                 <Navbar loggedin={value}/>
                 <div id="page">
                   <Route exact path="/" component={UserHome} />
-                  <Route exact path="/case" component={CasePage} />
+                  <Route exact path="/case" component={Case} />
                   <Route exact path="/profile" component={ProfilePage} />
                     <Route exact path="/profile/:id/edit" component={UserEdit} />
                     <Route exact path="/issues" component={IssueOverview} />
