@@ -16,6 +16,15 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases WHERE case_id = ?", [caseid], callback);
     }
 
+    /** Get every case with status_id = ?. 
+    *   @param status_id - the status_id for the cases you wish to retrieve from the db.
+    */
+    getStatus(status_id, callback){
+        super.query("SELECT * FROM Cases WHERE status_id = ?",
+        [status_id],
+        callback);
+    }
+
     /** Get all cases from one user based on user_id */
     getCaseOnUser(user_id, callback){
         super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
