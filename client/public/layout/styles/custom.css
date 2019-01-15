@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+.forsidelogo {
+	width:300px;
+	padding:5px;
+}
+
+.goddamnit {
+	background-image:url('http://localhost:3000/images/frontpage.jpg');
+}
