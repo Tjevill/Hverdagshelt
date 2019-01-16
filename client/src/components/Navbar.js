@@ -2,32 +2,9 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHistory from 'history/createBrowserHistory';
-
-import {refreshToken} from "./widgets";
-
-import Case from "./Case";
-import CaseListCard from "./CaseListCard";
-import ProfileCard from "./ProfileCard";
-import ProfilePage from "./ProfilePage";
-import ReportPage from "./ReportPage";
-import IssueOverview from "./IssueOverview";
-import UserHome from "./userHome";
-import Events from "./events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Register from "./Register";
-import NewOrganization from "./NewOrganization";
-import NewEmployee from "./NewEmployee";
-import AdminMain from "./AdminMain";
-import LoginPage from "./LoginPage";
-import PrivateRoute from 'react-private-route';
-import UserEdit from "./UserEdit";
-import ChangePassword from "./ChangePassword";
-import IssueOverviewForEmployee from "./IssueOverviewForEmployee";
-import Map from "./Map";
-import CaseEdit from "./caseEdit";
-import EventsEdit from "./EventsEdit";
-import NewEvents from "./NewEvents";
+
 
 const history = createHistory({
   forceRefresh: true
@@ -54,28 +31,6 @@ export default class Navbar extends Component {
         <nav id="mainav" className="fl_right">
             <ul className="clear">
                 <li className="active"><a href="/">Home</a></li>
-                {/*<li><a className="drop" href="#">Pages</a>
-                    <ul>
-                        <li><a href="pages/gallery.html">Gallery</a></li>
-                        <li><a href="pages/full-width.html">Full Width</a></li>
-                        <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
-                        <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
-                        <li><a href="pages/basic-grid.html">Basic Grid</a></li>
-                    </ul>
-                </li>
-                <li><a className="drop" href="#">Dropdown</a>
-                    <ul>
-                        <li><a href="#">Level 2</a></li>
-                        <li><a className="drop" href="#">Level 2 + Drop</a>
-                            <ul>
-                                <li><a href="#">Level 3</a></li>
-                                <li><a href="#">Level 3</a></li>
-                                <li><a href="#">Level 3</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Level 2</a></li>
-                    </ul>
-                </li>*/}
                 <li><a href="#issues" onClick={() => this.activate("issues")}>Saker</a></li>
                 <li><a href="#events" onClick={() => this.activate("events")}>Events</a></li>
                 <li><a href="#register" onClick={() => this.activate("register")}>Registrer deg!</a></li>

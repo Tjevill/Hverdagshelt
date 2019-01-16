@@ -146,20 +146,20 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                   <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}}className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
                 ))}
           </div><br/><br/>
-          <div class="form-row">
-            <div class="form-group col-6">
-              <label for="inputFylke">Velg Fylke</label>
-                <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
-                  <option selected>Velg fylke</option>
+          <div className="form-row">
+            <div className="form-group col-6">
+              <label forhtml="inputFylke">Velg Fylke</label>
+                <select id="fylke" name="fylke" className="form-control" onChange={this.handleChangeFylke}>
+                  <option>Velg fylke</option>
                   {this.fylker.map(fylke => {
                       return(<option value={fylke.ID}>{fylke.navn}</option>)
                   })}
                 </select>
             </div>
-            <div class="form-group col-6">
+            <div className="form-group col-6">
               <label for="inputKommune">Velg Kommune</label>
-                <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
-                  <option selected>Velg Kommune</option>
+                <select id="kommune" name="kommune" className="form-control" onChange={this.handleChangeKommune}>
+                  <option>Velg Kommune</option>
                   {this.kommuner.map(kommune => {
                       return(<option value={kommune.Name}>{kommune.navn}</option>)
                   })}
@@ -184,7 +184,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
 
       <div id='toolbar'>
         <div className='wrapper text-center'>
-          <div class="btn-group">
+          <div className="btn-group">
             {sidebuttons}
         </div>
         </div>

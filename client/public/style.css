@@ -166,7 +166,7 @@
 
 }
 .userHome-container{
-    background-color:#fff; /* BYTTES UT MED HVIT */
+    background-color:inherit; /* BYTTES UT MED HVIT */
     width: 1000px;
     margin:0 auto;
 }
@@ -196,7 +196,7 @@
 .cell1{
     margin-bottom:10px;
     background-color: white;
-    height: 800%;
+    height:auto;
    padding-top: 25px;
    padding-left: 30px;
 
@@ -207,7 +207,7 @@
 .cell2{
     padding-left: 50px;
     background-color: white;
-    height: 800%;
+    height: auto;
 
 
 }
@@ -215,7 +215,7 @@
 .cell3{
     background-color: white;
     padding-top: 25px;
-    height: 750%;
+    height: auto;
 
 }
 

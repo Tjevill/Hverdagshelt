@@ -2,9 +2,11 @@
 
 .forsidelogo {
 	width:300px;
-	padding:5px;
+	padding: 0px;
+	margin: 0px;
+
 }
 
 .goddamnit {
-	background-image:url('http://localhost:3000/images/frontpage.jpg');
+	background-image:url('/images/frontpage.jpg');
 }
