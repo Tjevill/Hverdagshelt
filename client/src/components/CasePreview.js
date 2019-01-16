@@ -40,14 +40,18 @@ export default class CasePreview extends Component <{title: string, status: numb
     }
     
     delete(case_id) {
-        caseService.changeCaseStatus(case_id)
-          .then(response => {
-              console.log(response, "Satt status: slett i db");
+
+        
+        if ( window.confirm("Er du sikker på at du ønsker å slette saken:?") ){
+            caseService.changeCaseStatus(case_id)
+            .then(response => {
+              console.log(response, "Satt status: slett i db");           
               window.location.reload();
-          })
-          .catch(err => {
-              console.log(err, "Error ved oppdatering av status");
-          })
+            })
+            .catch(err => {
+                console.log(err, "Error ved oppdatering av status");
+            });
+          }
     }
     
     componentDidMount() {

@@ -18,8 +18,7 @@ export default class userHome extends Component {
 					<div className="userHome-banner">
 
 						<div className="userHome-button1">
-						<h5> 	Vær en hverdagshelt - varsle dine medborgere om en feil
-						i kommunen!</h5>
+						<h5> 	Vær en hverdagshelt - varsle din kommune om feil!</h5>
 						<button
 							onClick={() => {
 								window.location.href = "/#/report";

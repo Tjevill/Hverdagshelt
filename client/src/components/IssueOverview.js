@@ -129,7 +129,6 @@ export default class IssueOverview extends Component <{ match: { params: { name:
      this.kommune = "";
      this.fylker = [];
      window.location.reload();
-     history.push('/Issues/'+this.props.match.params.name+'/1');
    }
 
 
