@@ -147,8 +147,23 @@ class CaseService {
   }
 
   /**  Update one case */
-  updateCase(casee: Case): Promise<void>{
-    return axios.put(url+'/updateCase/'+casee.case_id, casee);
+  updateCase(case_id: number, info: json): Promise<void>{
+    return axios.put(url+'/updateCase/'+case_id, info,{
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+  }
+
+   /**  Update one case_status */
+  updateCaseStatus(case_id: number, info: json): Promise<void>{
+    return axios.put(url+'/updateCaseStatus/'+case_id, info,{
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
   }
 
   /** Delete one case by case_id */
