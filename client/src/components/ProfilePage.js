@@ -6,6 +6,7 @@ import CaseListCard from "./CaseListCard";
 import ProfileCard from "./ProfileCard";
 import {caseService, userService} from "../services";
 import CasePreview from "./CasePreview";
+import { Loading } from "./widgets";
 
 export default class ProfilePage extends Component {
 	render () {
@@ -23,6 +24,7 @@ export default class ProfilePage extends Component {
 
 
 export class ProfileCardTest extends Component <{ id: number }> {
+
 	user = [];
 
 	render () {
@@ -62,29 +64,41 @@ export class ProfileCardTest extends Component <{ id: number }> {
 }
 
 export class CaseListCardTest extends Component <{ id: number }> {
+
+	loaded = false;
 	cases = [];
 
 	render () {
-		return (
-			<div className = "profCard right ">
-				<h5>Dine registrerte saker</h5>
-				{this.cases.length != 0 ?
-					<ul className = "list-group">
-						{this.cases.map(x => (
-							<CasePreview key = {x.case_id} title = {x.headline} status = {x.status_id} id = {x.case_id} />
-						))}
-					</ul>
-					:
-					<h6>Ingen saker registrert</h6>
-				}
-			</div>
-		);
+		if(this.loaded){
+			return (
+				<div className = "profCard right ">
+					<h5>Dine registrerte saker</h5>
+					{this.cases.length != 0 ?
+						<ul className = "list-group">
+							{this.cases.map(x => (
+								<CasePreview key = {x.case_id} title = {x.headline} status = {x.status_id} id = {x.case_id} />
+							))}
+						</ul>
+						:
+						<h6>Ingen saker registrert</h6>
+					}
+				</div>
+			);
+		} else {
+			return (
+				<Loading />
+			);
+		}
 	}
 
 	componentDidMount () {
+		//console.log("CaseListCard mounted");
 		// let cap = 50;
 		caseService.getCaseOnUser(this.props.id)
-			.then((cases => (this.cases = cases.filter(e => e.status_id != 7))))
+			.then((cases => {
+				this.cases = cases.filter(e => e.status_id != 7);
+				this.loaded = true;
+			}))
 			.catch((error: Error) => console.log(error.message));
 	}
 
