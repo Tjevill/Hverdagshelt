@@ -352,7 +352,7 @@ light green: #A3C4BC
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #258ea6;
+  background-color: #4bc2f1;
 }
 
 .caseEdit-wrapper .form-wrapper {
@@ -403,6 +403,11 @@ light green: #A3C4BC
 .caseEdit-wrapper .form-wrapper input.error {
   border: 1px solid red;
 }
+
+textarea.error {
+    border: 1px solid red;
+}
+
 
 .caseEdit-wrapper .errorMessage {
   color: red;
@@ -513,10 +518,18 @@ ListItem {
     height: 100%;
 }
 
-.grey-banner {
+.blue-banner {
     width: 100%;
-    height: 10%;
-    align-items: center;
-    background-color: grey;
+    height: 80px;
+    text-align: center;
+    background-color: #4bc2f1;
+}
+
+.banner-text {
+    vertical-align: middle;
+}
+
+.abcd {
+    color: red;
 }
 

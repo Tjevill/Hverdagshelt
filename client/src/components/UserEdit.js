@@ -84,7 +84,9 @@ export default class UserEdit extends Component {
     return (
       <>
       <div className="jumbotron">
-          <h2>Edit</h2>
+        <div className="container text-center">
+          <h4>Edit</h4>
+          </div>
       </div>
 
 
