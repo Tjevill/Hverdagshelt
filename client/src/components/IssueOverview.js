@@ -31,7 +31,6 @@ function count(array) {
 export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
-  sepacategories = [];
   cases = [];
   casesbyKommune= [];
   cateside  = [];
@@ -39,11 +38,11 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   kommuner = [];
   kommune = "";
   Meldning = "";
-  categoryid = 11;
+  categoryid = "";
   categoryname ="";
 
   handleChangeFylke = event =>{
-    console.log("FYLKE VALGT: " + event.target.value);
+    console.log("Fylke valgt: " + event.target.value);
       userService
         .getProvince(event.target.value)
         .then(response => {
@@ -57,36 +56,71 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   handleChangeKommune = event => {
         let meldning;
         this.kommune = event.target.value;
+        console.log("Kommune valgt:",this.kommune);
+        console.log("Tilsvarende category_id1: ",this.categoryid);
+        let id = this.categoryid;
+        console.log("Tilsvarende category_id2: ",id);
         caseService
           .searchCaseByProv(event.target.value)
           .then(response => {
               this.casesbyKommune = response;
               this.cases = response;
-              if(this.props.match.params.name!="All"){
-                console.log("hahaha",this.casesbyKommune);
-                this.caseofCat = this.casesbyKommune.filter(function(element){
-                      return element.category_id == 11;
-                });
+              if(this.categoryname!=="All"){
+                console.log("hahaha",response);
+                this.caseofCat = response.filter(element=>
+                    element.category_id == this.category_id);
               }
-              console.log("1.cases kommuner: ",this.caseofCat);
+              console.log("new cases by kommune :",this.caseofCat);
+              if(this.caseofCat.length===0){
+                this.Meldning = ("Ingen sak under kategori " + this.props.match.params.name + " kommune " + this.kommune);
+              }else{
+                this.Meldning = ("Antall sak under kategori " + this.props.match.params.name + " kommune " +this.kommune+" er "+this.caseofCat.length);
+              }
               this.forceUpdate();
-              console.log("1.cases kommuner: ",this.caseofCat);
-
           })
           .catch((error: Error) => console.log("feilfeilfeil"));
    }
 
    checkName(){
-     console.log("checkcheck");
-     caseService
-       .searchCaseByCat(this.props.match.params.name)
-       .then(cases => {
-           this.caseofCat = cases;
-           this.categoryname = this.props.match.params.name;
-           console.log("name :"+this.props.match.params.name);
-           this.forceUpdate();
-         })
-       .catch((error: Error) => Alert.danger(error.message));
+    if(this.kommune!==""){
+      console.log("kommune er  valgt");
+      caseService
+        .searchCaseByProv(this.kommune)
+        .then(response => {
+          this.categoryname = this.props.match.params.name;
+          this.category_id = this.categories.find(element=>
+            element.description === this.categoryname).category_id;
+          console.log("now the id is",this.category_id);
+          this.caseofCat = response.filter(element=>
+            element.category_id == this.category_id);
+          console.log("new cases by kommune 2 :",this.caseofCat);
+          if(this.caseofCat.length===0){
+            this.Meldning = ("Ingen sak under kategori " + this.props.match.params.name + " kommune " + this.kommune);
+          }else{
+            this.Meldning = ("Antall sak under kategori " + this.props.match.params.name + " kommune " +this.kommune+" er "+this.caseofCat.length);
+          }
+          this.forceUpdate();
+        })
+        .catch((error: Error) => console.log("feilfeilfeil"));
+     }else{
+       console.log("kommune er ikke valgt")
+       caseService
+         .searchCaseByCat(this.props.match.params.name)
+         .then(cases => {
+             this.caseofCat = cases;
+             this.categoryname = this.props.match.params.name;
+             this.category_id = this.categories.find(element=>
+                 element.description === this.categoryname).category_id;
+             console.log("checkname :"+this.props.match.params.name+"  id:"+this.category_id+" length:"+this.caseofCat.length);
+             if(this.caseofCat.length==0){
+               this.Meldning = ("Ingen sak enda ");
+             }else{
+               this.Meldning = "Antall sak under kategori "+this.props.match.params.name+" er "+this.caseofCat.length;
+             }
+             this.forceUpdate();
+           })
+         .catch((error: Error) => Alert.danger(error.message));
+     }
    }
 
 
@@ -94,12 +128,10 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   render(){
     let lists;
     let sidebuttons;
-    this.categoryname = this.props.match.params.name;
-
     if(this.props.match.params.name=="All"){
       /* console.log(this.props.match.params.name);*/
       this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
-
+      this.Meldning = ("Antall saker er "+ this.cases.length);
       lists = (
         <div>
         {this.cateside.map(casen =>(
@@ -115,6 +147,9 @@ export default class IssueOverview extends Component <{ match: { params: { name:
         ))}
         </div>
       );
+      if(this.kommune!=""){
+        this.Meldning = "Antall sak under kommune "+this.kommune+" er "+this.cases.length;
+      }
 
      } else {
 
@@ -143,7 +178,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
           <div className="btn-group" role="group" aria-label="First group">
               <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
                 {this.categories.map(categori =>(
-                  <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}}className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
+                  <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}} className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
                 ))}
           </div><br/><br/>
           <div class="form-row">
