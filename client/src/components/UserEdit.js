@@ -73,10 +73,8 @@ export default class UserEdit extends Component {
 
     return (
       <>
-      <div className="jumbotron jumbotron-fluid">
-        <div className="container text-center">
-          <h1 className="display-4">Edit</h1>
-        </div>
+      <div className="grey-banner">
+          <p>Edit</p>
       </div>
 
 
