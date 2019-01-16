@@ -32,17 +32,20 @@ import Map from "./components/Map";
 import CaseEdit from "./components/caseEdit";
 import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
+import ReportValidation from "./components/ReportValidation";
+import ForgottenPassword from "./components/ForgottenPassword";
 
 const root = document.getElementById("root");
 
 function renderRoot() {
+
   if (root) {
 
     const promiseObject = refreshToken();
-    promiseObject.then(function (value) {
 
-      if (value !== 'undefined') {
+    promiseObject.then(value => {
 
+      if (value != 'undefined') {
 
         ReactDOM.render(
             <HashRouter>
@@ -61,8 +64,10 @@ function renderRoot() {
                   <Route exact path="/nyorg" component={NewOrganization}/>
                   <Route exact path="/nyansatt" component={NewEmployee}/>
                   <Route exact path="/report" component={ReportPage} />
+                  <Route exact path="/validation" component={ReportValidation} />
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
+                  <Route exact path="/forgot" component={ProfilePage} />
                   <PrivateRoute
                     exact
                     path="/user/edit"

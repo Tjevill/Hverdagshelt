@@ -42,6 +42,8 @@ class Event{
   date: string; //date / string ?
   description: string;
   zipcode: string;
+  address: string;
+  venue: string;
 }
 
 
@@ -215,6 +217,11 @@ class CaseService {
                 console.log(error);
             });
     }
+	
+	changeCaseStatus (case_id: number): Promise<void> {
+		return axios.put(url + '/changeCaseStatus/' + case_id);
+	}
+	
 }
 export let caseService = new CaseService();
 
@@ -458,9 +465,20 @@ class MapService {
 export let mapService = new MapService();
 
 class EventService {
+
+  /**
+   * Get every event in the db.
+   * @returns {AxiosPromise<Event[]>}
+   */
   getAllEvents(): Promise<Event[]>{
     return axios.get(url + "/events");
   }
+
+  getOne(event_id: number): Promise<Event[]>{
+    return axios.get(url+"/getEvent/"+event_id);
+  }
+
+
 
 
 

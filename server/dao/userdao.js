@@ -49,7 +49,7 @@ module.exports = class UserDao extends Dao {
 	/**	Get all districts. */
 	getAllDistricts (callback: mixed) {
 		super.query(
-			"select * FROM fylke",
+			"select * FROM fylke ORDER BY navn",
 			[],
 			callback);
 	}
@@ -57,7 +57,7 @@ module.exports = class UserDao extends Dao {
 	/** Get all provinces on district_id. */
 	getProvincesFromFylke (id: number, callback: mixed) {
 		super.query(
-			"select * FROM kommune WHERE fylke_id = ?",
+			"select * FROM kommune WHERE fylke_id = ? ORDER BY navn",
 			[id],
 			callback
 		);

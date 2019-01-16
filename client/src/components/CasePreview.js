@@ -12,9 +12,13 @@ import {
 } from "react-mdl";
 import { caseService} from "../services.js";
 
+import {Alert} from "./widgets";
+
+
 export default class CasePreview extends Component <{title: string, status: number, id: number}> {
     x = '';
     y = '';
+    z = '';
 
     render() {
         return(
@@ -22,33 +26,49 @@ export default class CasePreview extends Component <{title: string, status: numb
                 <NavLink to={'/case/' + this.props.id}>
                     {this.props.title}
                 </NavLink>
-                <span className={this.y}>{this.x}</span>
 
-                <NavLink to={'/case/' + this.props.id + '/edit'}>
+                <span className={this.y} >{this.x}</span>
+                 <NavLink to={'/case/' + this.props.id + '/edit'}>
                     rediger
                 </NavLink>
-                <IconButton
-                                        name="delete"
-                                        onClick={() => {
-                                            this.delete(this.props.id);
-                                        }}
-                                    />
+                <a className="pointer" onClick ={() => this.delete(this.props.id)}>
+                    Slett sak
+                </a>
+
             </li>
         )
     }
+    
+    delete(case_id) {
+        caseService.changeCaseStatus(case_id)
+          .then(response => {
+              console.log(response, "Satt status: slett i db");
+              window.location.reload();
+          })
+          .catch(err => {
+              console.log(err, "Error ved oppdatering av status");
+          })
+    }
+    
     componentDidMount() {
         if (this.props.status == 2) {
             //console.log('test');
-            this.x = 'Godkjent';
+            this.x = 'Under vurdering';
             this.y = 'badge badge-primary';
         } else if (this.props.status == 1) {
-            this.x = 'Under behandling';
-            this.y = 'badge badge-warning';
+            this.x = 'Registrert';
+            this.y = 'badge badge-primary';
         } else if (this.props.status == 3) {
-            this.x = 'Benektet';
-            this.y = 'badge badge-danger';
+            this.x = 'Satt på vent';
+            this.y = 'badge badge-primary';
         } else if (this.props.status == 4) {
-            this.x = 'Sak løst';
+            this.x = 'Arbeid pågår';
+            this.y = 'badge badge-primary';
+        } else if(this.props.status == 5){
+            this.x = 'Avvist';
+            this.y = 'badge badge-dager';
+        } else if(this.props.status == 6) {
+            this.x = 'Løst';
             this.y = 'badge badge-success';
         }else if (this.props.status == 7) {
             this.x = 'Sak slettet';

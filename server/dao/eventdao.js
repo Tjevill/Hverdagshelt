@@ -1,3 +1,5 @@
+// @flow
+
 const Dao = require("./dao.js");
 
 module.exports = class EventDao extends Dao {
@@ -5,7 +7,7 @@ module.exports = class EventDao extends Dao {
     /** Get all events from the db. */
     getAllEvents(callback) {
         super.query(
-            "SELECT * FROM Events ORDER BY date ASC",
+            "SELECT * FROM Events WHERE date>=NOW() ORDER BY date ASC",
             [],
             callback
         );
@@ -41,9 +43,9 @@ module.exports = class EventDao extends Dao {
     *   @param json - json object with all the needed attributes to create an event.
      */
     createEvent(json, callback){
-        let val = [json.name, json.date, json.description, json.zipcode];
+        let val = [json.name, json.date, json.description, json.zipcode, json.address, json.venue];
         super.query(
-            "INSERT into Events (name, date, description, zipcode) VALUES (?, ?, ?, ?)",
+            "INSERT into Events (name, date, description, zipcode, address, venue) VALUES (?, ?, ?, ?, ?, ?)",
             val,
             callback
         );
@@ -65,7 +67,7 @@ module.exports = class EventDao extends Dao {
     *   @param json - the json object with the changes you wish to update.
      */
     updateEvent(event_id, json, callback){
-        let val = [json.name, json.date, json.description, json.zipcode, event_id];
+        let val = [json.name, json.date, json.description, json.zipcode, json.address, json.venue, event_id];
         super.query(
             "UPDATE Events SET name = ?, date = ?, description = ?, zipcode = ? WHERE event_id = ?",
             val,

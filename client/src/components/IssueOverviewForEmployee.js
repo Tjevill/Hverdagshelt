@@ -28,7 +28,7 @@ function count(array) {
   return result;
 }
 
-export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
+export default class IssueOverviewForEmployee extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
   sepacategories = [];
@@ -80,8 +80,8 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       this.casesbyStatus = this.cases;
       this.forceUpdate();
     }else{
-      this.casesbyStatus = this.cases.filter(function(vaule){
-      return vaule.status_id==event.target.value;
+      this.casesbyStatus = this.cases.filter(function(value){
+      return value.status_id==event.target.value;
       });
     this.forceUpdate();
     console.log(this.casesbyStatus);

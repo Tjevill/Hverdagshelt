@@ -28,12 +28,9 @@ function count(array) {
   return result;
 }
 
-//<ListGroup.Item to={'/casesside'}> {casen.headline} </ListGroup.Item>
-
 export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
   caseofCat = [];
   categories = [];
-  sepacategories = [];
   cases = [];
   casesbyKommune= [];
   cateside  = [];
@@ -41,9 +38,11 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   kommuner = [];
   kommune = "";
   Meldning = "";
+  categoryid = "";
+  categoryname ="";
 
   handleChangeFylke = event =>{
-    console.log("FYLKE VALGT: " + event.target.value);
+    console.log("Fylke valgt: " + event.target.value);
       userService
         .getProvince(event.target.value)
         .then(response => {
@@ -55,40 +54,101 @@ export default class IssueOverview extends Component <{ match: { params: { name:
   }
 
   handleChangeKommune = event => {
-      let meldning;
-      this.kommune = event.target.value;
+        let meldning;
+        this.kommune = event.target.value;
+        console.log("Kommune valgt:",this.kommune);
+        console.log("Tilsvarende category_id1: ",this.categoryid);
+        let id = this.categoryid;
+        console.log("Tilsvarende category_id2: ",id);
         caseService
           .searchCaseByProv(event.target.value)
           .then(response => {
               this.casesbyKommune = response;
+              this.cases = response;
+              if(this.categoryname!=="All"){
+                console.log("hahaha",response);
+                this.caseofCat = response.filter(element=>
+                    element.category_id == this.category_id);
+              }
+              console.log("new cases by kommune :",this.caseofCat);
+              if(this.caseofCat.length===0){
+                this.Meldning = ("Ingen sak under kategori " + this.props.match.params.name + " kommune " + this.kommune);
+              }else{
+                this.Meldning = ("Antall sak under kategori " + this.props.match.params.name + " kommune " +this.kommune+" er "+this.caseofCat.length);
+              }
               this.forceUpdate();
           })
-          .catch((error: Error) => Alert.danger(error.message));
-          console.log(this.casesbyKommune);
-       if(this.casesbyKommune.length==0){
-         this.Meldning =(
-            <p>Finnes ingen saker under Kommune {event.target.value}</p>
-          );
-          console.log("hahaha");
-       }
+          .catch((error: Error) => console.log("feilfeilfeil"));
+   }
 
-  }
+   checkName(){
+    if(this.kommune!==""){
+      console.log("kommune er  valgt");
+      caseService
+        .searchCaseByProv(this.kommune)
+        .then(response => {
+          this.categoryname = this.props.match.params.name;
+          this.category_id = this.categories.find(element=>
+            element.description === this.categoryname).category_id;
+          console.log("now the id is",this.category_id);
+          this.caseofCat = response.filter(element=>
+            element.category_id == this.category_id);
+          console.log("new cases by kommune 2 :",this.caseofCat);
+          if(this.caseofCat.length===0){
+            this.Meldning = ("Ingen sak under kategori " + this.props.match.params.name + " kommune " + this.kommune);
+          }else{
+            this.Meldning = ("Antall sak under kategori " + this.props.match.params.name + " kommune " +this.kommune+" er "+this.caseofCat.length);
+          }
+          this.forceUpdate();
+        })
+        .catch((error: Error) => console.log("feilfeilfeil"));
+     }else{
+       console.log("kommune er ikke valgt")
+       caseService
+         .searchCaseByCat(this.props.match.params.name)
+         .then(cases => {
+             this.caseofCat = cases;
+             this.categoryname = this.props.match.params.name;
+             this.category_id = this.categories.find(element=>
+                 element.description === this.categoryname).category_id;
+             console.log("checkname :"+this.props.match.params.name+"  id:"+this.category_id+" length:"+this.caseofCat.length);
+             if(this.caseofCat.length==0){
+               this.Meldning = ("Ingen sak enda ");
+             }else{
+               this.Meldning = "Antall sak under kategori "+this.props.match.params.name+" er "+this.caseofCat.length;
+             }
+             this.forceUpdate();
+           })
+         .catch((error: Error) => Alert.danger(error.message));
+     }
+   }
+
+   nullstillKommune(){
+     this.kommune = "";
+     this.fylker = [];
+     window.location.reload();
+     history.push('/Issues/'+this.props.match.params.name+'/1');
+   }
+
+
 
   render(){
-    console.log(this.caseofCat);
     let lists;
     let sidebuttons;
-
     if(this.props.match.params.name=="All"){
-      console.log(this.props.match.params.name);
-      this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
-
+      /* console.log(this.props.match.params.name);*/
+      this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
+      this.Meldning = ("Antall saker er "+ this.cases.length);
       lists = (
-        <div>
+        <tbody>
         {this.cateside.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} </ListGroup.Item>
+          <tr>
+          <th>{casen.case_id}</th>
+          <td onClick={()=>history.push('/case/'+casen.case_id)}>{casen.headline}</td>
+          <td>{casen.timestamp.slice(0,16).replace("T", " ")}</td>
+          </tr>
         ))}
-        </div>
+        </tbody>
       );
 
       sidebuttons =(
@@ -98,16 +158,22 @@ export default class IssueOverview extends Component <{ match: { params: { name:
         ))}
         </div>
       );
+      if(this.kommune!=""){
+        this.Meldning = "Antall sak under kommune "+this.kommune+" er "+this.cases.length;
+      }
 
      } else {
-       console.log(this.caseofCat);
 
        lists = (
-         <div>
-        {this.caseofCat.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} </ListGroup.Item>
-        ))}
-        </div>);
+         <tbody>
+         {this.caseofCat.map(casen =>(
+           <tr>
+           <th>{casen.case_id}</th>
+           <td onClick={()=>history.push('/case/'+casen.case_id)}>{casen.headline}</td>
+           <td>{casen.timestamp.slice(0,16).replace("T", " ")}</td>
+           </tr>
+         ))}
+         </tbody>);
 
        sidebuttons = (
         <div>
@@ -118,24 +184,21 @@ export default class IssueOverview extends Component <{ match: { params: { name:
      };
 
 
-
-
     return (
     <>
       <div className="jumbotron">
         <div className="container text-center">
-          <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true">Alle</a>
+              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
                 {this.categories.map(categori =>(
-                  <a href={"#/Issues/"+categori.description+"/1"} className="btn btn-primary btn-lg active" role="button" aria-pressed="true">{categori.description}</a>
+                  <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}} className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
                 ))}
           </div><br/><br/>
           <div class="form-row">
             <div class="form-group col-6">
               <label for="inputFylke">Velg Fylke</label>
                 <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
-                  <option selected>Velg fylke</option>
+                  <option selected>Alle </option>
                   {this.fylker.map(fylke => {
                       return(<option value={fylke.ID}>{fylke.navn}</option>)
                   })}
@@ -144,28 +207,38 @@ export default class IssueOverview extends Component <{ match: { params: { name:
             <div class="form-group col-6">
               <label for="inputKommune">Velg Kommune</label>
                 <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
-                  <option selected>Velg Kommune</option>
+                  <option selected>Alle </option>
                   {this.kommuner.map(kommune => {
                       return(<option value={kommune.Name}>{kommune.navn}</option>)
                   })}
                 </select>
             </div>
+            <div class="col align-self-center">
+            <button type="button" class="btn btn-secondary" onClick={() => this.nullstillKommune()}>Nullstill kommune</button>
+
+              </div>
           </div>
           {this.Meldning}
         </div>
       </div>
 
 
-
-      <p>Nyeste Meldte Feil</p>
+      <div className="container">
+        <h2 class="display-4">Saker</h2>
         <Router history={history}>
-          <div className="container text-center">
-            <ListGroup>
-                {lists}
-            </ListGroup>
-         </div>
+          <table class="table table-hover">
+            <thead>
+              <tr >
+                <th scope="col">ID</th>
+                <th scope="col">Tittel</th>
+                <th scope="col">Tid</th>
+              </tr>
+            </thead>
+              {lists}
+            </table>
         </Router>
       <br/><br/>
+      </div>
 
       <div id='toolbar'>
         <div className='wrapper text-center'>
@@ -184,7 +257,6 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCases()
         .then(cases => {
             this.cases = cases;
-            console.log(this.cases);
             this.forceUpdate();
           })
       .catch((error: Error) => Alert.danger(error.message));
@@ -193,22 +265,19 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCategories()
       .then(categories =>{
           this.categories = categories;
-          console.log(this.categories);
           this.forceUpdate();
         })
       .catch((error: Error) => Alert.danger(error.message));
 
-    caseService
-      .searchCaseByCat(this.props.match.params.name)
-      .then(cases => {
-          this.caseofCat = cases;
-          console.log("name :"+this.props.match.params.name);
-          this.forceUpdate();
-        })
-      .catch((error: Error) => Alert.danger(error.message));
-
-    caseService
-      .searchCaseByProv(this.props.match.params.name)
+      caseService
+        .searchCaseByCat(this.props.match.params.name)
+        .then(cases => {
+            this.caseofCat = cases;
+            this.categoryname = this.props.match.params.name;
+            console.log("name :"+this.props.match.params.name);
+            this.forceUpdate();
+          })
+        .catch((error: Error) => Alert.danger(error.message));
 
     userService
       .getDistricts()
