@@ -51,16 +51,39 @@ export default class Navbar extends Component {
     if (!this.props.loggedin) {
 
     return(
-      <div className="topnav" id="navbar">
-        <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-        <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
-        <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-        <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
-        <a className="option" id="nyorg" href="#nyorg" onClick={() => this.activate("nyorg")}>Registrer deg som Kommuneansatt!</a>
-        <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
-        <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
-        <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
-      </div>
+        <nav id="mainav" className="fl_right">
+            <ul className="clear">
+                <li className="active"><a href="/">Home</a></li>
+                {/*<li><a className="drop" href="#">Pages</a>
+                    <ul>
+                        <li><a href="pages/gallery.html">Gallery</a></li>
+                        <li><a href="pages/full-width.html">Full Width</a></li>
+                        <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
+                        <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
+                        <li><a href="pages/basic-grid.html">Basic Grid</a></li>
+                    </ul>
+                </li>
+                <li><a className="drop" href="#">Dropdown</a>
+                    <ul>
+                        <li><a href="#">Level 2</a></li>
+                        <li><a className="drop" href="#">Level 2 + Drop</a>
+                            <ul>
+                                <li><a href="#">Level 3</a></li>
+                                <li><a href="#">Level 3</a></li>
+                                <li><a href="#">Level 3</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Level 2</a></li>
+                    </ul>
+                </li>*/}
+                <li><a href="#issues" onClick={() => this.activate("issues")}>Saker</a></li>
+                <li><a href="#events" onClick={() => this.activate("events")}>Events</a></li>
+                <li><a href="#register" onClick={() => this.activate("register")}>Registrer deg!</a></li>
+                <li><a href="#nyorg" onClick={() => this.activate("nyorg")}>Kommuneansatt?</a></li>
+                <li><a href="#map" onClick={() => this.activate("map")}>Kart</a></li>
+                <li><a href="#login" onClick={() => this.activate("login")}>Logg inn</a></li>
+            </ul>
+        </nav>
     );
 
     }

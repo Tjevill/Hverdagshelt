@@ -47,8 +47,65 @@ function renderRoot() {
 
         ReactDOM.render(
             <HashRouter>
+<div>
+    <div className="bgded overlay">
+
+        <div className="wrapper row1">
+            <header id="header" className="hoc clear">
+
+                <div id="logo" className="fl_left">
+                    <h1><a href="/"><img src="./images/logo.png"/></a></h1>
+                </div>
+                <nav id="mainav" className="fl_right">
+                    <ul className="clear">
+                        <li className="active forsidelogo"><a href="index.html">Home</a></li>
+                        <li><a className="drop" href="#">Pages</a>
+                            <ul>
+                                <li><a href="pages/gallery.html">Gallery</a></li>
+                                <li><a href="pages/full-width.html">Full Width</a></li>
+                                <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
+                                <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
+                                <li><a href="pages/basic-grid.html">Basic Grid</a></li>
+                            </ul>
+                        </li>
+                        <li><a className="drop" href="#">Dropdown</a>
+                            <ul>
+                                <li><a href="#">Level 2</a></li>
+                                <li><a className="drop" href="#">Level 2 + Drop</a>
+                                    <ul>
+                                        <li><a href="#">Level 3</a></li>
+                                        <li><a href="#">Level 3</a></li>
+                                        <li><a href="#">Level 3</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Level 2</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Link Text</a></li>
+                        <li><a href="#">Link Text</a></li>
+                    </ul>
+                </nav>
+
+            </header>
+        </div>
+
+
+
+        <section id="pageintro" className="hoc clear">
+            <div>
+
+                <h2 className="heading">Ultricies nisl</h2>
+                <p>Morbi lacus sapien venenatis id cursus in bibendum eget ligula nunc vitae lacus sit amet sem
+                    consequat ullamcorper.</p>
+                <footer><a className="btn" href="#">Vulputate</a></footer>
+
+            </div>
+        </section>
+
+    </div>
+
               <div>
-                <Navbar loggedin={value}/>
+
                 <div id="page">
                   <Route exact path="/" component={UserHome} />
                   <Route exact path="/case/:id" component={Case} />
@@ -99,6 +156,19 @@ function renderRoot() {
                   />
                 </div>
               </div>
+    <div className="wrapper row5">
+        <div id="copyright" className="hoc clear">
+
+            <p className="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Team 5</a>
+            </p>
+            <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+
+        </div>
+    </div>
+
+</div>
+
+
             </HashRouter>,
             root
           );
