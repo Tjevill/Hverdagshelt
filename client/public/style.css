@@ -501,3 +501,22 @@ ListItem {
     color: red;
 }
 
+.align-link {
+    text-align: center;
+}
+
+.loading-img {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.grey-banner {
+    width: 100%;
+    height: 10%;
+    align-items: center;
+    background-color: grey;
+}
+

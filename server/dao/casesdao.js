@@ -5,7 +5,7 @@ module.exports = class CasesDao extends Dao {
     /** Get all cases from db ordered by timestamp.*/
     getAllCases(callback){
         super.query(
-            "SELECT * FROM Cases ORDER BY timestamp", 
+            "SELECT * FROM Cases ORDER BY timestamp DESC",
             [],
             callback
         );
@@ -131,7 +131,7 @@ module.exports = class CasesDao extends Dao {
     *   @param description - the category name.
     */
     searchCaseCategory(description: string, callback){
-        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
+        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ORDER BY Cases.timestamp DESC", [description], callback);
     }
 
     /** Search for a case based on the description e.g "tett vannhull". 
@@ -149,7 +149,7 @@ module.exports = class CasesDao extends Dao {
     }
 
     getProvinceOnCase(province, callback){
-        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ?",
+        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ? ORDER BY Cases.timestamp DESC",
         [province],
         callback
         );
