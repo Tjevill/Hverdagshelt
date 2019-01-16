@@ -46,6 +46,34 @@ function isValidUser() {
     return true;
 }
 
+class forsideMain extends Component {
+    render () {
+        return(
+            <section id="pageintro" className="hoc clear">
+                <div>
+
+                    <h2 className="heading">Vær en hverdagshelt!</h2>
+                    <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
+                    <footer><a className="btn" href="#">Meld feil eller mangler!</a></footer>
+
+                </div>
+            </section>
+        );
+    }
+}
+
+class ikkeforsideMain extends Component {
+    render () {
+        return(
+            <section id="breadcrumb" className="hoc clear">
+                <div>
+
+                </div>
+            </section>
+        );
+    }
+}
+
 class Main extends Component {
 
     render() {
@@ -64,47 +92,45 @@ class Main extends Component {
             <div>
                 <BrowserRouter basename="/">
                     <div>
-                <div className="bgded overlay">
 
-                    <div className="wrapper row1">
-                        <header id="header" className="hoc clear">
-                            <div>{console.log("hm: ", window.location)}</div>
-                            <div id="logo" className="fl_left">
-                                <h1><a href="/"><img className="forsidelogo" src="./images/logo.png"/></a></h1>
-                            </div>
-                            <nav id="mainav" className="fl_right">
-
-                                <Menu/>
-                            </nav>
-
-                        </header>
-                    </div>
-
-                    {window.location.pathname == "/" ?
-
-                    <section id="pageintro" className="hoc clear">
-                        <div>
-
-                            <h2 className="heading">Vær en hverdagshelt!</h2>
-                            <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                            <footer><a className="btn" href="#">Meld feil eller mangler!</a></footer>
-
+                        <div className="wrapper row1">
+                            <header id="header" className="hoc clear">
+                                <div id="logo" className="fl_left">
+                                    <h1><a href="/"><img className="forsidelogo" src="./images/logo.png"/></a></h1>
+                                </div>
+                                <nav id="mainav" className="fl_right">
+                                    <ul className="clear">
+                                        <li className="active"><a href="index.html">Home</a></li>
+                                        <li><a className="drop" href="#">Pages</a>
+                                            <ul>
+                                                <li><a href="pages/gallery.html">Gallery</a></li>
+                                                <li><a href="pages/full-width.html">Full Width</a></li>
+                                                <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
+                                                <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
+                                                <li><a href="pages/basic-grid.html">Basic Grid</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a className="drop" href="#">Dropdown</a>
+                                            <ul>
+                                                <li><a href="#">Level 2</a></li>
+                                                <li><a className="drop" href="#">Level 2 + Drop</a>
+                                                    <ul>
+                                                        <li><a href="#">Level 3</a></li>
+                                                        <li><a href="#">Level 3</a></li>
+                                                        <li><a href="#">Level 3</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#">Level 2</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Link Text</a></li>
+                                        <li><a href="#">Link Text</a></li>
+                                    </ul>
+                                </nav>
+                            </header>
                         </div>
-                    </section>
 
-                         :
-                        <section id="breadcrumb" className="hoc clear">
-                            <div>
-
-                            </div>
-                        </section>
-
-                    }
-
-
-                </div>
-
-
+                        <Route exact path="/" component={forsideMain} />
 
                 <div>
 

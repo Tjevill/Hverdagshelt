@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Router, NavLink, Route } from "react-router-dom";
+import { Switch, Route, NavLink } from 'react-router-dom'
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHistory from 'history/createBrowserHistory';
 import 'react-mdl/extra/material.css';
@@ -8,7 +8,7 @@ import Navbar from "./Navbar";
 
 
 const history = createHistory({
-  forceRefresh: true
+
 })
 
 export default class Menu extends Component {
@@ -30,8 +30,7 @@ export default class Menu extends Component {
 
             return (
                 <nav id="mainav" className="fl_right">
-                    <Router history={history}>
-                        <ul className="hovedmeny">
+                     <ul className="hovedmeny">
                             <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/issues">Saker</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
@@ -40,7 +39,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
                         </ul>
-                    </Router>
+
                 </nav>
             );
 
