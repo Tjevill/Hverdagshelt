@@ -35,9 +35,7 @@ export default class ReportValidation extends Component {
     }
 
     componentDidMount() {
-        let timeLeftVar = this.secondsToTime(this.state.seconds);
-        this.setState({ time: timeLeftVar });
-        setTimeout(() => (history.push("#/profile")), 5000);
+        setTimeout(history.push("/profile"), 5000);
     }
 
     startTimer() {
