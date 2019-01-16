@@ -3,6 +3,8 @@ import { Component } from "react-simplified";
 import Map from "./CaseMap";
 import { caseService, mapService } from "../services";
 
+//delete me
+
 export default class Case extends Component {
 
   loaded = false;
