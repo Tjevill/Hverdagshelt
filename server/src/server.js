@@ -600,20 +600,21 @@ app.get("/allCases", (req, res) => {
         res.json(data);
     });
 });
-
+/*
 app.put("/changeCaseStatus/:id", (req, res) => {
     caseDao.updateCaseStatus(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
     })
 });
-/*
+*/
+
 app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 	caseDao.updateCaseStatusToDeleted(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
 	})
-}); */
+}); 
 /** Get every case with status_id = 1. */
 app.get("/allCases/status/:status_id", (req, res) =>{
     console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
