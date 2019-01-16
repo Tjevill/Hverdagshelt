@@ -256,14 +256,6 @@ export class Report extends Component {
             user_id: this.state.user_id
         };
 
-        const fd = new FormData();
-        fd.append('file', this.selectedFile, this.selectedFile.name);
-        fd.append('upload_preset', 'elo47cnr');
-        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
-            .then(res => {
-                this.state.picture = res.url;
-            });
-
             if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
             caseService.createUserCase(casedata)
                 .then(window.location.reload())
