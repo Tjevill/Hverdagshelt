@@ -24,7 +24,7 @@ File: Layout CSS
 --------------------------------------------------------------------------------------------------------------- */
 #header{}
 
-#header #logo{margin:30px 0 0 0;}
+#header #logo{margin:6px 0 0 0;}
 #header #logo h1{margin:0; padding:0; font-size:22px;}
 
 
@@ -274,7 +274,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#A2B70D;}
 .overlay::after{color:inherit; background-color:rgba(0,0,0,.4);}
 .overlay.coloured::after{background-color:#414905;}
 
-.btn, .btn.inverse:hover{color:#FFFFFF; background-color:#4bc2f1; border-color:#444444;}
+.btn, .btn.inverse:hover{color:#FFFFFF; background-color:#A2B70D; border-color:#A2B70D;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 
 
@@ -316,7 +316,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#A2B70D;}
 
 /* Navigation */
 #mainav li a{color:inherit;}
-#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#4bc2f1; background-color:inherit;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#A2B70D; background-color:inherit;}
 #mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.5); border-color:rgba(0,0,0,.1);}
 #mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#A2B70D;}
 #mainav form select{color:#FFFFFF; background-color:#000000; border-color:rgba(255,255,255,.2);}

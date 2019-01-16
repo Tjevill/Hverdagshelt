@@ -37,7 +37,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/nyansatt">Kommuneansatt</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/login">Logg inn!</NavLink></li>
                         </ul>
 
                 </nav>

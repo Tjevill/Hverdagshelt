@@ -93,44 +93,28 @@ class Main extends Component {
                 <BrowserRouter basename="/">
                     <div>
 
-                        <div className="wrapper row1">
-                            <header id="header" className="hoc clear">
-                                <div id="logo" className="fl_left">
-                                    <h1><a href="/"><img className="forsidelogo" src="./images/logo.png"/></a></h1>
-                                </div>
-                                <nav id="mainav" className="fl_right">
-                                    <ul className="clear">
-                                        <li className="active"><a href="index.html">Home</a></li>
-                                        <li><a className="drop" href="#">Pages</a>
-                                            <ul>
-                                                <li><a href="pages/gallery.html">Gallery</a></li>
-                                                <li><a href="pages/full-width.html">Full Width</a></li>
-                                                <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
-                                                <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
-                                                <li><a href="pages/basic-grid.html">Basic Grid</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a className="drop" href="#">Dropdown</a>
-                                            <ul>
-                                                <li><a href="#">Level 2</a></li>
-                                                <li><a className="drop" href="#">Level 2 + Drop</a>
-                                                    <ul>
-                                                        <li><a href="#">Level 3</a></li>
-                                                        <li><a href="#">Level 3</a></li>
-                                                        <li><a href="#">Level 3</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Level 2</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Link Text</a></li>
-                                        <li><a href="#">Link Text</a></li>
-                                    </ul>
-                                </nav>
-                            </header>
+                        <div className="bgded overlay">
+
+                            <div className="wrapper row1">
+                                <header id="header" className="hoc clear">
+
+                                    <div id="logo" className="fl_left">
+                                        <img id="logo" className="forsidelogo"
+                                             src="https://tinyurl.com/yb79l4dx"
+                                             alt="Logo"/>
+                                    </div>
+                                    <Menu/>
+
+                                </header>
+                            </div>
+
+
+                            <Route exact path="/" component={forsideMain} />
+
+                            <Route path="/" component={ikkeforsideMain} />
+
                         </div>
 
-                        <Route exact path="/" component={forsideMain} />
 
                 <div>
 
@@ -204,3 +188,34 @@ class Main extends Component {
 export default withRouter(Main);
 
 ReactDOM.render(<Main />, document.getElementById("root"));
+
+
+/*
+<ul className="clear">
+                                            <li className="active"><a href="index.html">Home</a></li>
+                                            <li><a className="drop" href="#">Pages</a>
+                                                <ul>
+                                                    <li><a href="pages/gallery.html">Gallery</a></li>
+                                                    <li><a href="pages/full-width.html">Full Width</a></li>
+                                                    <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
+                                                    <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
+                                                    <li><a href="pages/basic-grid.html">Basic Grid</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a className="drop" href="#">Dropdown</a>
+                                                <ul>
+                                                    <li><a href="#">Level 2</a></li>
+                                                    <li><a className="drop" href="#">Level 2 + Drop</a>
+                                                        <ul>
+                                                            <li><a href="#">Level 3</a></li>
+                                                            <li><a href="#">Level 3</a></li>
+                                                            <li><a href="#">Level 3</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">Level 2</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Link Text</a></li>
+                                            <li><a href="#">Link Text</a></li>
+                                        </ul>
+ */
