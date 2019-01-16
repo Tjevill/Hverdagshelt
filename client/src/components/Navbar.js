@@ -73,6 +73,7 @@ export default class Navbar extends Component {
               <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Meld feil</a>
               <a className="option" id="issues" href="#issues/All/1" onClick={() => this.activate("issues")}>Saker</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
+                <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
               <ButtonToolbar className="dropdownmenus1">
                 <DropdownButton
                     bsStyle="default"

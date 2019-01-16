@@ -117,6 +117,7 @@ export default class Events extends Component {
 																{e.description}
 															</div>
 															<div className="modal-footer">
+																<div className = "float-left">{e.venue+" - "+e.address}</div>
 																<button type="button" className="btn btn-secondary"
 																		data-dismiss="modal">Close
 																</button>
