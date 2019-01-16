@@ -156,7 +156,10 @@ class CaseService {
 
   }
 
+
+
    /**  Update one case_status */
+   /*
   updateCaseStatus(case_id: number, info: json): Promise<void>{
     return axios.put(url+'/updateCaseStatus/'+case_id, info,{
       headers: {
@@ -164,7 +167,7 @@ class CaseService {
       }
     });
 
-  }
+  }*/
 
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{

@@ -600,20 +600,21 @@ app.get("/allCases", (req, res) => {
         res.json(data);
     });
 });
-
+/*
 app.put("/changeCaseStatus/:id", (req, res) => {
     caseDao.updateCaseStatus(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
     })
 });
+*/
 
 app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 	caseDao.updateCaseStatusToDeleted(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
 	})
-});
+}); 
 /** Get every case with status_id = 1. */
 app.get("/allCases/status/:status_id", (req, res) =>{
     console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
@@ -690,7 +691,7 @@ app.get("/getAllCategories", (req, res) => {
 
 
 /** update case on case_id */
-app.put("/updateCase/:case_id", (req, res) =>{
+/*app.put("/updateCase/:case_id", (req, res) =>{
     console.log("Received delete-request from client.");
     console.log("Trying to update case with id: "+req.params.case_id);
     caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
@@ -719,7 +720,21 @@ app.put("/updateCase/:case_id", (req, res) =>{
             console.log('Email sent: ' + info.response);
         }
     });
-});
+}); */
+
+
+/** update case on case_id */
+app.put("/updateCase/:case_id", (req, res) =>{
+      console.log("Received put-request from client.");
+        console.log("Trying to update case with id: "+req.params.case_id);
+   caseDao.updateCase(req.body, (status, data) =>{
+            if (!(req.body instanceof Object)) return res.sendStatus(400);
+            res.status(status);
+            res.json(data);
+            console.log(req.body);
+        });
+    });
+
 
 
 /** search case by category description */
