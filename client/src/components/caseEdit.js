@@ -296,18 +296,17 @@ export class caseEdit extends Component<{
 	delete(case_id) {
 		console.log("Er du sikker på at du vil slette følgende sak?");
 		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+
+		
 			caseService
-				.updateCaseStatus(case_id, {
-					status_id: 7,
-					case_id: case_id
-				})
+				.changeCaseStatus(case_id)
 				.then(res => {
 					console.log("Response recieved:", res);
 				})
 				.catch(err => {
 					console.log("AXIOS ERROR:", err);
 				});
-		 window.location.reload();
+		 
 		}
 	}
 
