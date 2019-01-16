@@ -191,6 +191,10 @@ body,
   padding-top: 2%;
 }
 
+.loading-animation {
+  text-align: center;
+}
+
 .report-map {
   position: relative !important;
   width: 100% !important;
