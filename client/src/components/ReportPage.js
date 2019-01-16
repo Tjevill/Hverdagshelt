@@ -6,6 +6,7 @@ import {caseService, categoryService, mapService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import { NavLink } from 'react-router-dom';
 
 const style = {
     width: '100%',
@@ -148,9 +149,11 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
-                            Fullfør
-                        </button>
+                        <NavLink to={'/validation'}>
+                            <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
+                                Fullfør
+                            </button>
+                        </NavLink>
                         <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
