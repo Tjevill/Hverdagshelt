@@ -137,7 +137,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
     let sidebuttons;
     if(this.props.match.params.name=="All"){
       /* console.log(this.props.match.params.name);*/
-      this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
+      this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
       this.Meldning = ("Antall saker er "+ this.cases.length);
       lists = (
         <tbody>
@@ -198,7 +198,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
             <div class="form-group col-6">
               <label for="inputFylke">Velg Fylke</label>
                 <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
-                  <option selected>Velg fylke</option>
+                  <option selected>Alle </option>
                   {this.fylker.map(fylke => {
                       return(<option value={fylke.ID}>{fylke.navn}</option>)
                   })}
@@ -207,7 +207,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
             <div class="form-group col-6">
               <label for="inputKommune">Velg Kommune</label>
                 <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
-                  <option selected>Velg Kommune</option>
+                  <option selected>Alle </option>
                   {this.kommuner.map(kommune => {
                       return(<option value={kommune.Name}>{kommune.navn}</option>)
                   })}
