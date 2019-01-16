@@ -115,8 +115,8 @@ app.get("/forgotPassword", (req, res) => {
         res.json('Email does not exist in database');
 
     } else {
-        const 
-    } 
+        const
+    }
 }); */
 
 
@@ -607,7 +607,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
     		res.json(data);
 			})
 		});
-    
+
     /** Get every case with status_id = 1. */
     app.get("/allCases/status/:status_id", (req, res) =>{
         console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
@@ -685,36 +685,27 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 
 /** update case on case_id */
     app.put("/updateCase/:case_id", (req, res) =>{
-        console.log("Received delete-request from client.");
+        console.log("Received put-request from client.");
         console.log("Trying to update case with id: "+req.params.case_id);
-        caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
+        caseDao.updateCase(req.body, (status, data) =>{
+            if (!(req.body instanceof Object)) return res.sendStatus(400);
             res.status(status);
             res.json(data);
             console.log(req.body);
         });
+    });
+/** update case status of case with case_id */
 
-        let email = req.body.email;
-        const mailOptionsUpdateCase = {
-            from: 'bedrehverdagshelt@gmail.com',
-            to: email,
-            subject: 'Saken er oppdatert!',
-            html:
-                '<h1> Status: ' + req.body.status_id + '</h1>' +
-                '<p><b> HverdagsHelt Support Team </b></p>' +
-                '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
-                '<p> <b> HverdagsHelt AS </b> </p>' +
-                '<p> 72 59 50 00 </p>'
-        };
-
-        transporter.sendMail(mailOptionsUpdateCase, function(error, info){
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
+     app.put("/updateCaseStatus/:case_id", (req, res) =>{
+        console.log("Received put-request from client.");
+        console.log("Trying to update status_id with case_id: "+req.params.case_id);
+        caseDao.updateCaseStatus(req.body, (status, data) =>{
+            if (!(req.body instanceof Object)) return res.sendStatus(400);
+            res.status(status);
+            res.json(data);
+            console.log(req.body);
         });
     });
-
 
     /** search case by category description */
     app.get("/searchCaseCategory/:description", (req, res) =>{
@@ -811,7 +802,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
  */
 app.post('/userVerification', (req: Request, res: Response) => {
 	console.log("app.get(/userverification):::::" + req.body.user_id + "----------" + req.body.oldPassword);
-	
+
 	let dbHash;
 	userdao.getHashedPWord(req.body.user_id, (status, data) => {
 		console.log(data[0].password + " DATABASE!******************************");
@@ -820,7 +811,7 @@ app.post('/userVerification', (req: Request, res: Response) => {
 		console.log(passwordData.passwordHash, "NEW***********************");
 		dbHash = passwordData.passwordHash === savedPassword;
 		console.log(dbHash, " FRA VERIFY FALSE TRUE");
-		
+
 		if (dbHash) {
 			console.log("STATUS: ", "200");
 			res.status(200).json(1);
@@ -828,7 +819,7 @@ app.post('/userVerification', (req: Request, res: Response) => {
 			console.log("STATUS: ", "500");
 			res.status(500).json("Wrong password. Try again");
 		}
-		
+
 	});
 
 });
