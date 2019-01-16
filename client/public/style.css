@@ -43,7 +43,7 @@
 
 .dropdownmenus1 {
     position:fixed;
-    left:380px;
+    left:450px;
 }
 
 .dropdown{
@@ -531,5 +531,14 @@ ListItem {
 
 .abcd {
     color: red;
+}
+
+.delete-case {
+    float: right !important;
+}
+
+.case-status {
+    float: none !important;
+    margin-left: 20px;
 }
 
