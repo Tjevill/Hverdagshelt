@@ -14,8 +14,10 @@ import {
 	ListItemContent,
 	ListItemAction,
 	Grid,
-	Cell
+	Cell,
+	Textfield
 } from "react-mdl";
+
 import { eventService } from "../services.js";
 
 export default class events extends Component {
@@ -25,9 +27,10 @@ export default class events extends Component {
 		return (
 			<div className="events-body">
 				<div className="userHome-body">
-				<div className="userHome-container">
-					<div className="userHome-events">
-							<h4>Events</h4>
+					<div className="userHome-container">
+						<div className="userHome-events">
+							<h4>Kommende events</h4>
+
 							{this.events.map(e => (
 								<div className="userHome-event">
 									<Grid className="grid1">
@@ -56,11 +59,13 @@ export default class events extends Component {
 
 													<h4>
 														{e.date
-															.substring(0, 16)
-															.replace("20", "")
-															.replace("T", " ")
-															.substring(0, 8)
-															.substring(0, 2)}
+															.substring(8, 10)
+															.replace(
+																"0",
+																""
+															)
+
+														}
 													</h4>
 												</div>
 											</div>
@@ -72,7 +77,7 @@ export default class events extends Component {
 												<p>
 													{" "}
 													<Icon name="home" />
-													{e.zipcode}
+													{e.address}
 												</p>
 												<p>
 													{" "}
@@ -102,6 +107,7 @@ export default class events extends Component {
 	}
 
 	componentDidMount() {
+		console.log("events mounted");
 		eventService //Endre til event senere
 			.getAllEvents()
 			.then(sak => (this.events = sak))
