@@ -352,7 +352,7 @@ light green: #A3C4BC
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #258ea6;
+  background-color: #4bc2f1;
 }
 
 .caseEdit-wrapper .form-wrapper {
@@ -403,6 +403,11 @@ light green: #A3C4BC
 .caseEdit-wrapper .form-wrapper input.error {
   border: 1px solid red;
 }
+
+textarea.error {
+    border: 1px solid red;
+}
+
 
 .caseEdit-wrapper .errorMessage {
   color: red;
