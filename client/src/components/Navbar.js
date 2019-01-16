@@ -56,7 +56,7 @@ export default class Navbar extends Component {
         <a className="option" id="issues" href="#issues/All/1" onClick={() => this.activate("issues")}>Saker</a>
         <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
         <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
-        <a className="option" id="nyorg" href="#nyorg" onClick={() => this.activate("nyorg")}>Registrer deg som Kommuneansatt!</a>
+        <a className="option" id="nyansatt" href="#nyansatt" onClick={() => this.activate("nyansatt")}>Registrer deg som Kommuneansatt!</a>
         <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
         <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
@@ -71,7 +71,7 @@ export default class Navbar extends Component {
             <div className="topnav" id="navbar">
               <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
               <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Meld feil</a>
-              <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
+              <a className="option" id="issues" href="#issues/All/1" onClick={() => this.activate("issues")}>Saker</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
               <ButtonToolbar className="dropdownmenus1">
                 <DropdownButton
@@ -121,7 +121,6 @@ export default class Navbar extends Component {
                     <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
                 </div>
             );
-
         }
 
           if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {

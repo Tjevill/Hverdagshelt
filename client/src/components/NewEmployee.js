@@ -18,13 +18,13 @@ export default class Register extends Component {
 
   state = {
 
-    name: "Odd Ronny Grustak",
-    tel: "24681012",
-    email: "oddronny@gmail.com",
+    name: "",
+    tel: "",
+    email: "",
     county: "",
     commune: "",
-    password: "abcd1234",
-    password2: "abcd1234"
+    password: "",
+    password2: ""
   };
 
 
@@ -99,7 +99,7 @@ export default class Register extends Component {
           className="form-control"
             type="text"
             name="name"
-            defaultValue="Odd Ronny Grustak"
+            defaultValue=""
             onChange={this.handleChange}
           />
         </div>
@@ -108,7 +108,7 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue="24681012"
+            defaultValue=""
             name="tel"
             onChange={this.handleChange}
           />
@@ -118,7 +118,7 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue="oddronny@gmail.com"
+            defaultValue=""
             name="email"
             onChange={this.handleChange}
           />
@@ -146,7 +146,7 @@ export default class Register extends Component {
           <input
           className="form-control"
             type="password"
-            defaultValue="abcd1234"
+            defaultValue=""
             name="password"
             onChange={this.handleChange}
           />
@@ -156,7 +156,7 @@ export default class Register extends Component {
           <input
             className="form-control"
             type="password"
-            defaultValue="abcd1234"
+            defaultValue=""
             name="password2"
             onChange={this.handleChange}
           />

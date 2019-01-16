@@ -5,8 +5,6 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
-
-
 const checkToken = (req, res, next) => {
     const header = req.headers['authorization'];
 
@@ -296,6 +294,16 @@ class FormInput extends Component<{
       </div>
     );
   }
+}
+
+export class Loading extends Component {
+    render(){
+        return (
+            <div className="loading-animation">
+              <img src='https://i.redd.it/ounq1mw5kdxy.gif' />
+            </div>
+        );
+    }
 }
 
 /**

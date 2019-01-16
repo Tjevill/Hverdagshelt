@@ -2,6 +2,7 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import Map from "./CaseMap";
 import { caseService, mapService } from "../services";
+import { Loading } from "./widgets";
 
 export default class Case extends Component {
 
@@ -41,7 +42,7 @@ export default class Case extends Component {
       );
     } else {
       return (
-        <h1>Loading</h1>
+        <Loading />
       );
     }
   }

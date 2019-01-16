@@ -1,10 +1,19 @@
+
+
 //@flow
 
 import * as React from "react";
 import { Component } from "react-simplified";
 import { NavLink } from 'react-router-dom';
-import {caseService} from "../services.js";
+import {
+   
+    IconButton,
+
+} from "react-mdl";
+import { caseService} from "../services.js";
+
 import {Alert} from "./widgets";
+
 
 export default class CasePreview extends Component <{title: string, status: number, id: number}> {
     x = '';
@@ -17,23 +26,32 @@ export default class CasePreview extends Component <{title: string, status: numb
                 <NavLink to={'/case/' + this.props.id}>
                     {this.props.title}
                 </NavLink>
+
                 <span className={this.y} >{this.x}</span>
+                 <NavLink to={'/case/' + this.props.id + '/edit'}>
+                    rediger
+                </NavLink>
                 <a className="pointer" onClick ={() => this.delete(this.props.id)}>
                     Slett sak
                 </a>
+
             </li>
         )
     }
     
     delete(case_id) {
-        caseService.changeCaseStatus(case_id)
-          .then(response => {
-              console.log(response, "Satt status: slett i db");
+
+        
+        if ( window.confirm("Er du sikker på at du ønsker å slette saken:?") ){
+            caseService.changeCaseStatus(case_id)
+            .then(response => {
+              console.log(response, "Satt status: slett i db");           
               window.location.reload();
-          })
-          .catch(err => {
-              console.log(err, "Error ved oppdatering av status");
-          })
+            })
+            .catch(err => {
+                console.log(err, "Error ved oppdatering av status");
+            });
+          }
     }
     
     componentDidMount() {
@@ -56,8 +74,30 @@ export default class CasePreview extends Component <{title: string, status: numb
         } else if(this.props.status == 6) {
             this.x = 'Løst';
             this.y = 'badge badge-success';
-        } else {
+        }else if (this.props.status == 7) {
+            this.x = 'Sak slettet';
+            this.y = 'badge badge-warning';
+        }
+         else {
             console.log('Error, status invalid!');
+        }
+    }
+
+    delete(case_id) {
+        console.log("Er du sikker på at du vil slette følgende sak?");
+        if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+         caseService.updateCaseStatus(case_id, {
+         status_id: 7,
+         case_id: case_id
+        })
+        .then(res => {
+          console.log("Response recieved:", res);
+        })
+        .catch(err => {
+          console.log("AXIOS ERROR:", err);
+        });
+            window.alert("Din sak har blitt slettet");
+            window.location.reload();
         }
     }
 }
