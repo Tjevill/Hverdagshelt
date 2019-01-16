@@ -263,6 +263,6 @@ export default class Register extends Component {
           (this.message = error.message)
       );
 
-    // history.push("/admin/legginn");
+      window.location = "#login";
   }
 }
