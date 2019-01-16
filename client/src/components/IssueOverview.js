@@ -123,6 +123,13 @@ export default class IssueOverview extends Component <{ match: { params: { name:
      }
    }
 
+   nullstillKommune(){
+     this.kommune = "";
+     this.fylker = [];
+     window.location.reload();
+     history.push('/Issues/'+this.props.match.params.name+'/1');
+   }
+
 
 
   render(){
@@ -133,11 +140,15 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       this.cateside = this.cases.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*16+15);
       this.Meldning = ("Antall saker er "+ this.cases.length);
       lists = (
-        <div>
+        <tbody>
         {this.cateside.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} : {casen.headline} : {casen.category_id} : {casen.zipcode} </ListGroup.Item>
+          <tr>
+          <th>{casen.case_id}</th>
+          <td onClick={()=>history.push('/case/'+casen.case_id)}>{casen.headline}</td>
+          <td>{casen.timestamp.slice(0,16).replace("T", " ")}</td>
+          </tr>
         ))}
-        </div>
+        </tbody>
       );
 
       sidebuttons =(
@@ -153,13 +164,16 @@ export default class IssueOverview extends Component <{ match: { params: { name:
 
      } else {
 
-
        lists = (
-         <div>
-        {this.caseofCat.map(casen =>(
-          <ListGroup.Item to={'/case/'+casen.case_id}> {casen.case_id} :{casen.headline} : {casen.category_id} : {casen.zipcode} </ListGroup.Item>
-        ))}
-        </div>);
+         <tbody>
+         {this.caseofCat.map(casen =>(
+           <tr>
+           <th>{casen.case_id}</th>
+           <td onClick={()=>history.push('/case/'+casen.case_id)}>{casen.headline}</td>
+           <td>{casen.timestamp.slice(0,16).replace("T", " ")}</td>
+           </tr>
+         ))}
+         </tbody>);
 
        sidebuttons = (
         <div>
@@ -174,7 +188,6 @@ export default class IssueOverview extends Component <{ match: { params: { name:
     <>
       <div className="jumbotron">
         <div className="container text-center">
-          <p>Kategorier</p>
           <div className="btn-group" role="group" aria-label="First group">
               <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
                 {this.categories.map(categori =>(
@@ -200,22 +213,32 @@ export default class IssueOverview extends Component <{ match: { params: { name:
                   })}
                 </select>
             </div>
+            <div class="col align-self-center">
+            <button type="button" class="btn btn-secondary" onClick={() => this.nullstillKommune()}>Nullstill kommune</button>
+
+              </div>
           </div>
           {this.Meldning}
         </div>
       </div>
 
 
-
-      <p>Nyeste Meldte Feil</p>
+      <div className="container">
+        <h2 class="display-4">Saker</h2>
         <Router history={history}>
-          <div className="container text-center">
-            <ListGroup>
-                {lists}
-            </ListGroup>
-         </div>
+          <table class="table table-hover">
+            <thead>
+              <tr >
+                <th scope="col">ID</th>
+                <th scope="col">Tittel</th>
+                <th scope="col">Tid</th>
+              </tr>
+            </thead>
+              {lists}
+            </table>
         </Router>
       <br/><br/>
+      </div>
 
       <div id='toolbar'>
         <div className='wrapper text-center'>
