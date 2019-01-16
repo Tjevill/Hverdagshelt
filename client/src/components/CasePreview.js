@@ -40,7 +40,6 @@ export default class CasePreview extends Component <{title: string, status: numb
     }
     
     delete(case_id) {
-
         
         if ( window.confirm("Er du sikker på at du ønsker å slette saken:?") ){
             caseService.changeCaseStatus(case_id)
@@ -52,7 +51,7 @@ export default class CasePreview extends Component <{title: string, status: numb
                 console.log(err, "Error ved oppdatering av status");
             });
           }
-    }
+    } 
     
     componentDidMount() {
         if (this.props.status == 2) {
@@ -83,7 +82,7 @@ export default class CasePreview extends Component <{title: string, status: numb
         }
     }
 
-    delete(case_id) {
+   /* delete(case_id) {
         console.log("Er du sikker på at du vil slette følgende sak?");
         if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
          caseService.updateCaseStatus(case_id, {
@@ -99,5 +98,5 @@ export default class CasePreview extends Component <{title: string, status: numb
             window.alert("Din sak har blitt slettet");
             window.location.reload();
         }
-    }
+    }*/
 }
