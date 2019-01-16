@@ -69,14 +69,14 @@ export default class UserEdit extends Component {
     if(this.user.subscription==1){
       button = (
         <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-danger">
-          Subscribe
+          Motta oppdateringer på e-post
         </button>
       );
       this.user_id = this.user.user_id;
     } else {
       button = (
         <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success">
-          Motta oppdateringer på e-post
+          Slutt å motta oppdateringer på e-post
         </button>
       );
       this.user_id = this.user.user_id;

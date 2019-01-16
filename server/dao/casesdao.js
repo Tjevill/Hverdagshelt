@@ -106,7 +106,20 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     }
-
+	
+	/**
+	 * Updates status_id to DELETED in database when user deletes one of their cases
+	 * @param id The case id
+	 * @param callback From db
+	 */
+	updateCaseStatusToDeleted (id: number, callback: mixed) {
+		super.query(
+			"UPDATE Cases SET status_id = 7 WHERE case_id = ?",
+			[id],
+			callback
+		)
+	}
+  
 
     /** Delete case on case_id
     *   @param case_id - the case_id

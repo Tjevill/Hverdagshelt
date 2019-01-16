@@ -219,7 +219,7 @@ class CaseService {
     }
 	
 	changeCaseStatus (case_id: number): Promise<void> {
-		return axios.put(url + '/changeCaseStatus/' + case_id);
+		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
 	
 }
