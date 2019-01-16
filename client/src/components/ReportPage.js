@@ -7,12 +7,17 @@ import {Alert} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import { NavLink } from 'react-router-dom';
+import createHistory from "history/createBrowserHistory";
 
 const style = {
     width: '100%',
     height: '100%',
     position: "relative"
 }
+
+const history = createHistory({
+    forceRefresh: true
+})
 
 
 
@@ -149,11 +154,9 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <NavLink to={'/validation'}>
                             <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
                                 Fullfør
                             </button>
-                        </NavLink>
                         <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
@@ -265,6 +268,8 @@ export class Report extends Component {
             caseService.createUserCase(casedata)
                 .then(window.location.reload())
                 .catch((error: Error) => Alert.danger(error.message));
+
+        window.location = "#validation";
     }
 
     componentDidMount(){

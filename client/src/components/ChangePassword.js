@@ -21,7 +21,7 @@ export default class ChangePassword extends Component {
       <>
       <div className="jumbotron">
         <div className="container text-center">
-          <h5>Endre passord</h5>
+          <h4>Endre passord</h4>
         </div>
       </div>
 
