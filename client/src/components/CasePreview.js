@@ -22,16 +22,16 @@ export default class CasePreview extends Component <{title: string, status: numb
 
     render() {
         return(
-            <li className="list-group-item d-flex justify-content-between align-items-center">
+            <li className="list-group-item">
                 <NavLink to={'/case/' + this.props.id}>
                     {this.props.title}
                 </NavLink>
 
-                <span className={this.y} >{this.x}</span>
-                 <NavLink to={'/case/' + this.props.id + '/edit'}>
-                    rediger
-                </NavLink>
-                <a className="pointer" onClick ={() => this.delete(this.props.id)}>
+                <span className={this.y + " case-status"} >{this.x}</span>
+                 {/*<NavLink to={'/case/' + this.props.id + '/edit'}>*/}
+                    {/*rediger*/}
+                {/*</NavLink>*/}
+                <a className="pointer delete-case" onClick ={() => this.delete(this.props.id)}>
                     Slett sak
                 </a>
 

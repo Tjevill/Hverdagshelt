@@ -533,3 +533,12 @@ ListItem {
     color: red;
 }
 
+.delete-case {
+    float: right !important;
+}
+
+.case-status {
+    float: none !important;
+    margin-left: 20px;
+}
+
