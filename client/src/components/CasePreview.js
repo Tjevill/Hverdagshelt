@@ -1,8 +1,16 @@
+
+
 //@flow
 
 import * as React from "react";
 import { Component } from "react-simplified";
 import { NavLink } from 'react-router-dom';
+import {
+   
+    IconButton,
+
+} from "react-mdl";
+import { caseService} from "../services.js";
 
 export default class CasePreview extends Component <{title: string, status: number, id: number}> {
     x = '';
@@ -15,9 +23,16 @@ export default class CasePreview extends Component <{title: string, status: numb
                     {this.props.title}
                 </NavLink>
                 <span className={this.y}>{this.x}</span>
+
                 <NavLink to={'/case/' + this.props.id + '/edit'}>
                     rediger
                 </NavLink>
+                <IconButton
+                                        name="delete"
+                                        onClick={() => {
+                                            this.delete(this.props.id);
+                                        }}
+                                    />
             </li>
         )
     }
@@ -35,8 +50,30 @@ export default class CasePreview extends Component <{title: string, status: numb
         } else if (this.props.status == 4) {
             this.x = 'Sak løst';
             this.y = 'badge badge-success';
-        } else {
+        }else if (this.props.status == 7) {
+            this.x = 'Sak slettet';
+            this.y = 'badge badge-warning';
+        }
+         else {
             console.log('Error, status invalid!');
+        }
+    }
+
+    delete(case_id) {
+        console.log("Er du sikker på at du vil slette følgende sak?");
+        if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+         caseService.updateCaseStatus(case_id, {
+         status_id: 7,
+         case_id: case_id
+        })
+        .then(res => {
+          console.log("Response recieved:", res);
+        })
+        .catch(err => {
+          console.log("AXIOS ERROR:", err);
+        });
+            window.alert("Din sak har blitt slettet");
+            window.location.reload();
         }
     }
 }

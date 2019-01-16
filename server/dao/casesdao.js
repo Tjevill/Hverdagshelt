@@ -70,8 +70,8 @@ module.exports = class CasesDao extends Dao {
     *   @param case_id : case_id.
     *   @param json : json object with changes.
      */
-    updateCase(case_id: number, json, callback){
-        let val = [
+    updateCase(json, callback){
+        var val = [
                     json.description, 
                     json.longitude, 
                     json.latitude, 
@@ -83,8 +83,8 @@ module.exports = class CasesDao extends Dao {
                     json.picture, 
                     json.employee_id, 
                     json.org_id,
-                    json.email,
-                    case_id
+                    //json.email,
+                    json.case_id
 
                     ];
         super.query(
@@ -94,7 +94,16 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
-    updateCaseStatus(){
+    updateCaseStatus(json, callback){
+        var val = [
+        json.status_id,
+        json.case_id
+        ];
+        super.query(
+            "UPDATE Cases set status_id = ? WHERE case_id = ?",
+            val,
+            callback
+        );
 
     }
 
