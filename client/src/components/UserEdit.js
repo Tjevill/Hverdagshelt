@@ -23,6 +23,7 @@ export default class UserEdit extends Component {
   Nameinputtype = "";
   AddressInputClass = "";
   inputstatus ="";
+  ZipcodeInputClass="";
   _zip = "";
   state = {
     telinfo: "",
@@ -75,7 +76,7 @@ export default class UserEdit extends Component {
     } else {
       button = (
         <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success">
-          Unsubscribe
+          Motta oppdateringer på e-post
         </button>
       );
       this.user_id = this.user.user_id;
@@ -118,7 +119,7 @@ export default class UserEdit extends Component {
         <div className="form-group">
           Postnummer:{" "}
           <input
-          class={"form-control " + this.inputstatus}
+          class={"form-control " + this.ZipcodeInputClass}
             type="text"
             defaultValue={this.state.zip}
             value = {this.state.zip}
@@ -126,6 +127,7 @@ export default class UserEdit extends Component {
             name="zipcode"
             onChange={this.changeZip}
           />
+              <div class="invalid-feedback">Ugydig Postnummer</div>
           <p color="red">{this.state.zipinfo} </p>
         </div>
         <div className="form-group">
@@ -139,6 +141,7 @@ export default class UserEdit extends Component {
             maxlength ="8"
             onChange={this.changeVal}
           />
+          <div class="invalid-feedback">Ugydig telefon</div>
             <div class="text-muted">{this.state.telinfo} </div>
         </div>
         <div className="form-group">
@@ -224,14 +227,25 @@ export default class UserEdit extends Component {
     console.log("this.user" ,user);
     if(user.name==""){
       this.Nameinputtype = "is-invalid";
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
     }else if(!isEmail(this.user.email)){
       this.state.mailinfo = "Ugydig e-post";
       this.Emailinputtype = "is-invalid";
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
       console.log("ugydig e-post");
     }else if(user.address==""){
       this.AddressInputClass = "is-invalid";
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
+      this.forceUpdate();
+    }else if(user.zipcode.length<4){
+      this.ZipcodeInputClass = "is-invalid";
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
+      this.forceUpdate();
+    }else if(user.tel.length<8){
+      this.inputstatus = "is-invalid";
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
     }else{
     userService
@@ -243,8 +257,9 @@ export default class UserEdit extends Component {
           this.inputstatus = "is-valid";
           this.Nameinputtype = "is-valid";
           this.AddressInputClass = "is-valid";
+          this.ZipcodeInputClass = "is-valid";
           this.forceUpdate();
-          /*setTimeout(function(){window.location.reload()}.bind(this),3000);*/
+          setTimeout(function(){window.location.reload()}.bind(this),2000);
         })
       .catch((error: Error) => {
         Alert.danger(error.message);
