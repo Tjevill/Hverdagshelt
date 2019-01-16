@@ -312,3 +312,4 @@ export class Loading extends Component {
 export class Form {
   static Input = FormInput;
 }
+
