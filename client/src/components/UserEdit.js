@@ -65,7 +65,7 @@ export default class UserEdit extends Component {
     } else {
       button = (
         <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success">
-          Unsubscribe
+          Motta oppdateringer på e-post
         </button>
       );
       this.user_id = this.user.user_id;
