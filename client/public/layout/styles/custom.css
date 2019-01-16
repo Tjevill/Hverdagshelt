@@ -8,3 +8,13 @@
 .goddamnit {
 	background-image:url('/images/frontpage.jpg');
 }
+
+.justalink {
+	color: #4bc2f1;
+	margin-top:10px;
+}
+
+.justadiv {
+	padding:10px;
+	margin:10px;
+}

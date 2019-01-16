@@ -5,23 +5,6 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
-
-
-const checkToken = (req, res, next) => {
-    const header = req.headers['authorization'];
-
-    if(typeof header !== 'undefined') {
-        const bearer = header.split(' ');
-        const token = bearer[1];
-
-        req.token = token;
-        next();
-    } else {
-        //If header is undefined return Forbidden (403)
-        res.sendStatus(403)
-    }
-}
-
 export function refreshToken() {
     const myHeaders = new Headers();
 
@@ -280,9 +263,20 @@ class FormInput extends Component<{
   }
 }
 
+export class Loading extends Component {
+    render(){
+        return (
+            <div className="loading-animation">
+              <img src='https://i.redd.it/ounq1mw5kdxy.gif' />
+            </div>
+        );
+    }
+}
+
 /**
  * Renders simplified form elements using Bootstrap classes
  */
 export class Form {
   static Input = FormInput;
 }
+

@@ -2,9 +2,32 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHistory from 'history/createBrowserHistory';
+
+import {refreshToken} from "./widgets";
+
+import Case from "./Case";
+import CaseListCard from "./CaseListCard";
+import ProfileCard from "./ProfileCard";
+import ProfilePage from "./ProfilePage";
+import ReportPage from "./ReportPage";
+import IssueOverview from "./IssueOverview";
+import UserHome from "./userHome";
+import Events from "./events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-
+import Register from "./Register";
+import NewOrganization from "./NewOrganization";
+import NewEmployee from "./NewEmployee";
+import AdminMain from "./AdminMain";
+import LoginPage from "./LoginPage";
+import PrivateRoute from 'react-private-route';
+import UserEdit from "./UserEdit";
+import ChangePassword from "./ChangePassword";
+import IssueOverviewForEmployee from "./IssueOverviewForEmployee";
+import Map from "./Map";
+import CaseEdit from "./caseEdit";
+import EventsEdit from "./EventsEdit";
+import NewEvents from "./NewEvents";
 
 const history = createHistory({
   forceRefresh: true
@@ -28,17 +51,16 @@ export default class Navbar extends Component {
     if (!this.props.loggedin) {
 
     return(
-        <nav id="mainav" className="fl_right">
-            <ul className="clear">
-                <li className="active"><a href="/">Home</a></li>
-                <li><a href="#issues" onClick={() => this.activate("issues")}>Saker</a></li>
-                <li><a href="#events" onClick={() => this.activate("events")}>Events</a></li>
-                <li><a href="#register" onClick={() => this.activate("register")}>Registrer deg!</a></li>
-                <li><a href="#nyorg" onClick={() => this.activate("nyorg")}>Kommuneansatt?</a></li>
-                <li><a href="#map" onClick={() => this.activate("map")}>Kart</a></li>
-                <li><a href="#login" onClick={() => this.activate("login")}>Logg inn</a></li>
-            </ul>
-        </nav>
+      <div className="topnav" id="navbar">
+        <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+        <a className="option" id="issues" href="#issues/All/1" onClick={() => this.activate("issues")}>Saker</a>
+        <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
+        <a className="option" id="register" href="#register" onClick={() => this.activate("register")}>Registrer deg som Helt!</a>
+        <a className="option" id="nyansatt" href="#nyansatt" onClick={() => this.activate("nyansatt")}>Registrer deg som Kommuneansatt!</a>
+        <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
+        <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
+        <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+      </div>
     );
 
     }
@@ -49,8 +71,9 @@ export default class Navbar extends Component {
             <div className="topnav" id="navbar">
               <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
               <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Meld feil</a>
-              <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
+              <a className="option" id="issues" href="#issues/All/1" onClick={() => this.activate("issues")}>Saker</a>
               <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
+                <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
               <ButtonToolbar className="dropdownmenus1">
                 <DropdownButton
                     bsStyle="default"
@@ -99,7 +122,6 @@ export default class Navbar extends Component {
                     <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
                 </div>
             );
-
         }
 
           if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {

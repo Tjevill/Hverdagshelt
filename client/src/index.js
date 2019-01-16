@@ -1,8 +1,9 @@
 // @flow
 /* eslint eqeqeq: "off" */
-import React, {Component, resolve} from "react";
+import React from "react";
+import {Component, sharedComponentData} from 'react-simplified';
 import ReactDOM from "react-dom";
-import { Redirect, BrowserRouter, Route, NavLink, Switch,  } from 'react-router-dom'
+import { Redirect, HashRouter, Route, NavLink, Switch,  } from 'react-router-dom'
 import { withRouter } from 'react-router';
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHashHistory from "history/createHashHistory";
@@ -25,7 +26,6 @@ import AdminMain from "./components/AdminMain";
 import LoginPage from "./components/LoginPage";
 import {refreshToken} from "./components/widgets";
 import PrivateRoute from 'react-private-route';
-import createHistory from 'history/createBrowserHistory';
 import UserEdit from "./components/UserEdit";
 import ChangePassword from "./components/ChangePassword";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
@@ -33,19 +33,20 @@ import Map from "./components/Map";
 import CaseEdit from "./components/caseEdit";
 import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
+import ReportValidation from "./components/ReportValidation";
+import ForgottenPassword from "./components/ForgottenPassword";
 
 
 function isValidUser() {
     const promiseObject = refreshToken();
-
     promiseObject.then(value => {
         if(value !='undefined') {
+            // console.log("Logged in as :" + sessionStorage.getItem("access"))
             return(value);
-        }
+        } else {return false}
     });
-    return true;
-}
 
+}
 class forsideMain extends Component {
     render () {
         return(
@@ -76,49 +77,44 @@ class ikkeforsideMain extends Component {
 
 class Main extends Component {
 
-    render() {
-/*
+    constructor(props) {
+        super(props);
+
         const promiseObject = refreshToken();
+        // promiseObject.then((res) => console.log("res: ", res));
+        promiseObject.then((res) => this.setState({islogged: res}));
+        console.log(" hmm ?? " + this.props.islogged);
 
-        promiseObject.then(value => {
-            if(value !='undefined') {
 
-            }
-        }); */
+    }
+
+
+    render() {
+
+
+        console.log("Access: " + sessionStorage.getItem("access"));
 
 
         return (
 
             <div>
-                <BrowserRouter basename="/">
+                <HashRouter>
+
                     <div>
-
-                        <div className="bgded overlay">
-
+                        <div className="bgded overlay">{ console.log("hmmm: ", this.props) }
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
-
                                     <div id="logo" className="fl_left">
-                                        <img id="logo" className="forsidelogo"
-                                             src="https://tinyurl.com/yb79l4dx"
-                                             alt="Logo"/>
+                                        <img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/>
                                     </div>
-                                    <Menu/>
-
+                                    <Menu loggedin={this.loggedin}/>
+                                    <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
                                 </header>
                             </div>
-
-
                             <Route exact path="/" component={forsideMain} />
-
                             <Route path="/" component={ikkeforsideMain} />
-
                         </div>
-
-
                 <div>
-
-
                             <Route exact path="/" component={UserHome} />
                             <Route exact path="/case/:id" component={Case} />
                             <Route exact path="/case/:id/edit" component={CaseEdit} />
@@ -133,37 +129,38 @@ class Main extends Component {
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
                             <Route exact path="/user" component={ProfilePage} />
+                            <Route exact path="/glemtpassord" component={ForgottenPassword} />
                             <PrivateRoute
                                 exact
                                 path="/user/edit"
                                 component={UserEdit}
-                                isAuthenticated={isValidUser()}
+                                isAuthenticated={this.loggedin}
                             />
                             <PrivateRoute
                                 exact
                                 path="/user/changePassword"
                                 component={ChangePassword}
-                                isAuthenticated={isValidUser()}
+                                isAuthenticated={this.loggedin}
                             />
                             <PrivateRoute
                                 exact
                                 path="/profile"
                                 component={ProfilePage}
-                                isAuthenticated={isValidUser()}
+                                isAuthenticated={this.loggedin}
                                 redirect="/login"
                             />
                             <PrivateRoute
                                 exact
                                 path="/admin/main"
                                 component={AdminMain}
-                                isAuthenticated={isValidUser()}
+                                isAuthenticated={this.loggedin}
                                 redirect="/login"
                             />
                             <PrivateRoute
                                 exact
                                 path="/login"
                                 component={LoginPage}
-                                isAuthenticated={!isValidUser()}
+                                isAuthenticated={this.loggedin}
                                 redirect="/"
                             />
 
@@ -178,7 +175,7 @@ class Main extends Component {
                     </div>
                 </div>
                 </div>
-    </BrowserRouter>
+    </HashRouter>
 
             </div>
         );
@@ -189,33 +186,3 @@ export default withRouter(Main);
 
 ReactDOM.render(<Main />, document.getElementById("root"));
 
-
-/*
-<ul className="clear">
-                                            <li className="active"><a href="index.html">Home</a></li>
-                                            <li><a className="drop" href="#">Pages</a>
-                                                <ul>
-                                                    <li><a href="pages/gallery.html">Gallery</a></li>
-                                                    <li><a href="pages/full-width.html">Full Width</a></li>
-                                                    <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
-                                                    <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
-                                                    <li><a href="pages/basic-grid.html">Basic Grid</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a className="drop" href="#">Dropdown</a>
-                                                <ul>
-                                                    <li><a href="#">Level 2</a></li>
-                                                    <li><a className="drop" href="#">Level 2 + Drop</a>
-                                                        <ul>
-                                                            <li><a href="#">Level 3</a></li>
-                                                            <li><a href="#">Level 3</a></li>
-                                                            <li><a href="#">Level 3</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Level 2</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">Link Text</a></li>
-                                            <li><a href="#">Link Text</a></li>
-                                        </ul>
- */

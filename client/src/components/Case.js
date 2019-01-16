@@ -2,6 +2,7 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import Map from "./CaseMap";
 import { caseService, mapService } from "../services";
+import { Loading } from "./widgets";
 
 export default class Case extends Component {
 
@@ -16,6 +17,7 @@ export default class Case extends Component {
     if(this.loaded){
       return (
         <div id="case-page">
+
           <div id="info">
               <Card
                 title={this.case.headline}
@@ -24,7 +26,15 @@ export default class Case extends Component {
                 zip={this.case.zipcode}
                 date={this.case.timestamp}
               />
-            <img id="picture" src={this.case.picture} alt="Case" />
+
+              <img id="case-picture" src={this.case.picture} alt="case_picture" onClick={this.openModal} />
+
+              <div id="myModal" className="modal">
+                <span id="close-modal" className="close" onClick={this.closeModal}>&times;</span>
+                <img className="modal-content" id="img01" />
+                <div id="caption">test</div>
+              </div>
+
           <p id="description">{this.case.description}</p>
         </div>
           {this.map}
@@ -32,12 +42,14 @@ export default class Case extends Component {
       );
     } else {
       return (
-        <h1>Loading</h1>
+        <Loading />
       );
     }
   }
 
   mounted(){
+
+    window.addEventListener("resize", this.onResize.bind(this));
 
     if(this.openMap) document.location.reload();
     this.openMap = true;
@@ -50,7 +62,7 @@ export default class Case extends Component {
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
         mapData => {
           this.mapData = mapData.results[0];
-          console.log(this.mapData);
+          //console.log(this.mapData);
           if(this.mapData == null){
             this.mapData = {
               formatted_address: "none"
@@ -71,6 +83,37 @@ export default class Case extends Component {
       );
     });
 
+  }
+
+  openModal(){
+    //console.log("modalEvent");
+    let casePage = document.getElementById("case-page");
+    let picture = document.getElementById("case-picture");
+    let modal = document.getElementById("myModal");
+    let modalImg = document.getElementById("img01");
+    let captionText = document.getElementById("caption");
+
+    modal.style.display = "block";
+    modalImg.src = picture.src;
+    captionText.innerHTML = this.case.description;
+
+    var close = document.getElementById("close-modal");
+    close.style.right = String((casePage.offsetWidth / 2) - (modalImg.offsetWidth / 2) - 40) + "px";
+  }
+
+  closeModal(){
+    //console.log("closing");
+    let modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+
+  onResize(){
+    let close = document.getElementById("close-modal");
+    if(close != null){
+      let casePage = document.getElementById("case-page");
+      let modalImg = document.getElementById("img01");
+      close.style.right = String((casePage.offsetWidth / 2) - (modalImg.offsetWidth / 2) - 40) + "px";
+    }
   }
 
 }

@@ -25,19 +25,19 @@ export default class Menu extends Component {
 
     render() {
 
-        console.log("this.props: ", this.props)
+        console.log("islogged:  ", this.islogged)
         if (!this.props.loggedin) {
 
             return (
                 <nav id="mainav" className="fl_right">
                      <ul className="hovedmeny">
                             <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/issues">Saker</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/nyansatt">Kommuneansatt</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/login">Logg inn!</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
                         </ul>
 
                 </nav>
@@ -48,33 +48,27 @@ export default class Menu extends Component {
         if (this.props.loggedin && (sessionStorage.getItem("access") == "user")) {
 
             return (
-                <div className="topnav" id="navbar">
-                    <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo"
-                                                                                                    src="https://tinyurl.com/yb79l4dx"
-                                                                                                    alt="Logo"/></a>
-                    <a className="option" id="report" href="#report" onClick={() => this.activate("report")}>Meld
-                        feil</a>
-                    <a className="option" id="issues" href="#issues" onClick={() => this.activate("issues")}>Saker</a>
-                    <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-                    <ButtonToolbar className="dropdownmenus1">
-                        <DropdownButton
-                            bsStyle="default"
-                            title="Min side"
-                            key="2"
-                            id="dropdown-basic-2"
-                            noCaret
-                        >
-                            <MenuItem href="#user/" eventKey="1">Min side</MenuItem>
-                            <MenuItem href="#user/edit" eventKey="2">Rediger profil</MenuItem>
-                            <MenuItem href="#user/changePassword" eventKey="3">Forandre Passord</MenuItem>
-                            <MenuItem divider/>
-                            <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
-                        </DropdownButton>
-                    </ButtonToolbar>;
-                    <div className="logged-in-as">Logged in as {sessionStorage.getItem("access")},
-                        ({sessionStorage.getItem("email")})</div>
-                    <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
-                </div>
+
+                <nav id="mainav" className="fl_right">
+                    <ul className="hovedmeny">
+                        <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+
+                        <li><a className="drop" href="#">Pages</a>
+                            <ul>
+                                <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </nav>
+
             );
 
         }
@@ -83,29 +77,7 @@ export default class Menu extends Component {
 
             return (
                 <div className="topnav" id="navbar">
-                    <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo"
-                                                                                                    src="https://tinyurl.com/yb79l4dx"
-                                                                                                    alt="Logo"/></a>
-                    <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-                    <ButtonToolbar className="dropdownmenus">
-                        <DropdownButton
-                            bsStyle="default"
-                            title="Min side"
-                            key="2"
-                            id="dropdown-basic-2"
-                            noCaret
-                        >
-                            <MenuItem href="#bedrift/" eventKey="1">Min side</MenuItem>
-                            <MenuItem href="#bedrift/edit" eventKey="1">Rediger profil</MenuItem>
-                            <MenuItem href="#bedrift/newpass" eventKey="2">Forandre Passord</MenuItem>
-                            <MenuItem href="#bedrift/rapporter" eventKey="3">Feilrapporter</MenuItem>
-                            <MenuItem divider/>
-                            <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
-                        </DropdownButton>
-                    </ButtonToolbar>;
-                    <div className="logged-in-as">Logged in as {sessionStorage.getItem("access")},
-                        ({sessionStorage.getItem("email")})</div>
-                    <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+
                 </div>
             );
 
@@ -116,46 +88,7 @@ export default class Menu extends Component {
 
             return (
                 <div className="topnav" id="navbar">
-                    <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo"
-                                                                                                    src="https://tinyurl.com/yb79l4dx"
-                                                                                                    alt="Logo"/></a>
-                    <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
-                    <a className="option" id="profile" href="#profile"
-                       onClick={() => this.activate("profile")}>Profil</a>
-                    <ButtonToolbar className="dropdownmenus">
-                        <DropdownButton
-                            bsStyle="default"
-                            title="Administrator"
-                            key="1"
-                            id="dropdown-basic-1"
-                            noCaret
-                        >
-                            <MenuItem href="#admin/kommune" eventKey="1">Kommuneansatte</MenuItem>
-                            <MenuItem href="#admin/helter" eventKey="2">Hverdagshelter</MenuItem>
-                            <MenuItem href="#admim/bedrifter" eventKey="3">Bedrifter</MenuItem>
-                            <MenuItem href="#admin/rapporter" eventKey="4">Feilrapporter</MenuItem>
-                            <MenuItem href="#admin/events" eventKey="4">Events</MenuItem>
-                            <MenuItem divider/>
-                            <MenuItem onClick={this.handleLogOut} eventKey="5">Logg ut</MenuItem>
-                        </DropdownButton>
-                        <DropdownButton
-                            bsStyle="dropdown_right"
-                            title="Min side"
-                            key="2"
-                            id="dropdown-basic-2"
-                            noCaret
-                        >
-                            <MenuItem href="#admin/" eventKey="1">Min side</MenuItem>
-                            <MenuItem href="#admin/edit" eventKey="1">Rediger profil</MenuItem>
-                            <MenuItem href="#admim/newpass" eventKey="2">Forandre Passord</MenuItem>
-                            <MenuItem href="#profile/rapporter" eventKey="3">Mine rapporter</MenuItem>
-                            <MenuItem divider/>
-                            <MenuItem onClick={this.handleLogOut} eventKey="4">Logg ut</MenuItem>
-                        </DropdownButton>
-                    </ButtonToolbar>;
-                    <div className="logged-in-as">Logged in as {sessionStorage.getItem("access")},
-                        ({sessionStorage.getItem("email")})</div>
-                    <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+
                 </div>
             );
 
@@ -170,3 +103,34 @@ export default class Menu extends Component {
 
     }
 }
+
+
+/*
+<ul className="clear">
+                                            <li className="active"><a href="index.html">Home</a></li>
+                                            <li><a className="drop" href="#">Pages</a>
+                                                <ul>
+                                                    <li><a href="pages/gallery.html">Gallery</a></li>
+                                                    <li><a href="pages/full-width.html">Full Width</a></li>
+                                                    <li><a href="pages/sidebar-left.html">Sidebar Left</a></li>
+                                                    <li><a href="pages/sidebar-right.html">Sidebar Right</a></li>
+                                                    <li><a href="pages/basic-grid.html">Basic Grid</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a className="drop" href="#">Dropdown</a>
+                                                <ul>
+                                                    <li><a href="#">Level 2</a></li>
+                                                    <li><a className="drop" href="#">Level 2 + Drop</a>
+                                                        <ul>
+                                                            <li><a href="#">Level 3</a></li>
+                                                            <li><a href="#">Level 3</a></li>
+                                                            <li><a href="#">Level 3</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">Level 2</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Link Text</a></li>
+                                            <li><a href="#">Link Text</a></li>
+                                        </ul>
+ */

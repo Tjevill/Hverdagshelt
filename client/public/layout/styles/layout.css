@@ -266,6 +266,7 @@ td{border-width:0 1px;}
 --------------------------------------------------------------------------------------------------------------- */
 body{color:#CBCBCB; background-color:#191919;}
 a{color:#A2B70D;}
+
 a:active, a:focus{background:transparent;}/* IE10 + 11 Bugfix - prevents grey background */
 hr, .borderedbox{border-color:#D7D7D7;}
 label span{color:#FF0000; background-color:inherit;}

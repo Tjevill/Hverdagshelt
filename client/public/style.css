@@ -43,7 +43,7 @@
 
 .dropdownmenus1 {
     position:fixed;
-    left:380px;
+    left:450px;
 }
 
 .dropdown{
@@ -155,13 +155,13 @@
 .loginoption1, .loginoption2, .loginoption3 {
     border-radius: 25px;
     border: 1px solid black;
-    background-color: #eeeeee;
+    background-color: #444444;
     width:350px;
     height: inherit;
     text-align:center;
     padding:14px;
     margin:10px;
-    box-shadow: 4px 4px 20px #686868;
+
     cursor: pointer;
 
 }
@@ -199,24 +199,18 @@
     height:auto;
    padding-top: 25px;
    padding-left: 30px;
-
-
-
 }
 
 .cell2{
     padding-left: 50px;
     background-color: white;
     height: auto;
-
-
 }
 
 .cell3{
     background-color: white;
     padding-top: 25px;
     height: auto;
-
 }
 
 .cell3 img{
@@ -352,7 +346,7 @@ light green: #A3C4BC
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #258ea6;
+  background-color: #4bc2f1;
 }
 
 .caseEdit-wrapper .form-wrapper {
@@ -403,6 +397,11 @@ light green: #A3C4BC
 .caseEdit-wrapper .form-wrapper input.error {
   border: 1px solid red;
 }
+
+textarea.error {
+    border: 1px solid red;
+}
+
 
 .caseEdit-wrapper .errorMessage {
   color: red;
@@ -499,5 +498,41 @@ ListItem {
 
 .feilmelding {
     color: red;
+}
+
+.align-link {
+    text-align: center;
+}
+
+.loading-img {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.blue-banner {
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    background-color: #4bc2f1;
+}
+
+.banner-text {
+    vertical-align: middle;
+}
+
+.abcd {
+    color: red;
+}
+
+.delete-case {
+    float: right !important;
+}
+
+.case-status {
+    float: none !important;
+    margin-left: 20px;
 }
 

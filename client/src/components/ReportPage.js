@@ -6,6 +6,8 @@ import {caseService, categoryService, mapService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import { NavLink } from 'react-router-dom';
+import createHistory from "history/createBrowserHistory";
 
 const style = {
     width: '100%',
@@ -13,7 +15,9 @@ const style = {
     position: "relative"
 }
 
-
+const history = createHistory({
+    forceRefresh: true
+})
 
 export class Report extends Component {
     message = " ";
@@ -41,28 +45,9 @@ export class Report extends Component {
         user_id: sessionStorage.getItem("userid"),
     };
 
-    // isEnabled = this.state.headline == '' || this.state.description == ''  || this.state.headline.length > 64 || this.state.category_id.trim() == '' ||
-    //     this.state.picture.trim() == '' || (this.country.trim() != 'Norge' || this.country.trim() != 'Norway');
-
     fileSelectedHandler = event => {
         console.log(event.target.files[0]);
         this.selectedFile = event.target.files[0];
-    };
-
-    fileUploadHandler(){
-        let fd = new FormData();
-        if (this.selectedFile == null) {
-            this.error = "Vennligst last opp bilde!";
-            console.log('Last opp fil');
-        } else {
-            fd.append('file', this.selectedFile, this.selectedFile.name);
-            fd.append('upload_preset', 'elo47cnr');
-            axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
-                .then(res => {
-                    this.state.picture = res.url;
-                    this.register();
-                });
-        }
     };
 
     handleChange = event => {
@@ -75,6 +60,11 @@ export class Report extends Component {
             [name]: value
         }));
     };
+
+    isImage(myString) {
+        let re = /\.(gif|jpg|jpeg|tiff|png)$/i;
+        return re.test(myString);
+    }
 
     render(){
         return(
@@ -148,9 +138,9 @@ export class Report extends Component {
                                 </option>
                             ))}
                         </select>
-                        <button type="button" onClick={this.fileUploadHandler} className="btn btn-primary fullfør">
-                            Fullfør
-                        </button>
+                            <button type="button" onClick={this.register} className="btn btn-primary fullfør">
+                                Fullfør
+                            </button>
                         <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
@@ -204,64 +194,65 @@ export class Report extends Component {
     };
 
     register(){
-        var valid = true;
         if (this.state.headline == ''){
-            // valid = false;
-            // Alert.danger('Tittel må fylles inn!');
             this.error = "Tittel må fylles inn!";
             return null;
         } else if (this.state.headline.length > 64){
-            // valid = false;
-            // Alert.danger('Max tittel lengde: 64 tegn');
             this.error = "Max tittel lengde: 64 tegn";
             return null;
         } else {
             this.error = "";
         }
-        if (this.state.category_id.trim() == ''){
-            this.error = "Kategori er påkrevd!";
-            return null;
-        } else {
-            this.error = "";
-        }
-        if (this.state.picture.trim() == '') {
-            this.error = "Vennligst last opp et bilde";
-            return null;
-        } else {
-            this.error = "";
-        }
+
         if (this.country.trim() == 'Norge' || this.country.trim() == 'Norway') {
             this.error = "";
         } else {
             this.error = "Vennligst velg et sted i Norge";
             return null;
         }
+        if (this.selectedFile == null) {
+            this.error = "Vennligst last opp bilde!";
+            return null;
+        } else if(!this.isImage(this.selectedFile.name)) {
+            this.error = "Du kan bare laste opp bildefiler";
+            console.log('Ikke bilde!');
+            return null;
+        } else {
+            this.error = '';
+        }
 
-
-
-        const casedata = {
-            headline: this.state.headline,
-            description: this.state.description,
-            latitude: this.lat,
-            longitude: this.lng,
-            zipcode: this.zipcode,
-            picture: this.state.picture,
-            category_id: this.state.category_id,
-            user_id: this.state.user_id
-        };
-
-        const fd = new FormData();
+        if (this.state.category_id.trim() == ''){
+            this.error = "Kategori er påkrevd!";
+            return null;
+        } else {
+            this.error = "";
+        }
+        let fd = new FormData();
         fd.append('file', this.selectedFile, this.selectedFile.name);
         fd.append('upload_preset', 'elo47cnr');
         axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
             .then(res => {
                 this.state.picture = res.url;
-            });
+                console.log('test');
 
-            if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
-            caseService.createUserCase(casedata)
-                .then(window.location.reload())
-                .catch((error: Error) => Alert.danger(error.message));
+                const casedata = {
+                    headline: this.state.headline,
+                    description: this.state.description,
+                    latitude: this.lat,
+                    longitude: this.lng,
+                    zipcode: this.zipcode,
+                    picture: this.state.picture,
+                    category_id: this.state.category_id,
+                    user_id: this.state.user_id
+                };
+
+                if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
+                caseService.createUserCase(casedata)
+                    .then(window.location.reload())
+                    .catch((error: Error) => Alert.danger(error.message));
+
+                window.location = "#validation";
+            });
     }
 
     componentDidMount(){

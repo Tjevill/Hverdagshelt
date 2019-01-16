@@ -5,7 +5,7 @@ module.exports = class CasesDao extends Dao {
     /** Get all cases from db ordered by timestamp.*/
     getAllCases(callback){
         super.query(
-            "SELECT * FROM Cases ORDER BY timestamp", 
+            "SELECT * FROM Cases ORDER BY timestamp DESC",
             [],
             callback
         );
@@ -70,23 +70,22 @@ module.exports = class CasesDao extends Dao {
     *   @param case_id : case_id.
     *   @param json : json object with changes.
      */
-    updateCase(case_id: number, json, callback){
-        let val = [
-                    json.description, 
-                    json.longitude, 
-                    json.latitude, 
-                    json.status_id, 
-                    json.user_id, 
-                    json.category_id, 
-                    json.zipcode, 
-                    json.headline,
-                    json.picture, 
-                    json.employee_id, 
-                    json.org_id,
-                    json.email,
-                    case_id
-
-                    ];
+     updateCase(json, callback){
+        var val = [
+                    
+                   json.description,
+                   json.longitude,
+                   json.latitude,
+                   json.status_id,
+                   json.user_id,
+                   json.category_id,
+                   json.zipcode,
+                   json.headline,
+                   json.picture,
+                   json.employee_id,
+                   json.org_id,
+                   json.case_id
+        ];
         super.query(
             "UPDATE Cases SET description = ?, longitude = ?, latitude = ?, status_id = ?, user_id = ?, category_id = ?, zipcode = ?, headline = ?, picture = ?, employee_id = ?, org_id = ? WHERE case_id = ? ",
             val,
@@ -94,13 +93,34 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
-    updateCaseStatus(case_id: number, callback){
+
+/*
+    updateCaseStatus(json, callback) {
+        var val = [
+            json.status_id,
+            json.case_id
+        ];
         super.query(
-          "UPDATE Cases SET status_id = 7 WHERE case_id = ?",
-          [case_id],
-          callback
+            "UPDATE Cases set status_id = ? WHERE case_id = ?",
+            val,
+            callback
         );
     }
+    */
+	
+	/**
+	 * Updates status_id to DELETED in database when user deletes one of their cases
+	 * @param id The case id
+	 * @param callback From db
+	 */
+	updateCaseStatusToDeleted (id: number, callback: mixed) {
+		super.query(
+			"UPDATE Cases SET status_id = 7 WHERE case_id = ?",
+			[id],
+			callback
+		)
+	}
+  
 
     /** Delete case on case_id
     *   @param case_id - the case_id
@@ -131,7 +151,7 @@ module.exports = class CasesDao extends Dao {
     *   @param description - the category name.
     */
     searchCaseCategory(description: string, callback){
-        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ", [description], callback);
+        super.query("SELECT * FROM Cases WHERE category_id = (SELECT category_id FROM Category WHERE description = ?) ORDER BY Cases.timestamp DESC", [description], callback);
     }
 
     /** Search for a case based on the description e.g "tett vannhull". 
@@ -149,7 +169,7 @@ module.exports = class CasesDao extends Dao {
     }
 
     getProvinceOnCase(province, callback){
-        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ?",
+        super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ? ORDER BY Cases.timestamp DESC",
         [province],
         callback
         );

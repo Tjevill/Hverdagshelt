@@ -14,20 +14,23 @@ import {
 	ListItemContent,
 	ListItemAction,
 	Grid,
-	Cell
+	Cell,
+	Textfield
 } from "react-mdl";
+
 import { eventService } from "../services.js";
 
-export default class events extends Component {
+export default class Events extends Component {
 	/*user= "haki"; // Endre til case senere */
 	events = [];
 	render() {
 		return (
 			<div className="events-body">
 				<div className="userHome-body">
-				<div className="userHome-container">
-					<div className="userHome-events">
-							<h4>Events</h4>
+					<div className="userHome-container">
+						<div className="userHome-events">
+							<h4>Kommende events</h4>
+
 							{this.events.map(e => (
 								<div className="userHome-event">
 									<Grid className="grid1">
@@ -56,11 +59,13 @@ export default class events extends Component {
 
 													<h4>
 														{e.date
-															.substring(0, 16)
-															.replace("20", "")
-															.replace("T", " ")
-															.substring(0, 8)
-															.substring(0, 2)}
+															.substring(8, 10)
+															.replace(
+																"0",
+																""
+															)
+
+														}
 													</h4>
 												</div>
 											</div>
@@ -72,7 +77,7 @@ export default class events extends Component {
 												<p>
 													{" "}
 													<Icon name="home" />
-													{e.zipcode}
+													{e.address}
 												</p>
 												<p>
 													{" "}
@@ -83,12 +88,51 @@ export default class events extends Component {
 														.replace("T", " ")
 														.substring(9)}
 												</p>
+
+
+												<button type="button" className="btn btn-secondary" data-toggle="modal"
+														data-target= {"#"+e.event_id}>
+													Les mer
+												</button>
+
+												<div className="modal fade" id= {e.event_id} tabIndex="-1" role="dialog"
+													 aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+													<div className="modal-dialog" role="document">
+
+														<div className="modal-content">
+
+															<div className="modal-header">
+
+																<h5 className="modal-title" id="exampleModalLabel">{e.name}</h5>
+
+																<button type="button" className="close" data-dismiss="modal"
+																		aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+
+															</div>
+
+															<div className="modal-body">
+																{e.description}
+															</div>
+															<div className="modal-footer">
+																<div className = "float-left">{e.venue+" - "+e.address}</div>
+																<button type="button" className="btn btn-secondary"
+																		data-dismiss="modal">Close
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
 											</div>
 										</Cell>
 
 										<Cell col={4}>
 											<div className="cell3">
-												<img src="https://www.magical-planet.com/wp-content/uploads/2018/03/Duomo-of-Milan-696x366.jpg" />
+												<img src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
 											</div>
 										</Cell>
 									</Grid>
@@ -98,10 +142,12 @@ export default class events extends Component {
 					</div>
 				</div>
 			</div>
+
 		);
 	}
 
 	componentDidMount() {
+		console.log("events mounted");
 		eventService //Endre til event senere
 			.getAllEvents()
 			.then(sak => (this.events = sak))

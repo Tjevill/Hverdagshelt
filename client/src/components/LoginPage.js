@@ -4,11 +4,11 @@ import React from 'react';
 import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
-import createHistory from 'history/createBrowserHistory'
+import createHashHistory from "history/createHashHistory";
 
-const history = createHistory({
-    forceRefresh: true
-})
+
+const history = createHashHistory();
+
 
 export default class LoginPage extends React.Component {
     constructor(props) {
@@ -105,7 +105,7 @@ export default class LoginPage extends React.Component {
             })
             .catch((error: Error) => {
                 if (error.message.includes("401"))
-                    this.message = "Feil brukernavn eller passord.";
+                    this.state.message1 = "Feil brukernavn eller passord.";
             });
     }
 
@@ -138,7 +138,7 @@ export default class LoginPage extends React.Component {
             })
             .catch((error: Error) => {
                 if (error.message.includes("401"))
-                    this.message = "Feil brukernavn eller passord.";
+                    this.state.message2 = "Feil brukernavn eller passord.";
             });
     }
 
@@ -170,7 +170,7 @@ export default class LoginPage extends React.Component {
             })
             .catch((error: Error) => {
                 if (error.message.includes("401"))
-                    this.message = "Feil brukernavn eller passord.";
+                    this.state.message3 = "Feil brukernavn eller passord.";
             });
     }
 
@@ -187,146 +187,153 @@ export default class LoginPage extends React.Component {
 
                 <div className="row">
 
+                    <div className="group btmspace-50 demo">
+                        <div className="one_third first">
 
+                            <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
 
-                    <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
-
-                        <h3>HVERDAGSHELT</h3>
-                        <div className="profilbilde">
-                            <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
-                        </div>
-
-                        <AnimateHeight
-                            duration={ 500 }
-                            height={ height1 } // see props documentation bellow
-                        >
-                        <div id="option1" className="login">
-
-                            <h4>Logg inn:</h4>
-
-                                <form name="formuser" id="formuser">
-                                <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
-                                    <label htmlFor="email1">E-mail</label>
-                                    <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
-                                    {submitted1 && !email1 &&
-                                    <div className="help-block">E-mail is required</div>
-                                    }
+                                <h3>HVERDAGSHELT</h3>
+                                <div className="profilbilde">
+                                    <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                                 </div>
-                                <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
-                                    <label htmlFor="password1">Password</label>
-                                    <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
-                                    {submitted1 && !password1 &&
-                                    <div className="help-block">Password is required</div>
-                                    }
-                                </div>
-                                <div className="form-group">
-                                    <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                    {loading1 &&
-                                    <div>Loading</div>}
-                                </div>
-                                    <div className="form-group"><h3>{this.state.message1}</h3></div>
-                                {error1 &&
-                                <div className={'alert alert-danger'}>{error1}</div>
-                                }
-                            </form>
-                        </div>
-                        </AnimateHeight>
-                    </div>
 
+                                <AnimateHeight
+                                    duration={ 500 }
+                                    height={ height1 } // see props documentation bellow
+                                >
+                                    <div id="option1" className="login">
 
+                                        <h4>Logg inn:</h4>
 
-                    <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
-
-                        <h3>BEDRIFT</h3>
-                        <div className="profilbilde">
-                            <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
-                        </div>
-
-                        <AnimateHeight
-                            duration={ 500 }
-                            height={ height2 } // see props documentation bellow
-                        >
-                            <div id="option2" className="login">
-
-                                <h4>Logg inn:</h4>
-
-                                <form name="formbedrift" id="formbedrift">
-                                    <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
-                                        <label htmlFor="email2">E-mail</label>
-                                        <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
-                                        {submitted2 && !email2 &&
-                                        <div className="help-block">E-mail is required</div>
-                                        }
+                                        <form name="formuser" id="formuser">
+                                            <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
+                                                <label htmlFor="email1">E-mail</label>
+                                                <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
+                                                {submitted1 && !email1 &&
+                                                <div className="help-block">E-mail is required</div>
+                                                }
+                                            </div>
+                                            <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
+                                                <label htmlFor="password1">Password</label>
+                                                <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
+                                                {submitted1 && !password1 &&
+                                                <div className="help-block">Password is required</div>
+                                                }
+                                            </div>
+                                            <div className="form-group">
+                                                <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
+                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                {loading1 &&
+                                                <div>Loading</div>}
+                                            </div>
+                                            <div className="form-group"><h4>{this.state.message1}</h4></div>
+                                            {error1 &&
+                                            <div className={'alert alert-danger'}>{error1}</div>
+                                            }
+                                        </form>
                                     </div>
-                                    <div className={'form-group' + (submitted2 && !password2 ? ' has-error' : '')}>
-                                        <label htmlFor="password2">Password</label>
-                                        <input type="password" className="form-control" name="password2" autoComplete="password2" onChange={this.handleChange} />
-                                        {submitted2 && !password2 &&
-                                        <div className="help-block">Password is required</div>
-                                        }
-                                    </div>
-                                    <div className="form-group">
-                                        <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
-                                        {loading2 &&
-                                        <div>Loading</div>}
-                                    </div>
-                                    <div className="form-group"><h3>{this.state.message2}</h3></div>
-                                    {error2 &&
-                                    <div className={'alert alert-danger'}>{error2}</div>
-                                    }
-                                </form>
+                                </AnimateHeight>
                             </div>
-                        </AnimateHeight>
-                    </div>
 
-                    <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
-
-                        <h3>KOMMUNE</h3>
-                        <div className="profilbilde">
-                            <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                         </div>
+                        <div className="one_third">
 
-                        <AnimateHeight
-                            duration={ 500 }
-                            height={ height3 } // see props documentation bellow
-                        >
-                            <div id="option3" className="login">
+                            <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
-                                <h4>Logg inn:</h4>
+                                <h3>BEDRIFT</h3>
+                                <div className="profilbilde">
+                                    <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
+                                </div>
 
-                                <form name="formkommune" id="formkommune">
-                                    <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
-                                        <label htmlFor="email3">E-mail</label>
-                                        <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
-                                        {submitted3 && !email3 &&
-                                        <div className="help-block">E-mail is required</div>
-                                        }
+                                <AnimateHeight
+                                    duration={ 500 }
+                                    height={ height2 } // see props documentation bellow
+                                >
+                                    <div id="option2" className="login">
+
+                                        <h4>Logg inn:</h4>
+
+                                        <form name="formbedrift" id="formbedrift">
+                                            <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
+                                                <label htmlFor="email2">E-mail</label>
+                                                <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
+                                                {submitted2 && !email2 &&
+                                                <div className="help-block">E-mail is required</div>
+                                                }
+                                            </div>
+                                            <div className={'form-group' + (submitted2 && !password2 ? ' has-error' : '')}>
+                                                <label htmlFor="password2">Password</label>
+                                                <input type="password" className="form-control" name="password2" autoComplete="password2" onChange={this.handleChange} />
+                                                {submitted2 && !password2 &&
+                                                <div className="help-block">Password is required</div>
+                                                }
+                                            </div>
+                                            <div className="form-group">
+                                                <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
+                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                {loading2 &&
+                                                <div>Loading</div>}
+                                            </div>
+                                            <div className="form-group"><h4>{this.state.message2}</h4></div>
+                                            {error2 &&
+                                            <div className={'alert alert-danger'}>{error2}</div>
+                                            }
+                                        </form>
                                     </div>
-                                    <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
-                                        <label htmlFor="password3">Password</label>
-                                        <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
-                                        {submitted3 && !password3 &&
-                                        <div className="help-block">Password is required</div>
-                                        }
-                                    </div>
-                                    <div className="form-group">
-                                        <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
-                                        {loading3 &&
-                                        <div> Loading </div>}
-                                    </div>
-                                    <div className="form-group"><h3>{this.state.message3}</h3></div>
-                                    {error3 &&
-                                    <div className={'alert alert-danger'}>{error3}</div>
-                                    }
-                                </form>
+                                </AnimateHeight>
                             </div>
-                        </AnimateHeight>
+
+                        </div>
+                        <div className="one_third">
+
+                            <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
+
+                                <h3>KOMMUNE</h3>
+                                <div className="profilbilde">
+                                    <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
+                                </div>
+
+                                <AnimateHeight
+                                    duration={ 500 }
+                                    height={ height3 } // see props documentation bellow
+                                >
+                                    <div id="option3" className="login">
+
+                                        <h4>Logg inn:</h4>
+
+                                        <form name="formkommune" id="formkommune">
+                                            <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
+                                                <label htmlFor="email3">E-mail</label>
+                                                <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
+                                                {submitted3 && !email3 &&
+                                                <div className="help-block">E-mail is required</div>
+                                                }
+                                            </div>
+                                            <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
+                                                <label htmlFor="password3">Password</label>
+                                                <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
+                                                {submitted3 && !password3 &&
+                                                <div className="help-block">Password is required</div>
+                                                }
+                                            </div>
+                                            <div className="form-group">
+                                                <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
+                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                {loading3 &&
+                                                <div> Loading </div>}
+                                            </div>
+                                            <div className="form-group"><h4>{this.state.message3}</h4></div>
+                                            {error3 &&
+                                            <div className={'alert alert-danger'}>{error3}</div>
+                                            }
+                                        </form>
+                                    </div>
+                                </AnimateHeight>
+                            </div>
+
+                        </div>
                     </div>
-
-
-                </div>
-
-
+                   </div>
             </div>
         );
     }

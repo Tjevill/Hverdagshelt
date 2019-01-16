@@ -37,6 +37,21 @@ export default class Register extends Component {
 //     console.log(this.state);
   };
 
+    hasNumber(myString) {
+        return /\d/.test(myString);
+    }
+
+    onlyNumber(myString) {
+      return /^\d+$/.test(myString);
+    }
+
+    isEmail(email) {
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+
+
   render() {
     if (!this.user) return null;
 
@@ -95,9 +110,10 @@ export default class Register extends Component {
           Email:{" "}
           <input
           className="form-control"
-            type="text"
+            type="email"
             defaultValue=""
             name="email"
+          value={this.state.email}
             onChange={this.handleChange}
           />
         </div>
@@ -135,7 +151,7 @@ export default class Register extends Component {
         <button type="button" onClick={this.save} className="btn btn-primary">
           Lagre og send
         </button>
-        <h1>{this.message}</h1>
+        <h1 className="abcd">{this.message}</h1>
       </div>
 
         </div>
@@ -155,12 +171,53 @@ export default class Register extends Component {
       return null;
     }
 
-
-        if (this.state.password != this.state.password2) {
-          this.passworderror = "Passordene matcher ikke.";
+        if(this.hasNumber(this.state.name)) {
+          this.message = "Navn kan ikke inneholde tall";
+            return null;
+        } else if (this.state.name == '') {
+          this.message = "Navn kan ikke være tomt";
+            return null;
+        } else {
+          this.message = '';
+        }
+        if(this.state.address == '') {
+          this.message = "Adresse kan ikke være tomt";
           return null;
         } else {
-          this.passworderror = "";
+          this.message = '';
+        }
+        if (!this.onlyNumber(this.state.zipcode)) {
+          this.message = "Postnummer kan bare bestå av tall";
+          return null;
+        } else if (!(this.state.zipcode.length == 4)) {
+          this.message = "Postnummer må være nøyaktig 4 tall";
+            return null;
+        } else {
+          this.message = '';
+        }
+
+        if(!this.onlyNumber(this.state.tel)) {
+          this.message = "Telefonnummer kan bare bestå av tall";
+          return null;
+        } else if (!(this.state.tel.length == 8)) {
+          this.message = "Telefonnummer må være nøyaktig 8 tall";
+          return null;
+        } else {
+          this.message = '';
+        }
+
+        if(!this.isEmail(this.state.email)) {
+          this.message = "Oppgi en gyldig email";
+          return null;
+        } else {
+          this.message = '';
+        }
+
+        if (this.state.password != this.state.password2) {
+          this.message = "Passordene matcher ikke";
+          return null;
+        } else {
+          this.message = "";
         }
 
         let pass = this.state.password;
@@ -168,10 +225,10 @@ export default class Register extends Component {
         let minlength = 8;
 
         if (passlength < minlength) {
-          this.passworderror = "Passordet er for kort";
+          this.message = "Passordet er for kort";
           return null;
         } else {
-          this.passworderror = "";
+          this.message = "";
         }
 
 
@@ -206,6 +263,6 @@ export default class Register extends Component {
           (this.message = error.message)
       );
 
-    // history.push("/admin/legginn");
+      window.location = "#login";
   }
 }
