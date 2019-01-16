@@ -94,8 +94,12 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
-    updateCaseStatus(){
-
+    updateCaseStatus(case_id: number, callback){
+        super.query(
+          "UPDATE Cases SET status_id = 7 WHERE case_id = ?",
+          [case_id],
+          callback
+        );
     }
 
     /** Delete case on case_id
@@ -141,7 +145,7 @@ module.exports = class CasesDao extends Dao {
     *   @param category_id - the category_id your searching for
      */
     getCaseCategoryName(category_id, callback){
-        super.query("SELECT * FROM Cases WHERE ")
+        super.query("SELECT * FROM Cases ")
     }
 
     getProvinceOnCase(province, callback){
