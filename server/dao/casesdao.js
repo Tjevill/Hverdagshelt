@@ -95,17 +95,17 @@ module.exports = class CasesDao extends Dao {
     }
 
 
-    updateCaseStatus(json, callback){
+    updateCaseStatus(json, callback) {
         var val = [
-        json.status_id,
-        json.case_id
+            json.status_id,
+            json.case_id
         ];
         super.query(
             "UPDATE Cases set status_id = ? WHERE case_id = ?",
             val,
             callback
         );
-
+    }
 
 
     /** Delete case on case_id

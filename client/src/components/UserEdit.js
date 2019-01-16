@@ -8,7 +8,10 @@ import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets
 
 const history = createHashHistory();
 
-
+function isEmail(str){
+var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+return reg.test(str);
+}
 
 
 export default class UserEdit extends Component {
@@ -16,21 +19,28 @@ export default class UserEdit extends Component {
   user = new Object();
   bilde = "https://img.icons8.com/android/1600/user.png";
   _tel = "";
+  Emailinputtype = "";
+  Nameinputtype = "";
+  AddressInputClass = "";
+  inputstatus ="";
   _zip = "";
   state = {
-    info: "",
+    telinfo: "",
+    zipinfo: "",
+    mailinfo: "",
     tel: "",
-    zip: ""
+    zip: "",
   };
+
 
   changeVal = event =>{
       this.user.tel = event.target.value;
       var tel = event.target.value;
       if(isNaN(tel)){
           tel = this._tel;
-          this.setState({"info":"Kun skriv inn nummer"});
+          this.setState({"telinfo":"Kun skriv inn nummer"});
           setTimeout(function(){
-             this.setState({"info":""});
+             this.setState({"telinfo":""});
           }.bind(this),1000);
       }else{
           this._tel=tel;
@@ -43,9 +53,9 @@ export default class UserEdit extends Component {
       var zip = event.target.value;
       if(isNaN(zip)){
           zip = this._zip;
-          this.setState({"info":"Kun skriv inn nummer"});
+          this.setState({"zipinfo":"Kun skriv inn nummer"});
           setTimeout(function(){
-             this.setState({"info":""});
+             this.setState({"zipinfo":""});
           }.bind(this),1000);
       }else{
           this._zip=zip;
@@ -76,7 +86,7 @@ export default class UserEdit extends Component {
       <div className="jumbotron">
         <div className="container text-center">
           <h4>Edit</h4>
-        </div>
+          </div>
       </div>
 
 
@@ -86,27 +96,29 @@ export default class UserEdit extends Component {
          <div className="form-group">
           Navn:{" "}
           <input
-          className="form-control"
+            class={"form-control " + this.Nameinputtype}
             type="text"
             name="name"
             defaultValue={this.user.name}
             onChange={event => (this.user.name = event.target.value)}
           />
+            <div class="invalid-feedback">Ugydig Navn</div>
         </div>
         <div className="form-group">
           Adresse:{" "}
           <input
-          className="form-control"
+          class={"form-control " + this.AddressInputClass}
             type="text"
             defaultValue={this.user.address}
             name="address"
             onChange={event => (this.user.address = event.target.value)}
           />
+          <div class="invalid-feedback">Ugydig Adresse</div>
         </div>
         <div className="form-group">
           Postnummer:{" "}
           <input
-          className="form-control"
+          class={"form-control " + this.inputstatus}
             type="text"
             defaultValue={this.state.zip}
             value = {this.state.zip}
@@ -114,12 +126,12 @@ export default class UserEdit extends Component {
             name="zipcode"
             onChange={this.changeZip}
           />
-          <p color="red">{this.state.info} </p>
+          <p color="red">{this.state.zipinfo} </p>
         </div>
         <div className="form-group">
           Telefon:{" "}
           <input
-          className="form-control"
+          class={"form-control " + this.inputstatus}
             type="text"
             defaultValue={this.state.tel}
             name="tel"
@@ -127,24 +139,26 @@ export default class UserEdit extends Component {
             maxlength ="8"
             onChange={this.changeVal}
           />
-            <p color="red">{this.state.info} </p>
+            <div class="text-muted">{this.state.telinfo} </div>
         </div>
         <div className="form-group">
           Email:{" "}
           <input
-          className="form-control"
-            type="text"
+            class={"form-control " + this.Emailinputtype}
+            id="validationServer03"
+            type="email"
             defaultValue={this.user.email}
             name="email"
             onChange={event => (this.user.email = event.target.value)}
           />
+          <div class="invalid-feedback">Ugydig Email</div>
           </div>
           <br/>
           <br/>
           {button}
           <br/>
           <br/>
-          <Button.Success onClick={() => this.save(this.user)}>Save</Button.Success>
+          <Button.Success onClick={() => this.save(this.user,this.state)}>Save</Button.Success>
           <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
           </div>
           <div className="col">
@@ -207,16 +221,30 @@ export default class UserEdit extends Component {
   }
 
   save(user){
-    console.log("this.user.name:" + user.name);
-    if(user.name==""||user.name==null||user.name==" "){
-      return console.log("null name");
-    }
+    console.log("this.user" ,user);
+    if(user.name==""){
+      this.Nameinputtype = "is-invalid";
+      this.forceUpdate();
+    }else if(!isEmail(this.user.email)){
+      this.state.mailinfo = "Ugydig e-post";
+      this.Emailinputtype = "is-invalid";
+      this.forceUpdate();
+      console.log("ugydig e-post");
+    }else if(user.address==""){
+      this.AddressInputClass = "is-invalid";
+      this.forceUpdate();
+    }else{
     userService
       .updateOne(user)
       .then(()=>{
           console.log("happy");
           this.bilde ="https://visualpharm.com/assets/191/Checked%20User%20Male-595b40b75ba036ed117d6ed4.svg";
+          this.Emailinputtype = "is-valid";
+          this.inputstatus = "is-valid";
+          this.Nameinputtype = "is-valid";
+          this.AddressInputClass = "is-valid";
           this.forceUpdate();
+          /*setTimeout(function(){window.location.reload()}.bind(this),3000);*/
         })
       .catch((error: Error) => {
         Alert.danger(error.message);
@@ -224,4 +252,5 @@ export default class UserEdit extends Component {
         this.forceUpdate();
       })
     }
+  }
 }

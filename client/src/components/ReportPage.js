@@ -19,8 +19,6 @@ const history = createHistory({
     forceRefresh: true
 })
 
-
-
 export class Report extends Component {
     message = " ";
     error = " ";
@@ -62,6 +60,11 @@ export class Report extends Component {
             [name]: value
         }));
     };
+
+    isImage(myString) {
+        let re = /\.(gif|jpg|jpeg|tiff|png)$/i;
+        return re.test(myString);
+    }
 
     render(){
         return(
@@ -207,18 +210,14 @@ export class Report extends Component {
             this.error = "Vennligst velg et sted i Norge";
             return null;
         }
-
-        let fd = new FormData();
         if (this.selectedFile == null) {
             this.error = "Vennligst last opp bilde!";
             return null;
+        } else if(!this.isImage(this.selectedFile.name)) {
+            this.error = "Du kan bare laste opp bildefiler";
+            console.log('Ikke bilde!');
+            return null;
         } else {
-            fd.append('file', this.selectedFile, this.selectedFile.name);
-            fd.append('upload_preset', 'elo47cnr');
-            axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
-                .then(res => {
-                    this.state.picture = res.url;
-                });
             this.error = '';
         }
 
@@ -228,24 +227,32 @@ export class Report extends Component {
         } else {
             this.error = "";
         }
+        let fd = new FormData();
+        fd.append('file', this.selectedFile, this.selectedFile.name);
+        fd.append('upload_preset', 'elo47cnr');
+        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+            .then(res => {
+                this.state.picture = res.url;
+                console.log('test');
 
-        const casedata = {
-            headline: this.state.headline,
-            description: this.state.description,
-            latitude: this.lat,
-            longitude: this.lng,
-            zipcode: this.zipcode,
-            picture: this.state.picture,
-            category_id: this.state.category_id,
-            user_id: this.state.user_id
-        };
+                const casedata = {
+                    headline: this.state.headline,
+                    description: this.state.description,
+                    latitude: this.lat,
+                    longitude: this.lng,
+                    zipcode: this.zipcode,
+                    picture: this.state.picture,
+                    category_id: this.state.category_id,
+                    user_id: this.state.user_id
+                };
 
-            if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
-            caseService.createUserCase(casedata)
-                .then(window.location.reload())
-                .catch((error: Error) => Alert.danger(error.message));
+                if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
+                caseService.createUserCase(casedata)
+                    .then(window.location.reload())
+                    .catch((error: Error) => Alert.danger(error.message));
 
-        window.location = "#validation";
+                window.location = "#validation";
+            });
     }
 
     componentDidMount(){
