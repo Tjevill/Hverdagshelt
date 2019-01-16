@@ -20,7 +20,7 @@ import {
 
 import { eventService } from "../services.js";
 
-export default class events extends Component {
+export default class Events extends Component {
 	/*user= "haki"; // Endre til case senere */
 	events = [];
 	render() {

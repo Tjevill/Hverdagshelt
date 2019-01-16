@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import events from "./events.js";
+import Events from "./events.js";
 
 import { eventService } from "../services.js";
 
@@ -30,7 +30,7 @@ export default class userHome extends Component {
 							</div>
 
 					</div>
-					<events/>
+					<Events/>
 				</div>
 			</div>
 
