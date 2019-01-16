@@ -88,12 +88,51 @@ export default class Events extends Component {
 														.replace("T", " ")
 														.substring(9)}
 												</p>
+
+
+												<button type="button" className="btn btn-secondary" data-toggle="modal"
+														data-target= {"#"+e.event_id}>
+													Les mer
+												</button>
+
+												<div className="modal fade" id= {e.event_id} tabIndex="-1" role="dialog"
+													 aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+													<div className="modal-dialog" role="document">
+
+														<div className="modal-content">
+
+															<div className="modal-header">
+
+																<h5 className="modal-title" id="exampleModalLabel">{e.name}</h5>
+
+																<button type="button" className="close" data-dismiss="modal"
+																		aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+
+															</div>
+
+															<div className="modal-body">
+																{e.description}
+															</div>
+															<div className="modal-footer">
+																<div className = "float-left">{e.venue+" - "+e.address}</div>
+																<button type="button" className="btn btn-secondary"
+																		data-dismiss="modal">Close
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
 											</div>
 										</Cell>
 
 										<Cell col={4}>
 											<div className="cell3">
-												<img src="https://www.magical-planet.com/wp-content/uploads/2018/03/Duomo-of-Milan-696x366.jpg" />
+												<img src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
 											</div>
 										</Cell>
 									</Grid>
@@ -103,6 +142,7 @@ export default class Events extends Component {
 					</div>
 				</div>
 			</div>
+
 		);
 	}
 
