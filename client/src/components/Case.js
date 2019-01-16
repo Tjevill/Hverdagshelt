@@ -16,6 +16,7 @@ export default class Case extends Component {
     if(this.loaded){
       return (
         <div id="case-page">
+
           <div id="info">
               <Card
                 title={this.case.headline}
@@ -24,7 +25,13 @@ export default class Case extends Component {
                 zip={this.case.zipcode}
                 date={this.case.timestamp}
               />
-            <img id="picture" src={this.case.picture} alt="Case" />
+              <img id="picture" src={this.case.picture} alt="Snow" />
+
+              <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01" />
+                <div id="caption"></div>
+              </div>
           <p id="description">{this.case.description}</p>
         </div>
           {this.map}
