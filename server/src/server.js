@@ -931,7 +931,7 @@ app.post("/logink", (req, res) => {
 
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.json({reply: "Brukernavn eller passord er ikke riktig"});
             res.status(401);
 
         }
@@ -971,7 +971,7 @@ app.post("/loginb", (req, res) => {
 
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.json({reply: "Brukernavn eller passord er ikke riktig"});
             res.status(401);
 
         }
