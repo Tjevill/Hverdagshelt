@@ -236,6 +236,7 @@ export class caseEdit extends Component<{
 				this.lng = sak[0].longitude;
 				this.lat = sak[0].latitude;
 				this.zipcode = sak[0].zipcode;
+				this.status=sak[0].status_id;
 				this.setState({
 				headline : sak[0].headline,
 				description : sak[0].description	
