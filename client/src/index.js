@@ -8,33 +8,36 @@ import { withRouter } from 'react-router';
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHashHistory from "history/createHashHistory";
 
-import Menu from "./components/Menu";
-import Case from "./components/Case";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
-import ProfilePage from "./components/ProfilePage";
-import ReportPage from "./components/ReportPage";
-import IssueOverview from "./components/IssueOverview";
-import UserHome from "./components/userHome";
-import Events from "./components/events";
+import {refreshToken} from "./components/widgets";
+
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Register from "./components/Register";
-import NewOrganization from "./components/NewOrganization";
-import NewEmployee from "./components/NewEmployee";
+
 import AdminMain from "./components/AdminMain";
-import LoginPage from "./components/LoginPage";
-import {refreshToken} from "./components/widgets";
-import PrivateRoute from 'react-private-route';
-import UserEdit from "./components/UserEdit";
-import ChangePassword from "./components/ChangePassword";
-import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
-import Map from "./components/Map";
+import Case from "./components/Case";
+import CaseListCard from "./components/CaseListCard";
 import CaseEdit from "./components/caseEdit";
+import ChangePassword from "./components/ChangePassword";
+import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
+import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
-import NewEvents from "./components/NewEvents";
-import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
+import IssueOverview from "./components/IssueOverview";
+import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
+import LoginPage from "./components/LoginPage"
+import Map from "./components/Map";
+import Menu from "./components/Menu";
+import NewEmployee from "./components/NewEmployee";
+import NewEvents from "./components/NewEvents";
+import NewOrganization from "./components/NewOrganization";
+import PrivateRoute from 'react-private-route';
+import ProfileCard from "./components/ProfileCard";
+import ProfilePage from "./components/ProfilePage";
+import Register from "./components/Register";
+import ReportPage from "./components/ReportPage";
+import ReportValidation from "./components/ReportValidation";
+import UserEdit from "./components/UserEdit";
+import UserHome from "./components/userHome";
 
 
 function isValidUser() {
@@ -138,6 +141,12 @@ class Main extends Component {
                             <Route exact path="/glemtpassord" component={ForgottenPassword} />
                             <PrivateRoute
                                 exact
+                                path="/admin/changePassword"
+                                component={ChangePasswordEmployee}
+                                isAuthenticated={this.islogged}
+                            />
+                            <PrivateRoute
+                                exact
                                 path="/user/edit"
                                 component={UserEdit}
                                 isAuthenticated={this.islogged}
@@ -191,4 +200,3 @@ class Main extends Component {
 export default withRouter(Main);
 
 ReactDOM.render(<Main />, document.getElementById("root"));
-
