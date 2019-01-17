@@ -8,8 +8,6 @@ import createHashHistory from "history/createHashHistory";
 
 import Navbar from "./components/Navbar";
 import Case from "./components/Case";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
 import ReportPage from "./components/ReportPage";
 import IssueOverview from "./components/IssueOverview";

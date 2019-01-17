@@ -7,6 +7,7 @@ import createHashHistory from "history/createHashHistory";
 
 export default class Register extends Component {
   user = [];
+  emails = [];
 
   message = " ";
   passworderror = " ";
@@ -162,6 +163,15 @@ export default class Register extends Component {
   }
 
 
+  componentDidMount() {
+        userService.getAllUsers()
+            .then(response => {
+            response.map(item => {
+                this.emails.push(item.email);
+            });
+            console.log(this.emails);
+            })
+  }
 
 
   save() {
@@ -170,6 +180,17 @@ export default class Register extends Component {
       this.message = "Error";
       return null;
     }
+
+    this.state.email = this.state.email.toLowerCase();
+
+        if (this.emails.includes(this.state.email)) {
+            this.message = "En bruker har allerede registrert seg med denne mailen";
+            return null
+        } else {
+            this.message = '';
+            return null;
+        }
+
 
         if(this.hasNumber(this.state.name)) {
           this.message = "Navn kan ikke inneholde tall";

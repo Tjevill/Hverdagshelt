@@ -6,8 +6,6 @@ import createHistory from 'history/createBrowserHistory';
 import {refreshToken} from "./widgets";
 
 import Case from "./Case";
-import CaseListCard from "./CaseListCard";
-import ProfileCard from "./ProfileCard";
 import ProfilePage from "./ProfilePage";
 import ReportPage from "./ReportPage";
 import IssueOverview from "./IssueOverview";
