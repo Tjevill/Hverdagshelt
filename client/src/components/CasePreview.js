@@ -81,26 +81,5 @@ export default class CasePreview extends Component <{title: string, status: numb
             console.log('Error, status invalid!');
         }
     }
-<<<<<<< HEAD
-
-   /* delete(case_id) {
-        console.log("Er du sikker på at du vil slette følgende sak?");
-        if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
-         caseService.updateCaseStatus(case_id, {
-         status_id: 7,
-         case_id: case_id
-        })
-        .then(res => {
-          console.log("Response recieved:", res);
-        })
-        .catch(err => {
-          console.log("AXIOS ERROR:", err);
-        });
-            window.alert("Din sak har blitt slettet");
-            window.location.reload();
-        }
-    }*/
-=======
     
->>>>>>> 702a4cb022d73a9613b206bc9cf293daef8efff0
 }
