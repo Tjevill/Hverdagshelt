@@ -55,7 +55,6 @@ export default class IssueOverviewForEmployee extends Component <{ match: { para
 
           <div className="container">
             <h2 class="display-4">Saker</h2>
-            <>
             <Router history={history}>
               <table class="table table-hover">
                 <thead>
