@@ -8,12 +8,14 @@ class Category {
 }
 
 class Employee{
+  employee_id: number;
   name: string;
   tel: string;
   email: string;
   password: string;
   commune: string;
   county: string;
+  superuser: boolean;
 }
 
 class Case {
