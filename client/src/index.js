@@ -1,42 +1,41 @@
 // @flow
 /* eslint eqeqeq: "off" */
-import React from "react";
-import {Component, sharedComponentData} from 'react-simplified';
-import ReactDOM from "react-dom";
-import { Redirect, HashRouter, Route, NavLink, Switch,  } from 'react-router-dom'
-import { withRouter } from 'react-router';
-import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
-import createHashHistory from "history/createHashHistory";
-
-import Menu from "./components/Menu";
-import Case from "./components/Case";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
-import ProfilePage from "./components/ProfilePage";
-import ReportPage from "./components/ReportPage";
-import IssueOverview from "./components/IssueOverview";
-import UserHome from "./components/userHome";
-import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Register from "./components/Register";
-import AdminNyBedrift from "./components/AdminNyBedrift";
-import NewEmployee from "./components/NewEmployee";
-import AdminMain from "./components/AdminMain";
-import LoginPage from "./components/LoginPage";
+import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
+import { Redirect, HashRouter, Route, NavLink, Switch,  } from 'react-router-dom'
+import { withRouter } from 'react-router';
+import {Component, sharedComponentData} from 'react-simplified';
 import {refreshToken} from "./components/widgets";
-import PrivateRoute from 'react-private-route';
-import UserEdit from "./components/UserEdit";
-import ChangePassword from "./components/ChangePassword";
-import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
-import Map from "./components/Map";
+import AdminBedrift from "./components/AdminBedrift";
+import AdminMain from "./components/AdminMain";
+import AdminNyBedrift from "./components/AdminNyBedrift";
+import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
+import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
+import CaseListCard from "./components/CaseListCard";
+import ChangePassword from "./components/ChangePassword";
+import createHashHistory from "history/createHashHistory";
+import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
-import AdminBedrift from "./components/AdminRedigerBedrift";
-import NewEvents from "./components/NewEvents";
-import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
-
+import IssueOverview from "./components/IssueOverview";
+import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
+import LoginPage from "./components/LoginPage";
+import Map from "./components/Map";
+import Menu from "./components/Menu";
+import NewEmployee from "./components/NewEmployee";
+import NewEvents from "./components/NewEvents";
+import PrivateRoute from 'react-private-route';
+import ProfileCard from "./components/ProfileCard";
+import ProfilePage from "./components/ProfilePage";
+import React from "react";
+import ReactDOM from "react-dom";
+import Register from "./components/Register";
+import ReportPage from "./components/ReportPage";
+import ReportValidation from "./components/ReportValidation";
+import UserEdit from "./components/UserEdit";
+import UserHome from "./components/userHome";
 
 function isValidUser() {
     const promiseObject = refreshToken();
@@ -76,46 +75,48 @@ class ikkeforsideMain extends Component {
     }
 }
 
+
+class LoginStatus extends Component {
+    render () {
+        return (
+            (this.amILoggedin) ? <div className="logged-in-as">Not logged in</div> :
+            <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+        );
+    }
+}
+
+
+
 class Main extends Component {
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
 
         const promiseObject = refreshToken();
-        // promiseObject.then((res) => console.log("res: ", res));
-        promiseObject.then((res) => this.setState({islogged: res}));
-        console.log(" hmm ?? " + this.props.islogged);
-
-
+        promiseObject.then(value => {
+            if (value != 'undefined') {
+                this.amILoggedin = value;
+            }
+        });
     }
 
+    amILoggedin = false;
 
     render() {
-
-
-        if (sessionStorage.getItem("access") === null) {
-            this.islogged = false;
-        } else {
-            this.islogged = true;
-        }
-
         console.log("Access: " + sessionStorage.getItem("access"));
-
-
         return (
 
             <div>
                 <HashRouter>
 
                     <div>
-                        <div className="bgded overlay">{ console.log("hmmm: ", this.props) }
+                        <div className="bgded overlay">{ console.log("hmmm: ", this.amILoggedin) }
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
                                     <div id="logo" className="fl_left">
                                         <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
                                     </div>
-                                    <Menu loggedin={this.islogged}/>
-                                    <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+                                    <Menu loggedin={this.amILoggedin}/>
+                                    <LoginStatus loggdin={this.amILoggedin}/>
                                 </header>
                             </div>
                             <Route exact path="/" component={forsideMain} />
@@ -131,45 +132,24 @@ class Main extends Component {
                             <Route exact path="/events" component={Events}/>
                             <Route exact path="/events/:id/edit" component={EventsEdit}/>
                             <Route exact path="/map" component={Map} />
-                            <Route exact path="/nyorg" component={AdminNyBedrift}/>
+
+
+
+
                             <Route exact path="/nyansatt" component={NewEmployee}/>
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
                             <Route exact path="/user" component={ProfilePage} />
                             <Route exact path="/glemtpassord" component={ForgottenPassword} />
-                            <PrivateRoute
-                                exact
-                                path="/user/edit"
-                                component={UserEdit}
-                                isAuthenticated={this.islogged}
-                            />
-                            <PrivateRoute
-                                exact
-                                path="/user/changePassword"
-                                component={ChangePassword}
-                                isAuthenticated={this.islogged}
-                            />
-                            <PrivateRoute
-                                exact
-                                path="/profile"
-                                component={ProfilePage}
-                                isAuthenticated={this.islogged}
-                                redirect="/login"
-                            />
-                            <PrivateRoute
-                                exact
-                                path="/admin/main"
-                                component={AdminMain}
-                                isAuthenticated={this.islogged}
-                                redirect="/login"
-                            />
-                            <PrivateRoute
-                                exact
-                                path="/login"
-                                component={LoginPage}
-                                isAuthenticated={!this.islogged}
-                                redirect="/"
-                            />
+                            <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin}/>
+                            <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
+                            <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
+                            <Route exact path="/nyorg" component={AdminNyBedrift}/>
+                            <PrivateRoute exact path="/admin/bedrifter/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrifter" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrifter/rediger" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                 </div>
                 <div className="wrapper row5">

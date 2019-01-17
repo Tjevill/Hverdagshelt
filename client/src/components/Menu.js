@@ -131,7 +131,7 @@ export default class Menu extends Component {
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/helter">Hverdagshelter</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/bedrifter">Bedrifter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/bedrifter/">Bedrifter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>

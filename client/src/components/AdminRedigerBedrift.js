@@ -7,7 +7,7 @@ import { employeeService } from "../services";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
-  
+
 export default class AdminNyBedrift extends Component {
     organization = [];
 
