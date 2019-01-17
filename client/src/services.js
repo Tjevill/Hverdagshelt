@@ -8,6 +8,7 @@ class Category {
 }
 
 class Employee{
+  employee_id: number;
   name: string;
   tel: string;
   email: string;
