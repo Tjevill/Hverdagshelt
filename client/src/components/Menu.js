@@ -18,24 +18,15 @@ export default class Menu extends Component {
         console.log('this is:', this);
         console.log("Cleaning sessionstorage");
         sessionStorage.clear();
-        history.push('/', {some: 'state'})
+        window.location.reload()
 
     }
 
 
     render() {
 
-
-        if (sessionStorage.getItem("access") === null) {
-            this.islogged = false;
-        } else {
-            this.islogged = true;
-        }
-
-
-        console.log("islogged:  ", this.islogged)
-        if (!this.islogged) {
-
+        console.log("Menu.js: loggedin = " + this.props.loggedin);
+        if (!this.props.loggedin) {
             return (
                 <nav id="mainav" className="fl_right">
                      <ul className="hovedmeny">
@@ -49,10 +40,9 @@ export default class Menu extends Component {
 
                 </nav>
             );
-
         }
 
-        if (this.islogged && (sessionStorage.getItem("access") == "user")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") == "user")) {
 
             return (
 
@@ -80,7 +70,7 @@ export default class Menu extends Component {
 
         }
 
-        if (this.islogged && (sessionStorage.getItem("access") == "bedrift")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
 
             return (
 
@@ -107,7 +97,7 @@ export default class Menu extends Component {
 
         }
 
-        if (this.islogged && (sessionStorage.getItem("access") == "kommune")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {
 
 
             return (
@@ -131,7 +121,7 @@ export default class Menu extends Component {
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/helter">Hverdagshelter</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/bedrifter/">Bedrifter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>

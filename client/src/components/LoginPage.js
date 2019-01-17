@@ -101,6 +101,7 @@ export default class LoginPage extends React.Component {
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 // console.log("email: " + sessionStorage.getItem("email"));
                 // console.log("user: " + sessionStorage.getItem("userid"));
+                window.location.reload()
                 if (this.state.message1 === "Success") history.push('/');
             })
             .catch((error: Error) => {
@@ -178,6 +179,11 @@ export default class LoginPage extends React.Component {
 
 
     }
+
+    componentWillReceiveProps() {
+        console.log("WillRecieveProps: ", this.props)
+    }
+
 
     render() {
         const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;

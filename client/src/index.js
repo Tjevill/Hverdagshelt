@@ -40,16 +40,7 @@ import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
 
-function isValidUser() {
-    const promiseObject = refreshToken();
-    promiseObject.then(value => {
-        if(value !='undefined') {
-            // console.log("Logged in as :" + sessionStorage.getItem("access"))
-            return(value);
-        } else {return false}
-    });
 
-}
 class forsideMain extends Component {
     render () {
         return(
@@ -92,8 +83,11 @@ class LoginStatus extends Component {
 
 class Main extends Component {
 
-    componentDidMount() {
+    amILoggedin = null;
 
+
+    componentDidMount() {
+        // console.log("This location (from componentDidMount: " + window.location);
         const promiseObject = refreshToken();
         promiseObject.then(value => {
             if (value != 'undefined') {
@@ -102,17 +96,15 @@ class Main extends Component {
         });
     }
 
-    amILoggedin = false;
-
     render() {
-        console.log("Access: " + sessionStorage.getItem("access"));
-        return (
+        // console.log("Access: " + sessionStorage.getItem("access"));
+        return this.amILoggedin == null ? "<div></div>" : (
 
             <div>
                 <HashRouter>
 
                     <div>
-                        <div className="bgded overlay">{ console.log("hmmm: ", this.amILoggedin) }
+                        <div className="bgded overlay">{ console.log("Render return check: ", this.amILoggedin) }
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
                                     <div id="logo" className="fl_left">
@@ -149,10 +141,10 @@ class Main extends Component {
                             <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
                             <Route exact path="/nyorg" component={AdminNyBedrift}/>
-                            <PrivateRoute exact path="/admin/bedrifter/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrifter" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrifter/rediger" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                 </div>
                 <div className="wrapper row5">
