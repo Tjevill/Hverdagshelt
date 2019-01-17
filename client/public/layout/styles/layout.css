@@ -245,7 +245,7 @@ td{border-width:0 1px;}
 .faico li:last-child{margin-right:0;}
 .faico a{display:inline-block; width:36px; height:36px; line-height:36px; font-size:18px; text-align:center;}
 
-.faico a{color:#FFFFFF; background-color:rgba(162,183,13,.5)/* #A2B70D */;}
+.faico a{color:#FFFFFF; background-color:rgba(162,183,13,.5)/* #4bc2f1 */;}
 
 .faicon-dribble:hover{background-color:#EA4C89;}
 .faicon-facebook:hover{background-color:#3B5998;}
@@ -265,17 +265,17 @@ td{border-width:0 1px;}
 /* Colours
 --------------------------------------------------------------------------------------------------------------- */
 body{color:#CBCBCB; background-color:#191919;}
-a{color:#A2B70D;}
+a{color:#4bc2f1;}
 
 a:active, a:focus{background:transparent;}/* IE10 + 11 Bugfix - prevents grey background */
 hr, .borderedbox{border-color:#D7D7D7;}
 label span{color:#FF0000; background-color:inherit;}
-input:focus, textarea:focus, *:required:focus{border-color:#A2B70D;}
+input:focus, textarea:focus, *:required:focus{border-color:#4bc2f1;}
 .overlay{color:#FFFFFF; background-color:inherit;}
 .overlay::after{color:inherit; background-color:rgba(0,0,0,.4);}
 .overlay.coloured::after{background-color:#414905;}
 
-.btn, .btn.inverse:hover{color:#FFFFFF; background-color:#A2B70D; border-color:#A2B70D;}
+.btn, .btn.inverse:hover{color:#FFFFFF; background-color:#4bc2f1; border-color:#000000;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 
 
@@ -294,10 +294,10 @@ input:focus, textarea:focus, *:required:focus{border-color:#A2B70D;}
 /* Content Area */
 .services li article{border-color:#D7D7D7;}
 .services li article > a{color:inherit;}
-.services li article:hover > a i{color:#A2B70D;}
+.services li article:hover > a i{color:#4bc2f1;}
 
 .excerpts article{border-color:#EDEDED; box-shadow:0px 0px 5px 5px #EDEDED;}/* There is sadly no box-shadow-color, so the full tag is here */
-.excerpts article:hover{border-color:#A2B70D; box-shadow:0px 0px 5px 5px rgba(162,183,13,.2)/* #A2B70D */;}
+.excerpts article:hover{border-color:#4bc2f1; box-shadow:0px 0px 5px 5px rgba(162,183,13,.2)/* #4bc2f1 */;}
 
 .excerpts article figure figcaption{color:#FFFFFF;}
 .excerpts article figure figcaption time strong{color:#414905; background-color:#EDEDED;}
@@ -312,31 +312,31 @@ input:focus, textarea:focus, *:required:focus{border-color:#A2B70D;}
 #footer .heading{color:#FFFFFF;}
 #footer hr, #footer .borderedbox, #footer .linklist li{border-color:rgba(255,255,255,.2);}
 #footer nav a{color:inherit;}
-#footer nav li:first-child a, #footer nav a:hover{color:#A2B70D;}
+#footer nav li:first-child a, #footer nav a:hover{color:#4bc2f1;}
 
 
 /* Navigation */
 #mainav li a{color:inherit;}
-#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#A2B70D; background-color:inherit;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#4bc2f1; background-color:inherit;}
 #mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.5); border-color:rgba(0,0,0,.1);}
-#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#A2B70D;}
+#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#4bc2f1;}
 #mainav form select{color:#FFFFFF; background-color:#000000; border-color:rgba(255,255,255,.2);}
 
 #breadcrumb a{color:inherit; background-color:inherit;}
-#breadcrumb li:last-child a{color:#A2B70D;}
+#breadcrumb li:last-child a{color:#4bc2f1;}
 
 .container .sidebar nav a{color:inherit; border-color:#D7D7D7;}
-.container .sidebar nav a:hover{color:#A2B70D;}
+.container .sidebar nav a:hover{color:#4bc2f1;}
 
 .pagination a, .pagination strong{border-color:#D7D7D7;}
-.pagination .current *{color:#FFFFFF; background-color:#A2B70D;}
+.pagination .current *{color:#FFFFFF; background-color:#4bc2f1;}
 
-#backtotop{color:#FFFFFF; background-color:#A2B70D;}
+#backtotop{color:#FFFFFF; background-color:#4bc2f1;}
 
 
 /* Tables + Comments */
 table, th, td, #comments .avatar, #comments input, #comments textarea{border-color:#D7D7D7;}
-#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#A2B70D;}
+#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#4bc2f1;}
 th{color:#FFFFFF; background-color:#373737;}
 tr, #comments li, #comments input[type="submit"], #comments input[type="reset"]{color:inherit; background-color:#FBFBFB;}
 tr:nth-child(even), #comments li:nth-child(even){color:inherit; background-color:#F7F7F7;}

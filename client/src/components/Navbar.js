@@ -16,7 +16,7 @@ import Events from "./events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./Register";
-import NewOrganization from "./NewOrganization";
+import AdminNyBedrift from "./AdminNyBedrift";
 import NewEmployee from "./NewEmployee";
 import AdminMain from "./AdminMain";
 import LoginPage from "./LoginPage";

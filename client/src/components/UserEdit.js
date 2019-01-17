@@ -237,11 +237,11 @@ export default class UserEdit extends Component {
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
     }else if(!isEmail(this.user.email)){
-      this.state.mailinfo = "Ugydig e-post";
+      this.state.mailinfo = "Ugyldig e-post";
       this.Emailinputtype = "is-invalid";
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
-      console.log("ugydig e-post");
+      console.log("Ugyldig e-post");
     }else if(user.address==""){
       this.AddressInputClass = "is-invalid";
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";

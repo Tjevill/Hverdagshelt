@@ -7,7 +7,7 @@ import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
 
-export default class NewOrganization extends Component {
+export default class AdminNyBedrift extends Component {
   organization = [];
 
   message = " ";

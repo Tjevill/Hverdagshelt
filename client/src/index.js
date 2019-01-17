@@ -13,7 +13,9 @@ import {refreshToken} from "./components/widgets";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 
+import AdminBedrift from "./components/AdminRedigerBedrift";
 import AdminMain from "./components/AdminMain";
+import AdminNyBedrift from "./components/AdminNyBedrift";
 import Case from "./components/Case";
 import CaseListCard from "./components/CaseListCard";
 import CaseEdit from "./components/caseEdit";
@@ -114,7 +116,7 @@ class Main extends Component {
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
                                     <div id="logo" className="fl_left">
-                                        <img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/>
+                                        <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
                                     </div>
                                     <Menu loggedin={this.islogged}/>
                                     <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
@@ -133,7 +135,7 @@ class Main extends Component {
                             <Route exact path="/events" component={Events}/>
                             <Route exact path="/events/:id/edit" component={EventsEdit}/>
                             <Route exact path="/map" component={Map} />
-                            <Route exact path="/nyorg" component={NewOrganization}/>
+                            <Route exact path="/nyorg" component={AdminNyBedrift}/>
                             <Route exact path="/nyansatt" component={NewEmployee}/>
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
@@ -183,7 +185,7 @@ class Main extends Component {
                 <div className="wrapper row5">
                     <div id="copyright" className="hoc clear">
 
-                        <p className="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Team 5</a>
+                        <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a>
                         </p>
                         <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
 
