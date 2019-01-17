@@ -31,8 +31,8 @@ export default class Events extends Component {
 						<div className="userHome-events">
 							<h4>Kommende events</h4>
 
-							{this.events.map(e => (
-								<div className="userHome-event">
+							{this.events.map((e, i) => (
+								<div key={i} className="userHome-event">
 									<Grid className="grid1">
 										<Cell col={2}>
 											<div className="cell1">
