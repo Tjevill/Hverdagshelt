@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import { userService } from "../services";
+import { employeeService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
@@ -93,6 +93,29 @@ export default class ChangePassword extends Component {
     	password: this.newPassword1
     };
 
+    employeeService
+      .verifyOldPasswordAndUpdatePWord(passwordInfo)
+      .then((response) => {
+          console.log(response + "Skal oppdatere passord");
+          employeeService.updateUserPWord(passwordInfoUpdatePasswordInDB)
+            .then(response => {
+							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+              this.meldning = "Passord endring er vellyket";
+              this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
+              console.log("this.meldning =" + this.meldning);
+              this.forceUpdate();
+						})
+            .catch(err => {
+              console.log(err, "REJECTED FEIL I DATABASE");
+            })
+        })
+     .catch((error: Error) => {
+       Alert.danger("noooooo");
+       this.meldning = "Feil ved endring av passord,Prøv på nytt";
+       this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
+       this.forceUpdate();
+		 });
+
     /*
     userService
       .verifyOldPasswordAndUpdatePWord(passwordInfo)
@@ -124,8 +147,8 @@ export default class ChangePassword extends Component {
   componentDidMount(){
     this.userid = sessionStorage.getItem("userid");
     console.log(this.userid);
-    userService
-      .getUserByID(this.id)
+    employeeService
+      .getOne(this.id)
       .then(user => {
         this.user = user[0];
         if(user) console.log("available user"+this.user.name);

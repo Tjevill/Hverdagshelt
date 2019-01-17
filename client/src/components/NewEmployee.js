@@ -7,7 +7,7 @@ import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
 
-export default class Register extends Component {
+export default class NewEmployee extends Component {
   user = [];
 
   message = " ";

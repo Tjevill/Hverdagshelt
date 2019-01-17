@@ -21,6 +21,7 @@ import CaseListCard from "./components/CaseListCard";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
+import EmployeeEdit from "./components/EmployeeEdit";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
 import ForgottenPassword from "./components/ForgottenPassword";
@@ -141,6 +142,12 @@ class Main extends Component {
                             <Route exact path="/register" component={Register}/>
                             <Route exact path="/user" component={ProfilePage} />
                             <Route exact path="/glemtpassord" component={ForgottenPassword} />
+                            <PrivateRoute
+                                exact
+                                path="/admin/edit"
+                                component={EmployeeEdit}
+                                isAuthenticated={this.islogged}
+                            />
                             <PrivateRoute
                                 exact
                                 path="/admin/changePassword"
