@@ -2,35 +2,40 @@
 /* eslint eqeqeq: "off" */
 import * as React from "react";
 import { Component } from "react-simplified";
-import CaseListCard from "./CaseListCard";
-import ProfileCard from "./ProfileCard";
 import {caseService, userService} from "../services";
 import CasePreview from "./CasePreview";
 import { Loading } from "./widgets";
 
+let loaded1 = 1;
+let loaded2 = 1;
+
 export default class ProfilePage extends Component {
 	render () {
+        if(loaded1 == 1 && loaded2 == 1){
 		return (
 
 			<div>
-				<ProfileCardTest id = {sessionStorage.getItem("userid")} />
-				<CaseListCardTest id = {sessionStorage.getItem("userid")} />
+				<ProfileCard id = {sessionStorage.getItem("userid")} />
+				<CaseListCard id = {sessionStorage.getItem("userid")} />
 			</div>
-
-
 		);
+        } else {
+            return (
+                <Loading />
+            );
+        }
 	}
 }
 
 
-export class ProfileCardTest extends Component <{ id: number }> {
-
+export class ProfileCard extends Component <{ id: number }> {
+	loaded1 = 0;
 	user = [];
 
 	render () {
 		return (
-			<div className = "card left">
-				<h5>Din brukerinformasjon</h5>
+			<div className="container profilecard-container">
+				<h2 className="display-4">Din brukerinformasjon</h2>
 				<ul className = "list-group">
 					<li className = "list-group-item d-flex justify-content-between align-items-center">
 						Navn:
@@ -57,47 +62,44 @@ export class ProfileCardTest extends Component <{ id: number }> {
 		userService.getUserByID(this.props.id)
 			.then(response => {
 				this.user = response[0];
+                loaded1 = 1;
 				//console.log(this.user.name)
 			})
 			.catch((error: Error) => console.log(error.message));
 	}
 }
 
-export class CaseListCardTest extends Component <{ id: number }> {
-
-	loaded = false;
+export class CaseListCard extends Component <{ id: number }> {
+	loaded2 = 0;
 	cases = [];
 
 	render () {
-		if(this.loaded){
 			return (
-				<div className = "profCard right ">
-					<h5>Dine registrerte saker</h5>
-					{this.cases.length != 0 ?
-						<ul className = "list-group">
-							{this.cases.map(x => (
-								<CasePreview key = {x.case_id} title = {x.headline} status = {x.status_id} id = {x.case_id} />
-							))}
-						</ul>
-						:
-						<h6>Ingen saker registrert</h6>
-					}
-				</div>
+                <div className="container caselist-container">
+                    <h2 className="display-4">Saker</h2>
+                    <table className="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tittel</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        {this.cases.map(x  => (
+                            <CasePreview  key={x.case_id} title={x.headline} status={x.status_id} id={x.case_id}/>
+                        ))}
+                    </table>
+                    <br/><br/>
+                </div>
 			);
-		} else {
-			return (
-				<Loading />
-			);
-		}
 	}
 
 	componentDidMount () {
-		//console.log("CaseListCard mounted");
 		// let cap = 50;
 		caseService.getCaseOnUser(this.props.id)
 			.then((cases => {
 				this.cases = cases.filter(e => e.status_id != 7);
-				this.loaded = true;
+				loaded2 = 1;
 			}))
 			.catch((error: Error) => console.log(error.message));
 	}
