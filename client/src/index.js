@@ -34,6 +34,8 @@ import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
 import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
+import PrivateUsersList from "./components/PrivateUsersList";
+
 
 const root = document.getElementById("root");
 
@@ -68,6 +70,7 @@ function renderRoot() {
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
                   <Route exact path="/forgot" component={ProfilePage} />
+                  <Route exact path="/admin/helter" component={PrivateUsersList} />
                   <PrivateRoute
                     exact
                     path="/user/edit"
