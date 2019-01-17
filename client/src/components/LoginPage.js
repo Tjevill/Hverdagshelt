@@ -157,11 +157,13 @@ export default class LoginPage extends React.Component {
         userService
             .loginKommune(login3)
             .then(response => {
+                console.log("Her er response: "+response);
                 this.setState({message3: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'kommune');
+                sessionStorage.setItem('superuser', response.superuser);
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
                 //console.log("user: " + sessionStorage.getItem("userid"));
@@ -296,14 +298,14 @@ export default class LoginPage extends React.Component {
                                 <form name="formkommune" id="formkommune">
                                     <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
                                         <label htmlFor="email3">E-mail</label>
-                                        <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
+                                        <input defaultValue= "oddronny@gmail.com" type="text" className="form-control" name="email3"  onChange={this.handleChange} />
                                         {submitted3 && !email3 &&
                                         <div className="help-block">E-mail is required</div>
                                         }
                                     </div>
                                     <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
                                         <label htmlFor="password3">Password</label>
-                                        <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
+                                        <input defaultValue = "abcd1234" type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
                                         {submitted3 && !password3 &&
                                         <div className="help-block">Password is required</div>
                                         }

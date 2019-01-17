@@ -32,6 +32,7 @@ import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
 import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
+import EmployeeOverview from "./components/EmployeeOverview";
 
 const root = document.getElementById("root");
 
@@ -55,7 +56,6 @@ function renderRoot() {
                   <Route exact path="/case/:id/edit" component={CaseEdit} />
                   <Route exact path="/issues" component={IssueOverview} />
                   <Route exact path="/issues/:name/:id" component={IssueOverview} />
-                  <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
                   <Route exact path="/events" component={Events}/>
                   <Route exact path="/events/:id/edit" component={EventsEdit}/>
                   <Route exact path="/map" component={Map} />
@@ -66,6 +66,8 @@ function renderRoot() {
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
                   <Route exact path="/forgot" component={ProfilePage} />
+                  <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
+                  <Route exact path="/admin/kommune" component={EmployeeOverview} />
                   <PrivateRoute
                     exact
                     path="/user/edit"

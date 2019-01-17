@@ -925,7 +925,7 @@ app.post("/logink", (req, res) => {
             employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
 
                 let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].employee_id, name: data[0].name,superuser: data[0].superuser});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
             });
 
