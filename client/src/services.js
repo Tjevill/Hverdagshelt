@@ -13,8 +13,9 @@ class Employee{
   tel: string;
   email: string;
   password: string;
-  province: string;
-  district: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
 }
 
 class Case {
