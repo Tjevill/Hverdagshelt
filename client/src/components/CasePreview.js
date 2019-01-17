@@ -28,9 +28,9 @@ export default class CasePreview extends Component <{title: string, status: numb
                 </NavLink>
 
                 <span className={this.y + " case-status"} >{this.x}</span>
-                 <NavLink to={'/case/' + this.props.id + '/edit'}>
-                   rediger
-                </NavLink>
+                 {/*<NavLink to={'/case/' + this.props.id + '/edit'}>*/}
+                    {/*rediger*/}
+                {/*</NavLink>*/}
                 <a className="pointer delete-case" onClick ={() => this.delete(this.props.id)}>
                     Slett sak
                 </a>
@@ -40,7 +40,6 @@ export default class CasePreview extends Component <{title: string, status: numb
     }
     
     delete(case_id) {
-
         
         if ( window.confirm("Er du sikker på at du ønsker å slette saken?") ){
             caseService.changeCaseStatus(case_id)
@@ -52,7 +51,7 @@ export default class CasePreview extends Component <{title: string, status: numb
                 console.log(err, "Error ved oppdatering av status");
             });
           }
-    }
+    } 
     
     componentDidMount() {
         if (this.props.status == 2) {
