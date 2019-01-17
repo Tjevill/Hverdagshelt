@@ -25,8 +25,16 @@ export default class Menu extends Component {
 
     render() {
 
+
+        if (sessionStorage.getItem("access") === null) {
+            this.islogged = false;
+        } else {
+            this.islogged = true;
+        }
+
+
         console.log("islogged:  ", this.islogged)
-        if (!this.props.loggedin) {
+        if (!this.islogged) {
 
             return (
                 <nav id="mainav" className="fl_right">
@@ -35,7 +43,6 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/nyansatt">Kommuneansatt</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
                         </ul>
@@ -45,7 +52,7 @@ export default class Menu extends Component {
 
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "user")) {
+        if (this.islogged && (sessionStorage.getItem("access") == "user")) {
 
             return (
 
@@ -57,12 +64,12 @@ export default class Menu extends Component {
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                        <li><a className="drop" href="#">Pages</a>
+                        <li><a className="drop" href="/user">Min side</a>
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/user/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                             </ul>
                         </li>
                     </ul>
@@ -73,23 +80,65 @@ export default class Menu extends Component {
 
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
+        if (this.islogged && (sessionStorage.getItem("access") == "bedrift")) {
 
             return (
-                <div className="topnav" id="navbar">
 
-                </div>
+                <nav id="mainav" className="fl_right">
+                    <ul className="hovedmeny">
+                        <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+
+                        <li><a className="drop" href="/bedrift">Min side</a>
+                            <ul>
+                                <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/rapporter">Forandre passord</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </nav>
             );
 
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {
+        if (this.islogged && (sessionStorage.getItem("access") == "kommune")) {
 
 
             return (
-                <div className="topnav" id="navbar">
+                <nav id="mainav" className="fl_right">
+                    <ul className="hovedmeny">
+                        <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                </div>
+                        <li><a className="drop" href="#">Min side</a>
+                            <ul>
+                                <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/rapporter">Mine rapporter</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                            </ul>
+                        </li>
+                        <li><a className="drop" href="#">Administrator</a>
+                            <ul>
+                                <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/helter">Hverdagshelter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/bedrifter">Bedrifter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
             );
 
 

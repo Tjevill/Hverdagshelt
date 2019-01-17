@@ -92,6 +92,12 @@ class Main extends Component {
     render() {
 
 
+        if (sessionStorage.getItem("access") === null) {
+            this.islogged = false;
+        } else {
+            this.islogged = true;
+        }
+
         console.log("Access: " + sessionStorage.getItem("access"));
 
 
@@ -107,7 +113,7 @@ class Main extends Component {
                                     <div id="logo" className="fl_left">
                                         <img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/>
                                     </div>
-                                    <Menu loggedin={this.loggedin}/>
+                                    <Menu loggedin={this.islogged}/>
                                     <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
                                 </header>
                             </div>
@@ -134,33 +140,33 @@ class Main extends Component {
                                 exact
                                 path="/user/edit"
                                 component={UserEdit}
-                                isAuthenticated={this.loggedin}
+                                isAuthenticated={this.islogged}
                             />
                             <PrivateRoute
                                 exact
                                 path="/user/changePassword"
                                 component={ChangePassword}
-                                isAuthenticated={this.loggedin}
+                                isAuthenticated={this.islogged}
                             />
                             <PrivateRoute
                                 exact
                                 path="/profile"
                                 component={ProfilePage}
-                                isAuthenticated={this.loggedin}
+                                isAuthenticated={this.islogged}
                                 redirect="/login"
                             />
                             <PrivateRoute
                                 exact
                                 path="/admin/main"
                                 component={AdminMain}
-                                isAuthenticated={this.loggedin}
+                                isAuthenticated={this.islogged}
                                 redirect="/login"
                             />
                             <PrivateRoute
                                 exact
                                 path="/login"
                                 component={LoginPage}
-                                isAuthenticated={this.loggedin}
+                                isAuthenticated={!this.islogged}
                                 redirect="/"
                             />
 
