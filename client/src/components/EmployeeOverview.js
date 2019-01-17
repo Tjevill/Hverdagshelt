@@ -18,7 +18,7 @@ import {
 const history = createHashHistory();
 
 //<{ match: { params: { name: string, id: number } } }>
-export default class IssueOverview extends Component {
+export default class EmployeeOverview extends Component {
   employees = [];
   superField = "";
 
