@@ -22,16 +22,16 @@ export default class CasePreview extends Component <{title: string, status: numb
 
     render() {
         return(
-            <li className="list-group-item d-flex justify-content-between align-items-center">
+            <li className="list-group-item">
                 <NavLink to={'/case/' + this.props.id}>
                     {this.props.title}
                 </NavLink>
 
-                <span className={this.y} >{this.x}</span>
+                <span className={this.y + " case-status"} >{this.x}</span>
                  <NavLink to={'/case/' + this.props.id + '/edit'}>
-                    rediger
+                   rediger
                 </NavLink>
-                <a className="pointer" onClick ={() => this.delete(this.props.id)}>
+                <a className="pointer delete-case" onClick ={() => this.delete(this.props.id)}>
                     Slett sak
                 </a>
 
@@ -42,7 +42,7 @@ export default class CasePreview extends Component <{title: string, status: numb
     delete(case_id) {
 
         
-        if ( window.confirm("Er du sikker på at du ønsker å slette saken:?") ){
+        if ( window.confirm("Er du sikker på at du ønsker å slette saken?") ){
             caseService.changeCaseStatus(case_id)
             .then(response => {
               console.log(response, "Satt status: slett i db");           
@@ -82,22 +82,5 @@ export default class CasePreview extends Component <{title: string, status: numb
             console.log('Error, status invalid!');
         }
     }
-
-    delete(case_id) {
-        console.log("Er du sikker på at du vil slette følgende sak?");
-        if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
-         caseService.updateCaseStatus(case_id, {
-         status_id: 7,
-         case_id: case_id
-        })
-        .then(res => {
-          console.log("Response recieved:", res);
-        })
-        .catch(err => {
-          console.log("AXIOS ERROR:", err);
-        });
-            window.alert("Din sak har blitt slettet");
-            window.location.reload();
-        }
-    }
+    
 }

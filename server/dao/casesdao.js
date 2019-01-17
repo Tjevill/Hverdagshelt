@@ -70,23 +70,22 @@ module.exports = class CasesDao extends Dao {
     *   @param case_id : case_id.
     *   @param json : json object with changes.
      */
-    updateCase(json, callback){
+     updateCase(json, callback){
         var val = [
-                    json.description, 
-                    json.longitude, 
-                    json.latitude, 
-                    json.status_id, 
-                    json.user_id, 
-                    json.category_id, 
-                    json.zipcode, 
-                    json.headline,
-                    json.picture, 
-                    json.employee_id, 
-                    json.org_id,
-                    //json.email,
-                    json.case_id
-
-                    ];
+                    
+                   json.description,
+                   json.longitude,
+                   json.latitude,
+                   json.status_id,
+                   json.user_id,
+                   json.category_id,
+                   json.zipcode,
+                   json.headline,
+                   json.picture,
+                   json.employee_id,
+                   json.org_id,
+                   json.case_id
+        ];
         super.query(
             "UPDATE Cases SET description = ?, longitude = ?, latitude = ?, status_id = ?, user_id = ?, category_id = ?, zipcode = ?, headline = ?, picture = ?, employee_id = ?, org_id = ? WHERE case_id = ? ",
             val,
@@ -95,6 +94,7 @@ module.exports = class CasesDao extends Dao {
     }
 
 
+/*
     updateCaseStatus(json, callback) {
         var val = [
             json.status_id,
@@ -106,7 +106,21 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     }
-
+    */
+	
+	/**
+	 * Updates status_id to DELETED in database when user deletes one of their cases
+	 * @param id The case id
+	 * @param callback From db
+	 */
+	updateCaseStatusToDeleted (id: number, callback: mixed) {
+		super.query(
+			"UPDATE Cases SET status_id = 7 WHERE case_id = ?",
+			[id],
+			callback
+		)
+	}
+  
 
     /** Delete case on case_id
     *   @param case_id - the case_id

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import { caseService, categoryService,userService} from "../services";
 import createHashHistory from "history/createHashHistory";
-import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form} from './widgets';
+import { Alert, Card, NavBar, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
 
 const history = createHashHistory();
 
@@ -29,6 +29,8 @@ function count(array) {
 }
 
 export default class IssueOverview extends Component <{ match: { params: { name: string, id: number } } }>{
+
+  loaded = false;
   caseofCat = [];
   categories = [];
   cases = [];
@@ -182,72 +184,77 @@ export default class IssueOverview extends Component <{ match: { params: { name:
         </div>);
      };
 
-
-    return (
-    <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <div className="btn-group" role="group" aria-label="First group">
-              <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
-                {this.categories.map(categori =>(
-                  <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}} className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
-                ))}
-          </div><br/><br/>
-          <div class="form-row">
-            <div class="form-group col-6">
-              <label for="inputFylke">Velg Fylke</label>
-                <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
-                  <option selected>Alle </option>
-                  {this.fylker.map(fylke => {
-                      return(<option value={fylke.ID}>{fylke.navn}</option>)
-                  })}
-                </select>
-            </div>
-            <div class="form-group col-6">
-              <label for="inputKommune">Velg Kommune</label>
-                <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
-                  <option selected>Alle </option>
-                  {this.kommuner.map(kommune => {
-                      return(<option value={kommune.Name}>{kommune.navn}</option>)
-                  })}
-                </select>
-            </div>
-            <div class="col align-self-center">
-            <button type="button" class="btn btn-secondary" onClick={() => this.nullstillKommune()}>Nullstill kommune</button>
-
+    if(this.loaded){
+      return (
+      <>
+        <div className="jumbotron">
+          <div className="container text-center">
+            <div className="btn-group" role="group" aria-label="First group">
+                <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
+                  {this.categories.map(categori =>(
+                    <a href={"#/Issues/"+categori.description+"/1"}  onClick={() =>{this.checkName()}} className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
+                  ))}
+            </div><br/><br/>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label for="inputFylke">Velg Fylke</label>
+                  <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
+                    <option selected>Alle </option>
+                    {this.fylker.map(fylke => {
+                        return(<option value={fylke.ID}>{fylke.navn}</option>)
+                    })}
+                  </select>
               </div>
+              <div class="form-group col-6">
+                <label for="inputKommune">Velg Kommune</label>
+                  <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
+                    <option selected>Alle </option>
+                    {this.kommuner.map(kommune => {
+                        return(<option value={kommune.Name}>{kommune.navn}</option>)
+                    })}
+                  </select>
+              </div>
+              <div class="col align-self-center">
+              <button type="button" class="btn btn-secondary" onClick={() => this.nullstillKommune()}>Nullstill kommune</button>
+
+                </div>
+            </div>
+            {this.Meldning}
           </div>
-          {this.Meldning}
         </div>
-      </div>
 
 
-      <div className="container">
-        <h2 class="display-4">Saker</h2>
-        <Router history={history}>
-          <table class="table table-hover">
-            <thead>
-              <tr >
-                <th scope="col">ID</th>
-                <th scope="col">Tittel</th>
-                <th scope="col">Tid</th>
-              </tr>
-            </thead>
-              {lists}
-            </table>
-        </Router>
-      <br/><br/>
-      </div>
+        <div className="container">
+          <h2 class="display-4">Saker</h2>
+          <Router history={history}>
+            <table class="table table-hover">
+              <thead>
+                <tr >
+                  <th scope="col">ID</th>
+                  <th scope="col">Tittel</th>
+                  <th scope="col">Tid</th>
+                </tr>
+              </thead>
+                {lists}
+              </table>
+          </Router>
+        <br/><br/>
+        </div>
 
-      <div id='toolbar'>
-        <div className='wrapper text-center'>
-          <div class="btn-group">
-            {sidebuttons}
+        <div id='toolbar'>
+          <div className='wrapper text-center'>
+            <div class="btn-group">
+              {sidebuttons}
+          </div>
+          </div>
         </div>
-        </div>
-      </div>
-    </>
-    );
+      </>
+      );
+    } else {
+      return (
+        <Loading />
+      )
+    }
   }
 
   componentDidMount(){
@@ -256,6 +263,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       .getAllCases()
         .then(cases => {
             this.cases = cases;
+            this.loaded = true;
             this.forceUpdate();
           })
       .catch((error: Error) => Alert.danger(error.message));

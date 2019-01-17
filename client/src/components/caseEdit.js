@@ -44,6 +44,7 @@ export class caseEdit extends Component<{
 	province = "";
 	address = "";
 	zipcode = "";
+	status="";
 
 	constructor(props) {
 		super(props);
@@ -67,7 +68,7 @@ export class caseEdit extends Component<{
          description: ${this.state.description} 
           longitude:  ${this.lng}
           latitude:  ${this.lat}
-          status_id:  ${this.case.status_id}
+          status_id:  ${this.status}
           user_id:  ${this.case.user_id}
           category_id:  ${this.case.category_id}
           zipcode:  ${this.zipcode}
@@ -235,6 +236,7 @@ export class caseEdit extends Component<{
 				this.lng = sak[0].longitude;
 				this.lat = sak[0].latitude;
 				this.zipcode = sak[0].zipcode;
+				this.status=sak[0].status_id;
 				this.setState({
 				headline : sak[0].headline,
 				description : sak[0].description	
@@ -296,18 +298,18 @@ export class caseEdit extends Component<{
 	delete(case_id) {
 		console.log("Er du sikker på at du vil slette følgende sak?");
 		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+
+		
 			caseService
-				.updateCaseStatus(case_id, {
-					status_id: 7,
-					case_id: case_id
-				})
+				.changeCaseStatus(case_id)
 				.then(res => {
 					console.log("Response recieved:", res);
+					this.status=7;
 				})
 				.catch(err => {
 					console.log("AXIOS ERROR:", err);
 				});
-		 window.location.reload();
+		 
 		}
 	}
 
@@ -317,7 +319,7 @@ export class caseEdit extends Component<{
 				description: this.state.description,
 				longitude: this.lng,
 				latitude: this.lat,
-				status_id: this.case.status_id,
+				status_id: this.status,
 				user_id: this.case.user_id,
 				category_id: this.case.category_id,
 				zipcode: this.zipcode,
