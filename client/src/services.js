@@ -12,8 +12,8 @@ class Employee{
   tel: string;
   email: string;
   password: string;
-  province: string;
-  district: string;
+  commune: string;
+  county: string;
 }
 
 class Case {
@@ -120,7 +120,7 @@ class CaseService {
     return axios.get(url+'/countCases');
   }
 
-  /** Get every case with a certain status_id 
+  /** Get every case with a certain status_id
   * Status number range is 1 - 4.
   */
   getCaseOnStatus(status_id: number): Promise <Case[]>{
@@ -220,11 +220,11 @@ class CaseService {
                 console.log(error);
             });
     }
-	
+
 	changeCaseStatus (case_id: number): Promise<void> {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
-	
+
 }
 export let caseService = new CaseService();
 
@@ -295,7 +295,7 @@ class UserService {
   findUserByEmail(email: string): Promise<User>{
     return axios.get(url+ '/forgotPassword/'+ email);
   }
-	
+
 	/**
 	 * Service object for verifying and changing password for logged in users.
 	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
@@ -303,7 +303,7 @@ class UserService {
 	 */
 	verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
 		return axios.post(url + '/userVerification', updatePassword);
-    
+
 	}
 
 }
