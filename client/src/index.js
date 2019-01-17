@@ -20,7 +20,7 @@ import Events from "./components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./components/Register";
-import NewOrganization from "./components/NewOrganization";
+import AdminNyBedrift from "./components/AdminNyBedrift";
 import NewEmployee from "./components/NewEmployee";
 import AdminMain from "./components/AdminMain";
 import LoginPage from "./components/LoginPage";
@@ -32,6 +32,7 @@ import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import Map from "./components/Map";
 import CaseEdit from "./components/caseEdit";
 import EventsEdit from "./components/EventsEdit";
+import AdminBedrift from "./components/AdminRedigerBedrift";
 import NewEvents from "./components/NewEvents";
 import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
@@ -111,7 +112,7 @@ class Main extends Component {
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
                                     <div id="logo" className="fl_left">
-                                        <img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/>
+                                        <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
                                     </div>
                                     <Menu loggedin={this.islogged}/>
                                     <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
@@ -130,7 +131,7 @@ class Main extends Component {
                             <Route exact path="/events" component={Events}/>
                             <Route exact path="/events/:id/edit" component={EventsEdit}/>
                             <Route exact path="/map" component={Map} />
-                            <Route exact path="/nyorg" component={NewOrganization}/>
+                            <Route exact path="/nyorg" component={AdminNyBedrift}/>
                             <Route exact path="/nyansatt" component={NewEmployee}/>
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
@@ -174,7 +175,7 @@ class Main extends Component {
                 <div className="wrapper row5">
                     <div id="copyright" className="hoc clear">
 
-                        <p className="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Team 5</a>
+                        <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a>
                         </p>
                         <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
 

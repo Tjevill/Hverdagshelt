@@ -103,7 +103,7 @@ export default class UserEdit extends Component {
             defaultValue={this.user.name}
             onChange={event => (this.user.name = event.target.value)}
           />
-            <div class="invalid-feedback">Ugydig Navn</div>
+            <div class="invalid-feedback">Ugyldig Navn</div>
         </div>
         <div className="form-group">
           Adresse:{" "}
@@ -114,7 +114,7 @@ export default class UserEdit extends Component {
             name="address"
             onChange={event => (this.user.address = event.target.value)}
           />
-          <div class="invalid-feedback">Ugydig Adresse</div>
+          <div class="invalid-feedback">Ugyldig Adresse</div>
         </div>
         <div className="form-group">
           Postnummer:{" "}
@@ -127,7 +127,7 @@ export default class UserEdit extends Component {
             name="zipcode"
             onChange={this.changeZip}
           />
-              <div class="invalid-feedback">Ugydig Postnummer</div>
+              <div class="invalid-feedback">Ugyldig Postnummer</div>
           <p color="red">{this.state.zipinfo} </p>
         </div>
         <div className="form-group">
@@ -141,7 +141,7 @@ export default class UserEdit extends Component {
             maxlength ="8"
             onChange={this.changeVal}
           />
-          <div class="invalid-feedback">Ugydig telefon</div>
+          <div class="invalid-feedback">Ugyldig telefon</div>
             <div class="text-muted">{this.state.telinfo} </div>
         </div>
         <div className="form-group">
@@ -154,7 +154,7 @@ export default class UserEdit extends Component {
             name="email"
             onChange={event => (this.user.email = event.target.value)}
           />
-          <div class="invalid-feedback">Ugydig Email</div>
+          <div class="invalid-feedback">Ugyldig Email</div>
           </div>
           <br/>
           <br/>
@@ -230,11 +230,11 @@ export default class UserEdit extends Component {
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
     }else if(!isEmail(this.user.email)){
-      this.state.mailinfo = "Ugydig e-post";
+      this.state.mailinfo = "Ugyldig e-post";
       this.Emailinputtype = "is-invalid";
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
       this.forceUpdate();
-      console.log("ugydig e-post");
+      console.log("Ugyldig e-post");
     }else if(user.address==""){
       this.AddressInputClass = "is-invalid";
       this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
