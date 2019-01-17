@@ -250,9 +250,6 @@ export class Report extends Component {
                 caseService.createUserCase(casedata)
                     .then(res => {
                         console.log(res, "FROM REPORT PAGE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-/*
-                        window.location.reload() //Denne er feil så vidt jeg kan teste, men vil ikke fjerne den helt før jeg har snakket med Mathias
-*/
 										})
                     .catch((error: Error) => Alert.danger(error.message));
 
