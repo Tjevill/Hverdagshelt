@@ -93,6 +93,15 @@ module.exports = class OrgDao extends Dao {
 		);
 	}
 	
+	getHashedPWord(id: number, callback: mixed){
+		super.query(
+			"select * from Organization where org_id = ?",
+			[id],
+			callback
+		);
+		
+	}
+	
 	/**	Delete organization from db.
 	*	@param id - the id of the organization you wish to delete
 	 */

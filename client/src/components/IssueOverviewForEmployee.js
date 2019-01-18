@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
-import { caseService, categoryService,userService,employeeService} from "../services";
+import { caseService, categoryService,userService,employeeService,statusService} from "../services";
 import createHashHistory from "history/createHashHistory";
 import { Alert,Card, NavBar, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
 
@@ -34,6 +34,7 @@ export default class IssueOverviewForEmployee extends Component <{ match: { para
     kommune = "";
     categories = [];
     cases = []; //cases from a specific employee.
+    status = [];
 
     checkName(){
     }
@@ -42,19 +43,57 @@ export default class IssueOverviewForEmployee extends Component <{ match: { para
       if(this.loaded){
         return (
         <>
-          <div className="jumbotron">
-            <div className="container text-center">
-              <div className="btn-group" role="group" aria-label="First group">
-                <a href="#/Issues/All/1" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Alle</a>
-                  {this.categories.map(categori =>(
-                    <a href={"#/issuesEmployee/"+categori.description+"/1"}  onClick={() =>{this.checkName()}} className="btn btn-primary btn-lg active" role="button" aria-pressed="true" >{categori.description}</a>
-                  ))}
-              </div><br/><br/>
+        <br/><br/>
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-8">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"width="50"/>
+              </div>
+              <div class="col-6 col-md-4">
+                <div class="form-group">
+                  <label for="inputKommune">Kategorier &nbsp;</label>
+                  <select class="w-auto" id="kommune" name="kommune" class="form-control" onChange={this.handleChangeStatus}>
+                      <option selected value={0}>Alle</option>
+                        {this.categories.map(category => (
+                            <option value={category.category_id}>{category.description}</option>
+                        ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+         <div class="row">
+          <div class="col-6 col-md-4">
+            <h2 class="display-4">Saker</h2>
+          </div>
+          <div class="col-6 col-md-4"></div>
+            <div class="col-6 col-md-4">
+              <div class="form-group">
+                <label for="inputKommune">Status &nbsp;</label>
+                  <select class="w-auto" id="kommune" name="kommune" class="form-control" onChange={this.handleChangeStatus}>
+                    <option selected value={0}>Alle</option>
+                    <option value={1}>Registrert</option>
+                    <option value={2}>Under Vurdering</option>
+                    <option value={3}>Satt på vent</option>
+                    <option value={4}>Arbeid pågår</option>
+                    <option value={5}>Avvist</option>
+                    <option value={6}>Løst</option>
+                  </select>
+              </div>
             </div>
           </div>
 
-          <div className="container">
-            <h2 class="display-4">Saker</h2>
+      <div class="row">
+        <div class="col-6 col-md-4">Kommune: Trondheim</div>
+        <div class="col-6 col-md-4"></div>
+        <div class="col-6 col-md-4">
+          <input type="text" name="search" placeholder="Search.."/>
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+          <br/><br/>
+          <div class="container">
             <Router history={history}>
               <table class="table table-hover">
                 <thead>
@@ -76,14 +115,15 @@ export default class IssueOverviewForEmployee extends Component <{ match: { para
                             </a>
                             <span class="btn btn-sm btn-danger" >
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true">&nbsp;Slett&nbsp;&nbsp;</span>
-                            </span></td>
+                            </span><a>{casen.status_id}</a></td>
+
                       </tr>
                 ))}
                 </tbody>
                 </table>
             </Router>
+            </div>
           <br/><br/>
-          </div>
 
         </>
         )
@@ -113,16 +153,16 @@ export default class IssueOverviewForEmployee extends Component <{ match: { para
             this.categories = categories;
             this.forceUpdate();
           })
-        .catch((error: Error) => Alert.danger(error.message));
+        .catch((error: Error) => console.log("Fails by getting the available categories"));
 
-        caseService
+      caseService
           .getAllCases()
             .then(cases => {
                 this.cases = cases;
                 this.loaded = true;
                 this.forceUpdate();
               })
-          .catch((error: Error) => Alert.danger(error.message));
-    }
+          .catch((error: Error) => console.log("Fails by getting the available cases"));
 
+    }
 }

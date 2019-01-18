@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import {caseService, categoryService, mapService} from '../services';
+import {caseService, categoryService, mapService, geoService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
@@ -30,9 +30,11 @@ export class Report extends Component {
     lat = 63.4283065;
     lng = 10.3876995;
     address = '';
-    zipcode = '';
     mapData = {};
     country = '';
+    zipBoo = true;
+    zipcodePlaceholder = '';
+    zipcodes = [];
 
     state = {
         headline: "",
@@ -64,6 +66,10 @@ export class Report extends Component {
     isImage(myString) {
         let re = /\.(gif|jpg|jpeg|tiff|png)$/i;
         return re.test(myString);
+    }
+
+    onlyNumber(myString) {
+        return /^\d+$/.test(myString);
     }
 
     render(){
@@ -112,7 +118,19 @@ export class Report extends Component {
                                 />
                             </Map>
                         </div>
-
+                        <div className="form-group form-group-style">
+                            Postnummer:{" "}
+                            <input
+                                className="form-control"
+                                type="text"
+                                defaultValue={this.state.zipcode}
+                                name="zipcode"
+                                maxLength="4"
+                                onChange={this.handleChange}
+                                readOnly={this.zipBoo}
+                                placeholder={this.zipcodePlaceholder}
+                            />
+                        </div>
                         <div className="form-group form-group-style">
                             Beskrivelse:{" "}
                             <input
@@ -173,11 +191,13 @@ export class Report extends Component {
 
                 console.log(filter);
                 if(filter[0] == null) {
-                    this.zipcode = '0000';
+                    this.state.zipcode = '';
+                    this.zipBoo = false;
+                    this.zipcodePlaceholder = 'Fant ikke postnummer for anngitt sted, vennligst fyll inn postnummer manuelt';
                 } else {
-                    this.zipcode = filter[0].long_name;
+                    this.state.zipcode = filter[0].long_name;
                 }
-                console.log(this.zipcode);
+                console.log(this.state.zipcode);
                 let countryFilter = [];
                 let help = [];
                 if (this.mapData.address_components == null) {
@@ -210,6 +230,24 @@ export class Report extends Component {
             this.error = "Vennligst velg et sted i Norge";
             return null;
         }
+        if (this.mapData.address_components == null) {
+            this.error = 'Fant ingen gyldig addresse her, vennligst velg et annet sted';
+            return null;
+        } else {
+            this.error = '';
+        }
+        if(this.state.zipcode.length < 4) {
+            this.error = 'Postnummer må være nøyaktig 4 tall';
+            return null;
+        } else if (!(this.onlyNumber(this.state.zipcode))) {
+            this.error = 'Postnummer kan bare bestå av tall!';
+            return null;
+        } else if (!(this.zipcodes.includes(this.state.zipcode))) {
+            this.error = 'Postnummer må være et gyldig postnummer i Norge!';
+            return null;
+        } else {
+            this.error = '';
+        }
         if (this.selectedFile == null) {
             this.error = "Vennligst last opp bilde!";
             return null;
@@ -240,7 +278,7 @@ export class Report extends Component {
                     description: this.state.description,
                     latitude: this.lat,
                     longitude: this.lng,
-                    zipcode: this.zipcode,
+                    zipcode: this.state.zipcode,
                     picture: this.state.picture,
                     category_id: this.state.category_id,
                     user_id: this.state.user_id
@@ -250,9 +288,6 @@ export class Report extends Component {
                 caseService.createUserCase(casedata)
                     .then(res => {
                         console.log(res, "FROM REPORT PAGE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-/*
-                        window.location.reload() //Denne er feil så vidt jeg kan teste, men vil ikke fjerne den helt før jeg har snakket med Mathias
-*/
 										})
                     .catch((error: Error) => Alert.danger(error.message));
 
@@ -264,8 +299,13 @@ export class Report extends Component {
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));
-
-
+        geoService.getAllCommunes()
+            .then(response => {
+                response.map(item => {
+                    this.zipcodes.push(item.zipcode);
+                })
+            })
+            .catch((error: Error) => console.log(error.message));
     }
 
 
