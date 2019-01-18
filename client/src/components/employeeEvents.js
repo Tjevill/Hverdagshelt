@@ -13,10 +13,12 @@ let commune_id = sessionStorage.getItem("commune");
   }
  */
 
-export class employeeEvents extends Component {
+export default class EmployeeEvents extends Component {
 
     events = [];
+
     render(){
+
         return(
 
             <table className="table">
@@ -30,16 +32,19 @@ export class employeeEvents extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                    {this.events.map( (e, i) => {
+                    {this.events.map( (e, i) => (
+
                         <tr key={i}>
+
                             <th scope="row">{e.event_id}</th>
-                            <td>{e.name}</td>
-                            <td>{e.address}</td>
-                            <td>{e.zipcode}</td>
-                            <td>{e.date}</td>
-                            <td><button>Endre</button></td>
+                            <td> {e.name} </td>
+                            <td> {e.address} </td>
+                            <td> {e.zipcode} </td>
+                            <td> {e.date.substring(0,10)} </td>
+                            <td><a href = {"#/events/"+e.event_id+"/edit"}><button className = "btn btn-primary">Rediger</button></a></td>
+
                         </tr>
-                    })}
+                        ))}
                 </tbody>
             </table>
 
@@ -50,7 +55,9 @@ export class employeeEvents extends Component {
         console.log("Administrate events mounted");
         eventService
             .getEventsCommune(commune_id)
-            .then(event =>(this.events = event))
+            .then(event => {
+                this.events = event
+            })
             .catch((error: Error) => console.log(error.message));
     }
 }

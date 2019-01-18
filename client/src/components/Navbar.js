@@ -59,6 +59,7 @@ export default class Navbar extends Component {
         <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
         <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+        <a className="option" id="logTable" href="#logTable" onClick={() => this.activate("logTable")}>logTable</a>
       </div>
     );
 
