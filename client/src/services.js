@@ -18,6 +18,11 @@ class Employee{
   superuser: boolean;
 }
 
+class County { //Fylke
+	id: number;
+	county: string;
+}
+
 class Case {
   case_id: number;
   description: string;
@@ -568,14 +573,19 @@ class StatusService {
 class GeoService {
 	
 	/** Get all communes from Place ordered by zip code.*/
-	getAllStatuses(): Promise<Place[]> {
+	getAllCommunes(): Promise<Place[]> {
 		return axios.get(url + "/getCommunes");
 	}
  
  getCommuneName(commune: number): Promise<Place> {
    return axios.get(url + "/CommuneName/" + commune);
  }
- 
+	
+	getCommunesCounty(county_id: number): Promise<County[]> {
+		return axios.get(url + "/getCommunesCounty/", county_id);
+	}
+	
+	
 }
 
 export let geoService = new GeoService();
