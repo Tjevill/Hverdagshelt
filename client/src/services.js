@@ -317,6 +317,10 @@ class UserService {
 		return axios.post(url + '/userVerification', updatePassword);
     
 	}
+	
+	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
+	  return axios.get(url + '/userNameSearch/' + searchString)
+  }
 
 }
 
@@ -486,7 +490,15 @@ class EmployeeService {
   getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
     return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
   }
-
+	
+	/**
+   * Gets all cases connected to an employee by employee_id
+	 * @param emp_id The id of the employee
+	 * @returns {AxiosPromise<any>} Returns Case array
+	 */
+  getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
+    return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
 
 
 }
@@ -516,8 +528,23 @@ class EventService {
     return axios.get(url + "/events");
   }
 
+    /**
+     * Get one event from the db based on the event_id.
+     * @param event_id - the id of the event you wish to retrieve.
+     * @returns the event on the selected event_id.
+     */
   getOne(event_id: number): Promise<Event[]>{
     return axios.get(url+"/getEvent/"+event_id);
+  }
+
+    /**
+     * Get all events in one commune.
+     * Intended to be used on the administration of events for an employee.
+     * @param commune_id - the id of the commmune the employee works in.
+     * @returns an array of events in the employee commune.
+     */
+  getEventsCommune(commune_id: number): Promise<Event[]>{
+      return axios.get(url + "/events/"+commune_id);
   }
 
 

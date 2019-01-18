@@ -201,6 +201,19 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-
-
+	
+	/**
+	 * Searches users by their name and returns all users that has equality to the search input
+	 * @param searchString The search string from frontend by name
+	 * @param callback
+	 */
+	getUserByNameSearch (searchString: string, callback: mixed) {
+		super.query(
+			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
+			[searchString],
+			callback
+		)
+	}
+	
+	
 };
