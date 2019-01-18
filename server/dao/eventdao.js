@@ -81,7 +81,7 @@ module.exports = class EventDao extends Dao {
      */
     getEventInCommune(commune_id, callback){
         super.query(
-            "SELECT * FROM Events INNER JOIN Place ON Place.zipcode = Events.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?)",
+            "SELECT * FROM Events INNER JOIN Place ON Place.zipcode = Events.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) ORDER BY Events.date ASC",
             [commune_id],
             callback
         );
