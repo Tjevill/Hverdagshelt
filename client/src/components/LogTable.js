@@ -46,7 +46,7 @@ export default class LogTable extends Component {
               <TableHeaderColumn>Status</TableHeaderColumn>
               <TableHeaderColumn>Abonnement_status</TableHeaderColumn>
               <TableHeaderColumn>Postnr</TableHeaderColumn>
-              <TableHeaderColumn> 
+              <TableHeaderColumn>
               </TableHeaderColumn>
               <TableHeaderColumn>  <SearchBar
       onChange={() => console.log('onChange')}
