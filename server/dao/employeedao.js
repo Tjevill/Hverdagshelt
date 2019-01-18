@@ -135,16 +135,16 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-	
+
 	getHashedPWord(id: number, callback: mixed){
 		super.query(
 			"select * from Employee where employee_id = ?",
 			[id],
 			callback
 		);
-		
+
 	}
-	
+
 	/**
    * Get cases in selected commune when logged in as employee by commune ID
 	 * @param id Commune ID in kommune table
@@ -157,7 +157,7 @@ module.exports = class UserDao extends Dao {
           callback
         )
   }
-  
+
 
     getBedriftByEmail(email, callback) {
         console.log("Getting Bedrift based on its email: " + email);
@@ -216,8 +216,8 @@ module.exports = class UserDao extends Dao {
             [],
             callback);
     }
-    
-    
+
+
 
     /** Get Commune Name based on its ID */
     getCommuneName(commune: number, callback: any) {
@@ -227,8 +227,19 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-
-    
+	
+	/**
+   * Gets all cases connected to an employee
+	 * @param id The employee id
+	 * @param callback
+	 */
+	getCaseOnEmployeeID(id: number, callback: mixed){
+		super.query(
+			"SELECT * FROM Cases WHERE employee_id = ?",
+			[id],
+			callback
+		);
+    }
 
 
 };

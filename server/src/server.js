@@ -167,6 +167,14 @@ app.get("/cases", (req, res) => {
     });
 });
 
+app.get("/events/:commune_id", (req, res) =>{
+    console.log("Fikk GET-request from client");
+    eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
 /**
  * Gets all districts from DB
  */
@@ -279,6 +287,20 @@ app.get('/userProvince/:id', (req: Request, res: Response) => {
         res.json(data);
     })
 });
+
+/**
+ * Searches users by their name and returns all users that has equality to the search input
+ */
+app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
+    userdao.getUserByNameSearch(req.params.searchString, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+
+// End User
 
 // Organization
 
@@ -430,7 +452,7 @@ app.get("/employee/:employee_id", (req, res) =>{
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
-    console.log("Received get-request on endpoint /employee/"+req.params.commune);
+    console.log("Received get-request on endpoint /employee/commune/"+req.params.commune);
     empDao.getAllEmpCommune(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
@@ -490,6 +512,16 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
         res.status(status);
         res.json(data);
     });
+});
+
+
+
+app.get("/getCasesOnCommuneID/:id", (req, res) => {
+	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
+		console.log(req.params.id);
+		res.status(status);
+		res.json(data);
+	});
 });
 
 app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
@@ -850,6 +882,13 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 	});
 });
 
+app.get("/getCaseOnEmployeeID/:id", (req, res) => {
+	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 
 
 // End Cases
@@ -874,6 +913,15 @@ app.get("/getCommunesCounty/:id", (req, res) => {
 		res.status(status);
 		res.json(data);
 	});
+});
+
+app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
+    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
+    geodao.getCommuneName(req.params.commune, (status, data) =>{
+        res.status(status);
+        res.json(data);
+        console.log(data[0].navn);
+    });
 });
 
 
