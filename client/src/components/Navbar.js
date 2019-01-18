@@ -6,8 +6,6 @@ import createHistory from 'history/createBrowserHistory';
 import {refreshToken} from "./widgets";
 
 import Case from "./Case";
-import CaseListCard from "./CaseListCard";
-import ProfileCard from "./ProfileCard";
 import ProfilePage from "./ProfilePage";
 import ReportPage from "./ReportPage";
 import IssueOverview from "./IssueOverview";
@@ -28,6 +26,7 @@ import Map from "./Map";
 import CaseEdit from "./caseEdit";
 import EventsEdit from "./EventsEdit";
 import NewEvents from "./NewEvents";
+
 
 const history = createHistory({
   forceRefresh: true
@@ -60,6 +59,7 @@ export default class Navbar extends Component {
         <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
         <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+        <a className="option" id="logTable" href="#logTable" onClick={() => this.activate("logTable")}>logTable</a>
       </div>
     );
 
@@ -135,7 +135,7 @@ export default class Navbar extends Component {
                     <ButtonToolbar className="dropdownmenus">
                         <DropdownButton
                         bsStyle="default"
-                        title="Administrator"
+                        title="Administrer"
                         key="1"
                         id="dropdown-basic-1"
                         noCaret

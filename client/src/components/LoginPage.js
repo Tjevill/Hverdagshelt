@@ -132,6 +132,7 @@ export default class LoginPage extends React.Component {
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
                 //console.log("user: " + sessionStorage.getItem("userid"));
+                window.location.reload();
                 if (this.state.message2 === "Success") history.push('/');
 
             })
@@ -161,9 +162,12 @@ export default class LoginPage extends React.Component {
                 sessionStorage.setItem('email', response.email);
                 sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'kommune');
-                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
-                console.log("email: " + sessionStorage.getItem("email"));
-                console.log("userid: " + sessionStorage.getItem("userid"));
+                sessionStorage.setItem('commune', response.commune);
+                sessionStorage.setItem('superuser', response.superuser);
+                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                //console.log("email: " + sessionStorage.getItem("email"));
+                //console.log("user: " + sessionStorage.getItem("userid"));
+                window.location.reload();
                 if (this.state.message3 === "Success") history.push('/');
 
             })

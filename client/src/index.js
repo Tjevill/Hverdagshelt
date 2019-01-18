@@ -7,30 +7,32 @@ import { Redirect, HashRouter, Route, NavLink, Switch,  } from 'react-router-dom
 import { withRouter } from 'react-router';
 import {Component, sharedComponentData} from 'react-simplified';
 import {refreshToken} from "./components/widgets";
+
 import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
-import CaseListCard from "./components/CaseListCard";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
-import createHashHistory from "history/createHashHistory";
 import EmployeeEdit from "./components/EmployeeEdit";
+import EmployeeEvents from "./components/employeeEvents";
+import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
 import ForgottenPassword from "./components/ForgottenPassword";
 import IssueOverview from "./components/IssueOverview";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import LoginPage from "./components/LoginPage";
+import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
 import PrivateRoute from 'react-private-route';
-import ProfileCard from "./components/ProfileCard";
+import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -128,10 +130,6 @@ class Main extends Component {
                             <Route exact path="/events" component={Events}/>
                             <Route exact path="/events/:id/edit" component={EventsEdit}/>
                             <Route exact path="/map" component={Map} />
-
-
-
-
                             <Route exact path="/nyansatt" component={NewEmployee}/>
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
@@ -141,11 +139,15 @@ class Main extends Component {
                             <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
                             <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
-                            <Route exact path="/nyorg" component={AdminNyBedrift}/>
-                            <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
+                            <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                 </div>
                 <div className="wrapper row5">
@@ -168,4 +170,3 @@ class Main extends Component {
 export default withRouter(Main);
 
 ReactDOM.render(<Main />, document.getElementById("root"));
-

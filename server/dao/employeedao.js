@@ -35,14 +35,16 @@ module.exports = class UserDao extends Dao {
 
         var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
         var passwordData = sha512(json.password, salt);
-        var val = [json.name, json.tel, json.email, json.province, json.district, passwordData.passwordHash, passwordData.salt];
+        var val = [json.name, json.tel, json.email, json.commune, json.county, passwordData.passwordHash, passwordData.salt, json.superuser];
 
         super.query(
-            "INSERT INTO Employee (name, tel, email, province, district, password, secret) VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO Employee (name, tel, email, commune, county, password, secret, superuser) VALUES (?,?,?,?,?,?,?,?)",
             val,
             callback
         );
     }
+
+
 
     addManyRefrences(json, company_id, callback) {
         console.log("json; ", company_id);
@@ -71,13 +73,13 @@ module.exports = class UserDao extends Dao {
         );
     }
 
-    /** Get all employees in based on province
-    *   @param province - province id.
+    /** Get all employees in based on commune
+    *   @param commune - commune id.
     */
-    getAllEmpProvince(province: number, callback: any){
+    getAllEmpCommune(commune: number, callback: any){
         super.query(
-            "SELECT * FROM Employee WHERE province = ?",
-            [province],
+            "SELECT * FROM Employee WHERE commune = ?",
+            [commune],
             callback
         );
     }
@@ -123,6 +125,29 @@ module.exports = class UserDao extends Dao {
         );
     }
 
+	getHashedPWord(id: number, callback: mixed){
+		super.query(
+			"select * from Employee where employee_id = ?",
+			[id],
+			callback
+		);
+
+	}
+
+	/**
+   * Get cases in selected commune when logged in as employee by commune ID
+	 * @param id Commune ID in kommune table
+	 * @param callback
+	 */
+	getCasesOnCommuneID(id: number, callback: mixed){
+        super.query(
+          "SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?)",
+          [id],
+          callback
+        )
+  }
+
+
     getBedriftByEmail(email, callback) {
         console.log("Getting Bedrift based on its email: " + email);
         super.query(
@@ -155,13 +180,13 @@ module.exports = class UserDao extends Dao {
         }
 
 
-        /** Get number of employees in province
-         *   @param province - province number.
+        /** Get number of employees in commune
+         *   @param commune - province number.
          */
-        countEmpsProvince(province: number, callback: any){
+        countEmpsProvince(commune: number, callback: any){
             super.query(
-                "SELECT COUNT(*) AS x FROM Employee WHERE province = ?",
-                [province],
+                "SELECT COUNT(*) AS x FROM Employee WHERE commune = ?",
+                [commune],
                 callback
             );
         }
@@ -179,6 +204,30 @@ module.exports = class UserDao extends Dao {
             "select * FROM Category",
             [],
             callback);
+    }
+
+
+
+    /** Get Commune Name based on its ID */
+    getCommuneName(commune: number, callback: any) {
+        super.query(
+            "SELECT navn FROM kommune WHERE ID = ?",
+            [commune],
+            callback
+        );
+    }
+	
+	/**
+   * Gets all cases connected to an employee
+	 * @param id The employee id
+	 * @param callback
+	 */
+	getCaseOnEmployeeID(id: number, callback: mixed){
+		super.query(
+			"SELECT * FROM Cases WHERE employee_id = ?",
+			[id],
+			callback
+		);
     }
 
 
