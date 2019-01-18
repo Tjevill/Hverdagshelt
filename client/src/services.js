@@ -371,6 +371,14 @@ class OrgService{
     return axios.get(url + '/orgCount');
   }
 
+
+    addOrganization(newemployee: Register): Promise<void> {
+        console.log("ORG TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworganization", newemployee);
+    }
+
+
+
 }
 
 export let orgService = new OrgService();
@@ -390,13 +398,28 @@ class CategoryService {
     return axios.put(url + '/category/' + category.category_id, category);
   }
 
-  deleteCategoryByID(id: number): Promise<void>{
-    return axios.delete(url + '/category/' + id);
-  }
+    checkIfChecked(cat: number, org: number): Promise<Category[]>{
+        return axios.get(url + '/categoryorg/' + cat + '/' + org);
+    }
+
+
+    deleteCategoryByID(id: number): Promise<void>{
+        return axios.delete(url + '/category/' + id);
+    }
+
+    deleteCategoryByOrgID(id: number): Promise<void>{
+        return axios.delete(url + '/category_org/' + id);
+    }
 
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
   }
+
+
+    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
+        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworgcat/" + company_id, newemployee);
+    }
 
 }
 
@@ -416,21 +439,12 @@ class EmployeeService {
         return axios.get(url + '/getAllCategories');
     }
 
-    addOrganization(newemployee: Register): Promise<void> {
-        console.log("ORG TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworganization", newemployee);
-    }
-
     addEmployee(newemployee: Register): Promise<void> {
         console.log("EMPLOYEE TIL SERVICE: ", newemployee);
         return axios.put(url + "/newemployee", newemployee);
     }
 
 
-    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
-        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworgcat/" + company_id, newemployee);
-    }
   /** Create employee
   * JSON sent in postman:
   * { "name": "Ben Oscar Strømstrømstrøm",
