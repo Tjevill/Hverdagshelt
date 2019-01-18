@@ -12,6 +12,7 @@ import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
+import AdminEditPrivateUsers from  "./components/AdminEditPrivateUsers";
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
@@ -152,6 +153,11 @@ class Main extends Component {
                             <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/heroes/:id/edit" component={Admin} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            
+                            {/* MIDLERTIDIG */}
+                            <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
 
                 </div>
                 <div className="wrapper row5">

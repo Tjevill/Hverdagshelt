@@ -13,6 +13,12 @@ import { userService } from "../services.js";
 import RaisedButton from "material-ui/RaisedButton";
 import SearchBar from "material-ui-search-bar";
 
+import { BrowserRouter, Route } from 'react-router-dom'
+import createHashHistory from "history/createHashHistory";
+
+const history = createHashHistory();
+
+
 const style = {
   margin: 12
 };
@@ -74,7 +80,7 @@ export default class PrivateUsersList extends Component {
                 </TableRowColumn>
 
                 <TableRowColumn className="edit">
-                  {this.addEditRowColumn(this.superUser)}
+                  {this.addEditRowColumn(this.superUser, user)}
                   {/*
                
                  <RaisedButton label="rediger" primary={true} style={style} onClick={() => {
@@ -117,6 +123,13 @@ export default class PrivateUsersList extends Component {
       });
   }
 
+  edit(id){
+
+    console.log("Her er vi" + id)
+   //window.location('/admin/heroes/' +id + '/edit');
+
+  }
+
   delete(id) {
     if (window.confirm("Er du sikker på at du ønsker å slette saken?")) {
       console.log("The user  with id " + " " + "has been deleted");
@@ -129,11 +142,9 @@ export default class PrivateUsersList extends Component {
     }
   }
 
-  edit() {
-    console.log("relocating to a new window");
-  }
 
-  addEditRowColumn(id) {
+
+  addEditRowColumn(id, user) {
     if (id == 1) {
       return (
         <RaisedButton
@@ -141,7 +152,7 @@ export default class PrivateUsersList extends Component {
           primary={true}
           style={style}
           onClick={() => {
-            this.edit();
+           history.push('/admin/heroes/'+ user.user_id + '/edit');
           }}
         />
       );
@@ -152,7 +163,6 @@ export default class PrivateUsersList extends Component {
 
   componentDidMount() {
     this.superUser = sessionStorage.getItem("superuser");
-
     userService
       .getAllUsers()
       .then(user => (this.users = user))
