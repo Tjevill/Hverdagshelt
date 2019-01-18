@@ -135,7 +135,7 @@ export default class Navbar extends Component {
                     <ButtonToolbar className="dropdownmenus">
                         <DropdownButton
                         bsStyle="default"
-                        title="Administrator"
+                        title="Administrer"
                         key="1"
                         id="dropdown-basic-1"
                         noCaret

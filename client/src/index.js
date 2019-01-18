@@ -68,6 +68,7 @@ function renderRoot() {
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
                   <Route exact path="/forgot" component={ProfilePage} />
+                  <Route exact path ="/admin/events" component={Events}/>
                   <PrivateRoute
                     exact
                     path="/user/edit"
