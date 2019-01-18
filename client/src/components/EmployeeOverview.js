@@ -65,7 +65,7 @@ export default class EmployeeOverview extends Component {
     geoService
     .getCommuneName(sessionStorage.getItem('commune'))
     .then(commune => {
-      this.commune = commune[0].navn;
+      this.commune = commune[0].navn;  
       this.forceUpdate();
     });
 
