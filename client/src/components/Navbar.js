@@ -6,8 +6,6 @@ import createHistory from 'history/createBrowserHistory';
 import {refreshToken} from "./widgets";
 
 import Case from "./Case";
-import CaseListCard from "./CaseListCard";
-import ProfileCard from "./ProfileCard";
 import ProfilePage from "./ProfilePage";
 import ReportPage from "./ReportPage";
 import IssueOverview from "./IssueOverview";
@@ -28,6 +26,7 @@ import Map from "./Map";
 import CaseEdit from "./caseEdit";
 import EventsEdit from "./EventsEdit";
 import NewEvents from "./NewEvents";
+
 
 const history = createHistory({
   forceRefresh: true

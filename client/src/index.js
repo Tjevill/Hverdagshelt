@@ -8,8 +8,6 @@ import createHashHistory from "history/createHashHistory";
 
 import Navbar from "./components/Navbar";
 import Case from "./components/Case";
-import CaseListCard from "./components/CaseListCard";
-import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
 import ReportPage from "./components/ReportPage";
 import IssueOverview from "./components/IssueOverview";
@@ -34,7 +32,11 @@ import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
 import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
+
+import PrivateUsersList from "./components/PrivateUsersList";
+
 import EmployeeOverview from "./components/EmployeeOverview";
+
 
 const root = document.getElementById("root");
 
@@ -68,8 +70,12 @@ function renderRoot() {
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
                   <Route exact path="/forgot" component={ProfilePage} />
+
+                  <Route exact path="/admin/helter" component={PrivateUsersList} />
+
                   <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
                   <Route exact path="/admin/kommune" component={EmployeeOverview} />
+
                   <PrivateRoute
                     exact
                     path="/user/edit"
