@@ -8,12 +8,14 @@ class Category {
 }
 
 class Employee{
+  employee_id: number;
   name: string;
   tel: string;
   email: string;
   password: string;
-  province: string;
-  district: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
 }
 
 class Case {
@@ -433,8 +435,8 @@ class EmployeeService {
   }
 
   /** Get all employees in a given province with province_id */
-  getEmpProvince(province_id : number): Promise<Employee[]>{
-    return axios.get(url+'/employee/province/'+province_id);
+  getEmpCommune(commune : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/commune/'+commune);
   }
 
   /** Get the number of employees in the db */
@@ -477,8 +479,23 @@ class EventService {
     return axios.get(url + "/events");
   }
 
+    /**
+     * Get one event from the db based on the event_id.
+     * @param event_id - the id of the event you wish to retrieve.
+     * @returns the event on the selected event_id.
+     */
   getOne(event_id: number): Promise<Event[]>{
     return axios.get(url+"/getEvent/"+event_id);
+  }
+
+    /**
+     * Get all events in one commune.
+     * Intended to be used on the administration of events for an employee.
+     * @param commune_id - the id of the commmune the employee works in.
+     * @returns an array of events in the employee commune.
+     */
+  getEventsCommune(commune_id: number): Promise<Event[]>{
+      return axios.get(url + "/events/"+commune_id);
   }
 
 

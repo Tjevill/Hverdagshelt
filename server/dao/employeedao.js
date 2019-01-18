@@ -87,7 +87,7 @@ module.exports = class UserDao extends Dao {
     /** Get all employees in based on commune
     *   @param commune - commune id.
     */
-    getAllEmpProvince(commune: number, callback: any){
+    getAllEmpCommune(commune: number, callback: any){
         super.query(
             "SELECT * FROM Employee WHERE commune = ?",
             [commune],
