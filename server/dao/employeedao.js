@@ -194,5 +194,16 @@ module.exports = class UserDao extends Dao {
             callback);
     }
 
+    /** Get Commune Name based on its ID */
+    getCommuneName(commune: number, callback: any) {
+        super.query(
+            "SELECT navn FROM kommune WHERE ID = ?",
+            [commune],
+            callback
+        );
+    }
+
+    
+
 
 };

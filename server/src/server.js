@@ -427,9 +427,9 @@ app.get("/employee/:employee_id", (req, res) =>{
 });
 
 /** Get all employees in one province */
-app.get("/employee/province/:province_id", (req, res) =>{
-    console.log("Received get-request on endpoint /employee/"+req.params.province_id);
-    empDao.getAllEmpProvince(req.params.province_id, (status, data) =>{
+app.get("/employee/commune/:commune", (req, res) =>{
+    console.log("Received get-request on endpoint /employee/"+req.params.commune);
+    empDao.getAllEmpCommune(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
     });
@@ -485,6 +485,14 @@ app.get("/countEmp", (req: Request, res: Response) =>{
 app.get("/countEmp/:province", (req: Request, res: Response) =>{
     console.log("Received get-request on endpoint /countEmp/"+req.params.province);
     empDao.countEmpsProvince(req.params.province, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
+    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
+    empDao.getCommuneName(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
     });

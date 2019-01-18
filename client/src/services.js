@@ -434,7 +434,7 @@ class EmployeeService {
     return axios.get(url+'/employee/'+employee_id);
   }
 
-  /** Get all employees in a given province with province_id */
+  /** Get all employees in a given Commune with commuune_id */
   getEmpCommune(commune : number): Promise<Employee[]>{
     return axios.get(url+'/employee/commune/'+commune);
   }
@@ -449,6 +449,11 @@ class EmployeeService {
     return axios.get(url+'/countEmp/'+province_id);
   }
 
+  
+  /** Get all employees in a given Commune with commuune_id */
+  getCommuneName(commune : number): Promise<Commune[]>{
+    return axios.get(url+'/CommuneName/'+commune);
+  }
 
 
 
