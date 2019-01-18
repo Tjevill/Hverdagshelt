@@ -38,11 +38,6 @@ class Place {
 	commune: string;
 }
 
-class County { //Fylke
-	id: number;
-	county: string;
-}
-
 class Status {
   status_id: number;
   description: string;
@@ -492,7 +487,7 @@ class EmployeeService {
     return axios.get(url+'/CommuneName/'+commune);
   }
   
-  getCasesOnCommuneID(commune_ID: number): Promise<Case[]>{
+  getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
     return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
   }
 	
@@ -573,15 +568,13 @@ class StatusService {
 class GeoService {
 	
 	/** Get all communes from Place ordered by zip code.*/
-	getAllCommunes(): Promise<Place[]> {
+	getAllStatuses(): Promise<Place[]> {
 		return axios.get(url + "/getCommunes");
 	}
-	
-	/** Gets the communes county.*/
-	getCommunesCounty(county_id: number): Promise<County[]> {
-		return axios.get(url + "/getCommunesCounty/", county_id);
-	}
  
+ getCommuneName(commune: number): Promise<Place> {
+   return axios.get(url + "/CommuneName/" + commune);
+ }
  
 }
 

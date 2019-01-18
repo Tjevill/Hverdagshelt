@@ -452,7 +452,7 @@ app.get("/employee/:employee_id", (req, res) =>{
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
-    console.log("Received get-request on endpoint /employee/"+req.params.commune);
+    console.log("Received get-request on endpoint /employee/commune/"+req.params.commune);
     empDao.getAllEmpCommune(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
@@ -920,6 +920,7 @@ app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
     geodao.getCommuneName(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
+        console.log(data[0].navn);
     });
 });
 
