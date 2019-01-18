@@ -1,5 +1,10 @@
 const Dao = require("./dao.js");
 
+type jsonUpdateCommentNStatus = {
+	status: number,
+  comment: string
+}
+
 module.exports = class CasesDao extends Dao {
 
     /** Get all cases from db ordered by timestamp.*/
@@ -183,6 +188,22 @@ module.exports = class CasesDao extends Dao {
             callback
             );
     }
+	
+	/**
+   * For organizations to update comment and status of a case they are registered as working on
+	 * @param id The case_id parameter
+	 * @param json Includes status and comment to Cases table
+	 * @param callback
+	 */
+	updateCommentAndStatusOrg(id: number, json: jsonUpdateCommentNStatus, callback: mixed){
+	    const val = [json.status, json.comment, id];
+	    super.query(
+	      "UPDATE Cases SET status_id = ?, comment = ? WHERE case_id = ?",
+        val,
+        callback
+      );
+  }
+	
 };
 
 

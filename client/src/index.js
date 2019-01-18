@@ -8,6 +8,8 @@ import createHashHistory from "history/createHashHistory";
 
 import Navbar from "./components/Navbar";
 import Case from "./components/Case";
+import CaseListCard from "./components/ProfilePage.js";
+import ProfileCard from "./components/ProfilePage.js";
 import ProfilePage from "./components/ProfilePage";
 import ReportPage from "./components/ReportPage";
 import IssueOverview from "./components/IssueOverview";
@@ -32,7 +34,11 @@ import EventsEdit from "./components/EventsEdit";
 import NewEvents from "./components/NewEvents";
 import ReportValidation from "./components/ReportValidation";
 import ForgottenPassword from "./components/ForgottenPassword";
+
 import LogTable from "./components/LogTable";
+
+
+import EmployeeEvents from "./components/employeeEvents";
 
 
 import PrivateUsersList from "./components/PrivateUsersList";
@@ -62,6 +68,7 @@ function renderRoot() {
                   <Route exact path="/case/:id/edit" component={CaseEdit} />
                   <Route exact path="/issues" component={IssueOverview} />
                   <Route exact path="/issues/:name/:id" component={IssueOverview} />
+                  <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
                   <Route exact path="/events" component={Events}/>
                   <Route exact path="/events/:id/edit" component={EventsEdit}/>
                   <Route exact path="/map" component={Map} />
@@ -72,7 +79,11 @@ function renderRoot() {
                   <Route exact path="/register" component={Register}/>
                   <Route exact path="/user" component={ProfilePage} />
                   <Route exact path="/forgot" component={ProfilePage} />
+
                   <Route exact path="/logTable" component={LogTable} />
+
+                  <Route exact path ="/admin/events" component={EmployeeEvents}/>
+
 
                   <Route exact path="/admin/helter" component={PrivateUsersList} />
 

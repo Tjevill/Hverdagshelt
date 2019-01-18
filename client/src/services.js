@@ -18,6 +18,11 @@ class Employee{
   superuser: boolean;
 }
 
+class County { //Fylke
+	id: number;
+	county: string;
+}
+
 class Case {
   case_id: number;
   description: string;
@@ -31,6 +36,11 @@ class Case {
   picture: string;
   employee_id: number;
   org_id: number;
+}
+
+class Place {
+	zipcode: number;
+	commune: string;
 }
 
 class Status {
@@ -73,7 +83,6 @@ class UserUpdatePWord {
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
-	newpassword: string;
 }
 
 class Organization {
@@ -227,6 +236,13 @@ class CaseService {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
 	
+	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
+    return axios.put(url + '/updateStatusAndComment/' + case_id, {
+      status: status,
+      comment: comment
+    });
+  }
+	
 }
 export let caseService = new CaseService();
 
@@ -299,14 +315,17 @@ class UserService {
   }
 	
 	/**
-	 * Service object for verifying and changing password for logged in users.
-	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
-	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
+	 * Service object for verifying old password
+	 * @param updatePassword Includes variables {user_id, oldPassword}
 	 */
-	verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
+	verifyOldPassword (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
 		return axios.post(url + '/userVerification', updatePassword);
     
 	}
+	
+	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
+	  return axios.get(url + '/userNameSearch/' + searchString)
+  }
 
 }
 
@@ -314,6 +333,15 @@ export let userService = new UserService();
 
 
 class OrgService{
+	
+	/**
+	 * Service object for verifying and changing password for logged in users.
+	 * @param updatePassword Includes variables {org_id, oldPassword}
+	 */
+	verifyOldPassword (org_id: number, oldPassword: string): Promise<number> {
+		return axios.post(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword});
+		
+	}
 
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
@@ -375,6 +403,15 @@ class CategoryService {
 export let categoryService = new CategoryService();
 
 class EmployeeService {
+	
+	/**
+	 * Service object for verifying old password.
+	 * @param updatePassword Includes variables {employee_id, oldPassword}
+	 */
+	verifyOldPassword (employee_id: number, oldPassword: string): Promise<number> {
+		return axios.post(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword});
+		
+	}
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/getAllCategories');
     }
@@ -434,9 +471,9 @@ class EmployeeService {
     return axios.get(url+'/employee/'+employee_id);
   }
 
-  /** Get all employees in a given province with province_id */
-  getEmpProvince(province_id : number): Promise<Employee[]>{
-    return axios.get(url+'/employee/province/'+province_id);
+  /** Get all employees in a given Commune with commuune_id */
+  getEmpCommune(commune : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/commune/'+commune);
   }
 
   /** Get the number of employees in the db */
@@ -449,7 +486,24 @@ class EmployeeService {
     return axios.get(url+'/countEmp/'+province_id);
   }
 
-
+  
+  /** Get all employees in a given Commune with commuune_id */
+  getCommuneName(commune : number): Promise<Commune[]>{
+    return axios.get(url+'/CommuneName/'+commune);
+  }
+  
+  getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
+    return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
+  }
+	
+	/**
+   * Gets all cases connected to an employee by employee_id
+	 * @param emp_id The id of the employee
+	 * @returns {AxiosPromise<any>} Returns Case array
+	 */
+  getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
+    return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
 
 
 }
@@ -479,8 +533,23 @@ class EventService {
     return axios.get(url + "/events");
   }
 
+    /**
+     * Get one event from the db based on the event_id.
+     * @param event_id - the id of the event you wish to retrieve.
+     * @returns the event on the selected event_id.
+     */
   getOne(event_id: number): Promise<Event[]>{
     return axios.get(url+"/getEvent/"+event_id);
+  }
+
+    /**
+     * Get all events in one commune.
+     * Intended to be used on the administration of events for an employee.
+     * @param commune_id - the id of the commmune the employee works in.
+     * @returns an array of events in the employee commune.
+     */
+  getEventsCommune(commune_id: number): Promise<Event[]>{
+      return axios.get(url + "/events/"+commune_id);
   }
 
 
@@ -500,3 +569,23 @@ class StatusService {
     return axios.get(url + "/status/" + id);
   }
 }
+
+class GeoService {
+	
+	/** Get all communes from Place ordered by zip code.*/
+	getAllCommunes(): Promise<Place[]> {
+		return axios.get(url + "/getCommunes");
+	}
+ 
+ getCommuneName(commune: number): Promise<Place> {
+   return axios.get(url + "/CommuneName/" + commune);
+ }
+	
+	getCommunesCounty(county_id: number): Promise<County[]> {
+		return axios.get(url + "/getCommunesCounty/", county_id);
+	}
+	
+	
+}
+
+export let geoService = new GeoService();
