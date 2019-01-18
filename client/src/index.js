@@ -106,7 +106,7 @@ class Main extends Component {
                 <HashRouter>
 
                     <div>
-                        <div className="bgded overlay">{ console.log("Render return check: ", this.amILoggedin) }
+                  <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
                             <div className="wrapper row1">
                                 <header id="header" className="hoc clear">
                                     <div id="logo" className="fl_left">
@@ -144,6 +144,7 @@ class Main extends Component {
                             <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/issues/:name/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
