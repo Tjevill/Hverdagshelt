@@ -552,6 +552,10 @@ class EventService {
       return axios.get(url + "/events/"+commune_id);
   }
 
+  updateEvent(event_id:number, event:Event):Promise<Void>{
+      return axios.put(url+/updateEvent/+event_id, event);
+  }
+
 
 
 
