@@ -37,8 +37,7 @@ export default class TableExampleComplex extends Component {
               <TableHeaderColumn>
               </TableHeaderColumn>
               <TableHeaderColumn>  <SearchBar
-      onChange={() => console.log('onChange')}
-      onRequestSearch={() => console.log('onRequestSearch')}
+      onChange={(event) => this.searchUsers(event)}
       style={{
         margin: '0 auto',
         minWidth:120,
@@ -92,7 +91,18 @@ export default class TableExampleComplex extends Component {
         </Table>
       </MuiThemeProvider>
     );
-  } 
+  }
+  
+  searchUsers(searchString){
+    console.log(searchString);
+    userService.getUsersBySearchingOnName(searchString)
+      .then(response => {
+        this.users = response;
+			})
+      .catch(err => {
+        console.log("No users with this name");
+      })
+  }
 
 
   delete(id){

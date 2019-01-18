@@ -17,6 +17,7 @@ import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
 import EmployeeEdit from "./components/EmployeeEdit";
+import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
 import ForgottenPassword from "./components/ForgottenPassword";
@@ -125,10 +126,6 @@ class Main extends Component {
                             <Route exact path="/events" component={Events}/>
                             <Route exact path="/events/:id/edit" component={EventsEdit}/>
                             <Route exact path="/map" component={Map} />
-
-
-
-
                             <Route exact path="/nyansatt" component={NewEmployee}/>
                             <Route exact path="/report" component={ReportPage} />
                             <Route exact path="/register" component={Register}/>
@@ -142,6 +139,7 @@ class Main extends Component {
                             <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
