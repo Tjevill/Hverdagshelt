@@ -37,8 +37,6 @@ export default class EmployeeOverview extends Component {
               <th scope="col">Name</th>
               <th scope="col">tel</th>
               <th scope="col">email</th>
-              <th scope="col">province</th>
-              <th scope="col">district</th>
               <th scope="col">super?</th>
             </tr>
           </thead>
@@ -50,8 +48,6 @@ export default class EmployeeOverview extends Component {
                 <td onClick={()=>history.push('/admin/kommune/1') } >{e.name}</td>
                 <td> {e.tel}</td>
                 <td> {e.email}</td>
-                <td> {e.commune}</td>
-                <td> {e.county}</td>
                 <td> {this.super(e.superuser) }</td>
 
                 
