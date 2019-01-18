@@ -5,21 +5,6 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
-const checkToken = (req, res, next) => {
-    const header = req.headers['authorization'];
-
-    if(typeof header !== 'undefined') {
-        const bearer = header.split(' ');
-        const token = bearer[1];
-
-        req.token = token;
-        next();
-    } else {
-        //If header is undefined return Forbidden (403)
-        res.sendStatus(403)
-    }
-}
-
 export function refreshToken() {
     const myHeaders = new Headers();
 
@@ -202,24 +187,6 @@ class NavBarButton extends Component<{ to: string, exact?: boolean, children?: R
   }
 }
 
-/**
- * Renders a navigation bar using Bootstrap classes
- */
-export class NavBar extends Component<{ children: React.Element<typeof NavBarBrand | typeof NavBarLink[] | typeof NavBarButton>[]  }> {
-  static Brand = NavBarBrand;
-  static Link = NavBarLink;
-  static Button = NavBarButton;
-
-  render() {
-    return (
-      <nav className="navbar navbar-expand-sm bg-light navbar-light">
-        {this.props.children.filter(child => child.type == NavBarBrand)}
-        <ul className="navbar-nav">{this.props.children.filter(child => child.type == NavBarLink)}</ul>
-        <button className="btn btn-outline-success my-2 my-sm-0 btn-right" type="submit"> {this.props.children.filter(child => child.type == NavBarButton)}</button>
-      </nav>
-    );
-  }
-}
 
 class ButtonSuccess extends Component<{
   onClick: () => mixed,

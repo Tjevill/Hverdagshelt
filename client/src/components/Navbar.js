@@ -14,7 +14,7 @@ import Events from "./events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./Register";
-import NewOrganization from "./NewOrganization";
+import AdminNyBedrift from "./AdminNyBedrift";
 import NewEmployee from "./NewEmployee";
 import AdminMain from "./AdminMain";
 import LoginPage from "./LoginPage";
@@ -59,6 +59,7 @@ export default class Navbar extends Component {
         <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
         <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+        <a className="option" id="logTable" href="#logTable" onClick={() => this.activate("logTable")}>logTable</a>
       </div>
     );
 
@@ -129,6 +130,7 @@ export default class Navbar extends Component {
             return(
                 <div className="topnav" id="navbar">
                   <a className="" id="front-page" href="/" onClick={() => this.activate("")}><img id="logo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+                  <a className="option" id="issues" href="#admin/issues/:name/:ids" onClick={() => this.activate("issues")}>E. Saker</a>
                   <a className="option" id="events" href="#events" onClick={() => this.activate("events")}>Events</a>
                   <a className="option" id="profile" href="#profile" onClick={() => this.activate("profile")}>Profil</a>
                     <ButtonToolbar className="dropdownmenus">
@@ -143,7 +145,7 @@ export default class Navbar extends Component {
                           <MenuItem href="#admin/helter" eventKey="2">Hverdagshelter</MenuItem>
                           <MenuItem href="#admim/bedrifter" eventKey="3">Bedrifter</MenuItem>
                           <MenuItem href="#admin/rapporter" eventKey="4">Feilrapporter</MenuItem>
-                          <MenuItem href="#admin/events" eventKey="4">Events</MenuItem>
+                          <MenuItem href="#admin/events" eventKey="5">Events</MenuItem>
                           <MenuItem divider />
                           <MenuItem onClick={this.handleLogOut} eventKey="5">Logg ut</MenuItem>
                         </DropdownButton>
