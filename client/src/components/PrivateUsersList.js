@@ -13,11 +13,10 @@ import { userService } from "../services.js";
 import RaisedButton from "material-ui/RaisedButton";
 import SearchBar from "material-ui-search-bar";
 
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
-
 
 const style = {
   margin: 12
@@ -63,12 +62,14 @@ export default class PrivateUsersList extends Component {
                   {user.user_id}
                 </TableRowColumn>
                 <TableRowColumn className="name">{user.name}</TableRowColumn>
-                <TableRowColumn className="phone_number">
-                  {user.tel}
-                </TableRowColumn>
                 <TableRowColumn className="address">
                   {user.address}
                 </TableRowColumn>
+
+                <TableRowColumn className="phone_number">
+                  {user.tel}
+                </TableRowColumn>
+
                 <TableRowColumn className="email">{user.email}</TableRowColumn>
 
                 <TableRowColumn className="subscription">
@@ -123,15 +124,13 @@ export default class PrivateUsersList extends Component {
       });
   }
 
-  edit(id){
-
-    console.log("Her er vi" + id)
-   //window.location('/admin/heroes/' +id + '/edit');
-
+  edit(id) {
+    console.log("Her er vi" + id);
+    //window.location('/admin/heroes/' +id + '/edit');
   }
 
   delete(id) {
-    if (window.confirm("Er du sikker på at du ønsker å slette saken?")) {
+    if (window.confirm("Er du sikker på at du ønsker å slette brukeren?")) {
       console.log("The user  with id " + " " + "has been deleted");
       userService
         .deleteUser(id)
@@ -142,8 +141,6 @@ export default class PrivateUsersList extends Component {
     }
   }
 
-
-
   addEditRowColumn(id, user) {
     if (id == 1) {
       return (
@@ -152,7 +149,7 @@ export default class PrivateUsersList extends Component {
           primary={true}
           style={style}
           onClick={() => {
-           history.push('/admin/heroes/'+ user.user_id + '/edit');
+            history.push("/admin/heroes/" + user.user_id + "/edit");
           }}
         />
       );
