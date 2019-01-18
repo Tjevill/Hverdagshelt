@@ -8,12 +8,14 @@ class Category {
 }
 
 class Employee{
+  employee_id: number;
   name: string;
   tel: string;
   email: string;
   password: string;
-  province: string;
-  district: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
 }
 
 class Case {
@@ -461,8 +463,8 @@ class EmployeeService {
   }
 
   /** Get all employees in a given province with province_id */
-  getEmpProvince(province_id : number): Promise<Employee[]>{
-    return axios.get(url+'/employee/province/'+province_id);
+  getEmpCommune(commune : number): Promise<Employee[]>{
+    return axios.get(url+'/employee/commune/'+commune);
   }
 
   /** Get the number of employees in the db */
