@@ -510,6 +510,22 @@ app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	});
 });
 
+app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
+    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
+    empDao.getCommuneName(req.params.commune, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.get("/getCasesOnCommuneID/:id", (req, res) => {
+	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
+		console.log(req.params.id);
+		res.status(status);
+		res.json(data);
+	});
+});
+
 // End employee
 
 
