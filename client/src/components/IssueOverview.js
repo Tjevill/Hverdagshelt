@@ -143,7 +143,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
       lists = (
         <tbody>
         {this.cateside.map(casen =>(
-          <tr>
+          <tr key={casen.case_id}>
           <th>{casen.case_id}</th>
           <td className="clickable-link" onClick={()=>history.push('/case/'+casen.case_id)}>{casen.headline}</td>
           <td>{casen.timestamp.slice(0,16).replace("T", " ")}</td>
