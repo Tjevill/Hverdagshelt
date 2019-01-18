@@ -144,7 +144,7 @@ app.put("/newemployee", (req, res) => {
 
 app.put("/neworganization", (req, res) => {
     console.log("Fikk POST-request fra klienten");
-    employeeDao.addOrganization(req.body, (status, data) => {
+    orgDao.addOrganization(req.body, (status, data) => {
         res.status(status);
         res.json(data);
     });
@@ -396,6 +396,16 @@ app.get("/category/:id", (req: Request, res: Response) =>{
 });
 
 /**
+ * Get one cat_org by ID
+ */
+app.get("/categoryorg/:cat/:org", (req: Request, res: Response) =>{
+    categoryDao.checkIfCheckedOrgCat(req.params.cat, req.params.org, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
  * Update category
  */
 app.put('/category/:id', (req: Request, res: Response) => {
@@ -410,6 +420,16 @@ app.put('/category/:id', (req: Request, res: Response) => {
  */
 app.delete('/category/:id', (req: Request, res: Response) => {
     categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Deletes one category by ID
+ */
+app.delete('/category_org/:id', (req: Request, res: Response) => {
+    categoryDao.deleteCategoryByOrgID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
     })
