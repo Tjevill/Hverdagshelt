@@ -75,5 +75,17 @@ module.exports = class EventDao extends Dao {
         );
     }
 
+    /** Get every event for one commune.
+     *  This method is intended for the employee to get all events in his commune.
+     *  @param commune_id - the id of the commune.
+     */
+    getEventInCommune(commune_id, callback){
+        super.query(
+            "SELECT * FROM Events INNER JOIN Place ON Place.zipcode = Events.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) ORDER BY Events.date ASC",
+            [commune_id],
+            callback
+        );
+    }
+
 }
 
