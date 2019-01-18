@@ -9,6 +9,7 @@
     "@types/googlemaps": "^3.30.16",
     "@types/markerclustererplus": "^2.1.33",
     "axios": "^0.18.0",
+    "bootstrap-select": "^1.13.5",
     "google-maps-react": "^2.0.2",
     "history": "^4.7.2",
     "is-image": "^2.0.0",

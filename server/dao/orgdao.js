@@ -68,10 +68,11 @@ module.exports = class OrgDao extends Dao {
 	 * @param callback
 	 */
 	updateOrg (json: jsonUpdate, callback: mixed){
-
-		let val = [json.organizationnumber, json.name, json.email, json.org_id];
+console.log("Kall til updateOrg: ");
+		let val = [json.organizationnumber, json.name, json.email, json.tel, json.org_id];
+		console.log("val: ", val)
 		super.query(
-			"update Organization set organizationnumber = ?, name = ?, email = ? where org_id = ?",
+			"update Organization set organizationnumber = ?, name = ?, email = ?, tel = ? where org_id = ?",
 			val,
 			callback
 		);
@@ -128,6 +129,20 @@ module.exports = class OrgDao extends Dao {
 			callback
 		);
 	}
+
+
+
+    addOrganization(json, callback) {
+        var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
+        var passwordData = sha512(json.password, salt);
+        var val = [json.organizationnumber, json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt];
+        super.query(
+            "insert into Organization (organizationnumber, name, tel, email, password, secret) values (?,?,?,?,?,?)",
+            val,
+            callback
+        );
+    }
+
 	
 	/**	Get the number of organizations in the db. */
 	getCountOrg(callback: mixed) {

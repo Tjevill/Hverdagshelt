@@ -5,9 +5,11 @@ import { Component } from "react-simplified";
 import {caseService, categoryService, mapService, geoService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
-import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 import { NavLink } from 'react-router-dom';
 import createHistory from "history/createBrowserHistory";
+import { compose, withProps, lifecycle } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 const style = {
     width: '100%',
@@ -45,6 +47,7 @@ export class Report extends Component {
         zipcode: "",
         category_id: "",
         user_id: sessionStorage.getItem("userid"),
+        isMarkerShown: false,
     };
 
     fileSelectedHandler = event => {
@@ -73,6 +76,48 @@ export class Report extends Component {
     }
 
     render(){
+        const MapComponent = compose(
+            withProps({
+                googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc&v=3.exp&libraries=geometry,drawing,places",
+                loadingElement: <div style={{ height: `100%` }} />,
+                containerElement: <div style={{ height: `400px` }} />,
+                mapElement: <div style={{ height: `100%` }} />,
+            }),
+            lifecycle({
+                componentWillMount() {
+                    const refs = {}
+
+                    this.setState({
+                        position: null,
+                        onMarkerMounted: ref => {
+                            refs.marker = ref;
+                        },
+
+                        onPositionChanged: () => {
+                            const position = refs.marker.getPosition();
+                            console.log(position.toString());
+                            Report.lat = position.lat();
+                            Report.lng = position.lng();
+                        }
+                    })
+                },
+            }),
+            withScriptjs,
+            withGoogleMap
+        )((props) =>
+            <GoogleMap
+                defaultZoom={8}
+                defaultCenter={{ lat: this.lat, lng: this.lng }}
+                onClick={props.onPositionChanged}>
+                {props.isMarkerShown &&
+                <Marker
+                    position={{ lat: this.lat, lng: this.lng }}
+                    draggable={true}
+                    ref={props.onMarkerMounted}
+
+                    onDragEnd={props.onPositionChanged}/>}
+            </GoogleMap>
+        )
         return(
             <div className="row row-style" style={style}>
                 <div className="col-sm-4"></div>
@@ -99,24 +144,19 @@ export class Report extends Component {
                                 defaultValue={this.address}
                                 readOnly={true}
                             />
-                            <Map
-                                className="report-map"
-                                google={this.props.google}
-                                zoom={8}
-                                initialCenter={{
-                                    lat: this.lat,
-                                    lng: this.lng
-                                }}
-                                style={style}
-                                onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
-                            >
-                                <Marker
-                                    name={"current location"}
-                                    draggable={true}
-                                    position={{ lat: this.lat, lng: this.lng }}
-                                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
-                                />
-                            </Map>
+                            {/*<Map*/}
+                                {/*className="report-map"*/}
+                                {/*zoom={8}*/}
+                                {/*initialCenter={{*/}
+                                    {/*lat: this.lat,*/}
+                                    {/*lng: this.lng*/}
+                                {/*}}*/}
+                                {/*style={style}*/}
+                                {/*onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}*/}
+                            {/*>*/}
+
+                            {/*</Map>*/}
+                            <MapComponent isMarkerShown={true}/>
                         </div>
                         <div className="form-group form-group-style">
                             Postnummer:{" "}
@@ -167,6 +207,7 @@ export class Report extends Component {
     }
 
     onMarkerDragEnd = (coord) => {
+        console.log(coord.toString());
         console.log(coord.latLng.lat());
         this.lat = coord.latLng.lat();
         console.log(coord.latLng.lng());

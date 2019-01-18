@@ -117,8 +117,8 @@ app.get("/forgotPassword", (req, res) => {
         res.json('Email does not exist in database');
 
     } else {
-        const 
-    } 
+        const
+    }
 }); */
 
 
@@ -135,6 +135,7 @@ app.put("/newuser", (req, res) => {
 
 app.put("/newemployee", (req, res) => {
     console.log("Fikk POST-request fra klienten");
+    console.log(req.body);
     employeeDao.addEmployee(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -144,7 +145,7 @@ app.put("/newemployee", (req, res) => {
 
 app.put("/neworganization", (req, res) => {
     console.log("Fikk POST-request fra klienten");
-    employeeDao.addOrganization(req.body, (status, data) => {
+    orgDao.addOrganization(req.body, (status, data) => {
         res.status(status);
         res.json(data);
     });
@@ -396,6 +397,16 @@ app.get("/category/:id", (req: Request, res: Response) =>{
 });
 
 /**
+ * Get one cat_org by ID
+ */
+app.get("/categoryorg/:cat/:org", (req: Request, res: Response) =>{
+    categoryDao.checkIfCheckedOrgCat(req.params.cat, req.params.org, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
  * Update category
  */
 app.put('/category/:id', (req: Request, res: Response) => {
@@ -410,6 +421,16 @@ app.put('/category/:id', (req: Request, res: Response) => {
  */
 app.delete('/category/:id', (req: Request, res: Response) => {
     categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Deletes one category by ID
+ */
+app.delete('/category_org/:id', (req: Request, res: Response) => {
+    categoryDao.deleteCategoryByOrgID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
     })
@@ -664,7 +685,7 @@ app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 		res.status(status);
 		res.json(data);
 	})
-}); 
+});
 /** Get every case with status_id = 1. */
 app.get("/allCases/status/:status_id", (req, res) =>{
     console.log("Received get-request on endpoint /allCases/status/"+req.params.status_id);
@@ -1082,7 +1103,7 @@ app.post("/logink", (req, res) => {
 
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.json({reply: "Brukernavn eller passord er ikke riktig"});
             res.status(401);
 
         }
@@ -1122,7 +1143,7 @@ app.post("/loginb", (req, res) => {
 
         } else {
             console.log("Brukernavn & passord IKKE ok");
-            res.json({reply: "Not authorized. Login or password incorrect."});
+            res.json({reply: "Brukernavn eller passord er ikke riktig"});
             res.status(401);
 
         }
