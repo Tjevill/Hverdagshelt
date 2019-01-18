@@ -847,8 +847,22 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 // End Cases
 
 // GEO (Place, kommune, fylke)
+
+/**
+ * Gets all communes from kommune in DB
+ */
 app.get("/getCommunes", (req, res) => {
 	geodao.getAllCommunes((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Gets the communes county
+ */
+app.get("/getCommunesCounty/:id", (req, res) => {
+	geodao.getCommunesCounty(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
 	});
