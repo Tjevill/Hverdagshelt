@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import { userService, employeeService } from "../services";
+import { geoService, employeeService } from "../services";
 import { Alert, Card, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
 
 const history = createHashHistory();
@@ -26,8 +26,8 @@ export default class EmployeeEdit extends Component {
   loaded = false;
 
   bilde = "https://img.icons8.com/android/1600/user.png";
-
   user = {};
+  commune = "";
 
   componentDidMount(){
     this.userid = sessionStorage.getItem("userid");
@@ -37,20 +37,17 @@ export default class EmployeeEdit extends Component {
       .then(user => {
         console.log(user[0]);
         this.user = user[0];
-        //this.tel = this.user.tel;
-        this.loaded = true;
-        this.forceUpdate();
+        geoService
+          .getAllStatuses()
+          .then(communes => {
+              console.log(communes);
+              this.commune = communes[this.user.commune - 1].province;
+              this.loaded = true;
+              this.forceUpdate();
+          })
+          .catch((error: Error) => Alert.danger(error.message));
       })
       .catch((error: Error) => Alert.danger(error.message));
-
-      userService
-        .getDistricts()
-        .then(fylker => {
-            console.log(fylker);
-            this.forceUpdate();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-
   }
 
   /*<div className="jumbotron">
@@ -63,7 +60,6 @@ export default class EmployeeEdit extends Component {
     if(this.loaded){
       return (
         <div>
-
           <div className="container text-center">
             <div className="row">
               <div className="col">
@@ -103,17 +99,24 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                Kommune:{""}
+                  Kommune:{""}
                   <input
                     className={"form-control"}
-                    type="text"
-                    name="commune"
-                    defaultValue={this.user.commune}
-                    maxLength="8"
-                    onChange={event => (this.user.commune = event.target.value)}
+                    type="email"
+                    defaultValue = {this.commune}
+                    name="zipcode"
+                    onChange={event => (this.changeCommune(event))}
                   />
-                  <div className="invalid-feedback">Ugydig telefon</div>
                 </div>
+
+                <div className="card" style={{minWidth: "19rem"}}>
+                  <ul className="list-group list-group-flush" style={{marginBottom: "0"}}>
+                    <li className="list-group-item">Cras justo odio</li>
+                    <li className="list-group-item">Dapibus ac facilisis in</li>
+                    <li className="list-group-item">Vestibulum at eros</li>
+                  </ul>
+                </div>
+
                 <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
                 <Button.Light onClick={() => history.push('/admin/'+this.user.user_id)}>Avbryt</Button.Light>
               </div>
@@ -130,6 +133,10 @@ export default class EmployeeEdit extends Component {
         <Loading />
       )
     }
+  }
+
+  changeCommune(event){
+
   }
 
   save(){
