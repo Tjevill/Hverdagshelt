@@ -481,6 +481,7 @@ class EmployeeService {
   /** Get all employees in a given Commune with commuune_id */
   getCommuneName(commune : number): Promise<Commune[]>{
     return axios.get(url+'/CommuneName/'+commune);
+  }
   
   getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
     return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);

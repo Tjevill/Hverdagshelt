@@ -492,21 +492,20 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
     });
 });
 
-<<<<<<< HEAD
 app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
     console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
     empDao.getCommuneName(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
     });
-=======
+});
+
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
 		console.log(req.params.id);
 		res.status(status);
 		res.json(data);
 	});
->>>>>>> 0b3784256cdfb66cb2820b9b349605441d57fa13
 });
 
 // End employee
