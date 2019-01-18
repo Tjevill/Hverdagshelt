@@ -44,7 +44,7 @@ export default class NewEmployee extends Component {
 
     handleChangeFylke = event => {
 
-        console.log("FYLKE VALGT: " + event.target.value)
+        console.log("FYLKE VALGT: " + event.target.value);
 
         this.state.county = event.target.value;
 
@@ -62,6 +62,7 @@ export default class NewEmployee extends Component {
     }
 
     handleChangeKommune = event => {
+      console.log("Commune : " + event.target.value);
         this.state.commune = event.target.value;
 
     }
@@ -70,8 +71,6 @@ export default class NewEmployee extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
-      this.state.commune = event.target.value;
 
 
       this.setState((state, props) => ({
