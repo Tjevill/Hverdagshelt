@@ -87,7 +87,7 @@ module.exports = class UserDao extends Dao {
     /** Get all employees in based on commune
     *   @param commune - commune id.
     */
-    getAllEmpProvince(commune: number, callback: any){
+    getAllEmpCommune(commune: number, callback: any){
         super.query(
             "SELECT * FROM Employee WHERE commune = ?",
             [commune],
@@ -135,6 +135,29 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
+	
+	getHashedPWord(id: number, callback: mixed){
+		super.query(
+			"select * from Employee where employee_id = ?",
+			[id],
+			callback
+		);
+		
+	}
+	
+	/**
+   * Get cases in selected commune when logged in as employee by commune ID
+	 * @param id Commune ID in kommune table
+	 * @param callback
+	 */
+	getCasesOnCommuneID(id: number, callback: mixed){ //TODO: returns more than 1 row!!
+        super.query(
+          "SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?)",
+          [id],
+          callback
+        )
+  }
+  
 
     getBedriftByEmail(email, callback) {
         console.log("Getting Bedrift based on its email: " + email);

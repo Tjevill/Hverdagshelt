@@ -536,3 +536,16 @@ ListItem {
     margin-left: 20px;
 }
 
+.clickable-link {
+    cursor: pointer;
+}
+
+.caselist-container {
+    width: 50%;
+    float: right;
+}
+
+.profilecard-container {
+    width: 40%;
+    float: left;
+}

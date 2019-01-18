@@ -7,16 +7,15 @@ import { Redirect, HashRouter, Route, NavLink, Switch,  } from 'react-router-dom
 import { withRouter } from 'react-router';
 import {Component, sharedComponentData} from 'react-simplified';
 import {refreshToken} from "./components/widgets";
+
 import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
-import CaseListCard from "./components/CaseListCard";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
-import createHashHistory from "history/createHashHistory";
 import EmployeeEdit from "./components/EmployeeEdit";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
@@ -30,7 +29,6 @@ import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
 import PrivateRoute from 'react-private-route';
-import ProfileCard from "./components/ProfileCard";
 import ProfilePage from "./components/ProfilePage";
 import React from "react";
 import ReactDOM from "react-dom";

@@ -71,6 +71,7 @@ const Orgdao = require("../dao/orgdao.js");
 const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
 const Statusdao = require("../dao/statusdao.js");
+const GeoDao = require("../dao/geodao.js");
 
 const Employeedao = require("../dao/employeedao.js");
 
@@ -95,6 +96,7 @@ let orgDao = new Orgdao(pool);
 let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
 let statusDao = new Statusdao(pool);
+let geodao = new GeoDao(pool);
 
 
 /** Send password reset link   */
@@ -490,6 +492,14 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
     });
 });
 
+app.get("/getCasesOnCommuneID/:id", (req, res) => {
+	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
+		console.log(req.params.id);
+		res.status(status);
+		res.json(data);
+	});
+});
+
 // End employee
 
 
@@ -821,11 +831,32 @@ app.post("/cases", (req, res) => {
     });
 });
 
+/**
+ * For organizations to update comment and status of a case they are registered as working on
+ */
+app.put("/updateStatusAndComment/:id", (req, res) => {
+	caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
+    console.log(req.params.id);
+		res.status(status);
+		res.json(data);
+	});
+});
+
+
+
 // End Cases
 
+// GEO (Place, kommune, fylke)
+app.get("/getCommunes", (req, res) => {
+	geodao.getAllCommunes((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
 
 
 
+// Login
 
 /**
  * Verifies old password for user.
@@ -835,6 +866,56 @@ app.post('/userVerification', (req: Request, res: Response) => {
 
     let dbHash;
     userdao.getHashedPWord(req.body.user_id, (status, data) => {
+        console.log(data[0].password + " DATABASE!******************************");
+        let savedPassword = data[0].password;
+        let passwordData = sha512(req.body.oldPassword, data[0].secret);
+        console.log(passwordData.passwordHash, "NEW***********************");
+        dbHash = passwordData.passwordHash === savedPassword;
+        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+
+        if (dbHash) {
+            console.log("STATUS: ", "200");
+            res.status(200).json(1);
+        } else {
+            console.log("STATUS: ", "500");
+            res.status(500).json("Wrong password. Try again");
+        }
+
+    });
+
+});
+/**
+ * Verifies old password for employee.
+ */
+app.post('/employeeVerification', (req: Request, res: Response) => {
+
+    let dbHash;
+    empDao.getHashedPWord(req.body.employee_id, (status, data) => {
+        console.log(data[0].password + " DATABASE!******************************");
+        let savedPassword = data[0].password;
+        let passwordData = sha512(req.body.oldPassword, data[0].secret);
+        console.log(passwordData.passwordHash, "NEW***********************");
+        dbHash = passwordData.passwordHash === savedPassword;
+        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+
+        if (dbHash) {
+            console.log("STATUS: ", "200");
+            res.status(200).json(1);
+        } else {
+            console.log("STATUS: ", "500");
+            res.status(500).json("Wrong password. Try again");
+        }
+
+    });
+
+});
+/**
+ * Verifies old password for organization.
+ */
+app.post('/organizationVerification', (req: Request, res: Response) => {
+
+    let dbHash;
+    orgDao.getHashedPWord(req.body.org_id, (status, data) => {
         console.log(data[0].password + " DATABASE!******************************");
         let savedPassword = data[0].password;
         let passwordData = sha512(req.body.oldPassword, data[0].secret);
@@ -925,7 +1006,7 @@ app.post("/logink", (req, res) => {
             employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
 
                 let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].employee_id, name: data[0].name,superuser: data[0].superuser});
+                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].employee_id, name: data[0].name, commune: data[0].commune, superuser: data[0].superuser});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
             });
 
