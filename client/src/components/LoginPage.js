@@ -134,6 +134,7 @@ export default class LoginPage extends React.Component {
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
                 //console.log("user: " + sessionStorage.getItem("userid"));
+                window.location.reload();
                 if (this.state.message2 === "Success") history.push('/');
 
             })
@@ -168,6 +169,7 @@ export default class LoginPage extends React.Component {
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
                 //console.log("user: " + sessionStorage.getItem("userid"));
+                window.location.reload();
                 if (this.state.message3 === "Success") history.push('/');
 
             })
