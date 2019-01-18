@@ -3,9 +3,11 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import {employeeService, orgService} from "../services";
+import {categoryService, employeeService, orgService} from "../services";
 import { userService } from "../services";
+
 import createHashHistory from "history/createHashHistory";
+const history = createHashHistory();
 
 
 export default class AdminRedigerBedrift extends Component<{ match: { params: { id: number } }}> {
@@ -26,25 +28,37 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
         orgPromise.then(orgData => {
             //console.log(orgData[0]);
             this.organization = orgData[0];
+            this.setState((state, props) => ({
+                organizationnumber: this.organization.organizationnumber,
+                name: this.organization.name,
+                email: this.organization.email,
+                tel: this.organization.tel
+            }));
 
         });
 
 
 
-        employeeService.getCategories()
+        categoryService.getAllCategories()
             .then(response => {
-                console.log("category_id", response.category_id);
+                // console.log("getCategories respose", response);
                 this.categories = response;
-
-
-                //this.conns = Array.from({length: 5}, (response => response);
-                // this.conns.category_id = response.category_id;
                 let i;
-                for (i=0; i < response.length; i++) {
-                    this.conns.push({"catid": response[i].category_id, "checked": false});
+                 for (i=0; i < response.length; i++) {
+                    let catid = response[i].category_id;
+
+                    console.log("response[i].category_id: " + response[i].category_id);
+                    categoryService.checkIfChecked(response[i].category_id, this.props.match.params.id)
+                    .then((response2, index) => {
+                       // console.log("i: " + index )
+                       //  console.log("repsonse fra getCatOrgByID: ",  response2.length);
+                        // console.log("hm ", response[index])
+                        let value = false;
+                        (response2.length === 0 ? value = false : value = true)
+                      this.conns.push({"catid": catid, "checked": false});
+                    });
+
                 }
-                // console.log("kategorier: ", this.categories);
-                // console.log("frsh conns: ", this.conns);
             })
             .catch(
                 (error: Error) =>
@@ -85,14 +99,14 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
 
     render() {
         if (!this.organization) return null;
-console.log("this org: ", this.organization)
+// console.log("this org: ", this.organization)
         return (
             <div className="row">
-                <div className="col-sm-4"></div>
+                <div className="col-sm-4">&nbsp; </div>
                 <div className="col-sm-4">
                     <div className="NyAnsatt">
-                        <h1>Registrer ny bedrift</h1>
-                        <div><h3>{this.organization.organizationnumber}</h3></div>
+                        <h1>Rediger bedrift</h1>
+
                         <div className="form-group">
                             Organisasjonsnummer:{" "}
                             <input
@@ -120,6 +134,7 @@ console.log("this org: ", this.organization)
                                 type="text"
                                 defaultValue={this.organization.tel}
                                 name="tel"
+                                maxLength="8"
                                 onChange={this.handleChange}
                             />
                         </div>
@@ -133,39 +148,20 @@ console.log("this org: ", this.organization)
                                 onChange={this.handleChange}
                             />
                         </div>
-                        <div className="form-group">
-                            Passord:{" "}
-                            <input
-                                className="form-control"
-                                type="password"
-                                name="password"
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            Gjenta Passord:{" "}
-                            <input
-                                className="form-control"
-                                type="password"
-                                name="password2"
-                                onChange={this.handleChange}
-                            />
-                        </div>
+
 
                         <div className="form-group">
-
-                            {this.categories.map(cat => {
+                            <h6>Du må krysse av alle aktuelle kategorier på nytt: </h6>
+                            {this.categories.map((cat, index) => {
                                 return (
                                     <div className="form-check form-check-inline" key={cat.category_id}>
+
                                         <input className="form-check-input" type="checkbox" id="inlineCheckbox" value={cat.category_id} onClick={this.handleAllChecked} />
                                         <label className="form-check-label" htmlFor="inlineCheckbox1">{cat.description}</label>
                                     </div>
                                 )
                             })}
                         </div>
-
-
-                        <h3>{this.passworderror}</h3>
                         <p>&nbsp;</p>
                         <button type="button" onClick={this.save} className="btn btn-primary">
                             Endre data
@@ -190,37 +186,12 @@ console.log("this org: ", this.organization)
             return null;
         }
 
-
-
-
-        if (this.state.password != this.state.password2) {
-            this.passworderror = "Passordene matcher ikke.";
-            return null;
-        } else {
-            this.passworderror = "";
-        }
-
-        let pass = this.state.password;
-        let passlength = pass.length
-        let minlength = 8;
-
-        if (passlength < minlength) {
-            this.passworderror = "Passordet er for kort";
-            return null;
-        } else {
-            this.passworderror = "";
-        }
-
-
-
         const orgdata = {
             organizationnumber: this.state.organizationnumber,
             name: this.state.name,
             tel: this.state.tel,
             email: this.state.email,
-            password: this.state.password,
-            password2: this.state.password2
-
+            org_id: this.props.match.params.id
         };
 
         let i;
@@ -230,37 +201,29 @@ console.log("this org: ", this.organization)
             }
         }
 
-
-
-        if (this.password != this.password2) {
-            this.message = "Passwords do not match.";
-        }
-
+console.log("this.conns: ", this.conns)
         console.log("this organization: ", orgdata);
         console.log("these connections: ", this.category_ids)
 
 
-        employeeService
-            .addOrganization(orgdata)
+        orgService.updateOrgByID(orgdata)
             .then(response => {
-                console.log("insertID: ", response.insertId);
-                console.log("this.category_ids: ", this.category_ids)
-                employeeService
-                    .addOrgCat(this.category_ids, response.insertId)
+                console.log("1st response: ", response);
+                categoryService.deleteCategoryByOrgID(this.props.match.params.id)
                     .then(response => {
                         console.log("2nd response: ", response);
+                        console.log("this.category_ids: " + this.category_ids);
+                        categoryService.addOrgCat(this.category_ids, this.props.match.params.id)
+                            .then(response => {
+                                console.log("3rd response: ", response);
+                                history.push('/admin/bedrift')
+                            })
+                            .catch((error: Error) => (this.message = error.message));
                     })
-                    .catch(
-                        (error: Error) =>
-                            (this.message = error.message)
-                    );
-
+                    .catch((error: Error) => (this.message = error.message));
             })
-            .catch(
-                (error: Error) =>
+            .catch((error: Error) => (this.message = error.message));
 
-                    (this.message = error.message)
-            );
 
 
 

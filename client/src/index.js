@@ -12,10 +12,12 @@ import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
+import AdminEditEmployee from "./components/AdminEditEmployee";
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
+import createHashHistory from "history/createHashHistory";
 import EmployeeEdit from "./components/EmployeeEdit";
 import EmployeeEvents from "./components/employeeEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
@@ -42,6 +44,8 @@ import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
 
+const history = createHashHistory();
+
 
 class forsideMain extends Component {
     render () {
@@ -51,7 +55,7 @@ class forsideMain extends Component {
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                    <footer><a className="btn" href="#">Meld feil eller mangler!</a></footer>
+                    <footer><button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button></footer>
 
                 </div>
             </section>
@@ -149,6 +153,7 @@ class Main extends Component {
                             <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                 </div>
                 <div className="wrapper row5">

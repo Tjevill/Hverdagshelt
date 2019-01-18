@@ -68,7 +68,7 @@ export default class IssueOverview extends Component <{ match: { params: { name:
               this.casesbyKommune = response;
               this.cases = response;
               if(this.categoryname!=="All"){
-                console.log("hahaha",response);
+                console.log("hahaha ",response);
                 this.caseofCat = response.filter(element=>
                     element.category_id == this.category_id);
               }
