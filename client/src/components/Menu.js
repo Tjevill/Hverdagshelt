@@ -120,7 +120,7 @@ export default class Menu extends Component {
                         <li><a className="drop" href="#">Administrator</a>
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/helter">Hverdagshelter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
