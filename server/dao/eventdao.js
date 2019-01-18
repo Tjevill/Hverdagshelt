@@ -69,7 +69,7 @@ module.exports = class EventDao extends Dao {
     updateEvent(event_id, json, callback){
         let val = [json.name, json.date, json.description, json.zipcode, json.address, json.venue, event_id];
         super.query(
-            "UPDATE Events SET name = ?, date = ?, description = ?, zipcode = ? WHERE event_id = ?",
+            "UPDATE Events SET name = ?, date = ?, description = ?, zipcode = ?, address = ?, venue = ? WHERE event_id = ?",
             val,
             callback
         );

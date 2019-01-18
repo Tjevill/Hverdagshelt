@@ -38,7 +38,7 @@ module.exports = class UserDao extends Dao {
         var val = [json.name, json.tel, json.email, json.commune, json.county, passwordData.passwordHash, passwordData.salt, json.superuser];
 
         super.query(
-            "INSERT INTO Employee (name, tel, email, commune, county, password, secret, superuser) VALUES (?,?,?,?,?,?,?,?)",
+            "INSERT INTO Employee (name, tel, email, commune, county, password, secret) VALUES (?,?,?,?,?,?,?)",
             val,
             callback
         );

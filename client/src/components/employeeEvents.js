@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react-simplified";
 import { eventService } from "../services.js";
+import createHashHistory from "history/createHashHistory";
+const history = createHashHistory();
 
 
 
@@ -21,32 +23,39 @@ export default class EmployeeEvents extends Component {
 
         return(
 
-            <table className="table">
-                <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Navn</th>
-                    <th scope="col">Adresse</th>
-                    <th scope="col">Postkode</th>
-                    <th scope="col">Dato</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {this.events.map( (e, i) => (
+            <div className = "jumbotron jumbotron-fluid">
 
-                        <tr key={i}>
+                <div className = "container text-center">
+                    <h1 className = "display-4">Klikk på event for å redigere</h1>
+                </div>
 
-                            <th scope="row">{e.event_id}</th>
-                            <td> {e.name} </td>
-                            <td> {e.address} </td>
-                            <td> {e.zipcode} </td>
-                            <td> {e.date.substring(0,10)} </td>
-                            <td><a href = {"#/events/"+e.event_id+"/edit"}><button className = "btn btn-primary">Rediger</button></a></td>
-
+                    <table className="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Navn</th>
+                            <th scope="col">Adresse</th>
+                            <th scope="col">Postkode</th>
+                            <th scope="col">Dato</th>
                         </tr>
-                        ))}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            {this.events.map( (e, i) => (
+
+                                <tr key={i}
+                                    onClick={()=>history.push("/events/"+ e.event_id+"/edit")}>
+
+                                    <th scope="row">{e.event_id}</th>
+                                    <td> {e.name} </td>
+                                    <td> {e.address} </td>
+                                    <td> {e.zipcode} </td>
+                                    <td> {e.date.substring(0,10)} </td>
+
+                                </tr>
+                                ))}
+                        </tbody>
+                    </table>
+            </div>
 
         );
     }

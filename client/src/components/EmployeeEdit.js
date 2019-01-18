@@ -28,6 +28,8 @@ export default class EmployeeEdit extends Component {
   bilde = "https://img.icons8.com/android/1600/user.png";
   user = {};
   commune = "";
+  communes = [];
+  communeOptions = [];
 
   componentDidMount(){
     this.userid = sessionStorage.getItem("userid");
@@ -38,11 +40,11 @@ export default class EmployeeEdit extends Component {
         console.log(user[0]);
         this.user = user[0];
         geoService
-          .getAllStatuses()
+          .getAllCommunes()
           .then(communes => {
-              console.log(communes);
+              //console.log(communes);
+              this.communes = communes;
               this.commune = communes[this.user.commune - 1].province;
-              console.log();
               this.loaded = true;
               this.forceUpdate();
           })
@@ -115,6 +117,13 @@ export default class EmployeeEdit extends Component {
                     <li className="list-group-item">Cras justo odio</li>
                     <li className="list-group-item">Dapibus ac facilisis in</li>
                     <li className="list-group-item">Vestibulum at eros</li>
+                    {
+                      this.communeOptions.map(
+                        commune => (
+                          <li className="list-group-item">{commune}</li>
+                        )
+                      )
+                    }
                   </ul>
                 </div>
 
@@ -137,7 +146,24 @@ export default class EmployeeEdit extends Component {
   }
 
   changeCommune(event){
+    console.log(event.target.value);
+    let options = []
+    this.communes.map(
+      commune => {
+        if(commune.province.includes(event.target.value)){
+          options.push(commune);
+        }
+      }
+    );
+    options = this.uniq(options);
+    console.log(options);
+    this.communeOptions = options.slice(0, 3);
+  }
 
+  uniq(a) {
+      return a.sort().filter(function(item, pos, ary) {
+          return !pos || item != ary[pos - 1];
+      })
   }
 
   save(){
