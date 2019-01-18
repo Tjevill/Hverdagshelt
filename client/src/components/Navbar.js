@@ -14,7 +14,7 @@ import Events from "./events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import Register from "./Register";
-import NewOrganization from "./NewOrganization";
+import AdminNyBedrift from "./AdminNyBedrift";
 import NewEmployee from "./NewEmployee";
 import AdminMain from "./AdminMain";
 import LoginPage from "./LoginPage";
@@ -59,6 +59,7 @@ export default class Navbar extends Component {
         <a className="option" id="map" href="#map" onClick={() => this.activate("map")}>Kart</a>
         <a className="option" id="login" href="#login" onClick={() => this.activate("login")}>Logg inn</a>
         <a href="javascript:" className="icon" onClick={() => this.mobileMenu()}></a>
+        <a className="option" id="logTable" href="#logTable" onClick={() => this.activate("logTable")}>logTable</a>
       </div>
     );
 

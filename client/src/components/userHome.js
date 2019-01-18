@@ -13,24 +13,6 @@ export default class userHome extends Component {
 		return (
 			<div className="userHome-body">
 
-				<div className="userHome-container">
-
-					<div className="userHome-banner">
-
-						<div className="userHome-button1">
-						<h5> 	Vær en hverdagshelt - varsle din kommune om feil!</h5>
-						<button
-							onClick={() => {
-								window.location.href = "/#/report";
-							}}
-						>
-							Meld Feil
-						</button>
-							</div>
-
-					</div>
-					<Events/>
-				</div>
 			</div>
 
 		);
