@@ -850,6 +850,13 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 	});
 });
 
+app.get("/getCaseOnEmployeeID/:id", (req, res) => {
+	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 
 
 // End Cases

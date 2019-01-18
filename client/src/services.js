@@ -491,7 +491,15 @@ class EmployeeService {
   getCasesOnCommuneID(commune_ID: number): Promise<Case[]>{
     return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
   }
-
+	
+	/**
+   * Gets all cases connected to an employee by employee_id
+	 * @param emp_id The id of the employee
+	 * @returns {AxiosPromise<any>} Returns Case array
+	 */
+  getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
+    return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
 
 
 }
