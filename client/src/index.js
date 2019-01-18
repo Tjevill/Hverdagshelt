@@ -39,6 +39,7 @@ import ReportPage from "./components/ReportPage";
 import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
+const history = createHashHistory();
 
 
 class forsideMain extends Component {
@@ -49,7 +50,7 @@ class forsideMain extends Component {
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                    <footer><a className="btn" href="#">Meld feil eller mangler!</a></footer>
+                    <footer><button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button></footer>
 
                 </div>
             </section>

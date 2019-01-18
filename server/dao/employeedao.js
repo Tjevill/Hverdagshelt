@@ -26,17 +26,6 @@ module.exports = class UserDao extends Dao {
 
 
 
-    addOrganization(json, callback) {
-        var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
-        var passwordData = sha512(json.password, salt);
-        var val = [json.organizationnumber, json.name, json.tel, json.email, passwordData.passwordHash, passwordData.salt];
-        super.query(
-            "insert into Organization (organizationnumber, name, tel, email, password, secret) values (?,?,?,?,?,?)",
-            val,
-            callback
-        );
-    }
-
 
 
     /** Create an employee and add in the db
