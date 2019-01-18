@@ -167,6 +167,14 @@ app.get("/cases", (req, res) => {
     });
 });
 
+app.get("/events/:commune_id", (req, res) =>{
+    console.log("Fikk GET-request from client");
+    eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
 /**
  * Gets all districts from DB
  */
@@ -490,6 +498,16 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
         res.status(status);
         res.json(data);
     });
+});
+
+
+
+app.get("/getCasesOnCommuneID/:id", (req, res) => {
+	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
+		console.log(req.params.id);
+		res.status(status);
+		res.json(data);
+	});
 });
 
 app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
@@ -881,6 +899,14 @@ app.get("/getCommunesCounty/:id", (req, res) => {
 		res.status(status);
 		res.json(data);
 	});
+});
+
+app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
+    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
+    geodao.getCommuneName(req.params.commune, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
 });
 
 
