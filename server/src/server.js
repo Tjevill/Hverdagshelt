@@ -492,13 +492,7 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
     });
 });
 
-app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
-    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
-    empDao.getCommuneName(req.params.commune, (status, data) =>{
-        res.status(status);
-        res.json(data);
-    });
-});
+
 
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
@@ -874,6 +868,14 @@ app.get("/getCommunesCounty/:id", (req, res) => {
 		res.status(status);
 		res.json(data);
 	});
+});
+
+app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
+    console.log("Received get-request on endpoint /CommuneName/"+req.params.commune);
+    geodao.getCommuneName(req.params.commune, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
 });
 
 
