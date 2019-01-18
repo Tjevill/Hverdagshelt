@@ -20,13 +20,14 @@ const history = createHashHistory();
 //<{ match: { params: { name: string, id: number } } }>
 export default class EmployeeOverview extends Component {
   employees = [];
-  superField = "";
+  commune = "";
 
   //sessionStorage.getItem('superuser')
 
   render() {
     return (
       <div>
+      <h1> Liste over ansatte i din kommune: {sessionStorage.getItem('commune')} </h1>
         <a href={"#/nyAnsatt/"} className="btn btn-primary">
           Legg til ny ansatt
         </a>
@@ -61,13 +62,16 @@ export default class EmployeeOverview extends Component {
 
   componentDidMount() {
     employeeService
-      .getAll()
+      .getEmpCommune(sessionStorage.getItem('commune'))
       .then(employees => {
         this.employees = employees;
-        this.forceUpdate();
+        
       })
       .catch((error: Error) => Alert.danger(error.message));
+
   }
+
+
 
 
   super(value) {
@@ -77,4 +81,8 @@ export default class EmployeeOverview extends Component {
         return "Normal"
     }
   }
+
+ 
+
+
 }
