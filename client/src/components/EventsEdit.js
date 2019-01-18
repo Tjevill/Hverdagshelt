@@ -13,6 +13,7 @@ const history = createHashHistory();
 
 
 export default class EventsEdit extends Component <{ match: { params: { id: number } } }> {
+
   event = new Object();
 
   loaded = false;
@@ -21,69 +22,106 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
     if(this.loaded) {
       return (
           <>
-            <div class="jumbotron jumbotron-fluid">
-              <div class="container text-center">
-                <h1 class="display-4">Rediger Event</h1>
+            <div className="jumbotron jumbotron-fluid">
+
+              <div className="container text-center">
+                <h1 className="display-4">Rediger Event</h1>
               </div>
+
             </div>
-            <div class="container">
-              <div class="row">
-                <div class="col">
+
+            <div className="container">
+
+              <div className="row">
+
+                <div className="col">
+
                   <form>
-                    <div class="form-group">
+                    <div className="form-group">
                       <label for="exampleInputName">Event navn</label>
                       <input
                           type="name"
-                          class="form-control"
+                          className="form-control"
                           id="Name"
-                          defaultValue={this.event.name}></input>
+                          defaultValue={this.event.name}
+                          onChange={event => (this.event.name = event.target.value)}
+                      >
+
+                      </input>
                     </div>
-                    <div class="form-group">
+
+                    <div className="form-group">
+
                       <label for="exampleInputTime">Tidspunkt</label>
+
                       <input
-                          type="tidspunkt"
-                          class="form-control"
-                          id="Timming"
-                          defaultValue={this.event.date}></input>
+                          className = "form-control"
+                          type="datetime-local"
+                          id="timing"
+                          name="event-time"
+                          defaultValue={this.event.date.substring(0,16)}
+                          onChange = {event => (this.event.date = event.target.value)}
+                          min = {this.event.date.substring(0,16)}
+                      />
+
+                      <small
+                          id="dateHelp"
+                          className="form-text text-muted"
+                      >
+                        Format: YYYY-MM-DD HH-MM-SS
+                      </small>
+
                     </div>
-                    <div class="form-group">
+
+                    <div className="form-group">
+
                       <label for="exampleInputDescription">Beskrivelse</label>
                       <textarea
                           rows = "8"
                           type="description"
-                          class="form-control"
-                          id="Desciption"
-                          defaultValue={this.event.description}></textarea>
+                          className="form-control"
+                          id="description"
+                          defaultValue={this.event.description}
+                          onChange={event => (this.event.description = event.target.value)}
+                      >
+
+                      </textarea>
+
                     </div>
-                    <div class="form-group">
+
+                    <div className="form-group">
                       <label for="exampleInputDescription">Postnummer</label>
                       <input
                           type="zipcode"
-                          class="form-control"
+                          className="form-control"
                           id="zipcode"
                           maxlength="4"
                           size="4"
-                          defaultValue={this.event.zipcode}></input>
+                          defaultValue={this.event.zipcode}
+                          onChange={event => (this.event.zipcode = event.target.value)}
+                      >
+
+                      </input>
                     </div>
-                    <div class="form-group">
+
+                    <div className="form-group">
+
                       <label for="exampleInputDescription">Adresse</label>
                       <input
-                          type="zipcode"
-                          class="form-control"
-                          id="zipcode"
-                          maxlength="4"
+                          type="address"
+                          className="form-control"
+                          id="address"
                           size="4"
-                          defaultValue={this.event.address}></input>
+                          defaultValue={this.event.address}
+                          onChange={event => (this.event.address = event.target.value)}
+                      >
+
+                      </input>
                     </div>
-                    <button type="submit" class="btn btn-primary">Rediger</button>
+
+                    <button onClick = { () => this.save() } type="submit" class="btn btn-primary">Rediger</button>
+
                   </form>
-                </div>
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlFile1">Example file input</label>
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1"/>
-                  </div>
-                  <img src="https://www.magical-planet.com/wp-content/uploads/2018/03/Duomo-of-Milan-696x366.jpg"/>
                 </div>
               </div>
             </div>
@@ -96,7 +134,6 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
 
     }
   }
-
 
   componentDidMount(){
     console.log("Edit event mounted.");
@@ -112,5 +149,15 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
   }
 
   save(){
+    console.log(this.event.name);
+    console.log(this.event.date);
+    console.log(this.event.description);
+    console.log(this.event.zipcode);
+    console.log(this.event.address);
+    eventService
+        .updateEvent(
+            this.props.match.params.id,
+            this.event
+            );
   }
 }
