@@ -104,7 +104,7 @@ export default class Menu extends Component {
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/issues/All/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="admin/issues/:navn/:id">Saker</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
@@ -120,7 +120,7 @@ export default class Menu extends Component {
                         <li><a className="drop" href="#">Administrator</a>
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/helter">Hverdagshelter</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>

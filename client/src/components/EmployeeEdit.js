@@ -42,6 +42,7 @@ export default class EmployeeEdit extends Component {
           .then(communes => {
               console.log(communes);
               this.commune = communes[this.user.commune - 1].province;
+              console.log();
               this.loaded = true;
               this.forceUpdate();
           })

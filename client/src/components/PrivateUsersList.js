@@ -19,7 +19,7 @@ const style = {
 /**
  * A simple table demonstrating the hierarchy of the `Table` component and its sub-components.
  */
-export default class TableExampleComplex extends Component {
+export default class PrivateUsersList extends Component {
   users = [];
   render() {
     return (
@@ -58,7 +58,7 @@ export default class TableExampleComplex extends Component {
                   {user.address}
                 </TableRowColumn>
                 <TableRowColumn className="email">{user.email}</TableRowColumn>
-             
+
                 <TableRowColumn className="subscription">
                   {user.subscription}
                 </TableRowColumn>
@@ -81,7 +81,7 @@ export default class TableExampleComplex extends Component {
                   </TableRowColumn>
 
 
-            
+
 
                  </TableRow>
 
@@ -92,7 +92,7 @@ export default class TableExampleComplex extends Component {
       </MuiThemeProvider>
     );
   }
-  
+
   searchUsers(searchString){
     console.log(searchString);
     userService.getUsersBySearchingOnName(searchString)
