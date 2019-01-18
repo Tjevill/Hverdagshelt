@@ -16,6 +16,7 @@ import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
+import createHashHistory from "history/createHashHistory";
 import EmployeeEdit from "./components/EmployeeEdit";
 import EmployeeEvents from "./components/employeeEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
@@ -41,6 +42,7 @@ import ReportPage from "./components/ReportPage";
 import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
+
 const history = createHashHistory();
 
 
