@@ -18,3 +18,29 @@
 	padding:10px;
 	margin:10px;
 }
+
+.centered {
+	text-align:center;
+	position:relative;
+}
+
+.svgfixer {
+
+	position:absolute;
+}
+
+.padded {
+	padding:30px;
+
+	height:400px;
+}
+
+.headerlayout {
+	padding:10px;
+	vertical-align: center;
+}
+
+.largebutton {
+	margin-top:20px;
+	text-align: right;
+}

@@ -3,12 +3,12 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { employeeService } from "../services";
+import {employeeService, orgService} from "../services";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
-  
-export default class AdminNyBedrift extends Component {
+
+export default class AdminRedigerBedrift extends Component<{ match: { params: { id: number } }}> {
     organization = [];
 
     message = " ";
@@ -18,21 +18,20 @@ export default class AdminNyBedrift extends Component {
     conns = [];
     category_ids = [];
 
-    state = {
-        organizationnumber: "713210329",
-        name: "24681012",
-        tel: "24681012",
-        email: "kaare@propan.no",
-        password: "abcd1234",
-        password2: "abcd1234"
-
-    };
 
 
     componentDidMount() {
 
-        employeeService
-            .getCategories()
+        let orgPromise = orgService.getOrgByID(this.props.match.params.id);
+        orgPromise.then(orgData => {
+            //console.log(orgData[0]);
+            this.organization = orgData[0];
+
+        });
+
+
+
+        employeeService.getCategories()
             .then(response => {
                 console.log("category_id", response.category_id);
                 this.categories = response;
@@ -44,15 +43,14 @@ export default class AdminNyBedrift extends Component {
                 for (i=0; i < response.length; i++) {
                     this.conns.push({"catid": response[i].category_id, "checked": false});
                 }
-                console.log("kategorier: ", this.categories);
-                console.log("frsh conns: ", this.conns);
+                // console.log("kategorier: ", this.categories);
+                // console.log("frsh conns: ", this.conns);
             })
-
             .catch(
                 (error: Error) =>
                     (this.message = error.message)
             );
-    }
+        }
 
     handleChange = event => {
         const target = event.target;
@@ -87,23 +85,21 @@ export default class AdminNyBedrift extends Component {
 
     render() {
         if (!this.organization) return null;
-
-
-
+console.log("this org: ", this.organization)
         return (
             <div className="row">
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="NyAnsatt">
                         <h1>Registrer ny bedrift</h1>
-
+                        <div><h3>{this.organization.organizationnumber}</h3></div>
                         <div className="form-group">
                             Organisasjonsnummer:{" "}
                             <input
                                 className="form-control"
                                 type="text"
                                 name="organizationnumber"
-                                defaultValue="713210329"
+                                defaultValue={this.organization.organizationnumber}
                                 onChange={this.handleChange}
                             />
                         </div>
@@ -113,20 +109,16 @@ export default class AdminNyBedrift extends Component {
                                 className="form-control"
                                 type="text"
                                 name="name"
-                                defaultValue="Odd Ronny Grustak"
+                                defaultValue={this.organization.name}
                                 onChange={this.handleChange}
                             />
                         </div>
-
-
-
-
                         <div className="form-group">
                             Telefon:{" "}
                             <input
                                 className="form-control"
                                 type="text"
-                                defaultValue="24681012"
+                                defaultValue={this.organization.tel}
                                 name="tel"
                                 onChange={this.handleChange}
                             />
@@ -136,18 +128,16 @@ export default class AdminNyBedrift extends Component {
                             <input
                                 className="form-control"
                                 type="text"
-                                defaultValue="kaare@propan.no"
+                                defaultValue={this.organization.email}
                                 name="email"
                                 onChange={this.handleChange}
                             />
                         </div>
-
                         <div className="form-group">
                             Passord:{" "}
                             <input
                                 className="form-control"
                                 type="password"
-                                defaultValue="abcd1234"
                                 name="password"
                                 onChange={this.handleChange}
                             />
@@ -157,7 +147,6 @@ export default class AdminNyBedrift extends Component {
                             <input
                                 className="form-control"
                                 type="password"
-                                defaultValue="abcd1234"
                                 name="password2"
                                 onChange={this.handleChange}
                             />
@@ -167,10 +156,7 @@ export default class AdminNyBedrift extends Component {
 
                             {this.categories.map(cat => {
                                 return (
-
-
-
-                                    <div className="form-check form-check-inline">
+                                    <div className="form-check form-check-inline" key={cat.category_id}>
                                         <input className="form-check-input" type="checkbox" id="inlineCheckbox" value={cat.category_id} onClick={this.handleAllChecked} />
                                         <label className="form-check-label" htmlFor="inlineCheckbox1">{cat.description}</label>
                                     </div>
@@ -182,7 +168,7 @@ export default class AdminNyBedrift extends Component {
                         <h3>{this.passworderror}</h3>
                         <p>&nbsp;</p>
                         <button type="button" onClick={this.save} className="btn btn-primary">
-                            Save
+                            Endre data
                         </button>
                         <h1>{this.message}</h1>
                     </div>
