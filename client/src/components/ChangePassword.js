@@ -85,8 +85,7 @@ export default class ChangePassword extends Component {
     }else{
     const passwordInfo = {
       user_id : this.userid,
-    	oldPassword: this.oldPassword,
-    	newpassword: this.newPassword1
+    	oldPassword: this.oldPassword
     };
     const passwordInfoUpdatePasswordInDB = {
       user_id : this.userid,
@@ -94,7 +93,7 @@ export default class ChangePassword extends Component {
     };
 
     userService
-      .verifyOldPasswordAndUpdatePWord(passwordInfo)
+      .verifyOldPassword(passwordInfo)
       .then((response) => {
           console.log(response + "Skal oppdatere passord");
           userService.updateUserPWord(passwordInfoUpdatePasswordInDB)

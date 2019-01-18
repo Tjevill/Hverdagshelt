@@ -31,6 +31,11 @@ class Case {
   org_id: number;
 }
 
+class Place {
+	zipcode: number;
+	commune: string;
+}
+
 class Status {
   status_id: number;
   description: string;
@@ -71,7 +76,6 @@ class UserUpdatePWord {
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
-	newpassword: string;
 }
 
 class Organization {
@@ -225,6 +229,13 @@ class CaseService {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
 	
+	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
+    return axios.put(url + '/updateStatusAndComment/' + case_id, {
+      status: status,
+      comment: comment
+    });
+  }
+	
 }
 export let caseService = new CaseService();
 
@@ -297,11 +308,10 @@ class UserService {
   }
 	
 	/**
-	 * Service object for verifying and changing password for logged in users.
-	 * @param updatePassword Includes variables {user_id, oldPassword, newPassword}
-	 * @returns {number} Returns 1 if verifying and change of password succeeds. Returns 0 if oldPassword is wrong
+	 * Service object for verifying old password
+	 * @param updatePassword Includes variables {user_id, oldPassword}
 	 */
-	verifyOldPasswordAndUpdatePWord (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
+	verifyOldPassword (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
 		return axios.post(url + '/userVerification', updatePassword);
     
 	}
@@ -312,6 +322,15 @@ export let userService = new UserService();
 
 
 class OrgService{
+	
+	/**
+	 * Service object for verifying and changing password for logged in users.
+	 * @param updatePassword Includes variables {org_id, oldPassword}
+	 */
+	verifyOldPassword (org_id: number, oldPassword: string): Promise<number> {
+		return axios.post(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword});
+		
+	}
 
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
@@ -373,6 +392,15 @@ class CategoryService {
 export let categoryService = new CategoryService();
 
 class EmployeeService {
+	
+	/**
+	 * Service object for verifying old password.
+	 * @param updatePassword Includes variables {employee_id, oldPassword}
+	 */
+	verifyOldPassword (employee_id: number, oldPassword: string): Promise<number> {
+		return axios.post(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword});
+		
+	}
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/getAllCategories');
     }
@@ -446,7 +474,10 @@ class EmployeeService {
   countEmpsProvince(province_id : number): Promise<Employee[]>{
     return axios.get(url+'/countEmp/'+province_id);
   }
-
+  
+  getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
+    return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
+  }
 
 
 
@@ -498,3 +529,15 @@ class StatusService {
     return axios.get(url + "/status/" + id);
   }
 }
+
+class GeoService {
+	
+	/** Get all communes from Place ordered by zip code.*/
+	getAllStatuses(): Promise<Place[]> {
+		return axios.get(url + "/getCommunes");
+	}
+ 
+ 
+}
+
+export let geoService = new GeoService();
