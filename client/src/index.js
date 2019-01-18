@@ -12,6 +12,9 @@ import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
+import AdminKategori from "./components/AdminKategori";
+import AdminNyKategori from "./components/AdminNyKategori";
+import AdminRedigerKategori from "./components/AdminRedigerKategori";
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
@@ -146,6 +149,9 @@ class Main extends Component {
                             <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/issues/:name/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
