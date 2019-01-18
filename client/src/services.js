@@ -322,6 +322,10 @@ class UserService {
 		return axios.post(url + '/userVerification', updatePassword);
     
 	}
+	
+	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
+	  return axios.get(url + '/userNameSearch/' + searchString)
+  }
 
 }
 

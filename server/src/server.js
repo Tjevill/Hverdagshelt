@@ -288,6 +288,20 @@ app.get('/userProvince/:id', (req: Request, res: Response) => {
     })
 });
 
+/**
+ * Searches users by their name and returns all users that has equality to the search input
+ */
+app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
+    userdao.getUserByNameSearch(req.params.searchString, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+
+// End User
+
 // Organization
 
 /**
