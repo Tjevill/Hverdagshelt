@@ -227,8 +227,19 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-
-
+	
+	/**
+   * Gets all cases connected to an employee
+	 * @param id The employee id
+	 * @param callback
+	 */
+	getCaseOnEmployeeID(id: number, callback: mixed){
+		super.query(
+			"SELECT * FROM Cases WHERE employee_id = ?",
+			[id],
+			callback
+		);
+    }
 
 
 };

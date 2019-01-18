@@ -288,6 +288,20 @@ app.get('/userProvince/:id', (req: Request, res: Response) => {
     })
 });
 
+/**
+ * Searches users by their name and returns all users that has equality to the search input
+ */
+app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
+    userdao.getUserByNameSearch(req.params.searchString, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+
+// End User
+
 // Organization
 
 /**
@@ -438,7 +452,7 @@ app.get("/employee/:employee_id", (req, res) =>{
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
-    console.log("Received get-request on endpoint /employee/"+req.params.commune);
+    console.log("Received get-request on endpoint /employee/commune/"+req.params.commune);
     empDao.getAllEmpCommune(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
@@ -868,6 +882,13 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 	});
 });
 
+app.get("/getCaseOnEmployeeID/:id", (req, res) => {
+	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 
 
 // End Cases
@@ -899,6 +920,7 @@ app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
     geodao.getCommuneName(req.params.commune, (status, data) =>{
         res.status(status);
         res.json(data);
+        console.log(data[0].navn);
     });
 });
 

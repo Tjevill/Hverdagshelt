@@ -18,6 +18,11 @@ class Employee{
   superuser: boolean;
 }
 
+class County { //Fylke
+	id: number;
+	county: string;
+}
+
 class Case {
   case_id: number;
   description: string;
@@ -36,11 +41,6 @@ class Case {
 class Place {
 	zipcode: number;
 	commune: string;
-}
-
-class County { //Fylke
-	id: number;
-	county: string;
 }
 
 class Status {
@@ -322,6 +322,10 @@ class UserService {
 		return axios.post(url + '/userVerification', updatePassword);
     
 	}
+	
+	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
+	  return axios.get(url + '/userNameSearch/' + searchString)
+  }
 
 }
 
@@ -488,10 +492,18 @@ class EmployeeService {
     return axios.get(url+'/CommuneName/'+commune);
   }
   
-  getCasesOnCommuneID(commune_ID: number): Promise<Case[]>{
+  getCasesOnOnCommuneID(commune_ID: number): Promise<Case[]>{
     return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
   }
-
+	
+	/**
+   * Gets all cases connected to an employee by employee_id
+	 * @param emp_id The id of the employee
+	 * @returns {AxiosPromise<any>} Returns Case array
+	 */
+  getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
+    return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
 
 
 }
@@ -564,13 +576,16 @@ class GeoService {
 	getAllCommunes(): Promise<Place[]> {
 		return axios.get(url + "/getCommunes");
 	}
+ 
+ getCommuneName(commune: number): Promise<Place> {
+   return axios.get(url + "/CommuneName/" + commune);
+ }
 	
-	/** Gets the communes county.*/
 	getCommunesCounty(county_id: number): Promise<County[]> {
 		return axios.get(url + "/getCommunesCounty/", county_id);
 	}
- 
- 
+	
+	
 }
 
 export let geoService = new GeoService();
