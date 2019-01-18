@@ -135,6 +135,7 @@ app.put("/newuser", (req, res) => {
 
 app.put("/newemployee", (req, res) => {
     console.log("Fikk POST-request fra klienten");
+    console.log(req.body);
     employeeDao.addEmployee(req.body, (status, data) => {
         res.status(status);
         res.json(data);
