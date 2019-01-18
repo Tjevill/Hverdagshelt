@@ -5,8 +5,6 @@ import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
 import createHashHistory from "history/createHashHistory";
-
-
 const history = createHashHistory();
 
 

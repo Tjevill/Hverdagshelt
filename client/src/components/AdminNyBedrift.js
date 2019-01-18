@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { employeeService } from "../services";
+import {categoryService, employeeService, orgService} from "../services";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
+const history = createHashHistory();
 
 export default class AdminNyBedrift extends Component {
   organization = [];
@@ -18,12 +19,12 @@ export default class AdminNyBedrift extends Component {
     category_ids = [];
 
   state = {
-    organizationnumber: "713210329",
-    name: "24681012",
-      tel: "24681012",
-    email: "kaare@propan.no",
-    password: "abcd1234",
-    password2: "abcd1234"
+    organizationnumber: "",
+    name: "",
+      tel: "",
+    email: "",
+    password: "",
+    password2: ""
 
   };
 
@@ -102,7 +103,7 @@ export default class AdminNyBedrift extends Component {
                   className="form-control"
                   type="text"
                   name="organizationnumber"
-                  defaultValue="713210329"
+                  defaultValue=""
                   onChange={this.handleChange}
               />
           </div>
@@ -112,7 +113,7 @@ export default class AdminNyBedrift extends Component {
                   className="form-control"
                   type="text"
                   name="name"
-                  defaultValue="Odd Ronny Grustak"
+                  defaultValue=""
                   onChange={this.handleChange}
               />
           </div>
@@ -125,7 +126,7 @@ export default class AdminNyBedrift extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue="24681012"
+            defaultValue=""
             name="tel"
             onChange={this.handleChange}
           />
@@ -135,7 +136,7 @@ export default class AdminNyBedrift extends Component {
           <input
           className="form-control"
             type="text"
-            defaultValue="kaare@propan.no"
+            defaultValue=""
             name="email"
             onChange={this.handleChange}
           />
@@ -146,7 +147,7 @@ export default class AdminNyBedrift extends Component {
           <input
           className="form-control"
             type="password"
-            defaultValue="abcd1234"
+            defaultValue=""
             name="password"
             onChange={this.handleChange}
           />
@@ -156,7 +157,7 @@ export default class AdminNyBedrift extends Component {
               <input
                   className="form-control"
                   type="password"
-                  defaultValue="abcd1234"
+                  defaultValue=""
                   name="password2"
                   onChange={this.handleChange}
               />
@@ -183,7 +184,7 @@ export default class AdminNyBedrift extends Component {
         <button type="button" onClick={this.save} className="btn btn-primary">
           Save
         </button>
-        <h1>{this.message}</h1>
+        <h4>{this.message}</h4>
       </div>
 
         </div>
@@ -253,15 +254,16 @@ export default class AdminNyBedrift extends Component {
         console.log("these connections: ", this.category_ids)
 
 
-      employeeService
+      orgService
           .addOrganization(orgdata)
           .then(response => {
               console.log("insertID: ", response.insertId);
               console.log("this.category_ids: ", this.category_ids)
-              employeeService
+              categoryService
                   .addOrgCat(this.category_ids, response.insertId)
                   .then(response => {
                       console.log("2nd response: ", response);
+                      history.push('/admin/bedrift/');
                   })
                   .catch(
                       (error: Error) =>
