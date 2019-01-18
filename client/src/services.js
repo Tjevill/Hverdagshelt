@@ -535,11 +535,9 @@ class StatusService {
 class GeoService {
 	
 	/** Get all communes from Place ordered by zip code.*/
-	getAllStatuses(): Promise<Place[]> {
+	getAllCommunes(): Promise<Place[]> {
 		return axios.get(url + "/getCommunes");
 	}
- 
- 
 }
 
 export let geoService = new GeoService();

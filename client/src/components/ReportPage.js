@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import {caseService, categoryService, mapService} from '../services';
+import {caseService, categoryService, mapService, geoService} from '../services';
 import {Alert} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
@@ -30,11 +30,11 @@ export class Report extends Component {
     lat = 63.4283065;
     lng = 10.3876995;
     address = '';
-    zipcode = '';
     mapData = {};
     country = '';
     zipBoo = true;
     zipcodePlaceholder = '';
+    zipcodes = [];
 
     state = {
         headline: "",
@@ -242,10 +242,10 @@ export class Report extends Component {
         } else if (!(this.onlyNumber(this.state.zipcode))) {
             this.error = 'Postnummer kan bare bestå av tall!';
             return null;
-        }
-        // else if () {
-        //     this.error = 'Postnummer må være et gyldig postnummer i Norge!'}
-            else {
+        } else if (!(this.zipcodes.includes(this.state.zipcode))) {
+            this.error = 'Postnummer må være et gyldig postnummer i Norge!';
+            return null;
+        } else {
             this.error = '';
         }
         if (this.selectedFile == null) {
@@ -299,8 +299,13 @@ export class Report extends Component {
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));
-
-
+        geoService.getAllCommunes()
+            .then(response => {
+                response.map(item => {
+                    this.zipcodes.push(item.zipcode);
+                })
+            })
+            .catch((error: Error) => console.log(error.message));
     }
 
 
