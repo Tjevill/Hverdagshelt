@@ -74,7 +74,7 @@ export default class PrivateUsersList extends Component {
                 </TableRowColumn>
 
                 <TableRowColumn className="edit">
-                  {this.addEditRowColumn(1)}
+                  {this.addEditRowColumn(this.superUser)}
                   {/*
                
                  <RaisedButton label="rediger" primary={true} style={style} onClick={() => {
