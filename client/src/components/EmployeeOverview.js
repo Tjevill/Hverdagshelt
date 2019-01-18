@@ -44,7 +44,7 @@ export default class EmployeeOverview extends Component {
           <tbody>
             {this.employees.map((e, i) => (
                 
-              <tr key={i} onClick={()=>history.push('/admin/kommune/'+ e.employee_id)}>
+              <tr key={i} onClick={()=>history.push('/admin/kommune/edit/'+ e.employee_id)}>
                 <th  scope="row">{e.employee_id}</th>
                 <td   >{e.name}</td>
                 <td> {e.tel}</td>
@@ -65,7 +65,7 @@ export default class EmployeeOverview extends Component {
     geoService
     .getCommuneName(sessionStorage.getItem('commune'))
     .then(commune => {
-      this.commune = commune[0].navn;
+      this.commune = commune[0].navn;  
       this.forceUpdate();
     });
 
