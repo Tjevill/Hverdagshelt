@@ -143,6 +143,8 @@ class Main extends Component {
                             <Route exact path="/nyorg" component={AdminNyBedrift}/>
                             <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
@@ -167,4 +169,3 @@ class Main extends Component {
 export default withRouter(Main);
 
 ReactDOM.render(<Main />, document.getElementById("root"));
-

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 import { employeeService } from "../services";
-import { Alert, Card, NavBar, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
+import { Alert, Card, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
 
 const history = createHashHistory();
 
@@ -27,20 +27,33 @@ export default class EmployeeEdit extends Component {
 
   bilde = "https://img.icons8.com/android/1600/user.png";
 
-  userid = -1;
-  name = "";
-  tel = 0;
+  user = {};
+
+  componentDidMount(){
+    this.userid = sessionStorage.getItem("userid");
+    console.log("id: " + this.userid);
+    employeeService
+      .getOne(this.userid)
+      .then(user => {
+        console.log(user[0]);
+        this.user = user[0];
+        //this.tel = this.user.tel;
+        this.loaded = true;
+        this.forceUpdate();
+      })
+      .catch((error: Error) => Alert.danger(error.message));
+  }
+
+  /*<div className="jumbotron">
+    <div className="container text-center">
+      <h4>Edit</h4>
+      </div>
+  </div>*/
 
   render(){
     if(this.loaded){
       return (
-        <>
-        <div className="jumbotron">
-          <div className="container text-center">
-            <h4>Edit</h4>
-            </div>
-        </div>
-
+        <div>
 
           <div className="container text-center">
             <div className="row">
@@ -48,43 +61,47 @@ export default class EmployeeEdit extends Component {
            <div className="form-group">
             Navn:{" "}
             <input
-              className={"form-control " + this.Nameinputtype}
+              className={"form-control"}
               type="text"
               name="name"
-              defaultValue={""}
+              defaultValue={this.user.name}
               onChange={event => (this.user.name = event.target.value)}
             />
           </div>
           <div className="form-group">
             Mobil:{" "}
             <input
-            className={"form-control " + this.AddressInputClass}
-              type="text"
-              defaultValue={""}
-              name="address"
-              onChange={event => (this.user.address = event.target.value, console.log(this.user.address))}
+            className={"form-control"}
+              type="number"
+              defaultValue={this.user.tel}
+              name="tel"
+              onChange={event => {
+                if(event.target.value.length > 8) {
+                  event.target.value = (event.target.value-(event.target.value%10))/10;
+                }
+                this.user.tel = event.target.value;
+              }}
             />
           </div>
           <div className="form-group">
             Epost:{" "}
             <input
             className={"form-control"}
-              type="text"
-              defaultValue = {""}
-              maxLength ="4"
+              type="email"
+              defaultValue = {this.user.email}
               name="zipcode"
-              onChange={this.changeZip}
+              onChange={event => (this.user.email = event.target.value)}
             />
           </div>
           <div className="form-group">
-            Kommune:{" "}
+            Kommune:{""}
             <input
-            className={"form-control " + this.inputstatus}
+            className={"form-control"}
               type="text"
-              name="tel"
-              defaultValue={""}
-              maxLength ="8"
-              onChange={this.changeVal}
+              name="commune"
+              defaultValue={this.user.commune}
+              maxLength="8"
+              onChange={event => (this.user.commune = event.target.value)}
             />
             <div className="invalid-feedback">Ugydig telefon</div>
           </div>
@@ -92,11 +109,10 @@ export default class EmployeeEdit extends Component {
             Fylke:{" "}
             <input
               className={"form-control"}
-              id="validationServer03"
-              type="email"
-              defaultValue={""}
-              name="email"
-              onChange={event => (this.user.email = event.target.value)}
+              type="text"
+              defaultValue={this.user.county}
+              name="county"
+              onChange={event => (this.user.county = event.target.value)}
             />
             <div className="invalid-feedback">Ugydig Email</div>
             </div>
@@ -109,28 +125,13 @@ export default class EmployeeEdit extends Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
       );
     } else {
       return (
         <Loading />
       )
     }
-  }
-
-
-  componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
-    console.log("id: " + this.userid);
-    this.loaded = true;
-    employeeService
-      .getOne(this.userid)
-      .then(user => {
-        console.log(user);
-        this.forceUpdate();
-        this.loaded = true;
-      })
-      .catch((error: Error) => Alert.danger(error.message));
   }
 
   save(){
