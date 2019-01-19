@@ -8,6 +8,7 @@ const history = createHashHistory();
 
 //  Get the commune_id that is saved in the sessionStorage
 let commune_id = sessionStorage.getItem("commune");
+let superuser = sessionStorage.getItem("superuser");
 
 /** eventService.getEventsCommune()
   getEventsCommune(commune_id: number): Promise<Event[]>{
@@ -43,7 +44,8 @@ export default class EmployeeEvents extends Component {
                             {this.events.map( (e, i) => (
 
                                 <tr key={i}
-                                    onClick={()=>history.push("/events/"+ e.event_id+"/edit")}>
+                                    onClick={()=>history.push("/events/"+ e.event_id+"/edit")}
+                                >
 
                                     <th scope="row">{e.event_id}</th>
                                     <td> {e.name} </td>

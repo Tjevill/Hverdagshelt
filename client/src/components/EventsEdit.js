@@ -9,7 +9,7 @@ import {Loading} from "./widgets";
 
 const history = createHashHistory();
 
-
+let superuser = sessionStorage.getItem("superuser");
 
 
 export default class EventsEdit extends Component <{ match: { params: { id: number } } }> {
@@ -118,8 +118,8 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
 
                       </input>
                     </div>
+                    {this.renderSuperButton()}
 
-                    <button onClick = { () => this.save() } type="submit" class="btn btn-primary">Rediger</button>
 
                   </form>
                 </div>
@@ -146,6 +146,25 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
           this.forceUpdate();
         })
         .catch((error: Error) => console.log(error.message));
+  }
+
+  // Creates the button that allows a superuser to save changes made in an event.
+  renderSuperButton(){
+    if(superuser == 1){
+      return(
+          <button
+              onClick = { () => this.save() }
+              type="submit" className="btn btn-primary"
+              id = "superuserbutton"
+          >
+            Rediger
+          </button>
+      )
+    }else {
+      return(
+          null
+      )
+    }
   }
 
   save(){
