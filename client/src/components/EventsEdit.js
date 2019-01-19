@@ -60,8 +60,7 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                           id="timing"
                           name="event-time"
                           defaultValue={this.event.date.substring(0,16)}
-                          onChange = {event => (this.event.date = event.target.value)}
-                          min = {this.event.date.substring(0,16)}
+                          onChange = {event => (this.event.date = event.target.value.replace("T"," "))}
                       />
 
                       <small
@@ -95,7 +94,7 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                           type="zipcode"
                           className="form-control"
                           id="zipcode"
-                          maxlength="4"
+                          maxLength="4"
                           size="4"
                           defaultValue={this.event.zipcode}
                           onChange={event => (this.event.zipcode = event.target.value)}
@@ -118,7 +117,7 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
 
                       </input>
                     </div>
-                    {this.renderSuperButton()}
+                    {this.renderEditButton()}
 
 
                   </form>
@@ -149,16 +148,30 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
   }
 
   // Creates the button that allows a superuser to save changes made in an event.
-  renderSuperButton(){
+  renderEditButton(){
     if(superuser == 1){
       return(
-          <button
-              onClick = { () => this.save() }
-              type="submit" className="btn btn-primary"
-              id = "superuserbutton"
-          >
-            Rediger
-          </button>
+
+          <div>
+            <button
+                onClick = { () => this.save() }
+                type="submit"
+                className="btn btn-primary"
+                id = "superuserbutton"
+            >
+              Lagre endringer
+            </button>
+
+            <button
+                className = "btn btn-danger ml-5"
+                id = "superuserbutton2"
+                onClick={ () => this.delete(this.props.match.params.id) }
+
+            >
+              Slett
+            </button>
+
+            </div>
       )
     }else {
       return(
@@ -173,10 +186,25 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
     console.log(this.event.description);
     console.log(this.event.zipcode);
     console.log(this.event.address);
+    this.event.date = this.event.date.replace("T"," ").substring(0,16);
     eventService
         .updateEvent(
             this.props.match.params.id,
             this.event
             );
+    history.push("/admin/events");
+  }
+
+  delete(event_id : number){
+
+    let conf = window.confirm("Er du sikker på at du vil slette denne eventen?");
+    if(conf){
+      eventService
+          .deleteEvent(event_id);
+
+        history.push("/admin/events");
+    }else{
+      console.log("false");
+    }
   }
 }

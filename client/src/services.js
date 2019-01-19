@@ -556,6 +556,21 @@ class EventService {
     return axios.get(url+"/getEvent/"+event_id);
   }
 
+  /**
+   * Create an event in the db
+   * @param event - event object.
+   */
+  createEvent(event:Event):Promise<Void> {
+    return axios.post(url+"/createEvent", event);
+
+  }
+
+  deleteEvent(event_id: number): Promise<Void>{
+    return axios.delete(url+"/deleteEvent/"+event_id);
+  }
+
+
+
     /**
      * Get all events in one commune.
      * Intended to be used on the administration of events for an employee.
@@ -571,11 +586,9 @@ class EventService {
   }
 
 
-
-
-
 }
 export let eventService = new EventService();
+
 
 class StatusService {
 
