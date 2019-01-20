@@ -15,6 +15,7 @@ export default class AdminMain extends React.Component {
 
 
     componentDidMount() {
+         
         let hmf = sessionStorage.getItem('storedtoken');
         console.log("token: " + hmf);
        // console.log(sessionStorage.getItem('storedtoken'));
