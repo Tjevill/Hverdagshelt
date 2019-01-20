@@ -11,8 +11,8 @@ export default class userHome extends Component {
 
 	render() {
 		return (
-			<div className="userHome-body">
-
+			<div className="pdfContainer">
+				<button type="button" onClick="">Klikk meg</button>
 			</div>
 
 		);
