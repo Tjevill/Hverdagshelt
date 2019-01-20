@@ -114,9 +114,6 @@ export default class EmployeeEdit extends Component {
 
                 <div className="card" style={{minWidth: "19rem"}}>
                   <ul className="list-group list-group-flush" style={{marginBottom: "0"}}>
-                    <li className="list-group-item">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Vestibulum at eros</li>
                     {
                       this.communeOptions.map(
                         commune => (
@@ -150,20 +147,15 @@ export default class EmployeeEdit extends Component {
     let options = []
     this.communes.map(
       commune => {
-        if(commune.province.includes(event.target.value)){
-          options.push(commune);
+        if(commune.province.includes(event.target.value.toUpperCase()) && !options.includes(commune.province)){
+          options.push(commune.province);
         }
       }
     );
-    options = this.uniq(options);
     console.log(options);
-    this.communeOptions = options.slice(0, 3);
-  }
-
-  uniq(a) {
-      return a.sort().filter(function(item, pos, ary) {
-          return !pos || item != ary[pos - 1];
-      })
+    this.communeOptions = options.slice(0, 3).sort();
+    console.log(this.communeOptions);
+    this.forceUpdate();
   }
 
   save(){
