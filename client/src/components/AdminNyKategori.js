@@ -9,49 +9,15 @@ import createHashHistory from "history/createHashHistory";
 const history = createHashHistory();
 
 export default class AdminNyBedrift extends Component {
-  organization = [];
-
+    category= [];
   message = " ";
-  passworderror = " ";
-
-    categories = [];
-    conns = [];
-    category_ids = [];
-
   state = {
-    organizationnumber: "",
-    name: "",
-      tel: "",
-    email: "",
-    password: "",
-    password2: ""
-
+    description: ""
   };
 
 
     componentDidMount() {
 
-        employeeService
-            .getCategories()
-            .then(response => {
-                console.log("category_id", response.category_id);
-                this.categories = response;
-
-
-                //this.conns = Array.from({length: 5}, (response => response);
-                // this.conns.category_id = response.category_id;
-                let i;
-                for (i=0; i < response.length; i++) {
-                    this.conns.push({"catid": response[i].category_id, "checked": false});
-                }
-                console.log("kategorier: ", this.categories);
-                console.log("frsh conns: ", this.conns);
-            })
-
-            .catch(
-                (error: Error) =>
-                    (this.message = error.message)
-            );
     }
 
     handleChange = event => {
@@ -67,26 +33,8 @@ export default class AdminNyBedrift extends Component {
         console.log(this.state);
     };
 
-
-
-    handleAllChecked = (event) => {
-        let i;
-        for (i=0; i < this.conns.length; i++) {
-            if (this.conns[i].catid == event.target.value) {
-                this.conns[i].checked = event.target.checked;
-            }
-        }
-
-
-        console.log(event.target.value + " " + event.target.checked);
-        console.log("conns: ", this.conns)
-    }
-
-
-
-
   render() {
-    if (!this.organization) return null;
+    if (!this.category) return null;
 
 
 
@@ -95,91 +43,20 @@ export default class AdminNyBedrift extends Component {
             <div className="col-sm-4"></div>
             <div className="col-sm-4">
       <div className="NyAnsatt">
-        <h1>Registrer ny bedrift</h1>
+        <h1>Registrer ny kategori</h1>
 
           <div className="form-group">
-              Organisasjonsnummer:{" "}
+              Kategori-navn / beskrivelse:{" "}
               <input
                   className="form-control"
                   type="text"
-                  name="organizationnumber"
-                  defaultValue=""
-                  onChange={this.handleChange}
-              />
-          </div>
-          <div className="form-group">
-              Navn:{" "}
-              <input
-                  className="form-control"
-                  type="text"
-                  name="name"
+                  name="description"
                   defaultValue=""
                   onChange={this.handleChange}
               />
           </div>
 
 
-
-
-          <div className="form-group">
-          Telefon:{" "}
-          <input
-          className="form-control"
-            type="text"
-            defaultValue=""
-            name="tel"
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="form-group">
-          Email:{" "}
-          <input
-          className="form-control"
-            type="text"
-            defaultValue=""
-            name="email"
-            onChange={this.handleChange}
-          />
-        </div>
-
-          <div className="form-group">
-          Passord:{" "}
-          <input
-          className="form-control"
-            type="password"
-            defaultValue=""
-            name="password"
-            onChange={this.handleChange}
-          />
-        </div>
-          <div className="form-group">
-              Gjenta Passord:{" "}
-              <input
-                  className="form-control"
-                  type="password"
-                  defaultValue=""
-                  name="password2"
-                  onChange={this.handleChange}
-              />
-          </div>
-
-              <div className="form-group">
-
-                  {this.categories.map(cat => {
-                      return (
-
-
-
-                  <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="checkbox" id="inlineCheckbox" value={cat.category_id} onClick={this.handleAllChecked} />
-                          <label className="form-check-label" htmlFor="inlineCheckbox1">{cat.description}</label>
-                  </div>
-                      )
-                  })}
-              </div>
-
-
-        <h3>{this.passworderror}</h3>
           <p>&nbsp;</p>
         <button type="button" onClick={this.save} className="btn btn-primary">
           Save
@@ -198,86 +75,27 @@ export default class AdminNyBedrift extends Component {
 
 
   save() {
-    if (!this.organization) {
+    if (!this.category) {
       console.log("Returning null!");
       this.message = "Error";
       return null;
     }
 
-
-
-
-        if (this.state.password != this.state.password2) {
-          this.passworderror = "Passordene matcher ikke.";
-          return null;
-        } else {
-          this.passworderror = "";
-        }
-
-        let pass = this.state.password;
-        let passlength = pass.length
-        let minlength = 8;
-
-        if (passlength < minlength) {
-          this.passworderror = "Passordet er for kort";
-          return null;
-        } else {
-          this.passworderror = "";
-        }
-
-
-
-    const orgdata = {
-        organizationnumber: this.state.organizationnumber,
-        name: this.state.name,
-        tel: this.state.tel,
-        email: this.state.email,
-        password: this.state.password,
-        password2: this.state.password2
-
+    const catdata = {
+        description: this.state.description,
     };
 
-        let i;
-      for (i=0; i < this.conns.length; i++) {
-          if (this.conns[i].checked) {
-              this.category_ids.push({catid: this.conns[i].catid});
-          }
-      }
+      console.log("this category: ", catdata);
 
-
-
-        if (this.password != this.password2) {
-          this.message = "Passwords do not match.";
-        }
-
-        console.log("this organization: ", orgdata);
-        console.log("these connections: ", this.category_ids)
-
-
-      orgService
-          .addOrganization(orgdata)
+      categoryService
+          .addCategory(catdata)
           .then(response => {
-              console.log("insertID: ", response.insertId);
-              console.log("this.category_ids: ", this.category_ids)
-              categoryService
-                  .addOrgCat(this.category_ids, response.insertId)
-                  .then(response => {
-                      console.log("2nd response: ", response);
-                      history.push('/admin/bedrift/');
-                  })
-                  .catch(
-                      (error: Error) =>
-                          (this.message = error.message)
-                  );
-
+              console.log("this.catdata: ", this.catdata)
+              history.push("/admin/kategori")
           })
           .catch(
               (error: Error) =>
-
                   (this.message = error.message)
           );
-
-
-
   }
 }

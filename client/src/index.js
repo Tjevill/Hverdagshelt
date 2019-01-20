@@ -87,7 +87,7 @@ class LoginStatus extends Component {
     render () {
         return (
             (this.amILoggedin) ? <div className="logged-in-as">Not logged in</div> :
-            <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+            <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
         );
     }
 }

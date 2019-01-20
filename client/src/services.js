@@ -208,6 +208,8 @@ class CaseService {
     return axios.get(url+'/allCases/'+province);
   }
 
+
+
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
@@ -402,6 +404,10 @@ class CategoryService {
         return axios.get(url + '/categoryorg/' + cat + '/' + org);
     }
 
+  addCategory(newcat: Category): Promise<void> {
+    console.log("CATEGORY TIL SERVICE: ", newcat);
+    return axios.post(url + "/addcategory", newcat);
+  }
 
     deleteCategoryByID(id: number): Promise<void>{
         return axios.delete(url + '/category/' + id);
@@ -443,6 +449,7 @@ class EmployeeService {
         console.log("EMPLOYEE TIL SERVICE: ", newemployee);
         return axios.put(url + "/newemployee", newemployee);
     }
+
 
 
   /** Create employee

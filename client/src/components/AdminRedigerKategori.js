@@ -11,59 +11,24 @@ const history = createHashHistory();
 
 
 export default class AdminRedigerBedrift extends Component<{ match: { params: { id: number } }}> {
-    organization = [];
-
+    category = [];
     message = " ";
     passworderror = " ";
-
-    categories = [];
-    conns = [];
-    category_ids = [];
 
 
 
     componentDidMount() {
 
-        let orgPromise = orgService.getOrgByID(this.props.match.params.id);
-        orgPromise.then(orgData => {
+        let catPromise = categoryService.getCategoryByID(this.props.match.params.id);
+        catPromise.then(catData => {
             //console.log(orgData[0]);
-            this.organization = orgData[0];
+            this.category= catData[0];
             this.setState((state, props) => ({
-                organizationnumber: this.organization.organizationnumber,
-                name: this.organization.name,
-                email: this.organization.email,
-                tel: this.organization.tel
+                category_id: this.category.category_id,
+                description: this.category.description
             }));
 
         });
-
-
-
-        categoryService.getAllCategories()
-            .then(response => {
-                // console.log("getCategories respose", response);
-                this.categories = response;
-                let i;
-                 for (i=0; i < response.length; i++) {
-                    let catid = response[i].category_id;
-
-                    console.log("response[i].category_id: " + response[i].category_id);
-                    categoryService.checkIfChecked(response[i].category_id, this.props.match.params.id)
-                    .then((response2, index) => {
-                       // console.log("i: " + index )
-                       //  console.log("repsonse fra getCatOrgByID: ",  response2.length);
-                        // console.log("hm ", response[index])
-                        let value = false;
-                        (response2.length === 0 ? value = false : value = true)
-                      this.conns.push({"catid": catid, "checked": false});
-                    });
-
-                }
-            })
-            .catch(
-                (error: Error) =>
-                    (this.message = error.message)
-            );
         }
 
     handleChange = event => {
@@ -81,87 +46,29 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
 
 
 
-    handleAllChecked = (event) => {
-        let i;
-        for (i=0; i < this.conns.length; i++) {
-            if (this.conns[i].catid == event.target.value) {
-                this.conns[i].checked = event.target.checked;
-            }
-        }
-
-
-        console.log(event.target.value + " " + event.target.checked);
-        console.log("conns: ", this.conns)
-    }
-
-
 
 
     render() {
-        if (!this.organization) return null;
+        if (!this.category) return null;
 // console.log("this org: ", this.organization)
         return (
             <div className="row">
                 <div className="col-sm-4">&nbsp; </div>
                 <div className="col-sm-4">
                     <div className="NyAnsatt">
-                        <h1>Rediger bedrift</h1>
+                        <h1>Rediger kategori</h1>
 
                         <div className="form-group">
                             Organisasjonsnummer:{" "}
                             <input
                                 className="form-control"
                                 type="text"
-                                name="organizationnumber"
-                                defaultValue={this.organization.organizationnumber}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            Navn:{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                name="name"
-                                defaultValue={this.organization.name}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            Telefon:{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue={this.organization.tel}
-                                name="tel"
-                                maxLength="8"
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            Email:{" "}
-                            <input
-                                className="form-control"
-                                type="text"
-                                defaultValue={this.organization.email}
-                                name="email"
+                                name="description"
+                                defaultValue={this.category.description}
                                 onChange={this.handleChange}
                             />
                         </div>
 
-
-                        <div className="form-group">
-                            <h6>Du må krysse av alle aktuelle kategorier på nytt: </h6>
-                            {this.categories.map((cat, index) => {
-                                return (
-                                    <div className="form-check form-check-inline" key={cat.category_id}>
-
-                                        <input className="form-check-input" type="checkbox" id="inlineCheckbox" value={cat.category_id} onClick={this.handleAllChecked} />
-                                        <label className="form-check-label" htmlFor="inlineCheckbox1">{cat.description}</label>
-                                    </div>
-                                )
-                            })}
-                        </div>
                         <p>&nbsp;</p>
                         <button type="button" onClick={this.save} className="btn btn-primary">
                             Endre data
@@ -180,52 +87,26 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
 
 
     save() {
-        if (!this.organization) {
+        if (!this.category) {
             console.log("Returning null!");
             this.message = "Error";
             return null;
         }
 
         const orgdata = {
-            organizationnumber: this.state.organizationnumber,
-            name: this.state.name,
-            tel: this.state.tel,
-            email: this.state.email,
-            org_id: this.props.match.params.id
+            category_id: this.state.category_id,
+            description: this.state.description,
         };
 
-        let i;
-        for (i=0; i < this.conns.length; i++) {
-            if (this.conns[i].checked) {
-                this.category_ids.push({catid: this.conns[i].catid});
-            }
-        }
-
-console.log("this.conns: ", this.conns)
-        console.log("this organization: ", orgdata);
-        console.log("these connections: ", this.category_ids)
+        console.log("orgdata: ", orgdata)
 
 
-        orgService.updateOrgByID(orgdata)
+
+        categoryService.updateCategoryByID(orgdata)
             .then(response => {
                 console.log("1st response: ", response);
-                categoryService.deleteCategoryByOrgID(this.props.match.params.id)
-                    .then(response => {
-                        console.log("2nd response: ", response);
-                        console.log("this.category_ids: " + this.category_ids);
-                        categoryService.addOrgCat(this.category_ids, this.props.match.params.id)
-                            .then(response => {
-                                console.log("3rd response: ", response);
-                                history.push('/admin/bedrift')
-                            })
-                            .catch((error: Error) => (this.message = error.message));
-                    })
-                    .catch((error: Error) => (this.message = error.message));
+                history.push("/admin/kategori")
             })
             .catch((error: Error) => (this.message = error.message));
-
-
-
-
+        }
     }
-}
