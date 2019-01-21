@@ -40,6 +40,7 @@ import Menu from "./components/Menu";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
+import OrgEdit from "./components/OrgEdit"
 import OrgIssueOverview from "./components/OrgIssueOverview";
 import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
@@ -158,7 +159,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
                                 <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
-
+                                <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                                 <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
