@@ -95,15 +95,17 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
+	
+	/** Update employee personal data, except password
+	 *   @param json - json object with all the edited data.
+	 * @param emp_id
+	 * @param callback
+	 */
+    updateEmp(json: any, emp_id, callback: mixed){
 
-    /** Update employee personal data, except password
-    *   @param json - json object with all the edited data.
-    */
-    updateEmp(json: jsonUpdate, emp_id, callback: mixed){
-
-        let val = [json.name, json.tel, json.email, json.province, json.district, emp_id];
+        let val = [json.name, json.tel, json.email, json.commune, json.county, emp_id];
         super.query(
-            "UPDATE Employee SET name = ?, tel = ?, email = ?, province = ?, district = ? WHERE employee_id = ? ",
+            "UPDATE Employee SET name = ?, tel = ?, email = ?, commune = ?, county = ? WHERE employee_id = ? ",
             val,
             callback
         );
@@ -229,6 +231,19 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
     }
+	
+	/**
+	 * Verify if email exists
+	 * @param email the email to search for
+	 * @param callback
+	 */
+	searchEmail (email: string, callback: mixed) {
+		super.query(
+			"SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
+			[email],
+			callback
+		)
+	}
 
 
 };

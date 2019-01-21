@@ -80,6 +80,11 @@ class UserUpdatePWord {
   password: string;
 }
 
+class EmployeeUpdatePWord {
+  emp_id: number;
+  password: string;
+}
+
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
@@ -101,7 +106,6 @@ class Districts {
   district: string;
   zipcode: string;
 }
-
 
 const url = "http://localhost:8080";
 
@@ -245,6 +249,15 @@ class CaseService {
     });
   }
 
+	/**
+	 * Gets all cases for one organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>}
+	 */
+	getCasesForOrganization(id: number): Promise<Case[]>{
+		return axios.get(url + '/getCasesOnOrgID/' + id);
+	}
+
 }
 export let caseService = new CaseService();
 
@@ -328,6 +341,7 @@ class UserService {
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
+
 
 }
 
@@ -419,19 +433,29 @@ class CategoryService {
 
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
-  }
+	}
 
 
-    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
-        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworgcat/" + company_id, newemployee);
-    }
+	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
+		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+		return axios.put(url + "/neworgcat/" + company_id, newemployee);
+	}
+
+	/**
+   * Gets all categories (and its id) connected to an organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>} {category_id, description}
+	 */
+	getCategoriesForOrganization (id: number): Promise<Category[]> {
+		return axios.get(url + "/categoriesOrg/" + id);
+	}
 
 }
 
+
 export let categoryService = new CategoryService();
 
-class EmployeeService {
+export default class EmployeeService {
 
 	/**
 	 * Service object for verifying old password.
@@ -469,8 +493,10 @@ class EmployeeService {
   }
 
 
+
+
   /** Change password */
-  updateEmpPw(emp: Employee): Promise<void>{
+  updateEmpPw(emp: EmployeeUpdatePWord): Promise<void>{
     return axios.put(url+'/updateEmpPW', emp);
   }
 
@@ -479,7 +505,7 @@ class EmployeeService {
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/'+emp.employee_id, emp);
+    return axios.put(url+'/employee/' + emp.employee_id, emp);
   }
 
   /** Get all employees */
@@ -524,6 +550,15 @@ class EmployeeService {
 	 */
   getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
     return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
+	
+	/**
+   * Verify if email exists.
+	 * @param email The employees email
+	 * @returns {AxiosPromise<any>} 1 if true, 0 if not
+	 */
+  searchForEmail(email: string): Promise<{verify: number}>{
+    return axios.get(url + '/searchEmail/' + email);
   }
 
 
@@ -615,12 +650,16 @@ class GeoService {
 		return axios.get(url + "/getCommunes");
 	}
 
- getCommuneName(commune: number): Promise<Place> {
-   return axios.get(url + "/CommuneName/" + commune);
- }
+   getCommuneName(commune: number): Promise<Place> {
+     return axios.get(url + "/CommuneName/" + commune);
+   }
 
 	getCommunesCounty(county_id: number): Promise<County[]> {
 		return axios.get(url + "/getCommunesCounty/", county_id);
+	}
+
+	getCommunesKommune(): Promise<{ID: number, navn: string, fylke_id: number}>{
+		return axios.get(url + "/getCommunesKommune");
 	}
 
 
