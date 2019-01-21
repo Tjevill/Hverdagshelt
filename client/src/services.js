@@ -341,16 +341,18 @@ class UserService {
 
 	}
 
-  verifyResetToken (resetToken : string): Promise<User[]> {
-    return axios.get(url + '/tokenVerification/'+ resetToken);
-  }
+  
 
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
 
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/user/'+ resetToken);
+  }
+
   sendResetLink(email: string): Promise<void> {
-    return axios.post(url + '/forgotPassword/' + email);
+    return axios.post(url + '/forgotPassword/user/' + email);
   }
 
 }
@@ -398,13 +400,18 @@ class OrgService{
   }
 
 
-    addOrganization(newemployee: Register): Promise<void> {
-        console.log("ORG TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworganization", newemployee);
-    }
+  addOrganization(newemployee: Register): Promise<void> {
+      console.log("ORG TIL SERVICE: ", newemployee);
+      return axios.put(url + "/neworganization", newemployee);
+  }
 
+  verifyResetToken (resetToken : string): Promise<Organization[]> {
+    return axios.get(url + '/tokenVerification/org/'+ resetToken);
+  }
 
-
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/org/' + email);
+  }
 }
 
 export let orgService = new OrgService();
@@ -459,6 +466,8 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id);
 	}
+
+  
 
 }
 
@@ -569,6 +578,14 @@ export default class EmployeeService {
 	 */
   searchForEmail(email: string): Promise<{verify: number}>{
     return axios.get(url + '/searchEmail/' + email);
+  }
+
+  verifyResetToken (resetToken : string): Promise<Employee[]> {
+    return axios.get(url + '/tokenVerification/emp/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/emp/' + email);
   }
 
 

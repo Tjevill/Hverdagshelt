@@ -245,5 +245,23 @@ module.exports = class UserDao extends Dao {
 		)
 	}
 
+    updateResetPasswordToken(json: json, employee_id: number, callback: any) {
+		let val = [json.resetPasswordToken, json.resetPasswordExpire, user_id];
+		super.query(
+			"update Employee set resetPasswordToken = ?, resetPasswordExpire = ? where employee_id = ?",
+			val,
+			callback
+		);
+	}
+ 	
+	 getUserFromResetToken(token: string, callback: any) {
+
+		 super.query(
+			"SELECT * FROM Employee WHERE resetPasswordToken = ?",
+			[token],
+			callback 
+		 );
+	 }
+
 
 };
