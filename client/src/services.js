@@ -349,12 +349,9 @@ class UserService {
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
 
-<<<<<<< HEAD
   sendResetLink(email: string): Promise<void> {
     return axios.post(url + '/forgotPassword/' + email);
   }
-=======
->>>>>>> 16154e6c067a7836e2cbe0f038c3e4c1c58fc1d5
 
 }
 
