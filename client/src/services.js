@@ -80,6 +80,11 @@ class UserUpdatePWord {
   password: string;
 }
 
+class EmployeeUpdatePWord {
+  emp_id: number;
+  password: string;
+}
+
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
@@ -101,7 +106,6 @@ class Districts {
   district: string;
   zipcode: string;
 }
-
 
 const url = "http://localhost:8080";
 
@@ -448,9 +452,10 @@ class CategoryService {
 
 }
 
+
 export let categoryService = new CategoryService();
 
-class EmployeeService {
+export default class EmployeeService {
 
 	/**
 	 * Service object for verifying old password.
@@ -488,8 +493,10 @@ class EmployeeService {
   }
 
 
+
+
   /** Change password */
-  updateEmpPw(emp: Employee): Promise<void>{
+  updateEmpPw(emp: EmployeeUpdatePWord): Promise<void>{
     return axios.put(url+'/updateEmpPW', emp);
   }
 
