@@ -7,6 +7,11 @@ import { employeeService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
+class EmployeeUpdatePWord {
+  emp_id: number;
+  password: string;
+}
+
 export default class ChangePassword extends Component {
   userid = -1;
   user = new Object();
@@ -15,6 +20,10 @@ export default class ChangePassword extends Component {
   newPassword2 = "";
   meldning = "";
   bilde ="https://png.pngtree.com/svg/20170213/password_reset_369656.png";
+
+  componentDidMount(){
+    this.userid = sessionStorage.getItem("userid");
+  }
 
   render(){
     return(
@@ -25,9 +34,9 @@ export default class ChangePassword extends Component {
         </div>
       </div>
 
-        <div class="container text-center">
-          <div class="row">
-            <div class="col">
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
               <div className="form-group">
                 Gammelt passord:{" "}
                 <input
@@ -60,7 +69,7 @@ export default class ChangePassword extends Component {
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
                 <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
               </div>
-              <div class="col">
+              <div className="col">
               <p>{this.meldning}</p>
               <img src={this.bilde} width="200"/>
               </div>
@@ -83,21 +92,32 @@ export default class ChangePassword extends Component {
       this.meldning = "Nytt passord må være ulik det gamle passordet"
       this.forceUpdate();
     }else{
-    const passwordInfo = {
+
+    //Will be used once backend check works
+    /*const passwordInfo = {
       user_id : this.userid,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
-    };
-    const passwordInfoUpdatePasswordInDB = {
-      user_id : this.userid,
-    	password: this.newPassword1
-    };
+    };*/
+
+    const passwordInfo = {
+      emp_id: this.userid,
+      password: this.newPassword1
+    }
 
     employeeService
-      .verifyOldPasswordAndUpdatePWord(passwordInfo)
+      .verifyOldPassword(this.userid, this.oldPassword)
       .then((response) => {
-          console.log(response + "Skal oppdatere passord");
-          employeeService.updateUserPWord(passwordInfoUpdatePasswordInDB)
+          console.log("verify:", response);
+          console.log(passwordInfo);
+          employeeService.updateEmpPw(passwordInfo)
+            .then(pwUpdateResponse => {
+              console.log(pwUpdateResponse);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+          /*employeeService.updateUserPWord(passwordInfoUpdatePasswordInDB)
             .then(response => {
 							console.log(response, "response from updatepassword ok", "Passord oppdatert");
               this.meldning = "Passord endring er vellyket";
@@ -107,7 +127,7 @@ export default class ChangePassword extends Component {
 						})
             .catch(err => {
               console.log(err, "REJECTED FEIL I DATABASE");
-            })
+            });*/
         })
      .catch((error: Error) => {
        Alert.danger("noooooo");
@@ -142,19 +162,6 @@ export default class ChangePassword extends Component {
      */
 
     }
-  }
-
-  componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
-    console.log(this.userid);
-    employeeService
-      .getOne(this.id)
-      .then(user => {
-        this.user = user[0];
-        if(user) console.log("available user"+this.user.name);
-        this.forceUpdate();
-      })
-      .catch((error: Error) => Alert.danger(error.message));
   }
 
 
