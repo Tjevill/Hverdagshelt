@@ -196,6 +196,10 @@ body,
   height: 300px !important;
 }
 
+#employee-edit-page .commune-option:hover{
+  cursor: pointer;
+}
+
 .max {
   height: 100%;
   width: 100%;

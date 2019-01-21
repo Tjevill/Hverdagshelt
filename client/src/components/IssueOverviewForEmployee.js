@@ -57,6 +57,7 @@ export default class IssueOverviewForEmployee extends Component<{
   categoryid = 0;
   casesbyStatus = [];
   statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
+  caseside ="";
 
   handleChangeStatus = event => {
     document.getElementById('search').value = "";
@@ -154,10 +155,13 @@ export default class IssueOverviewForEmployee extends Component<{
 
   checkName() {}
 
+
+
   render() {
     let lists;
-
+    let sidebuttons;
     if (this.casesbyStatus.length == 0) {
+      this.caseside = this.casesbyStatus.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
       lists = (
         <tbody>
           <tr>
@@ -168,6 +172,7 @@ export default class IssueOverviewForEmployee extends Component<{
           </tr>
         </tbody>
       );
+
     } else {
       lists = (
         <tbody>
@@ -199,6 +204,15 @@ export default class IssueOverviewForEmployee extends Component<{
           ))}
         </tbody>
       );
+
+      sidebuttons =(
+        <div>
+        {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
+            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/admin/issues/All/'+sidetall)}>{sidetall} </button>
+        ))}
+        </div>
+      );
+
     }
 
     if (this.loaded) {
@@ -286,13 +300,20 @@ export default class IssueOverviewForEmployee extends Component<{
                     <th scope="col">Handling</th>
                   </tr>
                 </thead>
-
                 {lists}
                 <br />
                 <br />
               </table>
             </Router>
+          <br/><br/>
+        </div>
+        <div id='toolbar'>
+          <div className='wrapper text-center'>
+            <div class="btn-group">
+              {sidebuttons}
           </div>
+          </div>
+        </div>
         </>
       );
     } else {
@@ -331,8 +352,6 @@ export default class IssueOverviewForEmployee extends Component<{
       .catch((error: Error) =>
         console.log("Fails by getting the available employee" ,error)
       );
-
-    //Get kommunes navn til employee this.kommune =
 
     categoryService
       .getAllCategories()

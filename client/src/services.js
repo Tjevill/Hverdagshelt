@@ -634,14 +634,14 @@ class GeoService {
 		return axios.get(url + "/getCommunes");
 	}
 
- getCommuneName(commune: number): Promise<Place> {
-   return axios.get(url + "/CommuneName/" + commune);
- }
+   getCommuneName(commune: number): Promise<Place> {
+     return axios.get(url + "/CommuneName/" + commune);
+   }
 
 	getCommunesCounty(county_id: number): Promise<County[]> {
 		return axios.get(url + "/getCommunesCounty/", county_id);
 	}
-	
+
 	getCommunesKommune(): Promise<{ID: number, navn: string, fylke_id: number}>{
 		return axios.get(url + "/getCommunesKommune");
 	}
