@@ -72,10 +72,21 @@ export default class EmployeeEdit extends Component {
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  Navn:{" "}
+                  Epost:
+                  <input
+                    id="emp-edit-email"
+                    className="form-control"
+                    type="email"
+                    defaultValue = {this.user.email}
+                    name="zipcode"
+                    onChange={event => (this.user.email = event.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  Navn:
                   <input
                     id="emp-edit-name"
-                    className={"form-control"}
+                    className="form-control"
                     type="text"
                     name="name"
                     defaultValue={this.user.name}
@@ -83,10 +94,10 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Mobil:{" "}
+                  Mobil:
                   <input
                     id="emp-edit-tel"
-                    className={"form-control"}
+                    className="form-control"
                     type="number"
                     defaultValue={this.user.tel}
                     name="tel"
@@ -99,21 +110,10 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Epost:{" "}
-                  <input
-                    id="emp-edit-email"
-                    className={"form-control"}
-                    type="email"
-                    defaultValue = {this.user.email}
-                    name="zipcode"
-                    onChange={event => (this.user.email = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Kommune:{""}
+                  Kommune:
                   <input
                     id="emp-edit-commune"
-                    className={"form-control"}
+                    className="form-control"
                     type="text"
                     defaultValue = {this.commune}
                     name="zipcode"

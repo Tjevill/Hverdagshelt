@@ -7,17 +7,6 @@ class Category {
     description: string;
 }
 
-class Employee{
-  employee_id: number;
-  name: string;
-  tel: string;
-  email: string;
-  password: string;
-  commune: string;
-  county: string;
-  superuser: boolean;
-}
-
 class County { //Fylke
 	id: number;
 	county: string;
@@ -38,9 +27,24 @@ class Case {
   org_id: number;
 }
 
+class Employee{
+  employee_id: number;
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
+}
+
 class Place {
 	zipcode: number;
 	commune: string;
+}
+
+class ResetToken {
+  token: string;
 }
 
 class Status {
@@ -67,6 +71,8 @@ class User {
   tel: number;
   email: string;
   subscription: number;
+  resetPasswordToken: string;
+  resetPasswordExpire: number;
 
 }
 
@@ -77,6 +83,11 @@ class UserSubscriptionUpdate {
 
 class UserUpdatePWord {
   user_id: number;
+  password: string;
+}
+
+class EmployeeUpdatePWord {
+  emp_id: number;
   password: string;
 }
 
@@ -101,7 +112,6 @@ class Districts {
   district: string;
   zipcode: string;
 }
-
 
 const url = "http://localhost:8080";
 
@@ -244,7 +254,7 @@ class CaseService {
       comment: comment
     });
   }
-	
+
 	/**
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
@@ -321,9 +331,6 @@ class UserService {
     return axios.put(url + '/userProvince/' + id);
   }
 
-  findUserByEmail(email: string): Promise<User>{
-    return axios.get(url+ '/forgotPassword/'+ email);
-  }
 
 	/**
 	 * Service object for verifying old password
@@ -334,10 +341,17 @@ class UserService {
 
 	}
 
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/'+ resetToken);
+  }
+
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
-  
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/' + email);
+  }
 
 }
 
@@ -430,13 +444,13 @@ class CategoryService {
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
 	}
-	
-	
+
+
 	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
 		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
 		return axios.put(url + "/neworgcat/" + company_id, newemployee);
 	}
-	
+
 	/**
    * Gets all categories (and its id) connected to an organization
 	 * @param id The organizations id number
@@ -445,12 +459,13 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id);
 	}
-	
+
 }
+
 
 export let categoryService = new CategoryService();
 
-class EmployeeService {
+export default class EmployeeService {
 
 	/**
 	 * Service object for verifying old password.
@@ -488,8 +503,10 @@ class EmployeeService {
   }
 
 
+
+
   /** Change password */
-  updateEmpPw(emp: Employee): Promise<void>{
+  updateEmpPw(emp: EmployeeUpdatePWord): Promise<void>{
     return axios.put(url+'/updateEmpPW', emp);
   }
 
@@ -498,7 +515,7 @@ class EmployeeService {
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/'+emp.employee_id, emp);
+    return axios.put(url+'/employee/' + emp.employee_id, emp);
   }
 
   /** Get all employees */
@@ -543,6 +560,15 @@ class EmployeeService {
 	 */
   getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
     return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
+	
+	/**
+   * Verify if email exists.
+	 * @param email The employees email
+	 * @returns {AxiosPromise<any>} 1 if true, 0 if not
+	 */
+  searchForEmail(email: string): Promise<{verify: number}>{
+    return axios.get(url + '/searchEmail/' + email);
   }
 
 

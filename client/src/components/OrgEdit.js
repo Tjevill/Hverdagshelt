@@ -59,53 +59,45 @@ export default class OrgEdit extends Component {
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  Organisasjonsnummer:{""}
+                  Organisasjonsnummer:
                   <input
-                    id="emp-edit-commune"
-                    className={"form-control"}
-                    type="text"
-                    defaultValue = {this.id}
-                    name="zipcode"
-                    onChange={event => {
-                      this.commune = event.target.value;
-                      this.changeCommune(event);
-                    }}
+                    id="org-edit-number"
+                    className="form-control"
+                    type="number"
+                    defaultValue = {this.user.organizationnumber}
+                    name="organizationnumber"
+                    onChange={event => (this.user.organizationnumber = event.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  Navn:{" "}
+                  Navn:
                   <input
-                    id="emp-edit-name"
-                    className={"form-control"}
+                    id="org-edit-name"
+                    className="form-control"
                     type="text"
                     name="name"
-                    defaultValue={this.id}
+                    defaultValue={this.user.name}
                     onChange={event => (this.user.name = event.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  Mobil:{" "}
+                  Mobil:
                   <input
-                    id="emp-edit-tel"
-                    className={"form-control"}
+                    id="org-edit-tel"
+                    className="form-control"
                     type="number"
-                    defaultValue={this.id}
+                    defaultValue={this.user.tel}
                     name="tel"
-                    onChange={event => {
-                      if(event.target.value.length > 8) {
-                        event.target.value = (event.target.value-(event.target.value%10))/10;
-                      }
-                      this.user.tel = event.target.value;
-                    }}
+                    onChange={event => (this.user.tel = event.target.value)}
                   />
                 </div>
                 <div className="form-group">
-                  Epost:{" "}
+                  Epost:
                   <input
-                    id="emp-edit-email"
-                    className={"form-control"}
+                    id="org-edit-email"
+                    className="form-control"
                     type="email"
-                    defaultValue = {this.id}
+                    defaultValue = {this.user.email}
                     name="zipcode"
                     onChange={event => (this.user.email = event.target.value)}
                   />
@@ -129,80 +121,31 @@ export default class OrgEdit extends Component {
     }
   }
 
-  changeCommune(event){
-    if(event.target.value === ""){
-      this.communeOptions = [];
-      this.forceUpdate();
-      return;
-    }
-    let options = []
-    this.communes.map(
-      commune => {
-        if(commune.navn.toUpperCase().includes(event.target.value.toUpperCase())
-        && !options.includes(commune.navn)){
-          options.push(commune.navn);
-        }
-      }
-    );
-    //console.log(options);
-    this.communeOptions = options.sort().slice(0, 3);
-    //console.log(this.communeOptions);
-    this.forceUpdate();
-  }
-
-  confirmCommune(event, commune){
-    this.commune = commune;
-    this.communeOptions = [];
-    let communeField = document.getElementById("emp-edit-commune");
-    communeField.value = commune;
-    this.forceUpdate();
-  }
-
   async save(){
 
     //validForm keeps track of whether the data is valid to be used for updating the database
     let validForm = true;
-    let found = false
-    let commune = -1;
-    let county = -1;
-
-    //Sets user commune and county based on commune name from input
-    //console.log(this.communes);
-    for(let i = 0; i < this.communes.length; i++){
-      if(this.communes[i].navn === this.commune){
-        found = true;
-        commune = this.communes[i].ID;
-        county = this.communes[i].fylke_id;
-        break;
-      }
-    }
-
-    //Checks if commune and county exists in database and sets the values of to the user
-    //console.log(found, commune);
-    if(found && commune != -1){
-      this.user.commune = commune;
-      this.user.county = county
-    } else {
-      validForm = false;
-      document.getElementById("emp-edit-commune").style.borderColor = "red";
-      console.error("Invalid commune");
-    }
 
     //Client side form checks
+    if(this.user.organizationnumber == ""){
+      validForm = false;
+      document.getElementById("org-edit-number").style.borderColor = "red";
+      console.error("Invalid org.number");
+    }
     if(this.user.name.trim().length === 0){
       validForm = false;
-      document.getElementById("emp-edit-name").style.borderColor = "red";
+      document.getElementById("org-edit-name").style.borderColor = "red";
       console.error("Invalid name");
     }
     if(this.user.tel == ""){
       validForm = false;
-      document.getElementById("emp-edit-tel").style.borderColor = "red";
+      document.getElementById("org-edit-tel").style.borderColor = "red";
       console.error("Invalid tel");
     }
 
     if(!isEmail(this.user.email)){
       validForm = false;
-      document.getElementById("emp-edit-email").style.borderColor = "red";
+      document.getElementById("org-edit-email").style.borderColor = "red";
       console.error("Invalid email");
     }
 

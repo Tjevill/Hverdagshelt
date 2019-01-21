@@ -1,4 +1,4 @@
-//@flow
+
 
 import * as React from "react";
 import { Component } from "react-simplified";
@@ -8,11 +8,12 @@ import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import { NavLink } from 'react-router-dom';
 import createHistory from "history/createBrowserHistory";
+import PlacesAutocomplete from 'react-places-autocomplete';
+import {geocodeByAddress, geocodeByPlaceId, getLatLng} from 'react-places-autocomplete';
 
 const style = {
     width: '100%',
-    height: '100%',
-    position: "relative"
+    height: '100%'
 }
 
 const history = createHistory({
@@ -35,6 +36,12 @@ export class Report extends Component {
     zipBoo = true;
     zipcodePlaceholder = '';
     zipcodes = [];
+    titleValid = '';
+    zipValid = '';
+    countryValid = '';
+    categoryValid = '';
+    pictureValid = '';
+    picValidationClass = '';
 
     state = {
         headline: "",
@@ -72,56 +79,167 @@ export class Report extends Component {
         return /^\d+$/.test(myString);
     }
 
+    constructor(props) {
+        super(props);
+        this.state = { address: '' };
+    }
+
+    handleChangeS = address => {
+        this.setState({ address });
+    };
+
+    handleSelect = address => {
+        geocodeByAddress(address)
+            .then(results => getLatLng(results[0]))
+            .then(({ lat , lng }) => {
+                console.log('Success', lat, lng);
+                this.lat = lat;
+                this.lng = lng;
+                mapService.getMapInfo(lat, this.lng).then(
+                    mapData => {
+                        this.mapData = mapData.results[0];
+                        console.log(this.mapData);
+                        if(this.mapData == null){
+                            this.mapData = {
+                                formatted_address: "none"
+                            }
+                        }
+                        let filter = [];
+                        this.address = this.mapData.formatted_address;
+                        if (this.mapData.address_components == null) {
+                            console.log('Ikke i Norge!');
+                        } else {
+                            filter = this.mapData.address_components.filter(e =>
+                                e.types[0] == 'postal_code');
+                        }
+
+                        console.log(filter);
+                        if(filter[0] == null) {
+                            this.state.zipcode = '';
+                            this.zipBoo = false;
+                            this.zipcodePlaceholder = 'Fant ikke postnummer for anngitt sted, vennligst fyll inn postnummer manuelt';
+                        } else {
+                            this.state.zipcode = filter[0].long_name;
+                        }
+                        console.log(this.state.zipcode);
+                        let countryFilter = [];
+                        let help = [];
+                        if (this.mapData.address_components == null) {
+                            this.error = 'Fant ingen gyldig addresse her, vennligst velg et annet sted';
+                        } else {
+                            this.error = "";
+                            help = this.mapData.address_components.filter(e =>
+                                e.types[0] == 'country');
+                            this.country = help[0].long_name;
+                        }
+                        this.updateAddress(this.mapData.formatted_address);
+
+                    }
+                );
+            })
+            .catch(error => console.error('Error', error));
+
+    };
+
+    updateAddress (address) {
+        document.getElementById("address-search").value = address;
+    }
+
     render(){
         return(
             <div className="row row-style" style={style}>
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
-                    <div className="Rapporter">
+                    <div className="rapporter">
                         <h1>Meld feil</h1>
                         <div className="form-group form-group-style">
                             Tittel:{" "}
                             <input
-                                className="form-control"
+                                className={"form-control " + this.titleValid}
                                 type="text"
                                 name="headline"
                                 defaultValue=""
                                 onChange={this.handleChange}
                             />
+                            <div className="invalid-feedback">Ugyldig tittel</div>
                         </div>
-
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
-                            <input
-                                className="form-control address-field"
-                                type="text"
-                                name="headline"
-                                defaultValue={this.address}
-                                readOnly={true}
-                            />
+                            <div className="invalid-feedback">Ugyldig adresse</div>
+                        </div>
+                        <PlacesAutocomplete
+                            value={this.state.address}
+                            onChange={this.handleChangeS}
+                            onSelect={this.handleSelect}
+                        >
+                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                <div>
+                                    <input
+                                        {...getInputProps({
+                                            placeholder: 'Search Places ...',
+                                            className: 'location-search-input',
+                                        })}
+                                        className={"form-control address-field " + this.countryValid}
+                                        id="address-search"
+                                        type="text"
+                                        name="headline"
+                                    />
+                                    <div className="autocomplete-dropdown-container">
+                                        {loading && <div>Loading...</div>}
+                                        {suggestions.map(suggestion => {
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            // inline style for demonstration purpose
+                                            const style = suggestion.active
+                                                ? { backgroundColor: '#EEEDED', cursor: 'pointer', color: 'black' }
+                                                : { backgroundColor: '#ffffff', cursor: 'pointer', color: 'black'};
+                                            return (
+                                                <div
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                        style,
+                                                    })}
+                                                >
+                                                    <span>{suggestion.description}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </PlacesAutocomplete>
+                        <div className="map-wrapper">
                             <Map
                                 className="report-map"
                                 google={this.props.google}
-                                zoom={8}
-                                initialCenter={{
+                                zoom={9}
+                                center={{
                                     lat: this.lat,
                                     lng: this.lng
                                 }}
                                 style={style}
+                                defaultOptions={{
+                                    scaleControl: false,
+                                    mapTypeControl: false,
+                                    zoomControl: true
+                                }}
+                                disableDefaultUI={true}
                                 onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
                             >
                                 <Marker
-                                    name={"current location"}
+                                    name={"current-location"}
                                     draggable={true}
                                     position={{ lat: this.lat, lng: this.lng }}
                                     onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
                                 />
                             </Map>
                         </div>
+
                         <div className="form-group form-group-style">
                             Postnummer:{" "}
                             <input
-                                className="form-control"
+                                className={"form-control " + this.zipValid}
                                 type="text"
                                 defaultValue={this.state.zipcode}
                                 name="zipcode"
@@ -130,6 +248,7 @@ export class Report extends Component {
                                 readOnly={this.zipBoo}
                                 placeholder={this.zipcodePlaceholder}
                             />
+                            <div className="invalid-feedback">Ugyldig postnummer</div>
                         </div>
                         <div className="form-group form-group-style">
                             Beskrivelse:{" "}
@@ -143,19 +262,34 @@ export class Report extends Component {
                         </div>
                         <div className="form-group form-group-style">
                             Last opp bilde:
-                            <label className="file-upload-container" htmlFor="file-upload"></label>
-                            <input id="file-upload" type="file" name="file-upload" onChange={this.fileSelectedHandler}></input>
+                            <label
+                                className="file-upload-container"
+                                htmlFor="file-upload">
+                            </label>
+                            <input
+                                className={"file-input " + this.pictureValid}
+                                id="file-upload"
+                                type="file"
+                                name="file-upload"
+                                onChange={this.fileSelectedHandler}
+                                required>
+
+                            </input>
+                            <div className={"invalid-feedback " + this.picValidationClass}>Du må laste opp en gyldig bildefil</div>
                         </div>
-                        <select className='selectpicker browser-default custom-select'
-                                onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.category_id = event.target.value)}
-                                defaultValue=''>
-                            <option disabled value=''> -- velg kategori -- </option>
-                            {this.categories.map(category => (
-                                <option key={category.category_id} value={category.category_id}>
-                                    {category.description}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="form-group form-group-style">
+                            <select className={'browser-default custom-select ' + this.categoryValid}
+                                    onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.category_id = event.target.value)}
+                                    defaultValue=''>
+                                <option disabled value=''> -- velg kategori -- </option>
+                                {this.categories.map(category => (
+                                    <option key={category.category_id} value={category.category_id}>
+                                        {category.description}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="invalid-feedback">Du må velge en kategori</div>
+                        </div>
                         <button type="button" onClick={this.register} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
@@ -208,6 +342,7 @@ export class Report extends Component {
                         e.types[0] == 'country');
                     this.country = help[0].long_name;
                 }
+                this.updateAddress(this.mapData.formatted_address);
 
             }
         );
@@ -215,55 +350,52 @@ export class Report extends Component {
 
     register(){
         if (this.state.headline == ''){
-            this.error = "Tittel må fylles inn!";
-            return null;
-        } else if (this.state.headline.length > 64){
-            this.error = "Max tittel lengde: 64 tegn";
+            this.titleValid = "is-invalid";
             return null;
         } else {
-            this.error = "";
+            this.titleValid = "";
         }
 
         if (this.country.trim() == 'Norge' || this.country.trim() == 'Norway') {
-            this.error = "";
+            this.countryValid = "";
         } else {
-            this.error = "Vennligst velg et sted i Norge";
+            this.countryValid = "is-invalid";
             return null;
         }
         if (this.mapData.address_components == null) {
-            this.error = 'Fant ingen gyldig addresse her, vennligst velg et annet sted';
+            this.countryValid = 'is-invalid';
             return null;
         } else {
-            this.error = '';
+            this.countryValid = '';
         }
         if(this.state.zipcode.length < 4) {
-            this.error = 'Postnummer må være nøyaktig 4 tall';
+            this.zipValid = 'is-invalid';
             return null;
         } else if (!(this.onlyNumber(this.state.zipcode))) {
-            this.error = 'Postnummer kan bare bestå av tall!';
+            this.zipValid = 'is-invalid';
             return null;
         } else if (!(this.zipcodes.includes(this.state.zipcode))) {
-            this.error = 'Postnummer må være et gyldig postnummer i Norge!';
+            this.zipValid = 'is-invalid';
             return null;
         } else {
-            this.error = '';
+            this.zipValid = '';
         }
         if (this.selectedFile == null) {
-            this.error = "Vennligst last opp bilde!";
+            this.picValidationClass = "img-visible";
             return null;
         } else if(!this.isImage(this.selectedFile.name)) {
-            this.error = "Du kan bare laste opp bildefiler";
+            this.picValidationClass = "img-visible";
             console.log('Ikke bilde!');
             return null;
         } else {
-            this.error = '';
+            this.picValidationClass = '';
         }
 
         if (this.state.category_id.trim() == ''){
-            this.error = "Kategori er påkrevd!";
+            this.categoryValid = "is-invalid";
             return null;
         } else {
-            this.error = "";
+            this.categoryValid = "";
         }
         let fd = new FormData();
         fd.append('file', this.selectedFile, this.selectedFile.name);
@@ -307,8 +439,6 @@ export class Report extends Component {
             })
             .catch((error: Error) => console.log(error.message));
     }
-
-
 }
 
 export default GoogleApiWrapper({

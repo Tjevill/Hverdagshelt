@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import { employeeService } from "../services";
+import { orgService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
-class EmployeeUpdatePWord {
-  emp_id: number;
+class OrganizationUpdatePWord {
+  org_id: number;
   password: string;
 }
 
@@ -101,16 +101,16 @@ export default class ChangePassword extends Component {
     };*/
 
     const passwordInfo = {
-      emp_id: this.userid,
+      org_id: this.userid,
       password: this.newPassword1
     }
 
-    employeeService
+    orgService
       .verifyOldPassword(this.userid, this.oldPassword)
       .then((response) => {
           console.log("verify:", response);
           console.log(passwordInfo);
-          employeeService.updateEmpPw(passwordInfo)
+          orgService.updateOrgPWordByID(passwordInfo)
             .then(pwUpdateResponse => {
               console.log(pwUpdateResponse);
               this.meldning = "Passord endring er vellyket";

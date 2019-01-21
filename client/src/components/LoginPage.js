@@ -230,7 +230,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>

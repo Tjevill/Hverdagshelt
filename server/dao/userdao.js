@@ -116,7 +116,7 @@ module.exports = class UserDao extends Dao {
 		let passwordData = sha512(json.password, salt);
 		let val = [passwordData.passwordHash, passwordData.salt, json.user_id];
 		super.query(
-			"update User set password = ?, secret = ? where user_id = ?",
+			"UPDATE User SET password = ?, secret = ? WHERE user_id = ?",
 			val,
 			callback
 		);
@@ -213,8 +213,25 @@ module.exports = class UserDao extends Dao {
 			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
 			[searchString],
 			callback
-		)
+		);
 	}
-	
+
+	updateResetPasswordToken(json: json, user_id: number, callback: any) {
+		let val = [json.resetPasswordToken, json.resetPasswordExpire, user_id];
+		super.query(
+			"update User set resetPasswordToken = ?, resetPasswordExpire = ? where user_id = ?",
+			val,
+			callback
+		);
+	}
+ 	
+	 getUserFromResetToken(token: string, callback: any) {
+
+		 super.query(
+			"SELECT * FROM User WHERE resetPasswordToken = ?",
+			[token],
+			callback 
+		 );
+	 }
 	
 };

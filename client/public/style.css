@@ -340,15 +340,6 @@ medium green: #7EB09B
 light green: #A3C4BC
 */
 
-.caseEdit-wrapper{
-  height: 1000px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #4bc2f1;
-}
 
 .caseEdit-wrapper .form-wrapper {
   width: 600px;
@@ -414,11 +405,11 @@ textarea.error {
   margin-right: 1%;
 }
 
-.caseEdit-wrapper .address, .zipcode{
+.caseEdit-wrapper.address, .caseEdit-wrapper.zipcode{
   margin-left: 1%;
 }
 
-.caseEdit-wrapper .email{
+.caseEdit-wrapper {
   margin-left: 2%;
 }
 
@@ -426,9 +417,9 @@ textarea.error {
 .headline,
 
 
-.description,
-.name,
-.address{
+.caseEdit-wrapper.description,
+.caseEdit-wrapper.name ,
+.caseEdit-wrapper.address{
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
@@ -441,7 +432,7 @@ textarea.error {
 .caseEdit-wrapper .headline,
 
 
-.description {
+.caseEdit-wrapper .description {
   width: 100%;
 }
 
@@ -505,12 +496,26 @@ ListItem {
     margin-top: 3%;
 }
 
-.address-field {
+.caseEdit-wrapper .caseEdit-wrapper.address-field {
     margin-bottom: 2%;
 }
 
-.report-map {
-    margin-bottom: 2%;
+.map-wrapper {
+    height: 300px !important;
+    width: 350px !important;
+}
+
+.rapporter {
+    width: 350px;
+    height: 1000px;
+}
+
+.img-visible {
+    display: inherit !important;
+}
+
+.current-location {
+    margin-right: 0px !important;
 }
 
 .feilmelding {
@@ -567,7 +572,9 @@ ListItem {
     float: left;
 }
 
-.AdminEditPrivateUSers-Component{
-  background-color: white;
-  text-align: center;
+.PrivateUsersList-title{
+
 }
+
+
+

@@ -95,7 +95,7 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-	
+
 	/** Update employee personal data, except password
 	 *   @param json - json object with all the edited data.
 	 * @param emp_id
@@ -114,11 +114,11 @@ module.exports = class UserDao extends Dao {
     /** Change password for an employee in the db
     *   @param json - json-object with the edited password.
     */
-    updateEmpPassword(json: jsonUpdatePWordEmp, callback: any){
+    updateEmpPassword(json: any, callback: any){
 
         let salt = genRandomString(32);
         let passwordData = sha512(json.password, salt);
-        let val = [passwordData.passwordHash, passwordData.salt, json.employee_id];
+        let val = [passwordData.passwordHash, passwordData.salt, json.emp_id];
 
         super.query(
             "UPDATE Employee SET password = ?, secret = ? WHERE employee_id = ?",
@@ -218,7 +218,7 @@ module.exports = class UserDao extends Dao {
             callback
         );
     }
-	
+
 	/**
    * Gets all cases connected to an employee
 	 * @param id The employee id
@@ -231,6 +231,19 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
     }
+	
+	/**
+	 * Verify if email exists
+	 * @param email the email to search for
+	 * @param callback
+	 */
+	searchEmail (email: string, callback: mixed) {
+		super.query(
+			"SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
+			[email],
+			callback
+		)
+	}
 
 
 };
