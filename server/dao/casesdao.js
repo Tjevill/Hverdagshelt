@@ -204,6 +204,19 @@ module.exports = class CasesDao extends Dao {
       );
   }
 	
+	/**
+   * Gets all cases to a specific organization
+	 * @param id The id of the organization you want to get cases on
+	 * @param callback
+	 */
+  getCasesForOrganization(id: number, callback: mixed){
+	  super.query(
+	    "SELECT * FROM Cases WHERE org_id = ?",
+      [id],
+      callback
+    )
+  }
+	
 };
 
 
