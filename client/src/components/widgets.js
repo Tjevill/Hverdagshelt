@@ -26,6 +26,7 @@ export function refreshToken() {
         .then(function (myJson) {
             let mytoken = myJson.jwt;
             sessionStorage.setItem('storedtoken', mytoken);
+
             if (mytoken != undefined) {
 
                 console.log("Refreshtoken: Token refreshed!");

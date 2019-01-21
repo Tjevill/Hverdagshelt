@@ -88,12 +88,12 @@ class ikkeforsideMain extends Component {
 class LoginStatus extends Component {
     render () {
         return (
-            (this.props.loggedin) ? <div className="logged-in-as">Not logged in</div> :
-            <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+            (this.props.loggedin)
+                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+                : <div className="logged-in-as">Not logged in</div>
         );
     }
 }
-
 
 
 class Main extends Component {
@@ -112,11 +112,8 @@ class Main extends Component {
     }
 
     render() {
-       //  console.log("Path: " + window.location.href);
-
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
-            return this.amILoggedin == null ? "<div></div>" : (
+        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk} /></HashRouter>) } else {
+            return this.amILoggedin == null ? "Server is down." : (
 
                 <div>
                     <HashRouter>
@@ -127,6 +124,9 @@ class Main extends Component {
                                     <header id="header" className="hoc clear">
                                         <div id="logo" className="fl_left">
                                             <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+                                            <div>{
+                                                // console.log("Payload: " + payload)
+                                            }</div>
                                         </div>
                                         <Menu loggedin={this.amILoggedin}/>
                                         <LoginStatus loggedin={this.amILoggedin}/>

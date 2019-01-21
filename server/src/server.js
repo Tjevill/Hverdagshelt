@@ -1,5 +1,6 @@
 // @flow
 /* eslint eqeqeq: "off" */
+
 const express = require("express");
 const mysql = require("mysql");
 const app = express();
@@ -1064,7 +1065,7 @@ app.post("/loginhh", (req, res) => {
     promise1.then(function (value) {
         if (value) {
             userdao.getUserByEmail(req.body.email1, (status, data) => {
-                console.log("STATUS: ", status);
+                // console.log("STATUS: ", status);
                 let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
@@ -1158,7 +1159,20 @@ app.post("/loginb", (req, res) => {
 
         }
     });
-});
+})
+
+
+function checkIfLoggedIn(req, res, next) {
+    jwt.verify(req.token, privateKey, function(err, decoded)  {
+        if (decoded && decoded.email) {
+            next();
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+
+}
 
 
 
@@ -1168,14 +1182,17 @@ app.use("/refreshtoken", (req, res) => {
     let token = req.headers["x-access-token"];
     jwt.verify(token, privateKey, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok, så du får    ikke refreshet");
+            console.log("Token IKKE ok, så du får ikke refreshet");
             res.status(401);
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
-            let token = jwt.sign({ email: req.body.email }, privateKey, {
-                expiresIn: 60000
-            });
+            console.log("decoded: " + decoded.email)
+            console.log()
+            let token = jwt.sign({
+                email: decoded.email
+            }, privateKey, { expiresIn: 60000 });
             res.json({ jwt: token });
+            // console.log(lib.verify.token)
         }
     });
 });
