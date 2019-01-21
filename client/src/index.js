@@ -56,6 +56,7 @@ import ReportPage from "./components/ReportPage";
 import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
+import UpdateUserPasswordFromToken from "./components/UpdateUserPasswordFromToken";
 
 const history = createHashHistory();
 
@@ -151,6 +152,8 @@ class Main extends Component {
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/glemtpassord" component={ForgottenPassword} />
+                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
+                                <Route exact path="/reset" component={ForgottenPassword} />
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>

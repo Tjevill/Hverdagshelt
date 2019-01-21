@@ -7,17 +7,6 @@ class Category {
     description: string;
 }
 
-class Employee{
-  employee_id: number;
-  name: string;
-  tel: string;
-  email: string;
-  password: string;
-  commune: string;
-  county: string;
-  superuser: boolean;
-}
-
 class County { //Fylke
 	id: number;
 	county: string;
@@ -38,9 +27,24 @@ class Case {
   org_id: number;
 }
 
+class Employee{
+  employee_id: number;
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
+}
+
 class Place {
 	zipcode: number;
 	commune: string;
+}
+
+class ResetToken {
+  token: string;
 }
 
 class Status {
@@ -67,6 +71,8 @@ class User {
   tel: number;
   email: string;
   subscription: number;
+  resetPasswordToken: string;
+  resetPasswordExpire: number;
 
 }
 
@@ -325,9 +331,6 @@ class UserService {
     return axios.put(url + '/userProvince/' + id);
   }
 
-  findUserByEmail(email: string): Promise<User>{
-    return axios.get(url+ '/forgotPassword/'+ email);
-  }
 
 	/**
 	 * Service object for verifying old password
@@ -338,10 +341,17 @@ class UserService {
 
 	}
 
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/'+ resetToken);
+  }
+
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
 
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/' + email);
+  }
 
 }
 

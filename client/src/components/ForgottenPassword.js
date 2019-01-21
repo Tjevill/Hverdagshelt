@@ -17,12 +17,13 @@ export default class ChangePassword extends Component {
     }
 
     handleChange(event) {
+        console.log(event.target.value);
         this.setState({value: event.target.value});
     }
 
     handleSubmit(event) {
         alert('A email was submitted: ' + this.state.value);
-        userService.getUserByEmail(this.state.value);
+        userService.sendResetLink(this.state.value);
         //history.push('/');
         event.preventDefault();
     }
