@@ -417,6 +417,16 @@ app.put('/category/:id', (req: Request, res: Response) => {
 });
 
 /**
+ * Add category
+ */
+app.post('/addcategory', (req: Request, res: Response) => {
+    categoryDao.addCategory(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
  * Deletes one category by ID
  */
 app.delete('/category/:id', (req: Request, res: Response) => {
@@ -917,7 +927,7 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 // GEO (Place, kommune, fylke)
 
 /**
- * Gets all communes from kommune in DB
+ * Gets all communes from Place in DB
  */
 app.get("/getCommunes", (req, res) => {
 	geodao.getAllCommunes((status, data) => {
@@ -943,6 +953,16 @@ app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
         res.json(data);
         console.log(data[0].navn);
     });
+});
+
+/**
+ * Gets all communes from kommune in DB
+ */
+app.get("/getCommunesKommune", (req, res) => {
+	geodao.getCommunesFromKommune((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
 });
 
 

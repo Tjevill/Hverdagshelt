@@ -25,7 +25,7 @@ export default class Menu extends Component {
 
     render() {
 
-        console.log("Menu.js: loggedin = " + this.props.loggedin);
+        // console.log("Menu.js: loggedin = " + this.props.loggedin);
         if (!this.props.loggedin) {
             return (
                 <nav id="mainav" className="fl_right">

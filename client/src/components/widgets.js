@@ -273,6 +273,21 @@ export class Loading extends Component {
     }
 }
 
+
+
+function getDate(date) {
+    if(date === "" || date == null) return "";
+    let dateObject = new Date(date);
+    dateObject.setSeconds(0, 0);
+    return dateObject
+        .toISOString()
+        .replace('T', ' ')
+        .replace(':00.000Z', '');
+}
+
+
+
+
 /**
  * Renders simplified form elements using Bootstrap classes
  */
