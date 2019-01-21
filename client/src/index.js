@@ -41,6 +41,7 @@ import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
 import Statistikk from "./components/Statistikk";
+import Statistikk2 from "./components/Statistikk2";
 import PrivateRoute from 'react-private-route';
 import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
@@ -87,7 +88,7 @@ class ikkeforsideMain extends Component {
 class LoginStatus extends Component {
     render () {
         return (
-            (this.amILoggedin) ? <div className="logged-in-as">Not logged in</div> :
+            (this.props.loggedin) ? <div className="logged-in-as">Not logged in</div> :
             <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
         );
     }
@@ -111,10 +112,10 @@ class Main extends Component {
     }
 
     render() {
-        console.log("Path: " + window.location.href);
+       //  console.log("Path: " + window.location.href);
 
 
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk} /></HashRouter>) } else {
+        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
             return this.amILoggedin == null ? "<div></div>" : (
 
                 <div>
@@ -128,7 +129,7 @@ class Main extends Component {
                                             <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
                                         </div>
                                         <Menu loggedin={this.amILoggedin}/>
-                                        <LoginStatus loggdin={this.amILoggedin}/>
+                                        <LoginStatus loggedin={this.amILoggedin}/>
                                     </header>
                                 </div>
                                 <Route exact path="/" component={forsideMain} />

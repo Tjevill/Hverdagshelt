@@ -38,19 +38,11 @@ export default class Statistikk extends Component {
 
             return (
                 <React.Fragment>
-                    <PDF
-                        properties={properties}
-                        preview={true}
-                    >
+                    <PDF properties={properties} preview={true}>
                         <Text x={35} y={25} size={40}>Statistikk</Text>
-
-
                         <AddPage />
-                        <Table
-                            columns={columns}
-                            rows={rows}
-                        />
-                        <AddPage format='a6' orientation='l' />
+                        <Table columns={columns} rows={rows} />
+                        <AddPage format='a4' orientation='l' />
                         <Text x={10} y={10} color='red'>Sample</Text>
                         <Line lines={30} x={11} y={11} scale={11}/>
                         <AddPage />
