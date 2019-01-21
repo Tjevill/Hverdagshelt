@@ -581,6 +581,16 @@ app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	});
 });
 
+/**
+ * Verify if email exists. Returns 1 if true, 0 if not
+ */
+app.get("/searchEmail/:email", (req, res) => {
+	empDao.searchEmail(req.params.email, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 // End employee
 
 
