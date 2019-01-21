@@ -598,6 +598,10 @@ class GeoService {
 	getCommunesCounty(county_id: number): Promise<County[]> {
 		return axios.get(url + "/getCommunesCounty/", county_id);
 	}
+	
+	getCommunesKommune(): Promise<{ID: number, navn: string, fylke_id: number}>{
+		return axios.get(url + "/getCommunesKommune");
+	}
 
 
 }
