@@ -244,6 +244,15 @@ class CaseService {
       comment: comment
     });
   }
+	
+	/**
+	 * Gets all cases for one organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>}
+	 */
+	getCasesForOrganization(id: number): Promise<Case[]>{
+		return axios.get(url + '/getCasesOnOrgID/' + id);
+	}
 
 }
 export let caseService = new CaseService();
@@ -328,15 +337,7 @@ class UserService {
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
-	
-	/**
-   * Gets all cases for one organization
-	 * @param id The organizations id number
-	 * @returns {AxiosPromise<any>}
-	 */
-  getCasesForOrganization(id: number): Promise<Case[]>{
-	  return axios.get(url + '/getCasesOnOrgID/' + id);
-  }
+  
 
 }
 
