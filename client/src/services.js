@@ -244,7 +244,7 @@ class CaseService {
       comment: comment
     });
   }
-	
+
 	/**
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
@@ -337,7 +337,7 @@ class UserService {
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
-  
+
 
 }
 
@@ -430,13 +430,13 @@ class CategoryService {
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
 	}
-	
-	
+
+
 	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
 		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
 		return axios.put(url + "/neworgcat/" + company_id, newemployee);
 	}
-	
+
 	/**
    * Gets all categories (and its id) connected to an organization
 	 * @param id The organizations id number
@@ -445,7 +445,7 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id);
 	}
-	
+
 }
 
 export let categoryService = new CategoryService();
@@ -498,7 +498,7 @@ class EmployeeService {
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/'+emp.employee_id, emp);
+    return axios.put(url+'/employee/' + emp.employee_id, emp);
   }
 
   /** Get all employees */
