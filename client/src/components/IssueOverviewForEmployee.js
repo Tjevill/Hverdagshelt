@@ -46,59 +46,71 @@ export default class IssueOverviewForEmployee extends Component<{
   match: { params: { name: string, id: number } }
 }> {
   loaded = false;
-  employeeid = -1;
+  employeeid = "";
   employee = new Object();
   kommune = "";
   categories = [];
   cases = []; //cases from a specific employee.
   status = [];
+  backup = [];
   statusid = "";
-  categoryid = "";
+  categoryid = 0;
   casesbyStatus = [];
   statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
 
   handleChangeStatus = event => {
+    document.getElementById('search').value = "";
+    let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
       if(this.categoryid>0){
         this.casesbyStatus = this.cases.filter(function(value){
-           return value.category_id == event.target.value;
+           return value.category_id == categoryid;
         });
+        this.backup = this.casesbyStatus;
         this.forceUpdate();
       }else{
         console.log("Show the cases of all the status");
         this.casesbyStatus = this.cases;
+        this.backup = this.casesbyStatus;
         this.forceUpdate();
       }
     } else {
       if(this.categoryid>0){
         this.casesbyStatus = this.cases.filter(function(value){
-           return value.category_id == this.categoryid;
+           return value.category_id == categoryid;
         });
         this.casesbyStatus = this.casesbyStatus.filter(function(value) {
           return value.status_id == event.target.value;
         });
+        this.backup = this.casesbyStatus;
         this.forceUpdate();
       }else{
       this.casesbyStatus = this.cases.filter(function(value) {
         return value.status_id == event.target.value;
       });
+      this.backup = this.casesbyStatus;
+
       this.forceUpdate();
-    }
+      }
   }};
 
 
   handleChangeCategories = event => {
+    document.getElementById('search').value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
+    let statusid = this.statusid;
     if(event.target.value == 0){
       if(this.statusid>0){
         this.casesbyStatus = this.cases.filter(function(value) {
-          return value.status_id == this.statusid;
+          return value.status_id == statusid;
         });
+        this.backup = this.casesbyStatus;
         this.forceUpdate();
       }else{
         this.casesbyStatus = this.cases;
+        this.backup = this.casesbyStatus;
         this.forceUpdate();
       }
     }else{
@@ -106,9 +118,37 @@ export default class IssueOverviewForEmployee extends Component<{
       this.casesbyStatus = this.cases.filter(function(value){
          return value.category_id == event.target.value;
       });
+      this.backup = this.casesbyStatus;
       this.forceUpdate();
     }
   };
+
+  search = event => {
+    this.casesbyStatus = this.backup.filter(function(value){
+        return value.headline.indexOf(event.target.value)!=(-1);
+    });
+    this.forceUpdate();
+    console.log(event.target.value);
+    console.log(this.casesbyStatus);
+  }
+
+  delete(case_id) {
+		console.log("Er du sikker på at du vil slette følgende sak?");
+		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+
+
+			caseService
+				.changeCaseStatus(case_id)
+				.then(res => {
+					console.log("Response recieved:", res);
+					this.status=7;
+				})
+				.catch(err => {
+					console.log("AXIOS ERROR:", err);
+				});
+		}
+    window.location.reload();
+	}
 
 
 
@@ -140,13 +180,16 @@ export default class IssueOverviewForEmployee extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a href="#/Issues/All/1" class="btn btn-sm btn-warning">
+                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
                     &nbsp;Rediger&nbsp;
                   </span>
                 </a>
                 <span class="btn btn-sm btn-danger">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"
+                   onClick={() => {
+  									this.delete(casen.case_id);
+  								 }}>
                     &nbsp;Slett&nbsp;&nbsp;
                   </span>
                 </span>&nbsp;&nbsp;&nbsp;
@@ -168,7 +211,7 @@ export default class IssueOverviewForEmployee extends Component<{
               <div class="col-12 col-md-8">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
-                  width="50"
+                  width="10"
                 />
               </div>
               <div class="col-6 col-md-4">
@@ -222,16 +265,16 @@ export default class IssueOverviewForEmployee extends Component<{
             </div>
 
             <div class="row">
-              <div class="col-6 col-md-4">Kommune: Trondheim</div>
+              <div class="col-6 col-md-4"></div>
               <div class="col-6 col-md-4" />
-              <div class="col-6 col-md-4">
-                <input type="text" name="search" placeholder="Search.." />
-                <span class="glyphicon glyphicon-search" aria-hidden="true" />
+              <div class="col-4 col-md-4">
+              <span class="glyphicon glyphicon-search" aria-hidden="true" />
+                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search}/>
+
               </div>
             </div>
           </div>
-          <br />
-          <br />
+
           <div class="container">
             <Router history={history}>
               <table class="table table-hover">
@@ -259,14 +302,18 @@ export default class IssueOverviewForEmployee extends Component<{
 
   componentDidMount() {
     this.employeeid = sessionStorage.getItem("userid");
+
     employeeService
       .getOne(this.employeeid)
       .then(employee => {
         this.employee = employee[0];
         employeeService
-          .getCasesOnCommuneID(this.employee.commune)
+          .getCasesOnOnCommuneID(this.employee.commune)
           .then(cases => {
             this.cases = cases.filter(function(value) {
+              return value.status_id != 7;
+            });
+            this.backup = cases.filter(function(value) {
               return value.status_id != 7;
             });
             this.casesbyStatus = cases.filter(function(value) {
@@ -282,7 +329,7 @@ export default class IssueOverviewForEmployee extends Component<{
         this.forceUpdate();
       })
       .catch((error: Error) =>
-        console.log("Fails by getting the available employee")
+        console.log("Fails by getting the available employee" ,error)
       );
 
     //Get kommunes navn til employee this.kommune =

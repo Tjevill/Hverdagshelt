@@ -417,6 +417,16 @@ app.put('/category/:id', (req: Request, res: Response) => {
 });
 
 /**
+ * Add category
+ */
+app.post('/addcategory', (req: Request, res: Response) => {
+    categoryDao.addCategory(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
  * Deletes one category by ID
  */
 app.delete('/category/:id', (req: Request, res: Response) => {

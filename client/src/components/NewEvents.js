@@ -11,7 +11,7 @@ const history = createHashHistory();
 
 
 
-export default class EventsEdit extends Component <{ match: { params: { id: number } } }> {
+export default class EventsEdit extends Component {
   event = new Object();
 
   render(){
@@ -32,7 +32,9 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                       type="name"
                       class="form-control"
                       id="Name"
-                      placeholder="Skriv inn navn til event"></input>
+                      placeholder="Skriv inn navn til event">
+
+                    </input>
                     </div>
                 <div class="form-group">
                   <label for="exampleInputTime">Tidspunkt</label>
@@ -40,7 +42,9 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                       type="tidspunkt"
                       class="form-control"
                       id="Timming"
-                      placeholder=""></input>
+                      placeholder="">
+
+                    </input>
                    </div>
                    <div class="form-group">
                      <label for="exampleInputDescription">Beskrivelse</label>
@@ -48,7 +52,9 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                          type="description"
                          class="form-control"
                          id="Desciption"
-                         placeholder=""></input>
+                         placeholder="">
+
+                       </input>
                       </div>
                     <div class="form-group">
                         <label for="exampleInputDescription">Postnummer</label>
@@ -58,7 +64,9 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                             id="zipcode"
                             maxlength="4"
                             size="4"
-                            placeholder=""></input>
+                            placeholder="">
+
+                          </input>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputDescription">Adresse</label>
@@ -68,7 +76,9 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
                             id="zipcode"
                             maxlength="4"
                             size="4"
-                            placeholder=""></input>
+                            placeholder="">
+
+                          </input>
                     </div>
                   <button type="submit" class="btn btn-primary">Rediger</button>
               </form>
