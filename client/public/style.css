@@ -432,7 +432,7 @@ textarea.error {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
-} 
+}
 
 .AdminEditPrivateUsersImage{
   width: 350px;
@@ -507,10 +507,25 @@ ListItem {
 
 .caseEdit-wrapper .caseEdit-wrapper.address-field {
     margin-bottom: 2%;
-} 
+}
 
-.report-map {
-    margin-bottom: 2%;
+.map-wrapper {
+    height: 300px !important;
+    width: 350px !important;
+}
+
+.map-wrapper div:first-child{
+    position: relative !important;
+    display: flex !important;
+}
+
+.rapporter {
+    width: 350px;
+    height: 1000px;
+}
+
+.img-visible {
+    display: inherit !important;
 }
 
 .feilmelding {
