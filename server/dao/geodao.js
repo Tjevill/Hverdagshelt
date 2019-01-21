@@ -33,4 +33,16 @@ module.exports = class GeoDao extends Dao {
             callback
         );
     }
+	
+	/**
+	 * Get all communes from kommune table
+	 * @param callback
+	 */
+	getCommunesFromKommune(callback: mixed){
+    	super.query("SELECT * FROM kommune ORDER BY navn",
+				[],
+				callback
+			)
+		}
+    
 };

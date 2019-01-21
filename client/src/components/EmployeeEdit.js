@@ -40,11 +40,16 @@ export default class EmployeeEdit extends Component {
         console.log(user[0]);
         this.user = user[0];
         geoService
-          .getAllCommunes()
+          .getCommunesKommune()
           .then(communes => {
-              //console.log(communes);
               this.communes = communes;
-              this.commune = communes[this.user.commune - 1].province;
+              for(let i = 0; i < communes.length; i++){
+                if(communes[i].ID == this.user.commune){
+                  this.commune = communes[i].navn;
+                  break;
+                }
+              }
+              //this.commune = communes[this.user.commune - 1].province;
               this.loaded = true;
               this.forceUpdate();
           })
@@ -62,14 +67,26 @@ export default class EmployeeEdit extends Component {
   render(){
     if(this.loaded){
       return (
-        <div>
+        <div id="employee-edit-page">
           <div className="container text-center">
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  Navn:{" "}
+                  Epost:
                   <input
-                    className={"form-control"}
+                    id="emp-edit-email"
+                    className="form-control"
+                    type="email"
+                    defaultValue = {this.user.email}
+                    name="zipcode"
+                    onChange={event => (this.user.email = event.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  Navn:
+                  <input
+                    id="emp-edit-name"
+                    className="form-control"
                     type="text"
                     name="name"
                     defaultValue={this.user.name}
@@ -77,9 +94,10 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Mobil:{" "}
+                  Mobil:
                   <input
-                    className={"form-control"}
+                    id="emp-edit-tel"
+                    className="form-control"
                     type="number"
                     defaultValue={this.user.tel}
                     name="tel"
@@ -92,35 +110,26 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Epost:{" "}
+                  Kommune:
                   <input
-                    className={"form-control"}
-                    type="email"
-                    defaultValue = {this.user.email}
-                    name="zipcode"
-                    onChange={event => (this.user.email = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Kommune:{""}
-                  <input
-                    className={"form-control"}
-                    type="email"
+                    id="emp-edit-commune"
+                    className="form-control"
+                    type="text"
                     defaultValue = {this.commune}
                     name="zipcode"
-                    onChange={event => (this.changeCommune(event))}
+                    onChange={event => {
+                      this.commune = event.target.value;
+                      this.changeCommune(event);
+                    }}
                   />
                 </div>
 
-                <div className="card" style={{minWidth: "19rem"}}>
-                  <ul className="list-group list-group-flush" style={{marginBottom: "0"}}>
-                    <li className="list-group-item">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Vestibulum at eros</li>
+                <div className="card" style={{minWidth: "19rem", width: "100%"}}>
+                  <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
                     {
                       this.communeOptions.map(
                         commune => (
-                          <li className="list-group-item">{commune}</li>
+                          <li key={commune} className="list-group-item commune-option" onClick={(event) => this.confirmCommune(event, commune)}>{commune}</li>
                         )
                       )
                     }
@@ -132,7 +141,7 @@ export default class EmployeeEdit extends Component {
               </div>
               <div className="col">
                 <br/><br/><br/><br/>
-                <img src={this.bilde} width="200"/>
+                <img id="employee-edit-image" src={this.bilde} width="200"/>
               </div>
             </div>
           </div>
@@ -146,27 +155,90 @@ export default class EmployeeEdit extends Component {
   }
 
   changeCommune(event){
-    console.log(event.target.value);
+    if(event.target.value === ""){
+      this.communeOptions = [];
+      this.forceUpdate();
+      return;
+    }
     let options = []
     this.communes.map(
       commune => {
-        if(commune.province.includes(event.target.value)){
-          options.push(commune);
+        if(commune.navn.toUpperCase().includes(event.target.value.toUpperCase())
+        && !options.includes(commune.navn)){
+          options.push(commune.navn);
         }
       }
     );
-    options = this.uniq(options);
-    console.log(options);
-    this.communeOptions = options.slice(0, 3);
+    //console.log(options);
+    this.communeOptions = options.sort().slice(0, 3);
+    //console.log(this.communeOptions);
+    this.forceUpdate();
   }
 
-  uniq(a) {
-      return a.sort().filter(function(item, pos, ary) {
-          return !pos || item != ary[pos - 1];
-      })
+  confirmCommune(event, commune){
+    this.commune = commune;
+    this.communeOptions = [];
+    let communeField = document.getElementById("emp-edit-commune");
+    communeField.value = commune;
+    this.forceUpdate();
   }
 
-  save(){
+  async save(){
+
+    //validForm keeps track of whether the data is valid to be used for updating the database
+    let validForm = true;
+    let found = false
+    let commune = -1;
+    let county = -1;
+
+    //Sets user commune and county based on commune name from input
+    //console.log(this.communes);
+    for(let i = 0; i < this.communes.length; i++){
+      if(this.communes[i].navn === this.commune){
+        found = true;
+        commune = this.communes[i].ID;
+        county = this.communes[i].fylke_id;
+        break;
+      }
+    }
+
+    //Checks if commune and county exists in database and sets the values of to the user
+    //console.log(found, commune);
+    if(found && commune != -1){
+      this.user.commune = commune;
+      this.user.county = county
+    } else {
+      validForm = false;
+      document.getElementById("emp-edit-commune").style.borderColor = "red";
+      console.error("Invalid commune");
+    }
+
+    //Client side form checks
+    if(this.user.name.trim().length === 0){
+      validForm = false;
+      document.getElementById("emp-edit-name").style.borderColor = "red";
+      console.error("Invalid name");
+    }
+    if(this.user.tel == ""){
+      validForm = false;
+      document.getElementById("emp-edit-tel").style.borderColor = "red";
+      console.error("Invalid tel");
+    }
+
+    if(!isEmail(this.user.email)){
+      validForm = false;
+      document.getElementById("emp-edit-email").style.borderColor = "red";
+      console.error("Invalid email");
+    }
+
+    if(!validForm){
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
+      document.getElementById("employee-edit-image").src = this.bilde;
+      return;
+    }
+
+    employeeService.updateEmpData(this.user);
+    window.location.reload();
 
   }
 

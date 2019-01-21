@@ -42,11 +42,12 @@ function count(array) {
   return result;
 }
 
-export default class IssueOverviewForEmployee extends Component<{
-  match: { params: { name: string, id: number } }
+export default class OrgIssueOverview extends Component<{
+  match: { params: { id: number } }
 }> {
-  loaded = false;
-  employeeid = "";
+
+  loaded = true;
+  org_id = "";
   employee = new Object();
   kommune = "";
   categories = [];
@@ -58,6 +59,20 @@ export default class IssueOverviewForEmployee extends Component<{
   casesbyStatus = [];
   statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
   caseside ="";
+  fylker =[];
+  kommuner = [];
+
+  handleChangeFylke = event =>{
+    console.log("Fylke valgt: " + event.target.value);
+      userService
+        .getProvince(event.target.value)
+        .then(response => {
+            this.kommuner = response;
+            console.log("kommuner: ", this.kommuner);
+            this.forceUpdate();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+  }
 
   handleChangeStatus = event => {
     document.getElementById('search').value = "";
@@ -133,30 +148,6 @@ export default class IssueOverviewForEmployee extends Component<{
     console.log(this.casesbyStatus);
   }
 
-  delete(case_id) {
-		console.log("Er du sikker på at du vil slette følgende sak?");
-		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
-
-
-			caseService
-				.changeCaseStatus(case_id)
-				.then(res => {
-					console.log("Response recieved:", res);
-					this.status=7;
-				})
-				.catch(err => {
-					console.log("AXIOS ERROR:", err);
-				});
-		}
-    window.location.reload();
-	}
-
-
-
-  checkName() {}
-
-
-
   render() {
     let lists;
     let sidebuttons;
@@ -187,17 +178,10 @@ export default class IssueOverviewForEmployee extends Component<{
                 {" "}
                 <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp;Rediger&nbsp;
+                    &nbsp; Endre Status &nbsp;
                   </span>
                 </a>
-                <span class="btn btn-sm btn-danger">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true"
-                   onClick={() => {
-  									this.delete(casen.case_id);
-  								 }}>
-                    &nbsp;Slett&nbsp;&nbsp;
-                  </span>
-                </span>&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;
                 <span class="badge badge-primary">{this.statusname[casen.status_id-1]}</span>
               </td>
             </tr>
@@ -208,7 +192,7 @@ export default class IssueOverviewForEmployee extends Component<{
       sidebuttons =(
         <div>
         {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/admin/issues/All/'+sidetall)}>{sidetall} </button>
+            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/org/issues/All/'+sidetall)}> {sidetall} </button>
         ))}
         </div>
       );
@@ -280,11 +264,20 @@ export default class IssueOverviewForEmployee extends Component<{
 
             <div class="row">
               <div class="col-6 col-md-4"></div>
-              <div class="col-6 col-md-4" />
+              <div class="col-6 col-md-4">
+                <div class="form-group">
+                  <label for="inputFylke">Velg Fylke</label>
+                  <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
+                    <option selected>Alle </option>
+                      {this.fylker.map(fylke => {
+                          return(<option value={fylke.ID}>{fylke.navn}</option>)
+                      })}
+                  </select>
+                </div>
+              </div>
               <div class="col-4 col-md-4">
               <span class="glyphicon glyphicon-search" aria-hidden="true" />
                 <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search}/>
-
               </div>
             </div>
           </div>
@@ -322,39 +315,20 @@ export default class IssueOverviewForEmployee extends Component<{
   }
 
   componentDidMount() {
-    this.employeeid = sessionStorage.getItem("userid");
-
-    employeeService
-      .getOne(this.employeeid)
-      .then(employee => {
-        this.employee = employee[0];
-        employeeService
-          .getCasesOnOnCommuneID(this.employee.commune)
-          .then(cases => {
-            this.cases = cases.filter(function(value) {
-              return value.status_id != 7;
-            });
-            this.backup = cases.filter(function(value) {
-              return value.status_id != 7;
-            });
-            this.casesbyStatus = cases.filter(function(value) {
-              return value.status_id != 7;
-            });
-            this.loaded = true;
-            console.log(this.employee.commune);
-            this.forceUpdate();
-          })
-          .catch((error: Error) =>
-            console.log("Fails by getting the available cases")
-          );
+    this.org_id = sessionStorage.getItem("userid");
+    console.log(sessionStorage.getItem("userid"));
+    caseService
+      .getCasesForOrganization(this.org_id)
+      .then(cases => {
+        this.cases = cases;
         this.forceUpdate();
       })
       .catch((error: Error) =>
-        console.log("Fails by getting the available employee" ,error)
+        console.log("Fails by getting the available cases")
       );
 
     categoryService
-      .getAllCategories()
+      .getCategoriesForOrganization(this.org_id)
       .then(categories => {
         this.categories = categories;
         this.forceUpdate();
