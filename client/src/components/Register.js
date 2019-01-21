@@ -2,12 +2,14 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { userService } from "../services";
+import {employeeService, userService, orgService} from "../services";
 import createHashHistory from "history/createHashHistory";
 
 export default class Register extends Component {
   user = [];
   emails = [];
+  orgEmails = [];
+  stateEmails = [];
 
   message = " ";
   passworderror = " ";
@@ -166,10 +168,24 @@ export default class Register extends Component {
   componentDidMount() {
         userService.getAllUsers()
             .then(response => {
-            response.map(item => {
+                response.map(item => {
                 this.emails.push(item.email);
             });
             console.log(this.emails);
+            });
+        orgService.getAllOrg()
+            .then(response => {
+                response.map(item => {
+                this.orgEmails.push(item.email);
+              })
+                console.log(this.orgEmails);
+          });
+        employeeService.getAll()
+            .then(response => {
+                response.map(item => {
+                    this.stateEmails.push(item.email);
+                })
+                console.log(this.stateEmails);
             })
   }
 
@@ -183,12 +199,13 @@ export default class Register extends Component {
 
     this.state.email = this.state.email.toLowerCase();
 
-        if (this.emails.includes(this.state.email)) {
+        if (this.emails.includes(this.state.email)
+            || this.orgEmails.includes(this.state.email)
+            || this.stateEmails.includes(this.state.email)) {
             this.message = "En bruker har allerede registrert seg med denne mailen";
-            return null
+            return null;
         } else {
             this.message = '';
-            return null;
         }
 
 
