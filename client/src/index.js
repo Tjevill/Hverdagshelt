@@ -122,9 +122,9 @@ class Main extends Component {
             return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>)
         } else {
             return this.amILoggedin == null ? "<div></div>" : (
-                <div className="max">
+                <div>
                     <HashRouter>
-                        <div className="max">
+                        <div>
                             <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
                                 <div className="wrapper row1">
                                     <header id="header" className="hoc clear">
@@ -140,7 +140,7 @@ class Main extends Component {
                             </div>
 
                             {/*Main componenets*/}
-                            <div className="max">
+                            <div>
                                 <Route exact path="/" component={UserHome} />
                                 <Route exact path="/case/:id" component={Case} />
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
