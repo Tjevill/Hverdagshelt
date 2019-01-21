@@ -40,11 +40,16 @@ export default class EmployeeEdit extends Component {
         console.log(user[0]);
         this.user = user[0];
         geoService
-          .getAllCommunes()
+          .getCommunesKommune()
           .then(communes => {
-              console.log(communes);
               this.communes = communes;
-              this.commune = communes[this.user.commune - 1].province;
+              for(let i = 0; i < communes.length; i++){
+                if(communes[i].ID == this.user.commune){
+                  this.commune = communes[i].navn;
+                  break;
+                }
+              }
+              //this.commune = communes[this.user.commune - 1].province;
               this.loaded = true;
               this.forceUpdate();
           })
@@ -110,10 +115,9 @@ export default class EmployeeEdit extends Component {
                     defaultValue = {this.commune}
                     name="zipcode"
                     onChange={event => {
-                      event.target.value = event.target.value.toUpperCase();
-                      this.changeCommune(event);
                       this.commune = event.target.value;
-                      }}
+                      this.changeCommune(event);
+                    }}
                   />
                 </div>
 
@@ -156,9 +160,9 @@ export default class EmployeeEdit extends Component {
     let options = []
     this.communes.map(
       commune => {
-        if(commune.province.includes(event.target.value.toUpperCase())
-        && !options.includes(commune.province)){
-          options.push(commune.province);
+        if(commune.navn.toUpperCase().includes(event.target.value.toUpperCase())
+        && !options.includes(commune.navn)){
+          options.push(commune.navn);
         }
       }
     );
@@ -172,22 +176,60 @@ export default class EmployeeEdit extends Component {
     this.commune = commune;
     this.communeOptions = [];
     let communeField = document.getElementById("commune-input");
-    //console.log(communeField);
     communeField.value = commune;
     this.forceUpdate();
   }
 
-  save(){
+  async save(){
+
+    //validForm keeps track of whether the data is valid to be used for updating the database
+    let validForm = true;
     let found = false
-    let commune = {};
-    console.log(this.communes);
-    this.communes.map( commune => {
-      if(commune.province === this.commune) {
+    let commune = -1;
+    let county = -1;
+
+    //Sets user commune and county based on commune name from input
+    for(let i = 0; i < this.communes.length; i++){
+      if(this.communes[i].navn === this.commune){
         found = true;
-        return;
+        commune = this.communes[i].ID;
+        county = this.communes[i].fylke_id;
+        break;
       }
-    })
-    console.log(found);
+    }
+
+    //Checks if commune and county exists in database and sets the values of to the user
+    console.log(found, commune);
+    if(found && commune != -1){
+      this.user.commune = commune;
+      this.user.county = county
+      console.log(this.user);
+    } else {
+      validForm = false;
+      console.error("Invalid commune");
+    }
+
+    //Client side form checks
+    if(this.user.name.trim().length === 0){
+      validForm = false;
+      console.error("Invalid name");
+    }
+    if(this.user.tel == ""){
+      validForm = false;
+      console.error("Invalid tel");
+    }
+    console.log(this.user.email);
+    if(!isEmail(this.user.email)){
+      validForm = false;
+      console.error("Invalid email");
+    }
+
+    if(!validForm){
+      return;
+    }
+
+    employeeService.updateEmpData(this.user);
+    window.location.reload();
 
   }
 
