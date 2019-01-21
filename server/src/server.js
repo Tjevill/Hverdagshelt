@@ -99,63 +99,52 @@ let statusDao = new Statusdao(pool);
 let geodao = new GeoDao(pool);
 
 
-/** Send password reset link   */
+/** Send password reset link for user*/
 
-
-app.post("/forgotPassword/:email", (req, res) => {
+app.post("/forgotPassword/user/:email", (req, res) => {
     console.log("/forgotPassword fikk POST request");
     console.log("email: " + req.params.email);
-    
-        var promise1 = new Promise(function(resolve, reject) {
-            userdao.getUserByEmail(req.params.email, (status, data) => {
-                res.status(status);
-                res.json(data);
-                resolve(data);
-            });
+    var promise1 = new Promise(function(resolve, reject) {
+        userdao.getUserByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
         });
+    });
 
-        promise1.then(data => {
-            console.log(data[0].user_id);
-
-            
+    promise1.then(data => {
+        console.log(data[0].user_id);            
         if (data[0] == undefined) {
-            console.log(':::email entered not found in database::::');
+        console.log(':::email entered not found in database::::');
         } else {
-            console.log(':::valid email entered:::');
-            
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        userdao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].user_id, (status, data) => {
+        }); 
+        
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/user/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
 
-            const token = crypto.randomBytes(20).toString('hex');
-            console.log(':::::::::' + token);
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
 
-
-            userdao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].user_id, (status, data) => {
-                
-
-            }); 
-            
-            const mailOptions = {
-                from: `bedrehverdagshelt@gmail.com`,
-                to: `${req.params.email}`,
-                subject: `Link To Reset Password`,
-                text:
-                    `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                    `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
-                    `http://localhost:3000/#/reset/user/${token}\n\n` +
-                    `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-            }; // mailoption end
-
-            console.log('sending mail');
-
-            transporter.sendMail(mailOptions, function(err, response) {
-                if (err) {
-                    console.error('there was an error: ', err);
-                } else {
-                    console.log('here is the res: ', response);
-                    res.status(200).json('recovery email sent');
-                }
-
-            }); // transporter end
-        } 
+        }); // transporter end
+        } //ifelse end 
     
     });
 });
