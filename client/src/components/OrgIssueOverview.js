@@ -168,6 +168,13 @@ export default class OrgIssueOverview extends Component<{
       lists = (
         <tbody>
           {this.casesbyStatus.map(casen => (
+              {saveComment (string, id) {
+                      document.getElementById("comment-input").value = string;
+                      let filteredCase = this.cases.filter(e =>
+                          e.case_id == id)
+                      casen.comment = string;
+                      window.alert("Kommentar lagret!");
+                  }},
             <tr>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>
@@ -176,17 +183,44 @@ export default class OrgIssueOverview extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning">
+                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning edit-button">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp; Endre Status &nbsp;
+                    	&nbsp;Endre Status
                   </span>
                 </a>
+                  &nbsp;&nbsp;&nbsp;
+                  <a data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true">
+                    	&nbsp;Legg inn kommentar&nbsp;
+                  </span>
+                      <div className="modal fade" id={casen.case_id} tabIndex="-1" role="dialog"
+                           aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div className="modal-dialog" role="document">
+                              <div className="modal-content">
+                                  <div className="modal-header">
+                                      <h5 className="modal-title" id="exampleModalLabel">Kommenter sak</h5>
+                                  </div>
+                                  <input
+                                      className="form-control"
+                                      id="comment-input"
+                                      defaultValue={casen.comment}>
+                                  </input>
+                                  <div className="modal-footer">
+                                      <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk
+                                      </button>
+                                      <button type="button" className="btn btn-primary" onClick={this.saveComment}>Lagre changes</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
                 &nbsp;&nbsp;&nbsp;
                 <span class="badge badge-primary">{this.statusname[casen.status_id-1]}</span>
               </td>
             </tr>
           ))}
         </tbody>
+
       );
 
       sidebuttons =(

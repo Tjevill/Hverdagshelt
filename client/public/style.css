@@ -579,3 +579,7 @@ ListItem {
 .comment-card {
     font-weight: bold;
 }
+
+.edit-button {
+    padding: 5px 7px 5px !important;
+}
