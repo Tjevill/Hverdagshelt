@@ -72,9 +72,21 @@ export default class EmployeeEdit extends Component {
             <div className="row">
               <div className="col">
                 <div className="form-group">
-                  Navn:{" "}
+                  Epost:
                   <input
-                    className={"form-control"}
+                    id="emp-edit-email"
+                    className="form-control"
+                    type="email"
+                    defaultValue = {this.user.email}
+                    name="zipcode"
+                    onChange={event => (this.user.email = event.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  Navn:
+                  <input
+                    id="emp-edit-name"
+                    className="form-control"
                     type="text"
                     name="name"
                     defaultValue={this.user.name}
@@ -82,9 +94,10 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Mobil:{" "}
+                  Mobil:
                   <input
-                    className={"form-control"}
+                    id="emp-edit-tel"
+                    className="form-control"
                     type="number"
                     defaultValue={this.user.tel}
                     name="tel"
@@ -97,20 +110,10 @@ export default class EmployeeEdit extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  Epost:{" "}
+                  Kommune:
                   <input
-                    className={"form-control"}
-                    type="email"
-                    defaultValue = {this.user.email}
-                    name="zipcode"
-                    onChange={event => (this.user.email = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Kommune:{""}
-                  <input
-                    id="commune-input"
-                    className={"form-control"}
+                    id="emp-edit-commune"
+                    className="form-control"
                     type="text"
                     defaultValue = {this.commune}
                     name="zipcode"
@@ -138,7 +141,7 @@ export default class EmployeeEdit extends Component {
               </div>
               <div className="col">
                 <br/><br/><br/><br/>
-                <img src={this.bilde} width="200"/>
+                <img id="employee-edit-image" src={this.bilde} width="200"/>
               </div>
             </div>
           </div>
@@ -175,7 +178,7 @@ export default class EmployeeEdit extends Component {
   confirmCommune(event, commune){
     this.commune = commune;
     this.communeOptions = [];
-    let communeField = document.getElementById("commune-input");
+    let communeField = document.getElementById("emp-edit-commune");
     communeField.value = commune;
     this.forceUpdate();
   }
@@ -189,6 +192,7 @@ export default class EmployeeEdit extends Component {
     let county = -1;
 
     //Sets user commune and county based on commune name from input
+    //console.log(this.communes);
     for(let i = 0; i < this.communes.length; i++){
       if(this.communes[i].navn === this.commune){
         found = true;
@@ -199,32 +203,37 @@ export default class EmployeeEdit extends Component {
     }
 
     //Checks if commune and county exists in database and sets the values of to the user
-    console.log(found, commune);
+    //console.log(found, commune);
     if(found && commune != -1){
       this.user.commune = commune;
       this.user.county = county
-      console.log(this.user);
     } else {
       validForm = false;
+      document.getElementById("emp-edit-commune").style.borderColor = "red";
       console.error("Invalid commune");
     }
 
     //Client side form checks
     if(this.user.name.trim().length === 0){
       validForm = false;
+      document.getElementById("emp-edit-name").style.borderColor = "red";
       console.error("Invalid name");
     }
     if(this.user.tel == ""){
       validForm = false;
+      document.getElementById("emp-edit-tel").style.borderColor = "red";
       console.error("Invalid tel");
     }
-    console.log(this.user.email);
+
     if(!isEmail(this.user.email)){
       validForm = false;
+      document.getElementById("emp-edit-email").style.borderColor = "red";
       console.error("Invalid email");
     }
 
     if(!validForm){
+      this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
+      document.getElementById("employee-edit-image").src = this.bilde;
       return;
     }
 
