@@ -7,6 +7,11 @@ import { employeeService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
+class EmployeeUpdatePWord {
+  emp_id: number;
+  password: string;
+}
+
 export default class ChangePassword extends Component {
   userid = -1;
   user = new Object();
@@ -87,20 +92,31 @@ export default class ChangePassword extends Component {
       this.meldning = "Nytt passord må være ulik det gamle passordet"
       this.forceUpdate();
     }else{
-    const passwordInfo = {
+
+    //Will be used once backend check works
+    /*const passwordInfo = {
       user_id : this.userid,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
-    };
-    const passwordInfoUpdatePasswordInDB = {
-      user_id : this.userid,
-    	password: this.newPassword1
-    };
+    };*/
+
+    const passwordInfo = {
+      emp_id: this.userid,
+      password: this.newPassword1
+    }
 
     employeeService
       .verifyOldPassword(this.userid, this.oldPassword)
       .then((response) => {
           console.log("verify:", response);
+          console.log(passwordInfo);
+          employeeService.updateEmpPw(passwordInfo)
+            .then(pwUpdateResponse => {
+              console.log(pwUpdateResponse);
+            })
+            .catch(error => {
+              console.error(error);
+            });
           /*employeeService.updateUserPWord(passwordInfoUpdatePasswordInDB)
             .then(response => {
 							console.log(response, "response from updatepassword ok", "Passord oppdatert");
