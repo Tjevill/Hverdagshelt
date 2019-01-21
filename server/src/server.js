@@ -456,8 +456,18 @@ app.get('/categoryCount', (req: Request, res: Response) => {
     })
 });
 
+/**
+ * Gets all categories connected to an organization
+ */
+app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
+	categoryDao.getCategoriesForOrganization(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-// End user
+
+// End category
 
 
 
@@ -913,6 +923,9 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 	});
 });
 
+/**
+ * Gets cases on employees id
+ */
 app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
 		res.status(status);
@@ -920,6 +933,13 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 	});
 });
 
+
+app.get("/getCasesOnOrgID/:id", (req, res) => {
+	caseDao.getCasesForOrganization(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
 
 
 // End Cases
