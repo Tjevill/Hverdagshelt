@@ -42,7 +42,7 @@ export default class EmployeeEdit extends Component {
         geoService
           .getAllCommunes()
           .then(communes => {
-              //console.log(communes);
+              console.log(communes);
               this.communes = communes;
               this.commune = communes[this.user.commune - 1].province;
               this.loaded = true;
@@ -62,7 +62,7 @@ export default class EmployeeEdit extends Component {
   render(){
     if(this.loaded){
       return (
-        <div>
+        <div id="employee-edit-page">
           <div className="container text-center">
             <div className="row">
               <div className="col">
@@ -104,20 +104,25 @@ export default class EmployeeEdit extends Component {
                 <div className="form-group">
                   Kommune:{""}
                   <input
+                    id="commune-input"
                     className={"form-control"}
-                    type="email"
+                    type="text"
                     defaultValue = {this.commune}
                     name="zipcode"
-                    onChange={event => (this.changeCommune(event))}
+                    onChange={event => {
+                      event.target.value = event.target.value.toUpperCase();
+                      this.changeCommune(event);
+                      this.commune = event.target.value;
+                      }}
                   />
                 </div>
 
-                <div className="card" style={{minWidth: "19rem"}}>
-                  <ul className="list-group list-group-flush" style={{marginBottom: "0"}}>
+                <div className="card" style={{minWidth: "19rem", width: "100%"}}>
+                  <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
                     {
                       this.communeOptions.map(
                         commune => (
-                          <li className="list-group-item">{commune}</li>
+                          <li key={commune} className="list-group-item commune-option" onClick={(event) => this.confirmCommune(event, commune)}>{commune}</li>
                         )
                       )
                     }
@@ -143,22 +148,46 @@ export default class EmployeeEdit extends Component {
   }
 
   changeCommune(event){
-    console.log(event.target.value);
+    if(event.target.value === ""){
+      this.communeOptions = [];
+      this.forceUpdate();
+      return;
+    }
     let options = []
     this.communes.map(
       commune => {
-        if(commune.province.includes(event.target.value.toUpperCase()) && !options.includes(commune.province)){
+        if(commune.province.includes(event.target.value.toUpperCase())
+        && !options.includes(commune.province)){
           options.push(commune.province);
         }
       }
     );
-    console.log(options);
-    this.communeOptions = options.slice(0, 3).sort();
-    console.log(this.communeOptions);
+    //console.log(options);
+    this.communeOptions = options.sort().slice(0, 3);
+    //console.log(this.communeOptions);
+    this.forceUpdate();
+  }
+
+  confirmCommune(event, commune){
+    this.commune = commune;
+    this.communeOptions = [];
+    let communeField = document.getElementById("commune-input");
+    //console.log(communeField);
+    communeField.value = commune;
     this.forceUpdate();
   }
 
   save(){
+    let found = false
+    let commune = {};
+    console.log(this.communes);
+    this.communes.map( commune => {
+      if(commune.province === this.commune) {
+        found = true;
+        return;
+      }
+    })
+    console.log(found);
 
   }
 
