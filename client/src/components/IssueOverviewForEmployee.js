@@ -65,6 +65,7 @@ export default class IssueOverviewForEmployee extends Component<{
     this.statusid = event.target.value;
     if (event.target.value == 0) {
       if(this.categoryid>0){
+        console.log("category er valgt");
         this.casesbyStatus = this.cases.filter(function(value){
            return value.category_id == categoryid;
         });
@@ -78,6 +79,7 @@ export default class IssueOverviewForEmployee extends Component<{
       }
     } else {
       if(this.categoryid>0){
+        console.log("2.category er valgt");
         this.casesbyStatus = this.cases.filter(function(value){
            return value.category_id == categoryid;
         });
@@ -115,12 +117,22 @@ export default class IssueOverviewForEmployee extends Component<{
         this.forceUpdate();
       }
     }else{
-      console.log("hei");
+      if(this.statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.status_id == statusid;
+        });
+        this.casesbyStatus = this.casesbyStatus.filter(function(value){
+           return value.category_id == event.target.value;
+        });
+        this.backup = this.casesbyStatus;
+        this.forceUpdate();
+      }else{
       this.casesbyStatus = this.cases.filter(function(value){
          return value.category_id == event.target.value;
       });
       this.backup = this.casesbyStatus;
       this.forceUpdate();
+    }
     }
   };
 
@@ -323,7 +335,7 @@ export default class IssueOverviewForEmployee extends Component<{
 
   componentDidMount() {
     this.employeeid = sessionStorage.getItem("userid");
-
+    console.log("employeeid"+this.employeeid)
     employeeService
       .getOne(this.employeeid)
       .then(employee => {
@@ -342,6 +354,7 @@ export default class IssueOverviewForEmployee extends Component<{
             });
             this.loaded = true;
             console.log(this.employee.commune);
+            console.log(cases);
             this.forceUpdate();
           })
           .catch((error: Error) =>

@@ -7,17 +7,6 @@ class Category {
     description: string;
 }
 
-class Employee{
-  employee_id: number;
-  name: string;
-  tel: string;
-  email: string;
-  password: string;
-  commune: string;
-  county: string;
-  superuser: boolean;
-}
-
 class County { //Fylke
 	id: number;
 	county: string;
@@ -38,9 +27,24 @@ class Case {
   org_id: number;
 }
 
+class Employee{
+  employee_id: number;
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
+}
+
 class Place {
 	zipcode: number;
 	commune: string;
+}
+
+class ResetToken {
+  token: string;
 }
 
 class Status {
@@ -67,6 +71,8 @@ class User {
   tel: number;
   email: string;
   subscription: number;
+  resetPasswordToken: string;
+  resetPasswordExpire: number;
 
 }
 
@@ -325,9 +331,6 @@ class UserService {
     return axios.put(url + '/userProvince/' + id);
   }
 
-  findUserByEmail(email: string): Promise<User>{
-    return axios.get(url+ '/forgotPassword/'+ email);
-  }
 
 	/**
 	 * Service object for verifying old password
@@ -338,10 +341,19 @@ class UserService {
 
 	}
 
+  
+
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
 
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/user/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/user/' + email);
+  }
 
 }
 
@@ -388,13 +400,18 @@ class OrgService{
   }
 
 
-    addOrganization(newemployee: Register): Promise<void> {
-        console.log("ORG TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworganization", newemployee);
-    }
+  addOrganization(newemployee: Register): Promise<void> {
+      console.log("ORG TIL SERVICE: ", newemployee);
+      return axios.put(url + "/neworganization", newemployee);
+  }
 
+  verifyResetToken (resetToken : string): Promise<Organization[]> {
+    return axios.get(url + '/tokenVerification/org/'+ resetToken);
+  }
 
-
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/org/' + email);
+  }
 }
 
 export let orgService = new OrgService();
@@ -449,6 +466,8 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id);
 	}
+
+  
 
 }
 
@@ -559,6 +578,14 @@ export default class EmployeeService {
 	 */
   searchForEmail(email: string): Promise<{verify: number}>{
     return axios.get(url + '/searchEmail/' + email);
+  }
+
+  verifyResetToken (resetToken : string): Promise<Employee[]> {
+    return axios.get(url + '/tokenVerification/emp/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/emp/' + email);
   }
 
 

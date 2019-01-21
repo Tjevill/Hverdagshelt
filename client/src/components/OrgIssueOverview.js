@@ -46,7 +46,7 @@ export default class OrgIssueOverview extends Component<{
   match: { params: { id: number } }
 }> {
 
-  loaded = true;
+  loaded = false;
   org_id = "";
   employee = new Object();
   kommune = "";
@@ -54,90 +54,188 @@ export default class OrgIssueOverview extends Component<{
   cases = []; //cases from a specific employee.
   status = [];
   backup = [];
-  statusid = "";
+  statusid = 0;
   categoryid = 0;
   casesbyStatus = [];
   statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
   caseside ="";
   fylker =[];
   kommuner = [];
+  casesbyKommune = [];
 
-  handleChangeFylke = event =>{
-    console.log("Fylke valgt: " + event.target.value);
-      userService
-        .getProvince(event.target.value)
+
+  handleChangeKommune = event =>{
+    let statusid = this.statusid;
+    let categoryid = this.categoryid;
+      caseService
+        .searchCaseByProv(event.target.value)
         .then(response => {
-            this.kommuner = response;
-            console.log("kommuner: ", this.kommuner);
+            this.casesbyKommune = response.filter(function(value) {
+              return value.status_id != 7;
+            });
+            if(statusid>0){
+              console.log("med status");
+              this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+                return value.status_id == statusid;
+              });
+              if(categoryid>0){
+                console.log("med category og status");
+                this.casesbyStatus = this.casesbyStatus.filter(function(value){
+                   return value.category_id == categoryid;
+                });
+              }
+            }else if(categoryid>0){
+              console.log("ingen status");
+                this.casesbyStatus = this.casesbyKommune.filter(function(value){
+                   return value.category_id == categoryid;
+                });
+            }else{
+              console.log("ingen category og status");
+              this.casesbyStatus = this.casesbyKommune;
+            };
+            this.backup = this.casesbyStatus;
+            console.log("All the cases from chooesd kommune",this.casesbyKommune);
+            console.log("All the cases",this.casesbyStatus);
             this.forceUpdate();
         })
-        .catch((error: Error) => Alert.danger(error.message));
+        .catch((error: Error) => console.log("fails by getting fylker"));
   }
+
+
+  handleChangeFylke = event =>{
+    let statusid = this.statusid;
+    let categoryid = this.categoryid;
+
+    if(event.target.value==0){
+      if(statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.status_id == statusid;
+        });
+        if(categoryid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.category_id == categoryid;
+          });
+        }
+      }else if(categoryid>0){
+          this.casesbyStatus = this.cases.filter(function(value){
+             return value.category_id == categoryid;
+          });
+      }else{
+        this.casesbyStatus = this.cases;
+      }
+      this.backup = this.casesbyStatus;
+      this.kommuner = [];
+      this.forceUpdate();
+    }else{
+      console.log("Fylke valgt: " + event.target.value);
+        userService
+          .getProvince(event.target.value)
+          .then(response => {
+              this.kommuner = response;
+              console.log("kommuner: ", this.kommuner);
+              this.forceUpdate();
+          })
+          .catch((error: Error) => Alert.danger(error.message));
+    }
+  }
+
 
   handleChangeStatus = event => {
     document.getElementById('search').value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
-      if(this.categoryid>0){
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune;
+        if(this.categoryid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.category_id == categoryid;
+          });
+        }
+      }else if(categoryid>0){
         this.casesbyStatus = this.cases.filter(function(value){
            return value.category_id == categoryid;
         });
-        this.backup = this.casesbyStatus;
-        this.forceUpdate();
       }else{
-        console.log("Show the cases of all the status");
+        console.log("Show all the cases");
         this.casesbyStatus = this.cases;
+      }
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }
-    } else {
-      if(this.categoryid>0){
+    }else{
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+          return value.status_id == event.target.value;
+        });
+        if(this.categoryid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.category_id == categoryid;
+          });
+        }
+      }else if(categoryid>0){
         this.casesbyStatus = this.cases.filter(function(value){
            return value.category_id == categoryid;
         });
         this.casesbyStatus = this.casesbyStatus.filter(function(value) {
           return value.status_id == event.target.value;
         });
+      }else{
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.status_id == event.target.value;
+        });
+      }
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }else{
-      this.casesbyStatus = this.cases.filter(function(value) {
-        return value.status_id == event.target.value;
-      });
-      this.backup = this.casesbyStatus;
-
-      this.forceUpdate();
-      }
   }};
 
 
   handleChangeCategories = event => {
     document.getElementById('search').value = "";
     this.categoryid = event.target.value;
-    console.log("value:" + event.target.value);
     let statusid = this.statusid;
-    if(event.target.value == 0){
-      if(this.statusid>0){
-        this.casesbyStatus = this.cases.filter(function(value) {
+    if (event.target.value == 0) {
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune;
+        if(statusid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.status_id == statusid;
+          });
+        }
+      }else if(statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value){
           return value.status_id == statusid;
         });
-        this.backup = this.casesbyStatus;
-        this.forceUpdate();
       }else{
+        console.log("Show all the cases");
         this.casesbyStatus = this.cases;
+      }
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }
     }else{
-      console.log("hei");
-      this.casesbyStatus = this.cases.filter(function(value){
-         return value.category_id == event.target.value;
-      });
-      this.backup = this.casesbyStatus;
-      this.forceUpdate();
-    }
-  };
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+          return value.category_id == event.target.value;
+        });
+        if(statusid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.status_id == statusid;
+          });
+        }
+      }else if(statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value){
+           return value.status_id == statusid;
+        });
+        this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+          return value.category_id == event.target.value;
+        });
+      }else{
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.category_id == event.target.value;
+        });
+      }
+        this.backup = this.casesbyStatus;
+        this.forceUpdate();
+  }};
 
   search = event => {
     this.casesbyStatus = this.backup.filter(function(value){
@@ -151,6 +249,7 @@ export default class OrgIssueOverview extends Component<{
   render() {
     let lists;
     let sidebuttons;
+      console.log("Table now:",this.casesbyStatus);
     if (this.casesbyStatus.length == 0) {
       this.caseside = this.casesbyStatus.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
       lists = (
@@ -185,6 +284,7 @@ export default class OrgIssueOverview extends Component<{
                 {" "}
                 <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning edit-button">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
+                    &nbsp; Rediger &nbsp;
                     	&nbsp;Endre Status
                   </span>
                 </a>
@@ -226,7 +326,7 @@ export default class OrgIssueOverview extends Component<{
       sidebuttons =(
         <div>
         {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/org/issues/All/'+sidetall)}> {sidetall} </button>
+            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
         ))}
         </div>
       );
@@ -297,21 +397,31 @@ export default class OrgIssueOverview extends Component<{
             </div>
 
             <div class="row">
-              <div class="col-6 col-md-4"></div>
               <div class="col-6 col-md-4">
                 <div class="form-group">
                   <label for="inputFylke">Velg Fylke</label>
                   <select id="fylke" name="fylke" class="form-control" onChange={this.handleChangeFylke}>
-                    <option selected>Alle </option>
+                    <option selected value={0}>Alle </option>
                       {this.fylker.map(fylke => {
                           return(<option value={fylke.ID}>{fylke.navn}</option>)
                       })}
                   </select>
                 </div>
               </div>
+              <div class="col-6 col-md-4">
+                <div class="form-group">
+                  <label for="inputKommune">Velg Kommune</label>
+                    <select id="kommune" name="kommune" class="form-control" onChange={this.handleChangeKommune}>
+                      <option selected >Velg fylke først </option>
+                      {this.kommuner.map(kommune => {
+                          return(<option value={kommune.Name}>{kommune.navn}</option>)
+                      })}
+                    </select>
+                  </div>
+              </div>
               <div class="col-4 col-md-4">
               <span class="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search}/>
+                <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
               </div>
             </div>
           </div>
@@ -354,7 +464,13 @@ export default class OrgIssueOverview extends Component<{
     caseService
       .getCasesForOrganization(this.org_id)
       .then(cases => {
-        this.cases = cases;
+        this.cases = cases.filter(function(value) {
+          return value.status_id != 7;
+        });
+        this.casesbyStatus = cases.filter(function(value) {
+          return value.status_id != 7;
+        });
+        this.loaded = true;
         this.forceUpdate();
       })
       .catch((error: Error) =>
@@ -365,10 +481,21 @@ export default class OrgIssueOverview extends Component<{
       .getCategoriesForOrganization(this.org_id)
       .then(categories => {
         this.categories = categories;
+        console.log(categories);
         this.forceUpdate();
       })
       .catch((error: Error) =>
         console.log("Fails by getting the available categories")
       );
+
+      userService
+        .getDistricts()
+        .then(fylker => {
+            this.fylker = fylker;
+            this.forceUpdate();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+
+
   }
 }
