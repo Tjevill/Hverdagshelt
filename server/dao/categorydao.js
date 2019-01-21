@@ -40,16 +40,31 @@ module.exports = class CategoryDao extends Dao{
     }
 
     /**	Update category in the database
-	*	@param json - json object with the edited category information
-	 */
-	updateCategory (json: jsonCategory, callback: mixed){
-		let val = [json.description, json.category_id];
-		super.query(
-			"update Category set description = ? where category_id = ?",
-			val,
-			callback
-		);
-	}
+     *	@param json - json object with the edited category information
+     */
+    updateCategory (json: jsonCategory, callback: mixed){
+        let val = [json.description, json.category_id];
+        super.query(
+            "update Category set description = ? where category_id = ?",
+            val,
+            callback
+        );
+    }
+
+    /**	Add category to the database
+     *	@param json - json object with the edited category information
+     */
+
+    addCategory(json, callback) {
+        var val = [json.description];
+        console.log("val: " + val);
+        super.query(
+            "insert into Category (description) values (?)",
+            val,
+            callback
+        );
+    }
+
 
     /**	Delete one category in the db based on category_id
      *	@param id - the category_id

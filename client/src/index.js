@@ -12,7 +12,14 @@ import AdminBedrift from "./components/AdminBedrift";
 import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
-import AdminEditEmployee from "./components/AdminEditEmployee";
+
+import AdminEditPrivateUsers from  "./components/AdminEditPrivateUsers";
+import AdminEditEmployee  from  "./components/AdminEditEmployee";
+
+import AdminKategori from "./components/AdminKategori";
+import AdminNyKategori from "./components/AdminNyKategori";
+import AdminRedigerKategori from "./components/AdminRedigerKategori";
+
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
@@ -33,6 +40,8 @@ import Menu from "./components/Menu";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
+import Statistikk from "./components/Statistikk";
+import Statistikk2 from "./components/Statistikk2";
 import PrivateRoute from 'react-private-route';
 import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
@@ -79,8 +88,8 @@ class ikkeforsideMain extends Component {
 class LoginStatus extends Component {
     render () {
         return (
-            (this.amILoggedin) ? <div className="logged-in-as">Not logged in</div> :
-            <div className="logged-in-as">Logged in as { sessionStorage.getItem("access") }, ({sessionStorage.getItem("email")})</div>
+            (this.props.loggedin) ? <div className="logged-in-as">Not logged in</div> :
+            <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
         );
     }
 }
@@ -103,74 +112,90 @@ class Main extends Component {
     }
 
     render() {
-        // console.log("Access: " + sessionStorage.getItem("access"));
-        return this.amILoggedin == null ? "<div></div>" : (
+       //  console.log("Path: " + window.location.href);
 
-            <div>
-                <HashRouter>
 
-                    <div>
-                  <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
-                            <div className="wrapper row1">
-                                <header id="header" className="hoc clear">
-                                    <div id="logo" className="fl_left">
-                                        <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
-                                    </div>
-                                    <Menu loggedin={this.amILoggedin}/>
-                                    <LoginStatus loggdin={this.amILoggedin}/>
-                                </header>
-                            </div>
-                            <Route exact path="/" component={forsideMain} />
-                            <Route path="/" component={ikkeforsideMain} />
-                        </div>
+        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
+            return this.amILoggedin == null ? "<div></div>" : (
+
                 <div>
-                            <Route exact path="/" component={UserHome} />
-                            <Route exact path="/case/:id" component={Case} />
-                            <Route exact path="/case/:id/edit" component={CaseEdit} />
-                            <Route exact path="/issues" component={IssueOverview} />
-                            <Route exact path="/issues/:name/:id" component={IssueOverview} />
-                            <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
-                            <Route exact path="/events" component={Events}/>
-                            <Route exact path="/events/:id/edit" component={EventsEdit}/>
-                            <Route exact path="/map" component={Map} />
-                            <Route exact path="/nyansatt" component={NewEmployee}/>
-                            <Route exact path="/report" component={ReportPage} />
-                            <Route exact path="/register" component={Register}/>
-                            <Route exact path="/user" component={ProfilePage} />
-                            <Route exact path="/glemtpassord" component={ForgottenPassword} />
-                            <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin}/>
-                            <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
-                            <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
+                    <HashRouter>
 
-                            <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/issues/:name/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                        <div>
+                      <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
+                                <div className="wrapper row1">
+                                    <header id="header" className="hoc clear">
+                                        <div id="logo" className="fl_left">
+                                            <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+                                        </div>
+                                        <Menu loggedin={this.amILoggedin}/>
+                                        <LoginStatus loggedin={this.amILoggedin}/>
+                                    </header>
+                                </div>
+                                <Route exact path="/" component={forsideMain} />
+                                <Route path="/" component={ikkeforsideMain} />
+                            </div>
+                    <div>
+                                <Route exact path="/" component={UserHome} />
+                                <Route exact path="/case/:id" component={Case} />
+                                <Route exact path="/case/:id/edit" component={CaseEdit} />
+                                <Route exact path="/issues" component={IssueOverview} />
+                                <Route exact path="/issues/:name/:id" component={IssueOverview} />
+                                <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
+                                <Route exact path="/events" component={Events}/>
+                                <Route exact path="/events/:id/edit" component={EventsEdit}/>
+                                <Route exact path="/map" component={Map} />
+                                <Route exact path="/nyansatt" component={NewEmployee}/>
+                                <Route exact path="/report" component={ReportPage} />
+                                <Route exact path="/register" component={Register}/>
+                                <Route exact path="/user" component={ProfilePage} />
 
-                </div>
-                <div className="wrapper row5">
-                    <div id="copyright" className="hoc clear">
+                                <Route exact path="/glemtpassord" component={ForgottenPassword} />
+                                <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin}/>
+                                <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
+                                <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
-                        <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a>
-                        </p>
-                        <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+                                <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/issues/:name/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
+                                <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
+                                {/* MIDLERTIDIG */}
+                                <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
+
+                                <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
 
                     </div>
-                </div>
-                </div>
-    </HashRouter>
+                    <div className="wrapper row5">
+                        <div id="copyright" className="hoc clear">
 
-            </div>
-        );
+                            <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a>
+                            </p>
+                            <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+
+                        </div>
+                    </div>
+                    </div>
+        </HashRouter>
+
+                </div>
+            );
+        }
     }
 }
 

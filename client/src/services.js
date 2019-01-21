@@ -208,6 +208,8 @@ class CaseService {
     return axios.get(url+'/allCases/'+province);
   }
 
+
+
     getCategories(): Promise<Category[]> {
         return axios.get(url + '/categories');
     }
@@ -402,6 +404,10 @@ class CategoryService {
         return axios.get(url + '/categoryorg/' + cat + '/' + org);
     }
 
+  addCategory(newcat: Category): Promise<void> {
+    console.log("CATEGORY TIL SERVICE: ", newcat);
+    return axios.post(url + "/addcategory", newcat);
+  }
 
     deleteCategoryByID(id: number): Promise<void>{
         return axios.delete(url + '/category/' + id);
@@ -443,6 +449,7 @@ class EmployeeService {
         console.log("EMPLOYEE TIL SERVICE: ", newemployee);
         return axios.put(url + "/newemployee", newemployee);
     }
+
 
 
   /** Create employee
@@ -556,6 +563,21 @@ class EventService {
     return axios.get(url+"/getEvent/"+event_id);
   }
 
+  /**
+   * Create an event in the db
+   * @param event - event object.
+   */
+  createEvent(event:Event):Promise<Void> {
+    return axios.post(url+"/createEvent", event);
+
+  }
+
+  deleteEvent(event_id: number): Promise<Void>{
+    return axios.delete(url+"/deleteEvent/"+event_id);
+  }
+
+
+
     /**
      * Get all events in one commune.
      * Intended to be used on the administration of events for an employee.
@@ -571,11 +593,9 @@ class EventService {
   }
 
 
-
-
-
 }
 export let eventService = new EventService();
+
 
 class StatusService {
 

@@ -50,9 +50,6 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
                     console.log("response[i].category_id: " + response[i].category_id);
                     categoryService.checkIfChecked(response[i].category_id, this.props.match.params.id)
                     .then((response2, index) => {
-                       // console.log("i: " + index )
-                       //  console.log("repsonse fra getCatOrgByID: ",  response2.length);
-                        // console.log("hm ", response[index])
                         let value = false;
                         (response2.length === 0 ? value = false : value = true)
                       this.conns.push({"catid": catid, "checked": false});
@@ -211,16 +208,17 @@ console.log("this.conns: ", this.conns)
                 console.log("1st response: ", response);
                 categoryService.deleteCategoryByOrgID(this.props.match.params.id)
                     .then(response => {
+
                         console.log("2nd response: ", response);
                         console.log("this.category_ids: " + this.category_ids);
                         categoryService.addOrgCat(this.category_ids, this.props.match.params.id)
                             .then(response => {
                                 console.log("3rd response: ", response);
-                                history.push('/admin/bedrift')
                             })
                             .catch((error: Error) => (this.message = error.message));
                     })
                     .catch((error: Error) => (this.message = error.message));
+                history.push('/admin/bedrift')
             })
             .catch((error: Error) => (this.message = error.message));
 
