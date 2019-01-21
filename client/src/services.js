@@ -551,6 +551,15 @@ export default class EmployeeService {
   getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
     return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
   }
+	
+	/**
+   * Verify if email exists.
+	 * @param email The employees email
+	 * @returns {AxiosPromise<any>} 1 if true, 0 if not
+	 */
+  searchForEmail(email: string): Promise<{verify: number}>{
+    return axios.get(url + '/searchEmail/' + email);
+  }
 
 
 }
