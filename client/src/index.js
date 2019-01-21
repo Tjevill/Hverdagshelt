@@ -40,6 +40,7 @@ import Menu from "./components/Menu";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
+import OrgIssueOverview from "./components/OrgIssueOverview";
 import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
 import PrivateRoute from 'react-private-route';
@@ -155,6 +156,9 @@ class Main extends Component {
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
                                 <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
+
+                                <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+
 
                                 <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
