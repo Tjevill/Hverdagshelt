@@ -5,7 +5,7 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
 const style = {
   width: "80%",
-  height: "60%",
+  height: "48%",
   position: "relative"
 }
 
