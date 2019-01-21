@@ -2,15 +2,24 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { userService } from "../services";
+import {employeeService, userService, orgService} from "../services";
 import createHashHistory from "history/createHashHistory";
 
 export default class Register extends Component {
   user = [];
   emails = [];
+  orgEmails = [];
+  stateEmails = [];
 
   message = " ";
   passworderror = " ";
+  nameValid = '';
+  addressValid = '';
+  zipValid = '';
+  telValid = '';
+  emailValid = '';
+  passwordValid = '';
+  matchValid = '';
 
 
 
@@ -68,75 +77,82 @@ export default class Register extends Component {
         <div className="form-group">
           Navn:{" "}
           <input
-          className="form-control"
+          className={"form-control " + this.nameValid}
             type="text"
             name="name"
             defaultValue=""
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Ugyldig navn</div>
         </div>
         <div className="form-group">
           Adresse:{" "}
           <input
-          className="form-control"
+              className={"form-control " + this.addressValid}
             type="text"
             defaultValue=""
             name="address"
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Ugyldig adresse</div>
         </div>
         <div className="form-group">
           Postnummer:{" "}
           <input
-            className="form-control"
+              className={"form-control " + this.zipValid}
             type="text"
             defaultValue=""
             name="zipcode"
             maxLength="4"
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Ugyldig postnummer</div>
         </div>
         <div className="form-group">
           Telefon:{" "}
           <input
-          className="form-control"
+              className={"form-control " + this.telValid}
             type="text"
             defaultValue=""
             name="tel"
           maxLength="8"
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Ugyldig telefonnummer</div>
         </div>
         <div className="form-group">
           Email:{" "}
           <input
-          className="form-control"
+              className={"form-control " + this.emailValid}
             type="email"
             defaultValue=""
             name="email"
           value={this.state.email}
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Ugyldig email, eller så har noen allerede registrert seg med denne emailen</div>
         </div>
         <div className="form-group">
           Passord:{" "}
           <input
-          className="form-control"
+              className={"form-control " + this.passwordValid}
             type="password"
             defaultValue=""
             name="password"
             onChange={this.handleChange}
-          />
+          /><div className="invalid-feedback">Passord må bestå av minst 8 tegn</div>
+
         </div>
         <div className="form-group">
           Gjenta Passord:{" "}
           <input
-            className="form-control"
+              className={"form-control " + this.matchValid}
             type="password"
             defaultValue=""
             name="password2"
             onChange={this.handleChange}
           />
+            <div className="invalid-feedback">Passordene må matche</div>
         </div>
         <h3>{this.passworderror}</h3>
         <div className="form-group">
@@ -166,10 +182,24 @@ export default class Register extends Component {
   componentDidMount() {
         userService.getAllUsers()
             .then(response => {
-            response.map(item => {
+                response.map(item => {
                 this.emails.push(item.email);
             });
             console.log(this.emails);
+            });
+        orgService.getAllOrg()
+            .then(response => {
+                response.map(item => {
+                this.orgEmails.push(item.email);
+              })
+                console.log(this.orgEmails);
+          });
+        employeeService.getAll()
+            .then(response => {
+                response.map(item => {
+                    this.stateEmails.push(item.email);
+                })
+                console.log(this.stateEmails);
             })
   }
 
@@ -183,74 +213,75 @@ export default class Register extends Component {
 
     this.state.email = this.state.email.toLowerCase();
 
-        if (this.emails.includes(this.state.email)) {
-            this.message = "En bruker har allerede registrert seg med denne mailen";
-            return null
-        } else {
-            this.message = '';
-            return null;
-        }
+
 
 
         if(this.hasNumber(this.state.name)) {
-          this.message = "Navn kan ikke inneholde tall";
+          this.nameValid = "is-invalid";
             return null;
         } else if (this.state.name == '') {
-          this.message = "Navn kan ikke være tomt";
+          this.nameValid = "is-invalid";
             return null;
         } else {
-          this.message = '';
+          this.nameValid = '';
         }
         if(this.state.address == '') {
-          this.message = "Adresse kan ikke være tomt";
+          this.addressValid = "is-invalid";
           return null;
         } else {
-          this.message = '';
+          this.addressValid = '';
         }
         if (!this.onlyNumber(this.state.zipcode)) {
-          this.message = "Postnummer kan bare bestå av tall";
+          this.zipValid = "is-invalid";
           return null;
         } else if (!(this.state.zipcode.length == 4)) {
-          this.message = "Postnummer må være nøyaktig 4 tall";
+          this.zipValid = "is-invalid";
             return null;
         } else {
-          this.message = '';
+          this.zipValid = '';
         }
 
         if(!this.onlyNumber(this.state.tel)) {
-          this.message = "Telefonnummer kan bare bestå av tall";
+          this.telValid = "is-invalid";
           return null;
         } else if (!(this.state.tel.length == 8)) {
-          this.message = "Telefonnummer må være nøyaktig 8 tall";
+          this.telValid = "is-invalid";
           return null;
         } else {
-          this.message = '';
+          this.telValid = '';
         }
 
         if(!this.isEmail(this.state.email)) {
-          this.message = "Oppgi en gyldig email";
+          this.emailValid = "is-invalid";
           return null;
         } else {
-          this.message = '';
+          this.emailValid = '';
         }
+
+          if (this.emails.includes(this.state.email)
+              || this.orgEmails.includes(this.state.email)
+              || this.stateEmails.includes(this.state.email)) {
+              this.emailValid = "is-invalid";
+              return null;
+          } else {
+              this.emailValid = '';
+          }
+
+          if (this.state.password.length < 8) {
+              this.passwordValid = "is-invalid";
+              return null;
+          } else {
+              this.passwordValid = "";
+          }
 
         if (this.state.password != this.state.password2) {
-          this.message = "Passordene matcher ikke";
+          this.matchValid = "is-invalid";
           return null;
         } else {
-          this.message = "";
+          this.matchValid = "";
         }
 
-        let pass = this.state.password;
-        let passlength = pass.length
-        let minlength = 8;
 
-        if (passlength < minlength) {
-          this.message = "Passordet er for kort";
-          return null;
-        } else {
-          this.message = "";
-        }
 
 
 

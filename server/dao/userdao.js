@@ -116,7 +116,7 @@ module.exports = class UserDao extends Dao {
 		let passwordData = sha512(json.password, salt);
 		let val = [passwordData.passwordHash, passwordData.salt, json.user_id];
 		super.query(
-			"update User set password = ?, secret = ? where user_id = ?",
+			"UPDATE User SET password = ?, secret = ? WHERE user_id = ?",
 			val,
 			callback
 		);
@@ -209,6 +209,7 @@ module.exports = class UserDao extends Dao {
 	 */
 	getUserByNameSearch (searchString: string, callback: mixed) {
 		super.query(
+			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
 			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
 			[searchString],
 			callback

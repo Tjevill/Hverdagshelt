@@ -30,7 +30,17 @@ export default class PrivateUsersList extends Component {
 
   render() {
     return (
+     
+
       <MuiThemeProvider>
+       <div className="title">
+     <link rel="stylesheet" href="PrivateUsersList.css" />
+   
+      <h1 class="logo">
+  <span class="word1">Hverdags</span>
+  <span class="word2">helter</span>
+</h1>
+</div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -42,13 +52,16 @@ export default class PrivateUsersList extends Component {
               <TableHeaderColumn>Abonnement_status</TableHeaderColumn>
               <TableHeaderColumn>Postnr</TableHeaderColumn>
               <TableHeaderColumn />
+              
               <TableHeaderColumn>
+             
+        
                 {" "}
                 <SearchBar
                   onChange={event => this.searchUsers(event)}
                   style={{
                     margin: "0 auto",
-                    minWidth: 120,
+                   
                     maxWidth: 900
                   }}
                 />
@@ -62,6 +75,7 @@ export default class PrivateUsersList extends Component {
                   {user.user_id}
                 </TableRowColumn>
                 <TableRowColumn className="name">{user.name}</TableRowColumn>
+                
                 <TableRowColumn className="address">
                   {user.address}
                 </TableRowColumn>
@@ -109,6 +123,7 @@ export default class PrivateUsersList extends Component {
           </TableBody>
         </Table>
       </MuiThemeProvider>
+       
     );
   }
 
