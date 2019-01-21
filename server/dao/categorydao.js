@@ -99,4 +99,17 @@ module.exports = class CategoryDao extends Dao{
 		);
 	}
 	
+	/**
+	 * Gets the categories (and categories id) connected to one organization
+	 * @param id The organizations id number
+	 * @param callback
+	 */
+	getCategoriesForOrganization(id: number, callback: mixed){
+		super.query(
+			"SELECT DISTINCT Category.category_id, Category.description FROM Category INNER JOIN Org_cat ON Org_cat.category_id = Category.category_id WHERE Org_cat.org_id = ?",
+			[id],
+			callback
+		)
+	}
+	
 };

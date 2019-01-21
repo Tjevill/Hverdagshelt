@@ -456,8 +456,18 @@ app.get('/categoryCount', (req: Request, res: Response) => {
     })
 });
 
+/**
+ * Gets all categories connected to an organization
+ */
+app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
+	categoryDao.getCategoriesForOrganization(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
-// End user
+
+// End category
 
 
 
@@ -913,6 +923,9 @@ app.put("/updateStatusAndComment/:id", (req, res) => {
 	});
 });
 
+/**
+ * Gets cases on employees id
+ */
 app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
 		res.status(status);
@@ -921,13 +934,20 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 });
 
 
+app.get("/getCasesOnOrgID/:id", (req, res) => {
+	caseDao.getCasesForOrganization(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 
 // End Cases
 
 // GEO (Place, kommune, fylke)
 
 /**
- * Gets all communes from kommune in DB
+ * Gets all communes from Place in DB
  */
 app.get("/getCommunes", (req, res) => {
 	geodao.getAllCommunes((status, data) => {
@@ -953,6 +973,16 @@ app.get("/CommuneName/:commune", (req: Request, res: Response) =>{
         res.json(data);
         console.log(data[0].navn);
     });
+});
+
+/**
+ * Gets all communes from kommune in DB
+ */
+app.get("/getCommunesKommune", (req, res) => {
+	geodao.getCommunesFromKommune((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
 });
 
 
@@ -1147,7 +1177,7 @@ app.post("/loginb", (req, res) => {
             employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
 
                 let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
-                res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
+                res.json({jwt: token, reply: "Success", email: data[0].email, user_id: data[0].org_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
             });
 

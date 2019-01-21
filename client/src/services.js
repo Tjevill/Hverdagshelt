@@ -244,6 +244,15 @@ class CaseService {
       comment: comment
     });
   }
+	
+	/**
+	 * Gets all cases for one organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>}
+	 */
+	getCasesForOrganization(id: number): Promise<Case[]>{
+		return axios.get(url + '/getCasesOnOrgID/' + id);
+	}
 
 }
 export let caseService = new CaseService();
@@ -328,6 +337,7 @@ class UserService {
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
+  
 
 }
 
@@ -419,14 +429,23 @@ class CategoryService {
 
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
-  }
-
-
-    addOrgCat(newemployee: Register, company_id: number): Promise<void> {
-        console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworgcat/" + company_id, newemployee);
-    }
-
+	}
+	
+	
+	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
+		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
+		return axios.put(url + "/neworgcat/" + company_id, newemployee);
+	}
+	
+	/**
+   * Gets all categories (and its id) connected to an organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>} {category_id, description}
+	 */
+	getCategoriesForOrganization (id: number): Promise<Category[]> {
+		return axios.get(url + "/categoriesOrg/" + id);
+	}
+	
 }
 
 export let categoryService = new CategoryService();
@@ -615,12 +634,16 @@ class GeoService {
 		return axios.get(url + "/getCommunes");
 	}
 
- getCommuneName(commune: number): Promise<Place> {
-   return axios.get(url + "/CommuneName/" + commune);
- }
+   getCommuneName(commune: number): Promise<Place> {
+     return axios.get(url + "/CommuneName/" + commune);
+   }
 
 	getCommunesCounty(county_id: number): Promise<County[]> {
 		return axios.get(url + "/getCommunesCounty/", county_id);
+	}
+
+	getCommunesKommune(): Promise<{ID: number, navn: string, fylke_id: number}>{
+		return axios.get(url + "/getCommunesKommune");
 	}
 
 
