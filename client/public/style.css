@@ -414,7 +414,7 @@ textarea.error {
   margin-right: 1%;
 }
 
-.caseEdit-wrapper .address, .zipcode{
+.caseEdit-wrapper.address, .caseEdit-wrapper.zipcode{
   margin-left: 1%;
 }
 
@@ -426,13 +426,13 @@ textarea.error {
 .headline,
 
 
-.description,
-.name,
-.address{
+.caseEdit-wrapper.description,
+.caseEdit-wrapper.name ,
+.caseEdit-wrapper.address{
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
-}
+} 
 
 .AdminEditPrivateUsersImage{
   width: 350px;
@@ -441,7 +441,7 @@ textarea.error {
 .caseEdit-wrapper .headline,
 
 
-.description {
+.caseEdit-wrapper .description {
   width: 100%;
 }
 
@@ -505,9 +505,9 @@ ListItem {
     margin-top: 3%;
 }
 
-.address-field {
+.caseEdit-wrapper .caseEdit-wrapper.address-field {
     margin-bottom: 2%;
-}
+} 
 
 .report-map {
     margin-bottom: 2%;
