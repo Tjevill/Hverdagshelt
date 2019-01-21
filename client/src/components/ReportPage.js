@@ -1,4 +1,4 @@
-//@flow
+
 
 import * as React from "react";
 import { Component } from "react-simplified";
@@ -89,7 +89,6 @@ export class Report extends Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
                             <input
@@ -99,25 +98,25 @@ export class Report extends Component {
                                 defaultValue={this.address}
                                 readOnly={true}
                             />
-                            <Map
-                                className="report-map"
-                                google={this.props.google}
-                                zoom={8}
-                                initialCenter={{
-                                    lat: this.lat,
-                                    lng: this.lng
-                                }}
-                                style={style}
-                                onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
-                            >
-                                <Marker
-                                    name={"current location"}
-                                    draggable={true}
-                                    position={{ lat: this.lat, lng: this.lng }}
-                                    onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
-                                />
-                            </Map>
                         </div>
+                        <Map
+                            className="report-map"
+                            google={this.props.google}
+                            zoom={8}
+                            initialCenter={{
+                                lat: this.lat,
+                                lng: this.lng
+                            }}
+                            style={style}
+                            onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                        >
+                            <Marker
+                                name={"current location"}
+                                draggable={true}
+                                position={{ lat: this.lat, lng: this.lng }}
+                                onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                            />
+                        </Map>
                         <div className="form-group form-group-style">
                             Postnummer:{" "}
                             <input
