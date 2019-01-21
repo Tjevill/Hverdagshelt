@@ -12,6 +12,7 @@ export default class Case extends Component {
   map = <></>;
   mapData = {};
   province = "";
+  status = '';
 
   render() {
     if(this.loaded){
@@ -25,6 +26,8 @@ export default class Case extends Component {
                 address={this.mapData.formatted_address.split(",")[0]}
                 zip={this.case.zipcode}
                 date={this.case.timestamp}
+                status={this.status}
+                comment={this.case.comment}
               />
 
               <img id="case-picture" src={this.case.picture} alt="case_picture" onClick={this.openModal} />
@@ -47,7 +50,7 @@ export default class Case extends Component {
     }
   }
 
-  mounted(){
+  componentDidMount(){
 
     window.addEventListener("resize", this.onResize.bind(this));
 
@@ -79,10 +82,28 @@ export default class Case extends Component {
               this.loaded = true;
             }
           );
+            if (this.case.status_id == 1) {
+                //console.log('test');
+                this.status = 'Registrert';
+            } else if (this.case.status_id == 2) {
+                this.status = 'Under vurdering';
+            } else if (this.case.status_id == 3) {
+                this.status = 'Satt på vent';
+            } else if (this.case.status_id == 4) {
+                this.status = 'Arbeid pågår';
+            } else if(this.case.status_id == 5){
+                this.status = 'Avvist';
+            } else if(this.case.status_id == 6) {
+                this.status = 'Løst';
+            }else if (this.case.status_id == 7) {
+                this.status = 'Sak slettet';
+            }
+            else {
+                console.log('Error, status invalid!');
+            }
         }
       );
     });
-
   }
 
   openModal(){
@@ -125,7 +146,9 @@ export class Card extends Component<{
     zip: number,
     address: string,
     date: string,
-    description: string
+    status: string,
+    description: string,
+    comment: string
 }> {
 
   render() {
@@ -138,6 +161,10 @@ export class Card extends Component<{
               <li className="list-group-item">Adresse: {this.props.address}</li>
               <li className="list-group-item">Zip: {this.props.zip}</li>
               <li className="list-group-item">Lagt inn: {getDate(this.props.date)}</li>
+              <li className="list-group-item">Status: {this.props.status}</li>
+              <div className="card-body comment-card">
+                  {this.props.comment}
+              </div>
             </ul>
         </div>
       </div>

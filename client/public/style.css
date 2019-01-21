@@ -585,3 +585,7 @@ ListItem {
   background-color: white;
   text-align: center;
 }
+
+.comment-card {
+    font-weight: bold;
+}
