@@ -514,11 +514,6 @@ ListItem {
     width: 350px !important;
 }
 
-.map-wrapper div:first-child{
-    position: relative !important;
-    display: flex !important;
-}
-
 .rapporter {
     width: 350px;
     height: 1000px;
@@ -526,6 +521,10 @@ ListItem {
 
 .img-visible {
     display: inherit !important;
+}
+
+.current-location {
+    margin-right: 0px !important;
 }
 
 .feilmelding {
