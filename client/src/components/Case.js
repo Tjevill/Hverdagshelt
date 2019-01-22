@@ -5,19 +5,18 @@ import { caseService, mapService } from "../services";
 import { Loading } from "./widgets";
 
 export default class Case extends Component {
+    loaded = false;
+    openMap = false;
+    case = {};
+    map = <></>;
+    mapData = {};
+    province = "";
+    status = '';
 
-  loaded = false;
-  openMap = false;
-  case = {};
-  map = <></>;
-  mapData = {};
-  province = "";
-  status = '';
-
-  render() {
-    if(this.loaded){
-      return (
-        <div id="case-page">
+    render() {
+        if(this.loaded){
+            return (
+                <div id="case-page">
 
           <div id="info">
               <Card
@@ -30,25 +29,25 @@ export default class Case extends Component {
                 comment={this.case.comment}
               />
 
-              <img id="case-picture" src={this.case.picture} alt="case_picture" onClick={this.openModal} />
+                        <img id="case-picture" src={this.case.picture} alt="case_picture" onClick={this.openModal} />
 
-              <div id="myModal" className="modal">
-                <span id="close-modal" className="close" onClick={this.closeModal}>&times;</span>
-                <img className="modal-content" id="img01" />
-                <div id="caption">test</div>
-              </div>
-
-          <p id="description">{this.case.description}</p>
-        </div>
-          {this.map}
-        </div>
-      );
-    } else {
-      return (
-        <Loading />
-      );
+                        <div id="myModal" className="modal">
+                            <span id="close-modal" className="close" onClick={this.closeModal}>&times;</span>
+                            <img className="modal-content" id="img01" />
+                            <div id="caption">test</div>
+                        </div>
+                    </div>
+                    <p id="description">{this.case.description}</p>
+                    {this.map}
+                    <div id="map-spacer" />
+                </div>
+            );
+        } else {
+            return (
+                <Loading />
+            );
+        }
     }
-  }
 
   componentDidMount(){
 
@@ -156,7 +155,7 @@ export class Card extends Component<{
       <div className="card details">
         <div className="card-body">
             <h5 className="card-title">{this.props.title}</h5>
-            <ul className="list-group list-group-flush">
+            <ul className="list-group list-group-flush" style={{marginBottom: "0"}}>
               <li className="list-group-item">Kommune: {this.props.province}</li>
               <li className="list-group-item">Adresse: {this.props.address}</li>
               <li className="list-group-item">Zip: {this.props.zip}</li>

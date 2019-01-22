@@ -730,14 +730,6 @@ app.get("/allCases", (req, res) => {
         res.json(data);
     });
 });
-/*
-app.put("/changeCaseStatus/:id", (req, res) => {
-    caseDao.updateCaseStatus(req.params.id, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
-*/
 
 app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 	caseDao.updateCaseStatusToDeleted(req.params.id, (status, data) => {
@@ -980,6 +972,25 @@ app.get("/getCasesOnOrgID/:id", (req, res) => {
 	});
 });
 
+/**
+ * Change status_id on one case by case_id
+ */
+app.put("/changeCaseStatus/:case_id/:status_id", (req, res) => {
+	caseDao.updateCaseStatus(req.params.case_id, req.params.status_id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
+/**
+ * Change/insert comment on one case by case_id
+ */
+app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
+	caseDao.updateCaseComment(req.params.case_id, req.params.comment, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
 
 // End Cases
 
