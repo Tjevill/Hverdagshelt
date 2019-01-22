@@ -137,7 +137,7 @@ export default class OrgIssueOverview extends Component<{
               console.log("kommuner: ", this.kommuner);
               this.forceUpdate();
           })
-          .catch((error: Error) => Alert.danger(error.message));
+          .catch((error: Error) => console.log("Errors by getting kommuner"));
     }
   }
 
@@ -349,7 +349,7 @@ export default class OrgIssueOverview extends Component<{
       sidebuttons =(
         <div>
         {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
+            <button type="button" id ="Saker-side-button" class="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
         ))}
         </div>
       );
@@ -366,57 +366,19 @@ export default class OrgIssueOverview extends Component<{
               <div class="col-12 col-md-8">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
-                  width="10"
+                  id ="Saker-icon-pic"
                 />
               </div>
               <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputKommune">Kategorier &nbsp;</label>
-                  <select
-                    class="w-auto"
-                    id="kommune"
-                    name="kommune"
-                    class="form-control"
-                    onChange={this.handleChangeCategories}
-                  >
-                    <option value={0}>
-                      Alle
-                    </option>
-                    {this.categories.map(category => (
-                      <option value={category.category_id}>
-                        {category.description} {category.category_id}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="col-6 col-md-4">
-                <h2 class="display-4">Saker</h2>
+                <h2 class="display-4" id="Saker-tittel">Saker</h2>
               </div>
               <div class="col-6 col-md-4" />
-              <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputStatus">Status &nbsp;</label>
-                  <select
-                    class="w-auto"
-                    id="status"
-                    name="status"
-                    class="form-control"
-                    onChange={this.handleChangeStatus}
-                  >
-                    <option value={0}>Alle</option>
-                    <option value={1}>Registrert</option>
-                    <option value={2}>Under Vurdering</option>
-                    <option value={3}>Satt på vent</option>
-                    <option value={4}>Arbeid pågår</option>
-                    <option value={5}>Avvist</option>
-                    <option value={6}>Løst</option>
-                  </select>
-                </div>
-              </div>
+              <div class="col-6 col-md-4" />
             </div>
 
             <div class="row">
@@ -443,13 +405,66 @@ export default class OrgIssueOverview extends Component<{
                   </div>
               </div>
               <div class="col-4 col-md-4">
-              <span class="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
-              </div>
+             </div>
+            </div>
+
+          <div class="row">
+            <div class="col-6 col-md-4">
+              <div class="form-group">
+                <label for="inputKommune">Kategorier &nbsp;</label>
+                <select
+                class="w-auto"
+                id="kommune"
+                name="kommune"
+                class="form-control"
+                onChange={this.handleChangeCategories}
+                >
+                  <option value={0}>
+                    Alle
+                  </option>
+                  {this.categories.map(category => (
+                    <option value={category.category_id}>
+                      {category.description} {category.category_id}
+                    </option>
+                  ))}
+              </select>
             </div>
           </div>
+            <div class="col-6 col-md-4">
+                <div class="form-group">
+                  <label for="inputStatus">Status &nbsp;</label>
+                  <select
+                    class="w-auto"
+                    id="status"
+                    name="status"
+                    class="form-control"
+                    onChange={this.handleChangeStatus}
+                  >
+                    <option value={0}>Alle</option>
+                    <option value={1}>Registrert</option>
+                    <option value={2}>Under Vurdering</option>
+                    <option value={3}>Satt på vent</option>
+                    <option value={4}>Arbeid pågår</option>
+                    <option value={5}>Avvist</option>
+                    <option value={6}>Løst</option>
+                  </select>
+                </div>
+            </div>
+            <div class="col-4 col-md-4">
+            </div>
+          </div>
+          </div>
+
 
           <div class="container">
+          <div class="row">
+            <div class="col-3">
+            <span class="glyphicon glyphicon-search" aria-hidden="true" />
+            <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
+            </div>
+            <div class="col-3" />
+            <div class="col-3" />
+          </div>
             <Router history={history}>
               <table class="table table-hover">
                 <thead>
@@ -461,22 +476,20 @@ export default class OrgIssueOverview extends Component<{
                   </tr>
                 </thead>
                 {lists}
-                <br />
-                <br />
               </table>
-            </Router>
-          <br/><br/>
+            </Router><br/><br/>
         </div>
+
         <div id='toolbar'>
           <div className='wrapper text-center'>
             <div class="btn-group">
               {sidebuttons}
-          </div>
+            </div>
           </div>
         </div>
         </>
       );
-    } else {
+     }else{
       return <Loading />;
     }
   }
@@ -491,6 +504,9 @@ export default class OrgIssueOverview extends Component<{
           return value.status_id != 7;
         });
         this.casesbyStatus = cases.filter(function(value) {
+          return value.status_id != 7;
+        });
+        this.backup = cases.filter(function(value) {
           return value.status_id != 7;
         });
         this.loaded = true;
@@ -517,7 +533,7 @@ export default class OrgIssueOverview extends Component<{
             this.fylker = fylker;
             this.forceUpdate();
         })
-        .catch((error: Error) => Alert.danger(error.message));
+        .catch((error: Error) => console.log("Error: getting fylker"));
 
 
   }

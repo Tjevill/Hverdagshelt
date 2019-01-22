@@ -351,7 +351,7 @@ class UserService {
   }
 
   sendResetLink(email: string): Promise<void> {
-    return axios.post(url + '/forgotPassword/user/' + email);
+    return axios.post(url + '/reset/user/' + email);
   }
 
 }
@@ -409,7 +409,7 @@ class OrgService{
   }
 
   sendResetLink(email: string): Promise<void> {
-    return axios.post(url + '/forgotPassword/org/' + email);
+    return axios.post(url + '/reset/org/' + email);
   }
 }
 
@@ -584,7 +584,7 @@ export default class EmployeeService {
   }
 
   sendResetLink(email: string): Promise<void> {
-    return axios.post(url + '/forgotPassword/emp/' + email);
+    return axios.post(url + '/reset/emp/' + email);
   }
 
 

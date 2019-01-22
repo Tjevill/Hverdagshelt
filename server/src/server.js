@@ -101,8 +101,8 @@ let geodao = new GeoDao(pool);
 
 /** Send password reset link for user*/
 
-app.post("/forgotPassword/user/:email", (req, res) => {
-    console.log("/forgotPassword fikk POST request");
+app.post("/reset/user/:email", (req, res) => {
+    console.log("/reset fikk POST request");
     console.log("email: " + req.params.email);
     var promise1 = new Promise(function(resolve, reject) {
         userdao.getUserByEmail(req.params.email, (status, data) => {
@@ -148,6 +148,108 @@ app.post("/forgotPassword/user/:email", (req, res) => {
     
     });
 });
+
+/** Send password reset link for employee*/
+
+app.post("/reset/emp/:email", (req, res) => {
+    console.log("/reset fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        empDao.getEmployeeByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].employee_id);            
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        empDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].employee_id, (status, data) => {
+        }); 
+        
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/emp/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end 
+    
+    });
+});
+
+
+/** Send password reset link for organization*/
+
+app.post("/reset/org/:email", (req, res) => {
+    console.log("/reset/org/:email fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        orgDao.getOrgByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].org_id);            
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        orgDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].org_id, (status, data) => {
+        }); 
+        
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/org/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end 
+    
+    });
+});
+
 
 
 
@@ -854,6 +956,27 @@ app.put("/updateCase/:case_id", (req, res) =>{
             res.status(status);
             res.json(data);
             console.log(req.body);
+
+            let email = req.body.email;
+            const mailOptionsUpdateCase = {
+                from: 'bedrehverdagshelt@gmail.com',
+                to: email,
+                subject: 'Saken er oppdatert!',
+                html:
+                    '<h1> Status: ' + req.body.status_id + '</h1>' +
+                    '<p><b> HverdagsHelt Support Team </b></p>' +
+                    '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
+                    '<p> <b> HverdagsHelt AS </b> </p>' +
+                    '<p> 72 59 50 00 </p>'
+            };
+
+            transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
         });
     });
 
@@ -1066,13 +1189,11 @@ app.post('/userVerification', (req: Request, res: Response) => {
 });
 
 /**
- * Verifies Token for Users.
+ * Verifies Token for Users, emps and orgs. Only difference in the methods are the dao used. Everything else is the same.
  */
 
- app.get('/tokenVerification/:token', (req: Request, res: Response) => {
-    console.log("Received GET-request for /tokenVerification/:token");
-    
-    let verify;
+ app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
     
     userdao.getUserFromResetToken(req.params.token, (status, data) => {
         if (data[0] === undefined) { //If reset token is not assigned to a user. 
@@ -1093,8 +1214,57 @@ app.post('/userVerification', (req: Request, res: Response) => {
             res.status(200).json(data); 
         } 
     });
-     
  });
+
+ app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+    
+    empDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user. 
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire 
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+           
+
+        } else { //
+            
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+            
+            res.status(200).json(data); 
+        } 
+    });
+ });
+
+ app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+    
+    orgDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user. 
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire 
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+           
+
+        } else { //
+            
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+            
+            res.status(200).json(data); 
+        } 
+    });
+ });
+
+
 /**
  * Verifies old password for employee.
  */

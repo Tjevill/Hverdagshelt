@@ -1,6 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import React from 'react';
+import $ from 'jquery';
 import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
@@ -178,7 +179,20 @@ export default class LoginPage extends React.Component {
     }
 
     componentDidMount() {
+        window.addEventListener("resize", this.onResize.bind(this));
+        this.onResize();
+    }
 
+    mobile = false;
+
+    onResize() {
+        if(window.innerWidth <= 640 && !this.mobile){
+            this.mobile = true;
+            $('#login-user-title').attr('data-toggle', 'collapse');
+        }else if(window.innerWidth > 640 && this.mobile){
+            this.mobile = false;
+            $("#login-user-title").removeAttr("data-toggle");
+        }
     }
 
     componentWillReceiveProps() {
@@ -198,8 +212,8 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
 
-                                <h3 data-toggle="collapse" data-target="#login-user-image">HVERDAGSHELT</h3>
-                                <div id="login-user-image" className="profilbilde collapse">
+                                <h3 id="login-user-title" data-toggle="collapse" data-target="#login-user-image, #login-user-form">HVERDAGSHELT</h3>
+                                <div id="login-user-image" className="profilbilde">
                                     <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                                 </div>
 
@@ -229,7 +243,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/user" className="justalink">Glemt passord?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -247,7 +261,7 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
-                                <h3 onClick={() => this.toggle2Mobile()}>BEDRIFT</h3>
+                                <h3>BEDRIFT</h3>
                                 <div id="login-org-image" className="profilbilde">
                                     <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
                                 </div>
@@ -278,7 +292,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/org" className="justalink">Glemt passord?</a></div>
                                                 {loading2 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -296,7 +310,7 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
-                                <h3 onClick={() => this.toggle3Mobile()}>KOMMUNE</h3>
+                                <h3>KOMMUNE</h3>
                                 <div id="login-emp-image" className="profilbilde">
                                     <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                                 </div>
@@ -327,7 +341,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/emp" className="justalink">Glemt passord?</a></div>
                                                 {loading3 &&
                                                 <div> Loading </div>}
                                             </div>

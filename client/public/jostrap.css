@@ -1,0 +1,24 @@
+html,
+body,
+
+#Saker-tittel{
+  color: black;
+}
+
+#Saker-icon-pic{
+ max-width: 100%;
+ height: auto;
+ width: 30%;
+}
+
+#Saker-side-button{
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+}
+
+#Saker-side-button:hover{
+  background-color: black;
+  color: white;
+
+}

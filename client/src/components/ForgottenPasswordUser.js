@@ -7,7 +7,7 @@ import { userService } from "../services";
 const history = createHashHistory();
 
 
-export default class ChangePassword extends Component {
+export default class ForgottenPasswordUser extends Component {
     constructor(props) {
     super(props);
     this.state = {value: ''};

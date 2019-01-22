@@ -109,7 +109,7 @@ export default class ChangePassword extends Component {
             })
         })
      .catch((error: Error) => {
-       Alert.danger("noooooo");
+       console.log("noooooo");
        this.meldning = "Feil ved endring av passord,Prøv på nytt";
        this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
        this.forceUpdate();
@@ -127,7 +127,7 @@ export default class ChangePassword extends Component {
         if(user) console.log("available user"+this.user.name);
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
 
