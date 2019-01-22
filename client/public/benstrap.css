@@ -4,18 +4,19 @@ body,
 #page {
   height: 100%;
   width: 100%;
+  background-color: white;
 }
 
 #case-page {
   height: 100%;
   width: 100%;
-  padding-left: 10%;
-  padding-right: 10%;
   text-align: center;
+  color: black;
 }
 
 #case-page #info {
-
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 #case-page .details {
@@ -58,8 +59,10 @@ body,
 #case-page .modal-content {
   margin: auto;
   display: block;
-  width: 80%;
-  max-width: 700px;
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: 80%;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -85,10 +88,6 @@ body,
   to {transform:scale(1)}
 }
 
-#case-page #close-modal{
-  z-index: 100;
-}
-
 /* The Close Button */
 #case-page .close {
   position: absolute;
@@ -106,19 +105,58 @@ body,
   cursor: pointer;
 }
 
-/* 100% Image Width on Smaller Screens */
-#case-page @media only screen and (max-width: 700px){
-  .modal-content {
-    width: 100%;
-  }
-}
-
 #case-page #info {
+    overflow: auto;
     height: 50%;
 }
 
 #case-page #description {
   padding-top: 2%;
+}
+
+#case-page #map-spacer {
+    height: 70vh;
+    width: 100%;
+}
+
+/*Responsive case page*/
+@media only screen and (max-width: 700px){
+
+    #case-page .details {
+       width: 100%;
+       margin-right: 0;
+       padding: 0;
+       float: none;
+    }
+
+    #case-page #case-picture {
+        margin-bottom: 10%;
+    }
+
+    #case-page .modal-content {
+        width: 60%;
+    }
+
+    #case-page #myModal {
+        width: 100%;
+    }
+
+    #case-page #info {
+        padding: 0;
+    }
+
+    #case-page #info .card-body {
+        padding: 0;
+    }
+
+}
+
+@media (min-width: 768px) {
+  .collapse.dont-collapse-sm {
+    display: block;
+    height: auto !important;
+    visibility: visible;
+  }
 }
 
 .loading-animation {
