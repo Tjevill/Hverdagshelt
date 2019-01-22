@@ -153,4 +153,29 @@ console.log("Kall til updateOrg: ");
 		);
 	}
 	
+	updateResetPasswordToken(json: json, org_id: number, callback: any) {
+		let val = [json.resetPasswordToken, json.resetPasswordExpire, org_id];
+		super.query(
+			"update Organization set resetPasswordToken = ?, expirePasswordToken = ? where org_id = ?",
+			val,
+			callback
+		);
+	}
+ 	
+	 getUserFromResetToken(token: string, callback: any) {
+
+		 super.query(
+			"SELECT * FROM Organization WHERE resetPasswordToken = ?",
+			[token],
+			callback 
+		 );
+	 }
+
+	  getOrgByEmail(email, callback) {
+        super.query(
+            "select * from Organization where email = ?",
+            [email],
+            callback
+        );
+    }
 };

@@ -270,6 +270,7 @@ export default class IssueOverview extends Component<{
             <button
               type="button"
               class="btn btn-outline-dark"
+              id="Saker-side-button"
               onClick={() =>
                 history.push(
                   "/issues/" + sidetall)
@@ -357,7 +358,7 @@ export default class IssueOverview extends Component<{
           <div className="container">
             <div class="row">
               <div class="col">
-                <h2 class="display-4">Saker</h2>
+                <h2 class="display-4" id="Saker-tittel">Saker</h2>
               </div>
               <div class="col" />
               <div class="col" />
@@ -367,7 +368,7 @@ export default class IssueOverview extends Component<{
                   type="text"
                   id="search"
                   name="search"
-                  placeholder="Søk.."
+                  placeholder="Søk tittel.."
                   onChange={this.search}
                 />
               </div>
@@ -376,7 +377,6 @@ export default class IssueOverview extends Component<{
               <div class="col">
                 <p>Kategori:{this.categoryname} &nbsp; Status:{this.statusname[this.statusid]} &nbsp; Kommune: {this.kommune}&nbsp;</p>
               </div>
-              <div class="col" />
             </div>
             <Router history={history}>
               <table class="table table-hover">

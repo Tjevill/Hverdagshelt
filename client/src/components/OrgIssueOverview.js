@@ -1,4 +1,4 @@
-//@flow
+
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -7,7 +7,8 @@ import {
   categoryService,
   userService,
   employeeService,
-  statusService
+  statusService,
+  orgService
 } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -62,6 +63,7 @@ export default class OrgIssueOverview extends Component<{
   fylker =[];
   kommuner = [];
   casesbyKommune = [];
+  currentCase = [];
 
 
   handleChangeKommune = event =>{
@@ -245,6 +247,20 @@ export default class OrgIssueOverview extends Component<{
     console.log(event.target.value);
     console.log(this.casesbyStatus);
   }
+  saveComment (string) {
+        document.getElementById('comment-input').value = string;
+        console.log('test');
+        console.log(this.currentCase)
+        window.alert("Kommentar lagret!");
+    }
+
+    handleSelected(id) {
+    console.log(this.cases);
+    console.log('Sak id: ', id);
+        let filteredCase = this.cases.filter(e =>
+            e.case_id == id)
+      this.currentCase = filteredCase;
+    }
 
   render() {
     let lists;
@@ -275,23 +291,59 @@ export default class OrgIssueOverview extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning">
+                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning edit-button">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp; Rediger &nbsp;
+                      &nbsp;Endre Status
                   </span>
                 </a>
+                  &nbsp;&nbsp;&nbsp;
+                  <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
+                    	&nbsp;Legg inn kommentar&nbsp;
+                  </span>
+                  </button>
+                      <div className="modal fade" id={casen.case_id} tabIndex="-1"
+                           aria-labelledby="exampleModalLabel" aria-hidden="true"
+                           data-backdrop="static">
+                          <div className="modal-dialog" role="document">
+                              <div className="modal-content">
+                                  <div className="modal-header">
+                                      <h5 className="modal-title" id="exampleModalLabel">Kommenter sak</h5>
+                                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div className="modal-body">
+                                      <input
+                                          className="form-control"
+                                          id="comment-input"
+                                          defaultValue={casen.comment}>
+                                      </input>
+                                  </div>
+                                  <div className="modal-footer">
+                                      <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                      <button type="button" className="btn btn-primary"
+                                              onClick={this.saveComment}>
+                                          Lagre endringer
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
                 &nbsp;&nbsp;&nbsp;
                 <span class="badge badge-primary">{this.statusname[casen.status_id-1]}</span>
               </td>
             </tr>
           ))}
         </tbody>
+
       );
 
       sidebuttons =(
         <div>
         {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
+            <button type="button" id ="Saker-side-button" class="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
         ))}
         </div>
       );
@@ -308,57 +360,19 @@ export default class OrgIssueOverview extends Component<{
               <div class="col-12 col-md-8">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
-                  width="10"
+                  id ="Saker-icon-pic"
                 />
               </div>
               <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputKommune">Kategorier &nbsp;</label>
-                  <select
-                    class="w-auto"
-                    id="kommune"
-                    name="kommune"
-                    class="form-control"
-                    onChange={this.handleChangeCategories}
-                  >
-                    <option value={0}>
-                      Alle
-                    </option>
-                    {this.categories.map(category => (
-                      <option value={category.category_id}>
-                        {category.description} {category.category_id}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
             </div>
 
             <div class="row">
               <div class="col-6 col-md-4">
-                <h2 class="display-4">Saker</h2>
+                <h2 class="display-4" id="Saker-tittel">Saker</h2>
               </div>
               <div class="col-6 col-md-4" />
-              <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputStatus">Status &nbsp;</label>
-                  <select
-                    class="w-auto"
-                    id="status"
-                    name="status"
-                    class="form-control"
-                    onChange={this.handleChangeStatus}
-                  >
-                    <option value={0}>Alle</option>
-                    <option value={1}>Registrert</option>
-                    <option value={2}>Under Vurdering</option>
-                    <option value={3}>Satt på vent</option>
-                    <option value={4}>Arbeid pågår</option>
-                    <option value={5}>Avvist</option>
-                    <option value={6}>Løst</option>
-                  </select>
-                </div>
-              </div>
+              <div class="col-6 col-md-4" />
             </div>
 
             <div class="row">
@@ -385,13 +399,66 @@ export default class OrgIssueOverview extends Component<{
                   </div>
               </div>
               <div class="col-4 col-md-4">
-              <span class="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
-              </div>
+             </div>
+            </div>
+
+          <div class="row">
+            <div class="col-6 col-md-4">
+              <div class="form-group">
+                <label for="inputKommune">Kategorier &nbsp;</label>
+                <select
+                class="w-auto"
+                id="kommune"
+                name="kommune"
+                class="form-control"
+                onChange={this.handleChangeCategories}
+                >
+                  <option value={0}>
+                    Alle
+                  </option>
+                  {this.categories.map(category => (
+                    <option value={category.category_id}>
+                      {category.description} {category.category_id}
+                    </option>
+                  ))}
+              </select>
             </div>
           </div>
+            <div class="col-6 col-md-4">
+                <div class="form-group">
+                  <label for="inputStatus">Status &nbsp;</label>
+                  <select
+                    class="w-auto"
+                    id="status"
+                    name="status"
+                    class="form-control"
+                    onChange={this.handleChangeStatus}
+                  >
+                    <option value={0}>Alle</option>
+                    <option value={1}>Registrert</option>
+                    <option value={2}>Under Vurdering</option>
+                    <option value={3}>Satt på vent</option>
+                    <option value={4}>Arbeid pågår</option>
+                    <option value={5}>Avvist</option>
+                    <option value={6}>Løst</option>
+                  </select>
+                </div>
+            </div>
+            <div class="col-4 col-md-4">
+            </div>
+          </div>
+          </div>
+
 
           <div class="container">
+          <div class="row">
+            <div class="col-3">
+            <span class="glyphicon glyphicon-search" aria-hidden="true" />
+            <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
+            </div>
+            <div class="col-3" />
+            <div class="col-3" />
+          </div>
             <Router history={history}>
               <table class="table table-hover">
                 <thead>
@@ -403,22 +470,20 @@ export default class OrgIssueOverview extends Component<{
                   </tr>
                 </thead>
                 {lists}
-                <br />
-                <br />
               </table>
-            </Router>
-          <br/><br/>
+            </Router><br/><br/>
         </div>
+
         <div id='toolbar'>
           <div className='wrapper text-center'>
             <div class="btn-group">
               {sidebuttons}
-          </div>
+            </div>
           </div>
         </div>
         </>
       );
-    } else {
+     }else{
       return <Loading />;
     }
   }
@@ -433,6 +498,9 @@ export default class OrgIssueOverview extends Component<{
           return value.status_id != 7;
         });
         this.casesbyStatus = cases.filter(function(value) {
+          return value.status_id != 7;
+        });
+        this.backup = cases.filter(function(value) {
           return value.status_id != 7;
         });
         this.loaded = true;
