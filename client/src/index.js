@@ -48,6 +48,7 @@ import OrgEdit from "./components/OrgEdit"
 import OrgIssueOverview from "./components/OrgIssueOverview";
 import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
+import StatisticsPage from "./components/StatisticsPage";
 import PrivateRoute from 'react-private-route';
 import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
