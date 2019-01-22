@@ -583,3 +583,7 @@ ListItem {
 .edit-button {
     padding: 5px 7px 5px !important;
 }
+
+.container {
+    padding: 10px !important;
+}

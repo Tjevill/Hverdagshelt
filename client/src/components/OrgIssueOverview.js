@@ -248,28 +248,44 @@ export default class OrgIssueOverview extends Component<{
     console.log(this.casesbyStatus);
   }
   saveComment (id) {
-      caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+    if(document.getElementById('status1').checked) {
+      caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
           .then(res => {
               console.log(res);
-              console.log('test');
           })
           .catch((error: Error) => Alert.danger(error.message));
+        window.alert("Kommentar og status endret!");
+        window.location.reload();
+    } else if(document.getElementById('status2').checked) {
+        caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
+            .then(res => {
+                console.log(res);
+            })
+            .catch((error: Error) => Alert.danger(error.message));
+        window.alert("Kommentar og status endret!");
+        window.location.reload();
+    } else {
+        caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+            .then(res => {
+                console.log(res);
+            })
+            .catch((error: Error) => Alert.danger(error.message));
         console.log(document.getElementById('comment-input').value);
-        console.log('sak')
         window.alert("Kommentar lagret!");
+        window.location.reload();
+      }
     }
 
+
     handleSelected(id) {
-        console.log(this.cases);
-        console.log('Sak id: ', id);
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
         console.log(filteredCase)
-        if(sessionStorage.getItem("userid") != filteredCase.org_id) {
-            console.log(this.currentCase);
+        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
             this.currentCase = filteredCase;
         } else {
             window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
+            window.location.reload();
             return null;
         }
     }
@@ -314,11 +330,12 @@ export default class OrgIssueOverview extends Component<{
                           <div className="modal-dialog" role="document">
                               <div className="modal-content">
                                   <div className="modal-header">
-                                      <h5 className="modal-title" id="exampleModalLabel">Kommenter sak eller endre status</h5>
+                                      <h4 className="modal-title" id="exampleModalLabel">&nbsp;Oppdater sak</h4>
                                       <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                       </button>
                                   </div>
+                                  <h6 className="modal-title" id="exampleModalLabel">&nbsp;Legg til en kommentar</h6>
                                   <div className="modal-body">
                                       <input
                                           className="form-control"
@@ -326,6 +343,15 @@ export default class OrgIssueOverview extends Component<{
                                           defaultValue={casen.comment}>
                                       </input>
                                   </div>
+                                  <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
+                                  <label className="container">Arbeid pågår
+                                      <input type="radio" id="status1" name="radio" checked={true}/>
+                                          <span className="checkmark"></span>
+                                  </label>
+                                  <label className="container">Sak løst
+                                      <input type="radio" id="status2" name="radio"/>
+                                          <span className="checkmark"></span>
+                                  </label>
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
                                       <button type="button" className="btn btn-primary"
