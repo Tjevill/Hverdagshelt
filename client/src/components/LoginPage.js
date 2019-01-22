@@ -1,6 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import React from 'react';
+import $ from 'jquery';
 import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
@@ -179,6 +180,7 @@ export default class LoginPage extends React.Component {
 
     componentDidMount() {
         window.addEventListener("resize", this.onResize.bind(this));
+        this.onResize();
     }
 
     mobile = false;
@@ -186,10 +188,10 @@ export default class LoginPage extends React.Component {
     onResize() {
         if(window.innerWidth <= 640 && !this.mobile){
             this.mobile = true;
-            $("#login-user-title").removeAttr("data-toggle");
+            $('#login-user-title').attr('data-toggle', 'collapse');
         }else if(window.innerWidth > 640 && this.mobile){
             this.mobile = false;
-            $('#login-user-title').attr('data-toggle', 'collapse');
+            $("#login-user-title").removeAttr("data-toggle");
         }
     }
 
