@@ -99,7 +99,7 @@ export default class UpdateUserPasswordFromToken extends Component <{ match: { p
           this.user = user[0];
           console.log('user:'+ user[0]);
           if(user[0]) {
-            console.log("available user"+this.user.name);
+            console.log("available user: "+this.user.name);
             this.loaded = true;
           }
           this.forceUpdate();

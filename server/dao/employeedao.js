@@ -119,7 +119,6 @@ module.exports = class UserDao extends Dao {
         let salt = genRandomString(32);
         let passwordData = sha512(json.password, salt);
         let val = [passwordData.passwordHash, passwordData.salt, json.emp_id];
-
         super.query(
             "UPDATE Employee SET password = ?, secret = ? WHERE employee_id = ?",
             val,
@@ -246,9 +245,9 @@ module.exports = class UserDao extends Dao {
 	}
 
     updateResetPasswordToken(json: json, employee_id: number, callback: any) {
-		let val = [json.resetPasswordToken, json.resetPasswordExpire, user_id];
+		let val = [json.resetPasswordToken, json.resetPasswordExpire, employee_id];
 		super.query(
-			"update Employee set resetPasswordToken = ?, resetPasswordExpire = ? where employee_id = ?",
+			"update Employee set resetPasswordToken = ?, expirePasswordToken = ? where employee_id = ?",
 			val,
 			callback
 		);

@@ -31,7 +31,9 @@ import EmployeeEvents from "./components/employeeEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
-import ForgottenPassword from "./components/ForgottenPassword";
+import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
+import ForgottenPasswordEmployee from "./components/ForgottenPasswordEmployee";
+import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganization";
 import IssueOverview from "./components/IssueOverview";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import LoginPage from "./components/LoginPage";
@@ -46,6 +48,7 @@ import OrgEdit from "./components/OrgEdit"
 import OrgIssueOverview from "./components/OrgIssueOverview";
 import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
+import StatisticsPage from "./components/StatisticsPage";
 import PrivateRoute from 'react-private-route';
 import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
@@ -57,6 +60,8 @@ import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
 import UpdateUserPasswordFromToken from "./components/UpdateUserPasswordFromToken";
+import UpdateEmployeePasswordFromToken from "./components/UpdateEmployeePasswordFromToken";
+import UpdateOrgPasswordFromToken from "./components/UpdateOrgPasswordFromToken";
 
 const history = createHashHistory();
 
@@ -64,20 +69,26 @@ const history = createHashHistory();
 class forsideMain extends Component {
 
     render() {
+        let button;
+        if(sessionStorage.getItem("access")=="kommune"){
+
+        }else{
+          button =(
+            <button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button>
+          );
+        }
         return(
             <section id="pageintro" className="hoc clear">
                 <div>
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                    <footer><button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button></footer>
+                    <footer>{button}</footer>
 
                 </div>
             </section>
         );
     }
-
-
 }
 
 class ikkeforsideMain extends Component {
@@ -120,10 +131,13 @@ class Main extends Component {
     }
 
     render() {
-        //  console.log("Path: " + window.location.href);
-        if (window.location.href === "http://localhost:3000/#/Statistikk") {
-            return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>)
-        } else {
+       //  console.log("Path: " + window.location.href);
+
+
+
+        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
+        else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+        else {
             return this.amILoggedin == null ? "<div></div>" : (
                 <div>
                     <HashRouter>
@@ -148,25 +162,30 @@ class Main extends Component {
                                 <Route exact path="/case/:id" component={Case} />
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues" component={IssueOverview} />
-                                <Route exact path="/issues/:name/:id" component={IssueOverview} />
+                                <Route exact path="/issues/:id" component={IssueOverview} />
                                 <Route exact path="/events" component={Events}/>
                                 <Route exact path="/map" component={Map} />
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
-                                <Route exact path="/reset" component={ForgottenPassword} />
+                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />¨
+                                <Route exact path="/reset/emp/:token" component={UpdateEmployeePasswordFromToken} />
+                                <Route exact path="/reset/org/:token" component={UpdateOrgPasswordFromToken} />
+                                <Route exact path="/reset/user" component={ForgottenPasswordUser} />
+                                <Route exact path="/reset/emp" component={ForgottenPasswordEmployee} />
+                                <Route exact path="/reset/org" component={ForgottenPasswordOrganization} />
+
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
-                                <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/bedrift/issues/:id" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/changePassword" component={ChangePasswordOrg} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
+                                <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/changePassword" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -178,13 +197,13 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/events/:id/edit" component={EventsEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/issues" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
-                                {/* MIDLERTIDIG */}
+                                {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             </div>

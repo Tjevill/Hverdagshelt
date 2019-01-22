@@ -5,7 +5,6 @@ import { Router, NavLink } from "react-router-dom";
 import { caseService, categoryService, userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
-  Alert,
   Card,
   NavBar,
   ListGroup,
@@ -37,216 +36,226 @@ function count(array) {
 }
 
 export default class IssueOverview extends Component<{
-  match: { params: { name: string, id: number } }
+  match: { params: { id: number } }
 }> {
   loaded = false;
   caseofCat = [];
   categories = [];
   cases = [];
+  backup = [];
   casesbyKommune = [];
+  casesbyStatus = [];
   cateside = [];
   fylker = [];
   kommuner = [];
-  kommune = "";
+  kommune = "Alle";
   Meldning = "";
   categoryid = "";
-  statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
-  categoryname = "";
+  categoryname = "Alle";
+  statusid = 0;
+  statusname = ["Alle","Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
 
-  handleChangeFylke = event => {
-    console.log("Fylke valgt: " + event.target.value);
-    if (event.target.value == 0) {
-      this.kommuner = [];
-      this.cateside = this.cases;
-    } else {
-      userService
-        .getProvince(event.target.value)
-        .then(response => {
-          this.kommuner = response;
-          console.log("kommuner: ", this.kommuner);
-          this.forceUpdate();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
+
+    handleChangeKommune = event =>{
+      let statusid = this.statusid;
+      let categoryid = this.categoryid;
+      this.kommune = event.target.value;
+        caseService
+          .searchCaseByProv(event.target.value)
+          .then(response => {
+              this.casesbyKommune = response.filter(function(value) {
+                return value.status_id != 7;
+              });
+              if(statusid>0){
+                console.log("med status");
+                this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+                  return value.status_id == statusid;
+                });
+                if(categoryid>0){
+                  console.log("med category og status");
+                  this.casesbyStatus = this.casesbyStatus.filter(function(value){
+                     return value.category_id == categoryid;
+                  });
+                }
+              }else if(categoryid>0){
+                console.log("ingen status");
+                  this.casesbyStatus = this.casesbyKommune.filter(function(value){
+                     return value.category_id == categoryid;
+                  });
+              }else{
+                console.log("ingen category og status");
+                this.casesbyStatus = this.casesbyKommune;
+              };
+              this.backup = this.casesbyStatus;
+              console.log("All the cases from chooesd kommune",this.casesbyKommune);
+              console.log("All the cases",this.casesbyStatus);
+              this.forceUpdate();
+          })
+          .catch((error: Error) => console.log("fails by getting cases from fylker"));
     }
-  };
 
 
-  handleChangeKommune = event => {
-    let meldning;
-    this.kommune = event.target.value;
-    console.log("Kommune valgt:", this.kommune);
-    console.log("Tilsvarende category_id1: ", this.categoryid);
-    let id = this.categoryid;
-    console.log("Tilsvarende category_id2: ", id);
-    caseService
-      .searchCaseByProv(event.target.value)
-      .then(response => {
-        this.casesbyKommune = response.filter(function(value) {
-          return value.status_id != 7;
-        });
-        this.cases = response;
-        if (this.categoryname !== "All") {
-          console.log("hahaha ", response);
-          this.caseofCat = response
-            .filter(function(value) {
-              return value.status_id != 7;
-            })
-            .filter(element => element.category_id == this.category_id);
-        }
-        console.log("new cases by kommune :", this.caseofCat);
-        if (this.caseofCat.length === 0) {
-          this.Meldning =
-            "Ingen sak under kategori " +
-            this.props.match.params.name +
-            " kommune " +
-            this.kommune;
-        } else {
-          this.Meldning =
-            "Antall sak under kategori " +
-            this.props.match.params.name +
-            " kommune " +
-            this.kommune +
-            " er " +
-            this.caseofCat.length;
-        }
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log("feilfeilfeil"));
-  };
+    handleChangeFylke = event =>{
+      let statusid = this.statusid;
+      let categoryid = this.categoryid;
 
-
-  handleChangeStatus = event =>{
-
-  }
-
-  category(categoryname){
-
-  }
-
-  checkName() {
-    if (this.kommune !== "") {
-      console.log("kommune er  valgt");
-      caseService
-        .searchCaseByProv(this.kommune)
-        .then(response => {
-          this.categoryname = this.props.match.params.name;
-          this.category_id = this.categories.find(
-            element => element.description === this.categoryname
-          ).category_id;
-          console.log("now the id is", this.category_id);
-          this.caseofCat = response
-            .filter(function(value) {
-              return value.status_id != 7;
-            })
-            .filter(element => element.category_id == this.category_id);
-          console.log("new cases by kommune 2 :", this.caseofCat);
-          if (this.caseofCat.length === 0) {
-            this.Meldning =
-              "Ingen sak under kategori " +
-              this.props.match.params.name +
-              " kommune " +
-              this.kommune;
-          } else {
-            this.Meldning =
-              "Antall sak under kategori " +
-              this.props.match.params.name +
-              " kommune " +
-              this.kommune +
-              " er " +
-              this.caseofCat.length;
-          }
-          this.forceUpdate();
-        })
-        .catch((error: Error) => console.log("feilfeilfeil"));
-    } else {
-      console.log("kommune er ikke valgt");
-      caseService
-        .searchCaseByCat(this.props.match.params.name)
-        .then(cases => {
-          this.caseofCat = cases.filter(function(value) {
-            return value.status_id != 7;
+      if(event.target.value==0){
+        if(statusid>0){
+          this.casesbyStatus = this.cases.filter(function(value) {
+            return value.status_id == statusid;
           });
-          this.categoryname = this.props.match.params.name;
-          this.category_id = this.categories.find(
-            element => element.description === this.categoryname
-          ).category_id;
-          console.log(
-            "checkname :" +
-              this.props.match.params.name +
-              "  id:" +
-              this.category_id +
-              " length:" +
-              this.caseofCat.length
-          );
-          if (this.caseofCat.length == 0) {
-            this.Meldning = "Ingen sak enda ";
-          } else {
-            this.Meldning =
-              "Antall sak under kategori " +
-              this.props.match.params.name +
-              " er " +
-              this.caseofCat.length;
+          if(categoryid>0){
+            this.casesbyStatus = this.casesbyStatus.filter(function(value){
+               return value.category_id == categoryid;
+            });
           }
-          this.forceUpdate();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
+        }else if(categoryid>0){
+            this.casesbyStatus = this.cases.filter(function(value){
+               return value.category_id == categoryid;
+            });
+        }else{
+          this.casesbyStatus = this.cases;
+        }
+        this.backup = this.casesbyStatus;
+        this.kommuner = [];
+        this.forceUpdate();
+      }else{
+        console.log("Fylke valgt: " + event.target.value);
+          userService
+            .getProvince(event.target.value)
+            .then(response => {
+                this.kommuner = response;
+                console.log("kommuner: ", this.kommuner);
+                this.forceUpdate();
+            })
+            .catch((error: Error) => console.log("Fails by getting available kommuner"));
+      }
     }
-  }
+
+
+    handleChangeStatus = event => {
+      document.getElementById('search').value = "";
+      let categoryid = this.categoryid;
+      this.statusid = event.target.value;
+      if (event.target.value == 0) {
+        if(this.kommuner.length>0){
+          this.casesbyStatus = this.casesbyKommune;
+          if(this.categoryid>0){
+            this.casesbyStatus = this.casesbyStatus.filter(function(value){
+               return value.category_id == categoryid;
+            });
+          }
+        }else if(categoryid>0){
+          this.casesbyStatus = this.cases.filter(function(value){
+             return value.category_id == categoryid;
+          });
+        }else{
+          console.log("Show all the cases");
+          this.casesbyStatus = this.cases;
+        }
+          this.backup = this.casesbyStatus;
+          this.forceUpdate();
+      }else{
+        if(this.kommuner.length>0){
+          this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+            return value.status_id == event.target.value;
+          });
+          if(this.categoryid>0){
+            this.casesbyStatus = this.casesbyStatus.filter(function(value){
+               return value.category_id == categoryid;
+            });
+          }
+        }else if(categoryid>0){
+          this.casesbyStatus = this.cases.filter(function(value){
+             return value.category_id == categoryid;
+          });
+          this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+            return value.status_id == event.target.value;
+          });
+        }else{
+          this.casesbyStatus = this.cases.filter(function(value) {
+            return value.status_id == event.target.value;
+          });
+        }
+          this.backup = this.casesbyStatus;
+          this.forceUpdate();
+    }};
+
+
+  category(categoryid,categoryname){
+    this.categoryid = categoryid;
+    this.categoryname = categoryname;
+    console.log("categoryid:" + categoryid)
+    let statusid = this.statusid;
+    if (categoryid == 0) {
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune;
+        if(statusid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.status_id == statusid;
+          });
+        }
+      }else if(statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value){
+          return value.status_id == statusid;
+        });
+      }else{
+        console.log("Show all the cases");
+        this.casesbyStatus = this.cases;
+      }
+        this.backup = this.casesbyStatus;
+        this.forceUpdate();
+    }else{
+      if(this.kommuner.length>0){
+        this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+          return value.category_id == categoryid;
+        });
+        if(statusid>0){
+          this.casesbyStatus = this.casesbyStatus.filter(function(value){
+             return value.status_id == statusid;
+          });
+        }
+      }else if(statusid>0){
+        this.casesbyStatus = this.cases.filter(function(value){
+           return value.status_id == statusid;
+        });
+        this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+          return value.category_id == categoryid;
+        });
+      }else{
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.category_id == categoryid;
+        });
+      }
+        this.backup = this.casesbyStatus;
+        this.forceUpdate();
+  }};
+
+
 
   render() {
     let lists;
     let sidebuttons;
-    if (this.props.match.params.name == "All") {
-      this.cateside = this.cases.slice(
-        (this.props.match.params.id - 1) * 15,
-        (this.props.match.params.id - 1) * 15 + 15
+
+    if (this.casesbyStatus.length == 0) {
+      lists = (
+        <tbody>
+          <tr>
+            <th />
+            <td>tomt</td>
+            <td />
+          </tr>
+        </tbody>
       );
-      this.Meldning = "Antall saker er " + this.cases.length;
+    } else {
+      this.cateside = this.casesbyStatus.slice((this.props.match.params.id - 1) * 15,(this.props.match.params.id - 1) * 15 + 15);
       lists = (
         <tbody>
           {this.cateside.map(casen => (
-            <tr key={casen.case_id}>
-              <th>{casen.case_id}</th>
-              <td
-                className="clickable-link"
-                onClick={() => history.push("/case/" + casen.case_id)}
-              >
-                {casen.headline}
-              </td>
-              <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
-            </tr>
-          ))}
-        </tbody>
-      );
-
-      sidebuttons = (
-        <div>
-          {count(sliceArray(this.cases, 15)).map(sidetall => (
-            <button
-              type="button"
-              class="btn btn-outline-dark"
-              onClick={() => history.push("/Issues/All/" + sidetall)}
-            >
-              {sidetall}{" "}
-            </button>
-          ))}
-        </div>
-      );
-      if (this.kommune != "") {
-        this.Meldning =
-          "Antall sak under kommune " +
-          this.kommune +
-          " er " +
-          this.cases.length;
-      }
-    } else {
-      lists = (
-        <tbody>
-          {this.caseofCat.map(casen => (
             <tr>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>
-                {casen.headline}
+                {casen.headline} ID: {casen.category_id}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
             </tr>
@@ -256,14 +265,14 @@ export default class IssueOverview extends Component<{
 
       sidebuttons = (
         <div>
-          {count(sliceArray(this.caseofCat, 15)).map(sidetall => (
+          {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
             <button
               type="button"
               class="btn btn-outline-dark"
+              id="Saker-side-button"
               onClick={() =>
                 history.push(
-                  "/Issues/" + this.props.match.params.name + "/" + sidetall
-                )
+                  "/issues/" + sidetall)
               }
             >
               {sidetall}
@@ -279,11 +288,11 @@ export default class IssueOverview extends Component<{
           <div className="jumbotron">
             <div className="container text-center">
               <div className="btn-group" role="group" aria-label="First group">
-                <button type="button" class="btn btn-secondary col-sm-3">
+                <button type="button" class="btn btn-secondary col-sm-3"  onClick={()=>this.category(0,"All")}>
                   All
                 </button>
                 {this.categories.map(category => (
-                  <button type="button" class="btn btn-secondary col-sm-3" onClick={()=>this.category(category.description)}>
+                  <button type="button" class="btn btn-secondary col-sm-3" onClick={()=>this.category(category.category_id,category.description)}>
                     {category.description}
                   </button>
                 ))}
@@ -348,7 +357,7 @@ export default class IssueOverview extends Component<{
           <div className="container">
             <div class="row">
               <div class="col">
-                <h2 class="display-4">Saker</h2>
+                <h2 class="display-4" id="Saker-tittel">Saker</h2>
               </div>
               <div class="col" />
               <div class="col" />
@@ -358,9 +367,14 @@ export default class IssueOverview extends Component<{
                   type="text"
                   id="search"
                   name="search"
-                  placeholder="Søk.."
+                  placeholder="Søk tittel.."
                   onChange={this.search}
                 />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>Kategori:{this.categoryname} &nbsp; Status:{this.statusname[this.statusid]} &nbsp; Kommune: {this.kommune}&nbsp;</p>
               </div>
             </div>
             <Router history={history}>
@@ -391,6 +405,16 @@ export default class IssueOverview extends Component<{
     }
   }
 
+  search = event => {
+    this.casesbyStatus = this.backup.filter(function(value){
+        return value.headline.indexOf(event.target.value)!=(-1);
+    });
+    this.forceUpdate();
+    console.log(event.target.value);
+    console.log(this.casesbyStatus);
+  }
+
+
   componentDidMount() {
     caseService
       .getAllCases()
@@ -401,10 +425,13 @@ export default class IssueOverview extends Component<{
         this.casesbyStatus = cases.filter(function(value) {
           return value.status_id != 7;
         });
+        this.backup = cases.filter(function(value) {
+          return value.status_id != 7;
+        });
         this.loaded = true;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available cases"));
 
     categoryService
       .getAllCategories()
@@ -412,19 +439,7 @@ export default class IssueOverview extends Component<{
         this.categories = categories;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
-
-    caseService
-      .searchCaseByCat(this.props.match.params.name)
-      .then(cases => {
-        this.caseofCat = cases.filter(function(value) {
-          return value.status_id != 7;
-        });
-        this.categoryname = this.props.match.params.name;
-        console.log("name :" + this.props.match.params.name);
-        this.forceUpdate();
-      })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available categories"));
 
     userService
       .getDistricts()
@@ -432,6 +447,6 @@ export default class IssueOverview extends Component<{
         this.fylker = fylker;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available fylker"));
   }
 }
