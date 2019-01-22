@@ -7,17 +7,6 @@ class Category {
     description: string;
 }
 
-class Employee{
-  employee_id: number;
-  name: string;
-  tel: string;
-  email: string;
-  password: string;
-  commune: string;
-  county: string;
-  superuser: boolean;
-}
-
 class County { //Fylke
 	id: number;
 	county: string;
@@ -38,9 +27,24 @@ class Case {
   org_id: number;
 }
 
+class Employee{
+  employee_id: number;
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
+}
+
 class Place {
 	zipcode: number;
 	commune: string;
+}
+
+class ResetToken {
+  token: string;
 }
 
 class Status {
@@ -67,6 +71,8 @@ class User {
   tel: number;
   email: string;
   subscription: number;
+  resetPasswordToken: string;
+  resetPasswordExpire: number;
 
 }
 
@@ -248,7 +254,7 @@ class CaseService {
       comment: comment
     });
   }
-	
+
 	/**
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
@@ -325,9 +331,6 @@ class UserService {
     return axios.get(url + '/userProvince/' + id);
   }
 
-  findUserByEmail(email: string): Promise<User>{
-    return axios.get(url+ '/forgotPassword/'+ email);
-  }
 
 	/**
 	 * Service object for verifying old password
@@ -338,10 +341,19 @@ class UserService {
 
 	}
 
+  
+
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
-  
+
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/user/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/user/' + email);
+  }
 
 }
 
@@ -388,13 +400,18 @@ class OrgService{
   }
 
 
-    addOrganization(newemployee: Register): Promise<void> {
-        console.log("ORG TIL SERVICE: ", newemployee);
-        return axios.put(url + "/neworganization", newemployee);
-    }
+  addOrganization(newemployee: Register): Promise<void> {
+      console.log("ORG TIL SERVICE: ", newemployee);
+      return axios.put(url + "/neworganization", newemployee);
+  }
 
+  verifyResetToken (resetToken : string): Promise<Organization[]> {
+    return axios.get(url + '/tokenVerification/org/'+ resetToken);
+  }
 
-
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/org/' + email);
+  }
 }
 
 export let orgService = new OrgService();
@@ -434,13 +451,13 @@ class CategoryService {
   getCountCategories(): Promise<number>{
     return axios.get(url + '/categoryCount');
 	}
-	
-	
+
+
 	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
 		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
 		return axios.put(url + "/neworgcat/" + company_id, newemployee);
 	}
-	
+
 	/**
    * Gets all categories (and its id) connected to an organization
 	 * @param id The organizations id number
@@ -449,7 +466,9 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id);
 	}
-	
+
+  
+
 }
 
 
@@ -505,7 +524,7 @@ export default class EmployeeService {
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/'+emp.employee_id, emp);
+    return axios.put(url+'/employee/' + emp.employee_id, emp);
   }
 
   /** Get all employees */
@@ -550,6 +569,23 @@ export default class EmployeeService {
 	 */
   getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
     return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
+  }
+	
+	/**
+   * Verify if email exists.
+	 * @param email The employees email
+	 * @returns {AxiosPromise<any>} 1 if true, 0 if not
+	 */
+  searchForEmail(email: string): Promise<{verify: number}>{
+    return axios.get(url + '/searchEmail/' + email);
+  }
+
+  verifyResetToken (resetToken : string): Promise<Employee[]> {
+    return axios.get(url + '/tokenVerification/emp/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/forgotPassword/emp/' + email);
   }
 
 

@@ -24,6 +24,7 @@ import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
+import ChangePasswordOrg from "./components/ChangePasswordOrg";
 import createHashHistory from "history/createHashHistory";
 import EmployeeEdit from "./components/EmployeeEdit";
 import EmployeeEvents from "./components/employeeEvents";
@@ -37,6 +38,7 @@ import LoginPage from "./components/LoginPage";
 import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
+import MinSideKommune from "./components/MinSideKommune";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
@@ -54,7 +56,7 @@ import ReportPage from "./components/ReportPage";
 import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
-import MinSideKommune from "./components/MinSideKommune";
+import UpdateUserPasswordFromToken from "./components/UpdateUserPasswordFromToken";
 
 const history = createHashHistory();
 
@@ -115,17 +117,15 @@ class Main extends Component {
     }
 
     render() {
-       //  console.log("Path: " + window.location.href);
-
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
+        //  console.log("Path: " + window.location.href);
+        if (window.location.href === "http://localhost:3000/#/Statistikk") {
+            return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>)
+        } else {
             return this.amILoggedin == null ? "<div></div>" : (
-
                 <div>
                     <HashRouter>
-
                         <div>
-                      <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
+                            <div className="bgded overlay">{ /*console.log("Render return check: ", this.amILoggedin)*/ }
                                 <div className="wrapper row1">
                                     <header id="header" className="hoc clear">
                                         <div id="logo" className="fl_left">
@@ -138,65 +138,65 @@ class Main extends Component {
                                 <Route exact path="/" component={forsideMain} />
                                 <Route path="/" component={ikkeforsideMain} />
                             </div>
-                    <div>
+
+                            {/*Main componenets*/}
+                            <div>
                                 <Route exact path="/" component={UserHome} />
                                 <Route exact path="/case/:id" component={Case} />
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues" component={IssueOverview} />
                                 <Route exact path="/issues/:name/:id" component={IssueOverview} />
-                                <Route exact path="/issuesEmployee/:name/:id" component={IssueOverviewForEmployee} />
                                 <Route exact path="/events" component={Events}/>
-                                <Route exact path="/events/:id/edit" component={EventsEdit}/>
                                 <Route exact path="/map" component={Map} />
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} />
-
                                 <Route exact path="/glemtpassord" component={ForgottenPassword} />
-                                <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin}/>
-                                <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin}/>
-                                <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
+                                <Route exact path="/reset" component={ForgottenPassword} />
+
+                                <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
-                            <PrivateRoute exact path="/admin/ChangePasswordEmployee" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/issues/:name/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/bedrift/changePassword" component={ChangePasswordOrg} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
+                                <PrivateRoute exact path="/admin/changePassword" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events/:id/edit" component={EventsEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/issues" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                                 {/* MIDLERTIDIG */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
-
-
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                            </div>
 
-
-                    </div>
-                    <div className="wrapper row5">
-                        <div id="copyright" className="hoc clear">
-
-                            <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a>
-                            </p>
-                            <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+                            {/*Bottom banner*/}
+                            <div className="wrapper row5">
+                                <div id="copyright" className="hoc clear">
+                                    <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
+                                    <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+                                </div>
+                            </div>
 
                         </div>
-                    </div>
-                    </div>
-        </HashRouter>
-
+                    </HashRouter>
                 </div>
             );
         }

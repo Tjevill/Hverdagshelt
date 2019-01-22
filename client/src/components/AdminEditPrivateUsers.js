@@ -3,7 +3,10 @@ import TextField from 'material-ui/TextField';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { Component } from "react-simplified";
 import { userService } from "../services.js";
+import { BrowserRouter, Route } from "react-router-dom";
+import createHashHistory from "history/createHashHistory";
 
+const history = createHashHistory();
 var emailRegex =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const formValid = ({ formErrors, ...rest }) => {
@@ -131,7 +134,7 @@ export default class AdminEditPrivateUSers extends Component < {
       user_id: this.user_id
     })
     .then(res => {
-        console.log("Response recieved:", res);
+        console.log("Response recieved:", res); //ENDRINGER ER BLITT LAGRET
       })
       .catch(err => {
         console.log("AXIOS ERROR:", err);
@@ -144,14 +147,15 @@ export default class AdminEditPrivateUSers extends Component < {
     render() {
         const { formErrors } = this.state;
         return (
-            <div className="caseEdit-wrapper">
+        <div className="caseEdit-wrapper">
+         <link rel="stylesheet" href="editUsers.css" />
         <div className="form-wrapper">
           <h1> Rediger Bruker </h1>
 
           <form onSubmit={this.handleSubmit} noValidate>
 
           <div className="profilePic">
-          <img src="https://img.icons8.com/android/1600/user.png"class="AdminEditPrivateUsersImage"/>
+         
           </div>
             <div className="name">
            
@@ -203,31 +207,6 @@ export default class AdminEditPrivateUSers extends Component < {
               )}
             </div>
 
-             <div className="tel">
-              <label htmlFor="tel"> tlf </label>
-              <input
-                className={
-                  formErrors.tel.length > 0
-                    ? "error"
-                    : null
-                }
-                type="text"
-                value={this.state.tel}
-                placeholder="tlf"
-                name="tel"
-                noValidate
-                onChange={this.handleChange}
-              >
-              
-              </input>
-
-              {formErrors.tel.length > 0 && (
-                <span className="errorMessage">
-                  {formErrors.tel}
-                </span>
-              )}
-            </div>
-
              <div className="email">
               <label htmlFor="email"> Epost </label>
               <input
@@ -252,6 +231,33 @@ export default class AdminEditPrivateUSers extends Component < {
                 </span>
               )}
             </div>
+
+             <div className="tel">
+              <label htmlFor="tel"> Tlf </label>
+              <input
+                className={
+                  formErrors.tel.length > 0
+                    ? "error"
+                    : null
+                }
+                type="text"
+                value={this.state.tel}
+                placeholder="tlf"
+                name="tel"
+                noValidate
+                onChange={this.handleChange}
+              >
+              
+              </input>
+
+              {formErrors.tel.length > 0 && (
+                <span className="errorMessage">
+                  {formErrors.tel}
+                </span>
+              )}
+            </div>
+
+            
 
              <div className="subscription">
               <label htmlFor="subscription"> Abonnementstatus </label>
@@ -331,9 +337,10 @@ export default class AdminEditPrivateUSers extends Component < {
                 .deleteUser(id)
                 .then(user => console.log(user))
                 .catch((error: Error) => console.log(error.message));
-
-            window.location.reload();
+                history.push("/admin/heroes/"); 
+            
         }
+     
     }
 
     save() {
