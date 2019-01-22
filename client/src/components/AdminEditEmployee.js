@@ -16,8 +16,9 @@ export default class AdminEditEmployee extends Component {
 render(){
       return (
 
-        <div>
-        <h1> Denne siden er på vent til Erling er ferdig med EmployeeEdit.js</h1>
+        <div className="AdminEditEmployee-body">
+         <link rel="stylesheet" href="editUsers.css" />
+        <h1> hei</h1>
         </div>
       );
     }
