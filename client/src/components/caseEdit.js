@@ -119,6 +119,7 @@ export class caseEdit extends Component<{
 
 		return (
 			<div className="caseEdit-wrapper">
+			     <link rel="stylesheet" href="editCase.css" />
 				<div className="form-wrapper">
 					<h1> Rediger sak </h1>
 
