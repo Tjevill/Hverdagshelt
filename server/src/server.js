@@ -730,6 +730,19 @@ app.get("/allCases", (req, res) => {
         res.json(data);
     });
 });
+
+/**
+ * Get the 5 latest cases with status "Registrert" in you commune.
+ * :id is commune_id.
+ */
+app.get("/fiveLatestCommune/:id", (req, res) => {
+    console.log("Received get-request on endpoint /fiveLatestCommune/"+req.params.id);
+    caseDao.getFiveLatestRegistered(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
 /*
 app.put("/changeCaseStatus/:id", (req, res) => {
     caseDao.updateCaseStatus(req.params.id, (status, data) => {

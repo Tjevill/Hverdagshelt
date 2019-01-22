@@ -174,12 +174,18 @@ class CaseService {
         "Content-Type": "application/json"
       }
     });
+  }
 
+  /** Get the 5 latest cases with status "Registrert" in your commune
+   *  where there are no employee assigned yet.
+   */
+  getFiveLatest(commune_id: number): Promise<Case[]>{
+    return axios.get(url+"/fiveLatestCommune/"+commune_id);
   }
 
 
 
-   /**  Update one case_status */
+  /**  Update one case_status */
    /*
   updateCaseStatus(case_id: number, info: json): Promise<void>{
     return axios.put(url+'/updateCaseStatus/'+case_id, info,{

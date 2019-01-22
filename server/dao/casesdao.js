@@ -99,6 +99,7 @@ module.exports = class CasesDao extends Dao {
     }
 
 
+
 /*
     updateCaseStatus(json, callback) {
         var val = [
@@ -177,6 +178,17 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ? ORDER BY Cases.timestamp DESC",
         [province],
         callback
+        );
+    }
+
+    /**
+     * Get the 5 latest cases in your commune that has status "registrert" and no assigned employee.
+     * @param id - commune_id.
+     */
+    getFiveLatestRegistered(id, callback){
+        super.query("SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) AND status_id = 1 AND Cases.employee_id IS NULL ORDER BY Cases.timestamp DESC LIMIT 5",
+            [id],
+            callback
         );
     }
 
