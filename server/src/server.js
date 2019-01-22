@@ -935,34 +935,41 @@ app.get("/getAllCategories", (req, res) => {
 app.put("/updateCase/:case_id", (req, res) =>{
       console.log("Received put-request from client.");
         console.log("Trying to update case with id: " + req.params.case_id);
-   caseDao.updateCase(req.body, (status, data) =>{
+
+    var promise1 = new Promise(function(resolve, reject) {
+        caseDao.updateCase(req.body, (status, data) =>{
             if (!(req.body instanceof Object)) return res.sendStatus(400);
             res.status(status);
             res.json(data);
-            console.log(req.body);
+            resolve(data);
+        });
+    });
 
-            let email = req.body.email;
-            const mailOptionsUpdateCase = {
-                from: 'bedrehverdagshelt@gmail.com',
-                to: email,
-                subject: 'Saken er oppdatert!',
-                html:
-                    '<h1> Status: ' + req.body.status_id + '</h1>' +
-                    '<p><b> HverdagsHelt Support Team </b></p>' +
-                    '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
-                    '<p> <b> HverdagsHelt AS </b> </p>' +
-                    '<p> 72 59 50 00 </p>'
-            };
+    promise1.then(data => {
+        console.log('getting email from user_id: ' +req.body.user_id);
+        userdao.getOneByID(req.body.user_id, (status,data) => {
+            
+            let email = data[0].email;
+            const mailOptionsCase = {
+                    from: 'bedrehverdagshelt@gmail.com',
+                    to: email,
+                    subject: 'Din sak har blitt oppdaert!',
+                    html: 
+                        '<h1>' + req.body.status_id + ' </h1>' +
+                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                        
+                };
 
-            transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+            transporter.sendMail(mailOptionsCase, function(error, info){
                 if (error) {
                     console.log(error);
                 } else {
                     console.log('Email sent: ' + info.response);
                 }
-            });
-        });
+            }); // transporter
+        }); //getOneByID
     });
+});
 
 
 
@@ -994,7 +1001,7 @@ app.delete("/deleteCase/:case_id", (req, res) =>{
     });
 });
 
-/** create case on user side  */
+/** create case on user side and send email */
 app.post("/createUserCase", (req, res) => {
     console.log("Received post-request from client on endpoint /createUserCase");
      var promise1 = new Promise(function(resolve, reject) {
