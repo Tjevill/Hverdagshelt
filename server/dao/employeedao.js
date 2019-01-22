@@ -230,7 +230,7 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
     }
-	
+
 	/**
 	 * Verify if email exists
 	 * @param email the email to search for
@@ -252,13 +252,13 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
 	}
- 	
+
 	 getUserFromResetToken(token: string, callback: any) {
 
 		 super.query(
 			"SELECT * FROM Employee WHERE resetPasswordToken = ?",
 			[token],
-			callback 
+			callback
 		 );
 	 }
 

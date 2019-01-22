@@ -97,21 +97,6 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     }
-
-
-/*
-    updateCaseStatus(json, callback) {
-        var val = [
-            json.status_id,
-            json.case_id
-        ];
-        super.query(
-            "UPDATE Cases set status_id = ? WHERE case_id = ?",
-            val,
-            callback
-        );
-    }
-    */
 	
 	/**
 	 * Updates status_id to DELETED in database when user deletes one of their cases
@@ -216,6 +201,36 @@ module.exports = class CasesDao extends Dao {
       callback
     )
   }
+	
+	/**
+	 * Update status_id on one case
+	 * @param case_id The case you want to update
+	 * @param status_id The new status
+	 * @param callback
+	 */
+	updateCaseStatus ( case_id: number, status_id: number, callback: mixed) {
+		const val = [status_id, case_id];
+		super.query(
+			"UPDATE Cases set status_id = ? WHERE case_id = ?",
+			val,
+			callback
+		);
+	}
+	
+	/**
+	 * Update comment on one case
+	 * @param case_id The case you want to update
+	 * @param comment The comment
+	 * @param callback
+	 */
+	updateCaseComment ( case_id: number, comment: string, callback: mixed) {
+		const val = [comment, case_id];
+		super.query(
+			"UPDATE Cases set comment = ? WHERE case_id = ?",
+			val,
+			callback
+		);
+	}
 	
 };
 

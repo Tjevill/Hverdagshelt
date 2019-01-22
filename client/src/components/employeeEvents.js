@@ -49,7 +49,7 @@ export default class EmployeeEvents extends Component {
                         {this.events.map( (e, i) => (
 
                             <tr key={i}
-                                onClick={()=>history.push("/events/"+ e.event_id+"/edit")}
+                                onClick={()=>history.push("/admin/events/"+ e.event_id+"/edit")}
                             >
 
                                 <th scope="row">{e.event_id}</th>
