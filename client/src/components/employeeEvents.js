@@ -10,7 +10,7 @@ const history = createHashHistory();
 let commune_id = sessionStorage.getItem("commune");
 let superuser = sessionStorage.getItem("superuser");
 
-
+// onClick={()=>history.push("/admin/events/"+ e.event_id+"/edit")}
 
 
 /** eventService.getEventsCommune()
@@ -23,6 +23,7 @@ export default class EmployeeEvents extends Component {
 
     events = [];
     event = new Object();
+    editedEvent = new Object();
 
     render(){
 
@@ -48,7 +49,10 @@ export default class EmployeeEvents extends Component {
                     <tbody>
                         {this.events.map( (e, i) => (
 
-                            <tr key={i}
+                            <tr
+                                key={i}
+                                data-toggle = "modal"
+                                data-target = "#exampleModal2"
                                 onClick={()=>history.push("/admin/events/"+ e.event_id+"/edit")}
                             >
 
@@ -66,153 +70,157 @@ export default class EmployeeEvents extends Component {
                 <form
                     onSubmit= {() => this.addEvent()}
                 >
-                <div
-                    className="modal fade"
-                    id="exampleModal"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                >
-
                     <div
-                        className="modal-dialog"
-                        role="document"
+                        className="modal fade"
+                        id="exampleModal"
+                        tabIndex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
                     >
 
                         <div
-                            className="modal-content"
+                            className="modal-dialog"
+                            role="document"
                         >
 
                             <div
-                                className="modal-header">
-
-                                <h5
-                                    className="modal-title text-dark"
-                                    id="exampleModalLabel">
-                                    Legg til ny event i din kommune
-                                </h5>
-
-                                <button
-                                    type="button"
-                                    className="close"
-                                    data-dismiss="modal"
-                                    aria-label="Close">
-                                <span
-                                    aria-hidden="true"
-                                >&times;
-                                </span>
-                                </button>
-
-                            </div>
-
-                            <div
-                                className="modal-body"
+                                className="modal-content"
                             >
-                                <label
-                                    htmlFor = "Event-name"
-                                >
-                                    Navn på event
-                                </label>
-                                <input
-                                    type = "event-name"
-                                    className = "form-control"
-                                    id = "Event-name"
-                                    onChange={ event => (this.event.name = event.target.value) }
-                                    required
 
-                                />
-
-                                <label
-                                    htmlFor = "address"
-                                >
-                                    Adresse
-                                </label>
-                                <input
-                                    type = "name"
-                                    className = "form-control"
-                                    id = "address"
-                                    onChange={ event => (this.event.address = event.target.value ) }
-                                    required
-                                />
-
-                                <input
-                                    type = "venue"
-                                    className = "form-control mt-2"
-                                    placeholder = "Vil du spesifisere nærmere hvor eventen er, skriv her"
-                                    id = "venue"
-                                    onChange = { event => (this.event.venue = event.target.value ) }
-                                />
-
-                                <label
-                                    htmlFor = "zipcode"
-                                >
-                                    Postkode
-                                </label>
-                                <input
-                                    type= "zipcode"
-                                    className = "form-control"
-                                    id = "zipcode"
-                                    maxLength= "4"
-                                    size = "4"
-                                    required
-                                    onChange={ event => (this.event.zipcode = event.target.value ) }
-                                />
-
-                                <label
-                                    htmlFor = "date"
-                                >
-                                    Velg dato og tidspunkt
-                                </label>
-                                <input
-                                    className= "form-control"
-                                    type = "datetime-local"
-                                    id = "date"
-                                    name = "date"
-                                    onChange = { event => (this.event.date = event.target.value) }
-                                    required
-                                />
-
-                                <label
-                                    htmlFor = "description"
-                                >
-                                    Beskrivelse av event
-                                </label>
-                                <textarea
-                                    rows = "8"
-                                    type = "description"
-                                    className = "form-control"
-                                    id = "description"
-                                    onChange = { event => (this.event.description = event.target.value) }
-                                    required
-                                />
-
-                            </div>
-                            <div
-                                className="modal-footer"
-                            >
                                 <div
-                                    className="float-left"
-                                >
+                                    className="modal-header">
+
+                                    <h5
+                                        className="modal-title text-dark"
+                                        id="exampleModalLabel">
+                                        Legg til ny event i din kommune
+                                    </h5>
+
+                                    <button
+                                        type="button"
+                                        className="close"
+                                        data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span
+                                        aria-hidden="true"
+                                    >&times;
+                                    </span>
+                                    </button>
+
                                 </div>
 
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    data-dismiss="modal">
-                                    Lukk
-                                </button>
+                                <div
+                                    className="modal-body"
+                                >
+                                    <label
+                                        htmlFor = "Event-name"
+                                    >
+                                        Navn på event
+                                    </label>
+                                    <input
+                                        type = "event-name"
+                                        className = "form-control"
+                                        id = "Event-name"
+                                        onChange={ event => (this.event.name = event.target.value) }
+                                        required
 
-                                <input
-                                    className="btn btn-primary"
-                                    type="submit"
-                                    value="Lagre"
-                                />
+                                    />
+
+                                    <label
+                                        htmlFor = "address"
+                                    >
+                                        Adresse
+                                    </label>
+                                    <input
+                                        type = "name"
+                                        className = "form-control"
+                                        id = "address"
+                                        onChange={ event => (this.event.address = event.target.value ) }
+                                        required
+                                    />
+
+                                    <input
+                                        type = "venue"
+                                        className = "form-control mt-2"
+                                        placeholder = "Vil du spesifisere nærmere hvor eventen er, skriv her"
+                                        id = "venue"
+                                        onChange = { event => (this.event.venue = event.target.value ) }
+                                    />
+
+                                    <label
+                                        htmlFor = "zipcode"
+                                    >
+                                        Postkode
+                                    </label>
+                                    <input
+                                        type= "zipcode"
+                                        className = "form-control"
+                                        id = "zipcode"
+                                        maxLength= "4"
+                                        size = "4"
+                                        required
+                                        onChange={ event => (this.event.zipcode = event.target.value ) }
+                                    />
+
+                                    <label
+                                        htmlFor = "date"
+                                    >
+                                        Velg dato og tidspunkt
+                                    </label>
+                                    <input
+                                        className= "form-control"
+                                        type = "datetime-local"
+                                        id = "date"
+                                        name = "date"
+                                        onChange = { event => (this.event.date = event.target.value) }
+                                        required
+                                    />
+
+                                    <label
+                                        htmlFor = "description"
+                                    >
+                                        Beskrivelse av event
+                                    </label>
+                                    <textarea
+                                        rows = "8"
+                                        type = "description"
+                                        className = "form-control"
+                                        id = "description"
+                                        onChange = { event => (this.event.description = event.target.value) }
+                                        required
+                                    />
+
+                                </div>
+                                <div
+                                    className="modal-footer"
+                                >
+                                    <div
+                                        className="float-left"
+                                    >
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        data-dismiss="modal">
+                                        Lukk
+                                    </button>
+
+                                    <input
+                                        className="btn btn-primary"
+                                        type="submit"
+                                        value="Lagre"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 </form>
+
+
+
+
             </div>
 
 
@@ -259,6 +267,190 @@ export default class EmployeeEvents extends Component {
         console.log(this.event.description);
         eventService
             .createEvent(this.event)
+    }
+
+    editEvent(eventid){
+
+
+        this.editedEvent = this.events.find(a => a.event_id === eventid);
+        console.log(this.editedEvent);
+
+        return (
+
+            <form
+                onSubmit= {() => this.save()}
+            >
+                <div
+                    className="modal fade"
+                    id="exampleModal2"
+                    tabIndex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                >
+
+                    <div
+                        className="modal-dialog"
+                        role="document"
+                    >
+
+                        <div
+                            className="modal-content"
+                        >
+
+                            <div
+                                className="modal-header">
+
+                                <h5
+                                    className="modal-title text-dark"
+                                    id="exampleModalLabel">
+                                    Endre event
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close">
+                                    <span
+                                        aria-hidden="true"
+                                    >&times;
+                                    </span>
+                                </button>
+
+                            </div>
+
+                            <div
+                                className="modal-body"
+                            >
+                                <label
+                                    htmlFor = "Event-name"
+                                >
+                                    Navn på event
+                                </label>
+                                <input
+                                    type = "event-name"
+                                    className = "form-control"
+                                    id = "Event-name"
+                                    defaultValue={this.editedEvent.name}
+                                    onChange={ event => (this.editedEvent.name = event.target.value) }
+                                    required
+
+                                />
+
+                                <label
+                                    htmlFor = "address"
+                                >
+                                    Adresse
+                                </label>
+                                <input
+                                    type = "name"
+                                    className = "form-control"
+                                    id = "address"
+                                    defaultValue={this.editedEvent.address}
+                                    onChange={ event => (this.editedEvent.address = event.target.value ) }
+                                    required
+                                />
+
+                                <input
+                                    type = "venue"
+                                    className = "form-control mt-2"
+                                    placeholder = "Vil du spesifisere nærmere hvor eventen er, skriv her"
+                                    id = "venue"
+                                    defaultValue={this.editedEvent.venue}
+                                    onChange = { event => (this.editedEvent.venue = event.target.value ) }
+                                />
+
+                                <label
+                                    htmlFor = "zipcode"
+                                >
+                                    Postkode
+                                </label>
+                                <input
+                                    type= "zipcode"
+                                    className = "form-control"
+                                    id = "zipcode"
+                                    maxLength= "4"
+                                    size = "4"
+                                    required
+                                    defaultValue={this.editedEvent.zipcode}
+                                    onChange={ event => (this.editedEvent.zipcode = event.target.value ) }
+                                />
+
+                                <label
+                                    htmlFor = "date"
+                                >
+                                    Velg dato og tidspunkt
+                                </label>
+                                <input
+                                    className= "form-control"
+                                    type = "datetime-local"
+                                    id = "date"
+                                    name = "date"
+                                    defaultValue = {this.editedEvent.date.substring(0,16)}
+                                    onChange = { event => (this.editedEvent.date = event.target.value) }
+                                    required
+                                />
+
+                                <label
+                                    htmlFor = "description"
+                                >
+                                    Beskrivelse av event
+                                </label>
+                                <textarea
+                                    rows = "8"
+                                    type = "description"
+                                    className = "form-control"
+                                    id = "description"
+                                    defaultValue={this.editedEvent.description}
+                                    onChange = { event => (this.editedEvent.description = event.target.value) }
+                                    required
+                                />
+
+                            </div>
+                            <div
+                                className="modal-footer"
+                            >
+                                <div
+                                    className="float-left"
+                                >
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-dismiss="modal">
+                                    Lukk
+                                </button>
+
+                                <input
+                                    className="btn btn-primary"
+                                    type="submit"
+                                    value="Lagre"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        );
+    }
+
+    save(){
+        console.log(this.editedEvent.name);
+        console.log(this.editedEvent.date);
+        console.log(this.editedEvent.description);
+        console.log(this.editedEvent.zipcode);
+        console.log(this.editedEvent.address);
+        this.editedEvent.date = this.editedEvent.date.replace("T"," ").substring(0,16);
+        eventService
+            .updateEvent(
+                this.editedEvent.event_id,
+                this.editedEvent
+            );
+        history.push("/admin/events");
     }
 }
 

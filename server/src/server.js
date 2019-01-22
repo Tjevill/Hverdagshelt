@@ -144,8 +144,8 @@ app.post("/reset/user/:email", (req, res) => {
             }
 
         }); // transporter end
-        } //ifelse end 
-    
+        } //ifelse end
+
     });
 });
 
@@ -163,7 +163,7 @@ app.post("/reset/emp/:email", (req, res) => {
     });
 
     promise1.then(data => {
-        console.log(data[0].employee_id);            
+        console.log(data[0].employee_id);
         if (data[0] == undefined) {
         console.log(':::email entered not found in database::::');
         } else {
@@ -171,8 +171,8 @@ app.post("/reset/emp/:email", (req, res) => {
         const token = crypto.randomBytes(20).toString('hex');
         console.log(':::::::::' + token);
         empDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].employee_id, (status, data) => {
-        }); 
-        
+        });
+
         const mailOptions = {
             from: `bedrehverdagshelt@gmail.com`,
             to: `${req.params.email}`,
@@ -194,8 +194,8 @@ app.post("/reset/emp/:email", (req, res) => {
             }
 
         }); // transporter end
-        } //ifelse end 
-    
+        } //ifelse end
+
     });
 });
 
@@ -214,7 +214,7 @@ app.post("/reset/org/:email", (req, res) => {
     });
 
     promise1.then(data => {
-        console.log(data[0].org_id);            
+        console.log(data[0].org_id);
         if (data[0] == undefined) {
         console.log(':::email entered not found in database::::');
         } else {
@@ -222,8 +222,8 @@ app.post("/reset/org/:email", (req, res) => {
         const token = crypto.randomBytes(20).toString('hex');
         console.log(':::::::::' + token);
         orgDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].org_id, (status, data) => {
-        }); 
-        
+        });
+
         const mailOptions = {
             from: `bedrehverdagshelt@gmail.com`,
             to: `${req.params.email}`,
@@ -833,6 +833,27 @@ app.get("/allCases", (req, res) => {
     });
 });
 
+/**
+ * Get the 5 latest cases with status "Registrert" in you commune.
+ * :id is commune_id.
+ */
+app.get("/fiveLatestCommune/:id", (req, res) => {
+    console.log("Received get-request on endpoint /fiveLatestCommune/"+req.params.id);
+    caseDao.getFiveLatestRegistered(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/*
+app.put("/changeCaseStatus/:id", (req, res) => {
+    caseDao.updateCaseStatus(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+*/
+
 app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 	caseDao.updateCaseStatusToDeleted(req.params.id, (status, data) => {
 		res.status(status);
@@ -1211,49 +1232,49 @@ app.post('/userVerification', (req: Request, res: Response) => {
 
  app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
-    
+
     empDao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user. 
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
             console.log(':::::::::::::::::::::::Token not accepted.');
             res.status(500).json("Token not accepted.");
 
         }else if (data[0].resetPasswordExpire < Date.now()) {
             console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire 
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
             console.log('Token expired');
             res.status(400).json("Token expired");
-           
+
 
         } else { //
-            
+
             console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-            
-            res.status(200).json(data); 
-        } 
+
+            res.status(200).json(data);
+        }
     });
  });
 
  app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
-    
+
     orgDao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user. 
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
             console.log(':::::::::::::::::::::::Token not accepted.');
             res.status(500).json("Token not accepted.");
 
         }else if (data[0].resetPasswordExpire < Date.now()) {
             console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire 
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
             console.log('Token expired');
             res.status(400).json("Token expired");
-           
+
 
         } else { //
-            
+
             console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-            
-            res.status(200).json(data); 
-        } 
+
+            res.status(200).json(data);
+        }
     });
  });
 

@@ -25,6 +25,7 @@ const history = createHistory({
 export class Report extends Component {
     message = " ";
     error = " ";
+    currentUser = 0;
 
     categories = [];
     selectedFile: null;
@@ -228,6 +229,7 @@ export class Report extends Component {
                                 }}
                                 disableDefaultUI={true}
                                 onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                                language="no"
                             >
                                 <Marker
                                     name={"current-location"}
@@ -415,7 +417,7 @@ export class Report extends Component {
                     zipcode: this.state.zipcode,
                     picture: this.state.picture,
                     category_id: this.state.category_id,
-                    user_id: this.state.user_id
+                    user_id: this.currentUser
                 };
 
                 console.log(casedata);
@@ -433,6 +435,7 @@ export class Report extends Component {
     }
 
     componentDidMount(){
+        this.currentUser = sessionStorage.getItem("userid");
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));

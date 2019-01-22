@@ -69,13 +69,21 @@ const history = createHashHistory();
 class forsideMain extends Component {
 
     render() {
+        let button;
+        if(sessionStorage.getItem("access")=="kommune"){
+
+        }else{
+          button =(
+            <button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button>
+          );
+        }
         return(
             <section id="pageintro" className="hoc clear">
                 <div>
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                    <footer><button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button></footer>
+                    <footer>{button}</footer>
 
                 </div>
             </section>
@@ -124,8 +132,8 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-      
-      
+
+
 
         if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
         else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}

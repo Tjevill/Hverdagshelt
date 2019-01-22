@@ -97,7 +97,24 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     }
-	
+
+
+
+
+/*
+    updateCaseStatus(json, callback) {
+        var val = [
+            json.status_id,
+            json.case_id
+        ];
+        super.query(
+            "UPDATE Cases set status_id = ? WHERE case_id = ?",
+            val,
+            callback
+        );
+    }
+    */
+
 	/**
 	 * Updates status_id to DELETED in database when user deletes one of their cases
 	 * @param id The case id
@@ -166,6 +183,17 @@ module.exports = class CasesDao extends Dao {
         );
     }
 
+    /**
+     * Get the 5 latest cases in your commune that has status "registrert" and no assigned employee.
+     * @param id - commune_id.
+     */
+    getFiveLatestRegistered(id, callback){
+        super.query("SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) AND status_id = 1 AND Cases.employee_id IS NULL ORDER BY Cases.timestamp DESC LIMIT 5",
+            [id],
+            callback
+        );
+    }
+
     /** Get the number of cases in the database. */
     getNumberOfCases(callback){
         super.query(
@@ -202,7 +230,7 @@ module.exports = class CasesDao extends Dao {
       callback
     )
   }
-	
+
 	/**
 	 * Update status_id on one case
 	 * @param case_id The case you want to update
@@ -217,7 +245,7 @@ module.exports = class CasesDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**
 	 * Update comment on one case
 	 * @param case_id The case you want to update
@@ -232,7 +260,7 @@ module.exports = class CasesDao extends Dao {
 			callback
 		);
 	}
-	
+
 };
 
 
