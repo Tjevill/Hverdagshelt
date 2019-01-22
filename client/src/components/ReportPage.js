@@ -418,6 +418,9 @@ export class Report extends Component {
                     user_id: this.state.user_id
                 };
 
+                console.log(casedata);
+                console.log(sessionStorage.getItem('user_id'));
+
                 if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
                 caseService.createUserCase(casedata)
                     .then(res => {

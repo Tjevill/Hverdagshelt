@@ -206,31 +206,31 @@ class CaseService {
     return axios.get(url+'/allCases/'+province);
   }
 
-
-
-    getCategories(): Promise<Category[]> {
-        return axios.get(url + '/categories');
-    }
+  getCategories(): Promise<Category[]> {
+      return axios.get(url + '/categories');
+  }
 
   getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
-    createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
-        return axios.post('/cases', {
-            headline: headline,
-            description: description,
-            longitude: longitude,
-            latitude: latitude,
-            picture: picture,
-            category_id: category_id
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+
+  /* Redundant, CreateUserCase will be used instead. 
+  createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
+      return axios.post('/cases', {
+          headline: headline,
+          description: description,
+          longitude: longitude,
+          latitude: latitude,
+          picture: picture,
+          category_id: category_id
+      })
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+  } */
 
 	changeCaseStatus (case_id: number): Promise<void> {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);

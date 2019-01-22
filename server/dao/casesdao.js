@@ -128,6 +128,7 @@ module.exports = class CasesDao extends Dao {
     *   @param json - json-object with the necessary attributes.
      */
     createUserCase(json:json, callback){
+        console.log('::::::::::: desc: ' + json.description + ' user_id: ' + json.user_id);
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
         super.query(
