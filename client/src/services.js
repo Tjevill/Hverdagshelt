@@ -322,7 +322,7 @@ class UserService {
   }
 
   getUsersProviceFromUserID(id: number): Promise<string>{
-    return axios.put(url + '/userProvince/' + id);
+    return axios.get(url + '/userProvince/' + id);
   }
 
   findUserByEmail(email: string): Promise<User>{

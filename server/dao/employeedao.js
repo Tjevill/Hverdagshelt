@@ -231,6 +231,4 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
     }
-
-
 };
