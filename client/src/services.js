@@ -259,7 +259,7 @@ class CaseService {
 	}
 	
 	updateCaseComment (case_id: number, comment: string): Promise<void> {
-		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
+		return axios.put(url + '/changeCaseComment/' + case_id + '/' + comment);
 		
 	}
 

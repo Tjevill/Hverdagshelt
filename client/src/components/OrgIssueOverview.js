@@ -63,7 +63,7 @@ export default class OrgIssueOverview extends Component<{
   fylker =[];
   kommuner = [];
   casesbyKommune = [];
-  currentCase = [];
+  currentCase = {};
 
 
   handleChangeKommune = event =>{
@@ -247,19 +247,31 @@ export default class OrgIssueOverview extends Component<{
     console.log(event.target.value);
     console.log(this.casesbyStatus);
   }
-  saveComment (string) {
-        document.getElementById('comment-input').value = string;
-        console.log('test');
-        console.log(this.currentCase)
+  saveComment (id) {
+      caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+          .then(res => {
+              console.log(res);
+              console.log('test');
+          })
+          .catch((error: Error) => Alert.danger(error.message));
+        console.log(document.getElementById('comment-input').value);
+        console.log('sak')
         window.alert("Kommentar lagret!");
     }
 
     handleSelected(id) {
-    console.log(this.cases);
-    console.log('Sak id: ', id);
+        console.log(this.cases);
+        console.log('Sak id: ', id);
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
-      this.currentCase = filteredCase;
+        console.log(filteredCase)
+        if(sessionStorage.getItem("userid") != filteredCase.org_id) {
+            console.log(this.currentCase);
+            this.currentCase = filteredCase;
+        } else {
+            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
+            return null;
+        }
     }
 
   render() {
@@ -291,15 +303,9 @@ export default class OrgIssueOverview extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning edit-button">
-                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                      &nbsp;Endre Status
-                  </span>
-                </a>
-                  &nbsp;&nbsp;&nbsp;
                   <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
                   <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
-                    	&nbsp;Legg inn kommentar&nbsp;
+                    	&nbsp;Oppdater sak&nbsp;
                   </span>
                   </button>
                       <div className="modal fade" id={casen.case_id} tabIndex="-1"
@@ -308,7 +314,7 @@ export default class OrgIssueOverview extends Component<{
                           <div className="modal-dialog" role="document">
                               <div className="modal-content">
                                   <div className="modal-header">
-                                      <h5 className="modal-title" id="exampleModalLabel">Kommenter sak</h5>
+                                      <h5 className="modal-title" id="exampleModalLabel">Kommenter sak eller endre status</h5>
                                       <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                       </button>
@@ -323,7 +329,7 @@ export default class OrgIssueOverview extends Component<{
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
                                       <button type="button" className="btn btn-primary"
-                                              onClick={this.saveComment}>
+                                              onClick={() => this.saveComment(casen.case_id)}>
                                           Lagre endringer
                                       </button>
                                   </div>
