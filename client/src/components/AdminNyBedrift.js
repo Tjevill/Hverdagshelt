@@ -128,6 +128,7 @@ export default class AdminNyBedrift extends Component {
             type="text"
             defaultValue=""
             name="tel"
+            maxLength="8"
             onChange={this.handleChange}
           />
         </div>
@@ -263,12 +264,13 @@ export default class AdminNyBedrift extends Component {
                   .addOrgCat(this.category_ids, response.insertId)
                   .then(response => {
                       console.log("2nd response: ", response);
-                      history.push('/admin/bedrift/');
+
                   })
                   .catch(
                       (error: Error) =>
                           (this.message = error.message)
                   );
+              history.push('/admin/bedrift/');
 
           })
           .catch(

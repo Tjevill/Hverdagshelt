@@ -163,7 +163,7 @@ export default class AdminRedigerBedrift extends Component<{ match: { params: { 
                         <button type="button" onClick={this.save} className="btn btn-primary">
                             Endre data
                         </button>
-                        <h1>{this.message}</h1>
+                        <h4>{this.message}</h4>
                     </div>
 
                 </div>
