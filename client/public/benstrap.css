@@ -151,14 +151,6 @@ body,
 
 }
 
-@media (min-width: 640px) {
-  .collapse.dont-collapse-sm {
-    display: block;
-    height: auto !important;
-    visibility: visible;
-  }
-}
-
 .loading-animation {
   text-align: center;
 }
@@ -171,6 +163,20 @@ body,
 
 #employee-edit-page .commune-option:hover{
   cursor: pointer;
+}
+
+@media (min-width: 640px) {
+
+    #login-page .login-title:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+}
+
+#login-page .justify-content-center {
+    width: 100%;
+    margin: 0;
 }
 
 .max {
