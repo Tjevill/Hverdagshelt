@@ -52,8 +52,7 @@ export class Report extends Component {
         longitude: "",
         picture: "",
         zipcode: "",
-        category_id: "",
-        user_id: sessionStorage.getItem("userid"),
+        category_id: ""
     };
 
     fileSelectedHandler = event => {
@@ -414,8 +413,8 @@ export class Report extends Component {
                     longitude: this.lng,
                     zipcode: this.state.zipcode,
                     picture: this.state.picture,
-                    category_id: this.state.category_id,
-                    user_id: this.state.user_id
+                    category_id: this.state.category_id
+
                 };
 
                 if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';

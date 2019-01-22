@@ -130,6 +130,7 @@ module.exports = class CasesDao extends Dao {
     createUserCase(json:json, callback){
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
+        console.log("VALVALVALVALVALVLA: ", val)
         super.query(
             "INSERT INTO Cases  ( description, longitude, latitude, status_id, user_id, category_id, zipcode, headline, picture ) VALUES ( ?, ? ,?, ?, ?, ?, ?, ?, ? )",
             val,

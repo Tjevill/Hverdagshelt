@@ -15,8 +15,8 @@ export default class ProfilePage extends Component {
 		return (
 
 			<div>
-				<ProfileCard id = {sessionStorage.getItem("userid")} />
-				<CaseListCard id = {sessionStorage.getItem("userid")} />
+				<ProfileCard />
+				<CaseListCard />
 			</div>
 		);
         } else {
@@ -59,7 +59,7 @@ export class ProfileCard extends Component <{ id: number }> {
 	}
 
 	componentDidMount () {
-		userService.getUserByID(this.props.id)
+		userService.getUserByToken(this.props.id)
 			.then(response => {
 				this.user = response[0];
                 loaded1 = 1;

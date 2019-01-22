@@ -342,14 +342,46 @@ app.get('/user/:id', (req: Request, res: Response) => {
     userdao.getOneByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
-
     })
 });
 
 /**
- * Updates user by id
+ * Get one user from DB by token
  */
-app.put('/user/:id', checkIfEmployee, (req: Request, res: Response) => {
+app.get('/getuser/', (req: Request, res: Response) => {
+
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded) {
+                console.log("DECODED: ", decoded.userid)
+                userdao.getOneByID(decoded.userid, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                    console.log("/getuser/ sending: ", data)
+                })
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+
+
+});
+
+/**
+ * Updates user by id by an Employee
+ */
+app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
+    userdao.updateUser(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Updates user by id by themselves
+ */
+app.put('/user/:id', checkIfUser, (req: Request, res: Response) => {
     userdao.updateUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -1058,12 +1090,29 @@ app.delete("/deleteCase/:case_id", checkIfEmployee, (req, res) =>{
 });
 
 /** create case on user side  */
-app.post("/createUserCase", (req, res) => {
-    console.log("Received post-request from client on endpoint /createEvent");
-    caseDao.createUserCase(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
+app.post("/createUserCase", checkIfUser ,(req, res) => {
+
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+
+            console.log("Received post-request from client on endpoint /createEvent");
+            req.body.user_id = decoded.userid;
+            caseDao.createUserCase(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+            });
+
+    } else {
+        console.log("Feil innlogging! Sender brevbombe.");
+        res.sendStatus(403);
+    }
     });
+
+
+
 });
 
 
@@ -1397,24 +1446,26 @@ app.post("/loginhh", (req, res) => {
                 console.log("data email: " + data[0].password);
 
                 const lagretPass = data[0].password;
+                const user_id = data[0].user_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password1, data[0].secret);
                 // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, user_id : user_id});
                 } else {
                     resolve(false);
-                }
-            } else { resolve(false); }
+                }} else { resolve({valid: false}); }
 
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        // console.log("Value: ", value)
+        if (value.valid) {
             userdao.getUserByEmail(req.body.email1, (status, data) => {
                 // console.log("STATUS: ", status);
-                let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
+                let token = jwt.sign({email: value.email, userid: value.user_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
             });
@@ -1440,22 +1491,27 @@ app.post("/logink", (req, res) => {
 
                 console.log("data email: " + req.body.email3);
                 const lagretPass = data[0].password;
+                const employee_id = data[0].employee_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password3, data[0].secret);
                 // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, employee_id : employee_id});
                 } else {
                     resolve(false);
-                }} else { resolve(false); }
+                }} else { resolve({valid: false}); }
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        // console.log("Value: ", value)
+        if (value.valid) {
             employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
 
-                let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
+                console.log("employee_id; " + value.employee_id)
+
+                let token = jwt.sign({email: value.email, userid: value.employee_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].employee_id, name: data[0].name, commune: data[0].commune, superuser: data[0].superuser});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
             });
@@ -1660,12 +1716,12 @@ function checkIfOrganization(req, res, next) {
 function checkIfUser(req, res, next) {
     try {
         let token = req.headers['x-access-token'] || req.headers['authorization'];
-        // console.log ("JSHKDJSHKJFHK: ", req.headers);
+        console.log ("JSHKDJSHKJFHK: ", req.headers);
         jwt.verify(token, privateKey, function(err, decoded)  {
             if (decoded && decoded.email) {
                 let promise1 = new Promise(function (resolve, reject) {
-                    empDao.searchOrgEmail(decoded.email, (status, data) => {
-                        // console.log("fra emdao promise: " + data[0].verify);
+                    empDao.searchUserEmail(decoded.email, (status, data) => {
+                        console.log("fra emdao promise: " + data[0].verify);
                         if (!isNaN(data[0].verify)) {
                             resolve(data[0].verify);
                         } else {
@@ -1675,15 +1731,15 @@ function checkIfUser(req, res, next) {
                 }  );
 
                 promise1.then(function (value) {
-                    // console.log("decoded.email : " + decoded.email);
-                    // console.log("decoded : " + decoded);
-                    // console.log("value : " + value);
+                    console.log("decoded.email : " + decoded.email);
+                    console.log("decoded : " + decoded);
+                    console.log("value : " + value);
 
                     if (decoded && decoded.email && (value === 1)) {
                         console.log("******************  Operasjonen gikk gjennom!  ******************")
                         next();
                     } else {
-                        // console.log("Feil innlogging! Sender brevbombe.");
+                        console.log("Feil innlogging! Sender brevbombe.");
                         res.sendStatus(403);
                     }
                 });
@@ -1700,7 +1756,6 @@ function checkIfUser(req, res, next) {
     }
 }
 
-
 // REFRESHING TOKEN
 app.use("/refreshtoken", (req, res) => {
     let token = req.headers["x-access-token"];
@@ -1710,10 +1765,10 @@ app.use("/refreshtoken", (req, res) => {
             res.status(401);
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
-            console.log("/Refreshtoken: decoded.email from token: " + decoded.email)
+            console.log("/Refreshtoken: decoded.userid from token: " + decoded.userid)
             console.log()
             let token = jwt.sign({
-                email: decoded.email
+                email: decoded.email, userid: decoded.userid
             }, privateKey, { expiresIn: 60000 });
             res.json({ jwt: token });
             // console.log(lib.verify.token)

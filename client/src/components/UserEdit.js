@@ -182,10 +182,11 @@ export default class UserEdit extends Component {
 
 
   componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
+    // this.userid = sessionStorage.getItem("userid");
     userService
-      .getUserByID(this.userid)
+      .getUserByToken()
       .then(user => {
+          console.log("User info: " , user)
         this.user = user[0];
         this.state.tel = this.user.tel;
         this.state.zip = this.user.zipcode;
@@ -256,7 +257,7 @@ export default class UserEdit extends Component {
       this.forceUpdate();
     }else{
     userService
-      .updateOne(user)
+      .updateMyUserInfo(user)
       .then(()=>{
           console.log("happy");
           this.bilde ="https://visualpharm.com/assets/191/Checked%20User%20Male-595b40b75ba036ed117d6ed4.svg";

@@ -188,7 +188,7 @@ class CaseService {
   *   Sets status_id = 1.
   */
   createUserCase(casee: Case): Promise<void>{
-    return axios.post(url+'/createUserCase', casee);
+    return axios.post(url+'/createUserCase', casee, axiosConfig);
   }
 
   /** Search for case by category */
@@ -298,13 +298,21 @@ class UserService {
     return axios.get(url + '/user');
   }
 
-  getUserByID(id: number): Promise<User[]>{
-    return axios.get(url + '/user/' + id);
-  }
+    getUserByID(id: number): Promise<User[]>{
+        return axios.get(url + '/user/' + id);
+    }
 
-  updateOne(user: User): Promise<void>{
-    return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
-  }
+    getUserByToken(): Promise<User>{
+        return axios.get(url + '/getuser/', axiosConfig);
+    }
+
+    updateOne(user: User): Promise<void>{
+        return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
+    }
+
+    updateMyUserInfo(user: User): Promise<void>{
+        return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
+    }
 
   deleteUser(id: number): Promise<void>{
     return axios.delete(url + '/user/' + id, axiosConfig);
