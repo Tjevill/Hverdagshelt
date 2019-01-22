@@ -31,7 +31,9 @@ import EmployeeEvents from "./components/employeeEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
-import ForgottenPassword from "./components/ForgottenPassword";
+import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
+import ForgottenPasswordEmployee from "./components/ForgottenPasswordEmployee";
+import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganization";
 import IssueOverview from "./components/IssueOverview";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import LoginPage from "./components/LoginPage";
@@ -57,6 +59,8 @@ import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
 import UpdateUserPasswordFromToken from "./components/UpdateUserPasswordFromToken";
+import UpdateEmployeePasswordFromToken from "./components/UpdateEmployeePasswordFromToken";
+import UpdateOrgPasswordFromToken from "./components/UpdateOrgPasswordFromToken";
 
 const history = createHashHistory();
 
@@ -151,8 +155,13 @@ class Main extends Component {
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
-                                <Route exact path="/reset" component={ForgottenPassword} />
+                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />¨
+                                <Route exact path="/reset/emp/:token" component={UpdateEmployeePasswordFromToken} />
+                                <Route exact path="/reset/org/:token" component={UpdateOrgPasswordFromToken} />
+                                <Route exact path="/reset/user" component={ForgottenPasswordUser} />
+                                <Route exact path="/reset/emp" component={ForgottenPasswordEmployee} />
+                                <Route exact path="/reset/org" component={ForgottenPasswordOrganization} />
+
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>

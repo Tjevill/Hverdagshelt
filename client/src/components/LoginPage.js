@@ -230,7 +230,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/user" className="justalink">Glemt passord?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -278,7 +278,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/org" className="justalink">Glemt passord?</a></div>
                                                 {loading2 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -326,7 +326,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/emp" className="justalink">Glemt passord?</a></div>
                                                 {loading3 &&
                                                 <div> Loading </div>}
                                             </div>
