@@ -62,7 +62,8 @@ const history = createHashHistory();
 
 
 class forsideMain extends Component {
-    render () {
+
+    render() {
         return(
             <section id="pageintro" className="hoc clear">
                 <div>
@@ -75,6 +76,8 @@ class forsideMain extends Component {
             </section>
         );
     }
+
+
 }
 
 class ikkeforsideMain extends Component {
@@ -157,7 +160,7 @@ class Main extends Component {
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
                                 <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
