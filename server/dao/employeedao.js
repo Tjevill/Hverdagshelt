@@ -231,19 +231,45 @@ module.exports = class UserDao extends Dao {
 			callback
 		);
     }
-	
-	/**
-	 * Verify if email exists
-	 * @param email the email to search for
-	 * @param callback
-	 */
-	searchEmail (email: string, callback: mixed) {
-		super.query(
-			"SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
-			[email],
-			callback
-		)
-	}
+
+    /**
+     * Verify if email exists in Employee table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchEmployeeEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
+            [email],
+            callback
+        )
+    }
+
+    /**
+     * Verify if email exists in Organization table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchOrgEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM Organization WHERE Organization.email = ?",
+            [email],
+            callback
+        )
+    }
+
+    /**
+     * Verify if email exists in User table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchUserEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM User WHERE User.email = ?",
+            [email],
+            callback
+        )
+    }
 
 
 };

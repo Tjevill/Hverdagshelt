@@ -27,6 +27,7 @@ export function refreshToken() {
             let mytoken = myJson.jwt;
             sessionStorage.setItem('storedtoken', mytoken);
 
+
             if (mytoken != undefined) {
 
                 console.log("Refreshtoken: Token refreshed!");
@@ -155,38 +156,7 @@ export class ListGroup extends Component<{
   }
 }
 
-class NavBarBrand extends Component<{ children?: React.Node }> {
-  render() {
-    if (!this.props.children) return null;
-    return (
-      <NavLink className="navbar-brand" activeClassName="active" exact to="/">
-        {this.props.children}
-      </NavLink>
-    );
-  }
-}
 
-class NavBarLink extends Component<{ to: string, exact?: boolean, children?: React.Node }> {
-  render() {
-    if (!this.props.children) return null;
-    return (
-      <NavLink className="nav-link" exact={this.props.exact} to={this.props.to}>
-        {this.props.children}
-      </NavLink>
-    );
-  }
-}
-
-class NavBarButton extends Component<{ to: string, exact?: boolean, children?: React.Node }> {
-  render() {
-    if (!this.props.children) return null;
-    return (
-      <NavLink className="nav navbar-nav navbar-right" activeClassName="active" exact={this.props.exact} to={this.props.to}>
-        {this.props.children}
-      </NavLink>
-    );
-  }
-}
 
 
 class ButtonSuccess extends Component<{
@@ -268,7 +238,18 @@ export class Loading extends Component {
     render(){
         return (
             <div className="loading-animation">
-              <img src='https://i.redd.it/ounq1mw5kdxy.gif' />
+                <img src='https://i.redd.it/ounq1mw5kdxy.gif' alt="loader" />
+            </div>
+        );
+    }
+}
+
+
+export class LoadingFirkant extends Component {
+    render(){
+        return (
+            <div className="loading-animation">
+                <img src='/images/805.svg'  alt="loader" />
             </div>
         );
     }

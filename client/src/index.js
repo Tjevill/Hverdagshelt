@@ -103,13 +103,17 @@ class Main extends Component {
 
     amILoggedin = null;
 
-
     componentDidMount() {
         // console.log("This location (from componentDidMount: " + window.location);
+
         const promiseObject = refreshToken();
+        console.log("PO:  ", sessionStorage.getItem("storedtoken"))  // returns pending
         promiseObject.then(value => {
+            console.log("Am I logged in? " + value);  // does not get triggerede
             if (value != 'undefined') {
                 this.amILoggedin = value;
+            } else {
+                this.amILoggedin = false;
             }
         });
     }
