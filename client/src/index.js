@@ -191,7 +191,7 @@ class Main extends Component {
                             </div>
 
                             {/*Bottom banner*/}
-                            <div className="wrapper row5">
+                            <div className="wrapper row5" style={{position: "inherit"}}>
                                 <div id="copyright" className="hoc clear">
                                     <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
                                     <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
