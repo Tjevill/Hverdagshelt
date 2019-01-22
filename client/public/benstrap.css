@@ -183,7 +183,7 @@ body,
     margin: 0;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
 
     #login-page .login-title:hover {
         cursor: pointer;
