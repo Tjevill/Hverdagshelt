@@ -30,7 +30,17 @@ export default class PrivateUsersList extends Component {
 
   render() {
     return (
+     
+
       <MuiThemeProvider>
+       <div className="title">
+     <link rel="stylesheet" href="PrivateUsersList.css" />
+   
+      <h1 class="logo">
+  <span class="word1">Hverdags</span>
+  <span class="word2">helter</span>
+</h1>
+</div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -113,6 +123,7 @@ export default class PrivateUsersList extends Component {
           </TableBody>
         </Table>
       </MuiThemeProvider>
+       
     );
   }
 

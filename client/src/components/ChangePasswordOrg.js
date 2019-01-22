@@ -3,9 +3,14 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
-import { userService } from "../services";
+import { orgService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
+
+class OrganizationUpdatePWord {
+  org_id: number;
+  password: string;
+}
 
 export default class ChangePassword extends Component {
   userid = -1;
@@ -16,6 +21,10 @@ export default class ChangePassword extends Component {
   meldning = "";
   bilde ="https://png.pngtree.com/svg/20170213/password_reset_369656.png";
 
+  componentDidMount(){
+    this.userid = sessionStorage.getItem("userid");
+  }
+
   render(){
     return(
       <>
@@ -25,9 +34,9 @@ export default class ChangePassword extends Component {
         </div>
       </div>
 
-        <div class="container text-center">
-          <div class="row">
-            <div class="col">
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
               <div className="form-group">
                 Gammelt passord:{" "}
                 <input
@@ -60,7 +69,7 @@ export default class ChangePassword extends Component {
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
                 <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
               </div>
-              <div class="col">
+              <div className="col">
               <p>{this.meldning}</p>
               <img src={this.bilde} width="200"/>
               </div>
@@ -83,52 +92,44 @@ export default class ChangePassword extends Component {
       this.meldning = "Nytt passord må være ulik det gamle passordet"
       this.forceUpdate();
     }else{
-    const passwordInfo = {
-      user_id : this.userid,
-    	oldPassword: this.oldPassword
-    };
-    const passwordInfoUpdatePasswordInDB = {
-      user_id : this.userid,
-    	password: this.newPassword1
-    };
 
-    userService
-      .verifyOldPassword(passwordInfo)
+    //Will be used once backend check works
+    /*const passwordInfo = {
+      user_id : this.userid,
+    	oldPassword: this.oldPassword,
+    	newpassword: this.newPassword1
+    };*/
+
+    const passwordInfo = {
+      org_id: this.userid,
+      password: this.newPassword1
+    }
+
+    orgService
+      .verifyOldPassword(this.userid, this.oldPassword)
       .then((response) => {
-          console.log(response + "Skal oppdatere passord");
-          userService.updateUserPWord(passwordInfoUpdatePasswordInDB)
-            .then(response => {
-							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+          console.log("verify:", response);
+          console.log(passwordInfo);
+          orgService.updateOrgPWordByID(passwordInfo)
+            .then(pwUpdateResponse => {
+              console.log(pwUpdateResponse);
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
-              console.log("this.meldning =" + this.meldning);
               this.forceUpdate();
-						})
-            .catch(err => {
-              console.log(err, "REJECTED FEIL I DATABASE");
             })
+            .catch(error => {
+              console.error(error);
+            });
         })
      .catch((error: Error) => {
-       console.log("noooooo");
-       this.meldning = "Feil ved endring av passord,Prøv på nytt";
+       Alert.danger("noooooo");
+       this.meldning = "Feil ved endring av passord. Prøv på nytt";
        this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
        this.forceUpdate();
 		 });
+
     }
-  }
 
-  componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
-    console.log(this.userid);
-    userService
-      .getUserByID(this.id)
-      .then(user => {
-        this.user = user[0];
-        if(user) console.log("available user"+this.user.name);
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log(error.message));
   }
-
 
 }

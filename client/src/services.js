@@ -7,17 +7,6 @@ class Category {
     description: string;
 }
 
-class Employee{
-  employee_id: number;
-  name: string;
-  tel: string;
-  email: string;
-  password: string;
-  commune: string;
-  county: string;
-  superuser: boolean;
-}
-
 class County { //Fylke
 	id: number;
 	county: string;
@@ -38,9 +27,24 @@ class Case {
   org_id: number;
 }
 
+class Employee{
+  employee_id: number;
+  name: string;
+  tel: string;
+  email: string;
+  password: string;
+  commune: string;
+  county: string;
+  superuser: boolean;
+}
+
 class Place {
 	zipcode: number;
 	commune: string;
+}
+
+class ResetToken {
+  token: string;
 }
 
 class Status {
@@ -67,6 +71,8 @@ class User {
   tel: number;
   email: string;
   subscription: number;
+  resetPasswordToken: string;
+  resetPasswordExpire: number;
 
 }
 
@@ -172,18 +178,6 @@ class CaseService {
   }
 
 
-
-   /**  Update one case_status */
-   /*
-  updateCaseStatus(case_id: number, info: json): Promise<void>{
-    return axios.put(url+'/updateCaseStatus/'+case_id, info,{
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-  }*/
-
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{
     return axios.delete(url+'/deleteCase/'+case_id);
@@ -258,6 +252,17 @@ class CaseService {
 		return axios.get(url + '/getCasesOnOrgID/' + id);
 	}
 
+	/**  Update one case_status */
+	updateCaseStatus (case_id: number, status_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseStatus/' + case_id + '/' + status_id);
+
+	}
+
+	updateCaseComment (case_id: number, comment: string): Promise<void> {
+		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
+
+	}
+
 }
 export let caseService = new CaseService();
 
@@ -322,12 +327,9 @@ class UserService {
   }
 
   getUsersProviceFromUserID(id: number): Promise<string>{
-    return axios.put(url + '/userProvince/' + id);
+    return axios.get(url + '/userProvince/' + id);
   }
 
-  findUserByEmail(email: string): Promise<User>{
-    return axios.get(url+ '/forgotPassword/'+ email);
-  }
 
 	/**
 	 * Service object for verifying old password
@@ -338,10 +340,19 @@ class UserService {
 
 	}
 
+
+
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
 
+  verifyResetToken (resetToken : string): Promise<User[]> {
+    return axios.get(url + '/tokenVerification/user/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/reset/user/' + email);
+  }
 
 }
 
@@ -393,8 +404,13 @@ class OrgService{
         return axios.put(url + "/neworganization", newemployee, axiosConfig);
     }
 
+  verifyResetToken (resetToken : string): Promise<Organization[]> {
+    return axios.get(url + '/tokenVerification/org/'+ resetToken);
+  }
 
-
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/reset/org/' + email);
+  }
 }
 
 export let orgService = new OrgService();
@@ -449,6 +465,8 @@ class CategoryService {
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
 		return axios.get(url + "/categoriesOrg/" + id, axiosConfig);
 	}
+
+
 
 }
 
@@ -581,6 +599,14 @@ export default class EmployeeService {
         return axios.get(url + '/searchUserEmail/' + email);
     }
 
+  verifyResetToken (resetToken : string): Promise<Employee[]> {
+    return axios.get(url + '/tokenVerification/emp/'+ resetToken);
+  }
+
+  sendResetLink(email: string): Promise<void> {
+    return axios.post(url + '/reset/emp/' + email);
+  }
+
 
 }
 export let employeeService = new EmployeeService();
@@ -662,6 +688,8 @@ class StatusService {
     return axios.get(url + "/status/" + id);
   }
 }
+
+export let statusService = new StatusService();
 
 class GeoService {
 

@@ -192,7 +192,7 @@ export default class UserEdit extends Component {
         this.loaded = true;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   subscribe(user){
@@ -212,7 +212,7 @@ export default class UserEdit extends Component {
         console.log("Subscription now"+{sub});
         if(user) window.location.reload();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   unsubscribe(user){
@@ -227,7 +227,7 @@ export default class UserEdit extends Component {
         console.log("Subscription now"+{sub});
         if(user) window.location.reload();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   save(user){
@@ -269,7 +269,7 @@ export default class UserEdit extends Component {
           setTimeout(function(){window.location.reload()}.bind(this),2000);
         })
       .catch((error: Error) => {
-        Alert.danger(error.message);
+        console.log(error.message);
         this.bilde ="https://visualpharm.com/assets/747/Cancel-595b40b75ba036ed117d57c5.svg";
         this.forceUpdate();
       })

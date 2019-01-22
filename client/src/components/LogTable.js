@@ -41,13 +41,10 @@ export default class LogTable extends Component {
             <TableRow>
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Bruker ID</TableHeaderColumn>
-              <TableHeaderColumn>Case ID</TableHeaderColumn>
+              <TableHeaderColumn>Sak ID</TableHeaderColumn>
               <TableHeaderColumn>Tidspunkt</TableHeaderColumn>
               <TableHeaderColumn>Status</TableHeaderColumn>
-              <TableHeaderColumn>Abonnement_status</TableHeaderColumn>
-              <TableHeaderColumn>Postnr</TableHeaderColumn>
-              <TableHeaderColumn>
-              </TableHeaderColumn>
+            
               <TableHeaderColumn>  <SearchBar
       onChange={() => console.log('onChange')}
       onRequestSearch={() => console.log('onRequestSearch')}
@@ -63,35 +60,15 @@ export default class LogTable extends Component {
             {this.users.map((user, i) => (
               <TableRow key={i} className="PrivateUsersList-TableRow">
                 <TableRowColumn className="user_id"></TableRowColumn>
-                <TableRowColumn className="name"></TableRowColumn>
-                <TableRowColumn className="phone_number">
+                <TableRowColumn className="case_id"></TableRowColumn>
+                <TableRowColumn className="time">
                  
                 </TableRowColumn>
-                  <TableRowColumn className="address">
+                  <TableRowColumn className="status">
                 
                 </TableRowColumn>
-                <TableRowColumn className="email"></TableRowColumn>
-             
-                <TableRowColumn className="subscription">
                 
-                </TableRowColumn>
 
-                <TableRowColumn className="zipcode"></TableRowColumn>
-                     <TableRowColumn className="edit">
-                 <RaisedButton label="rediger" primary={true} style={style} onClick={() => {
-                  this.edit();
-                }}>
-                  </RaisedButton>
-
-                 </TableRowColumn>
-
-
-                 <TableRowColumn className="delete">
-                 <RaisedButton label="Slett" secondary={true} style={style} onClick={() => {
-                  this.delete(user.user_id);
-                }}>
-                  </RaisedButton>
-                  </TableRowColumn>
 
 
             

@@ -1,6 +1,8 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import React from 'react';
+import $ from 'jquery';
+import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
 import createHashHistory from "history/createHashHistory";
@@ -174,14 +176,25 @@ export default class LoginPage extends React.Component {
     }
 
     componentDidMount() {
+        window.addEventListener("resize", this.onResize.bind(this));
+        this.onResize();
+    }
 
+    mobile = false;
 
+    onResize() {
+        if(window.innerWidth <= 640 && !this.mobile){
+            this.mobile = true;
+            $('#login-user-title').attr('data-toggle', 'collapse');
+        }else if(window.innerWidth > 640 && this.mobile){
+            this.mobile = false;
+            $("#login-user-title").removeAttr("data-toggle");
+        }
     }
 
     componentWillReceiveProps() {
         console.log("WillRecieveProps: ", this.props)
     }
-
 
     render() {
         const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;
@@ -196,12 +209,13 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
 
-                                <h3>HVERDAGSHELT</h3>
-                                <div className="profilbilde">
+                                <h3 id="login-user-title" data-toggle="collapse" data-target="#login-user-image, #login-user-form">HVERDAGSHELT</h3>
+                                <div id="login-user-image" className="profilbilde">
                                     <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                                 </div>
 
                                 <AnimateHeight
+                                    id="login-user-form"
                                     duration={ 500 }
                                     height={ height1 } // see props documentation bellow
                                 >
@@ -226,7 +240,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/user" className="justalink">Glemt passord?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -245,11 +259,12 @@ export default class LoginPage extends React.Component {
                             <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
                                 <h3>BEDRIFT</h3>
-                                <div className="profilbilde">
+                                <div id="login-org-image" className="profilbilde">
                                     <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
                                 </div>
 
                                 <AnimateHeight
+                                    id="login-org-form"
                                     duration={ 500 }
                                     height={ height2 } // see props documentation bellow
                                 >
@@ -274,7 +289,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
-                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/org" className="justalink">Glemt passord?</a></div>
                                                 {loading2 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -293,11 +308,12 @@ export default class LoginPage extends React.Component {
                             <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
                                 <h3>KOMMUNE</h3>
-                                <div className="profilbilde">
+                                <div id="login-emp-image" className="profilbilde">
                                     <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                                 </div>
 
                                 <AnimateHeight
+                                    id="login-emp-form"
                                     duration={ 500 }
                                     height={ height3 } // see props documentation bellow
                                 >
@@ -322,7 +338,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
-                                                <div className="justadiv"><a href="#glemtpassord" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/emp" className="justalink">Glemt passord?</a></div>
                                                 {loading3 &&
                                                 <div> Loading </div>}
                                             </div>

@@ -7,6 +7,11 @@ import { employeeService } from "../services";
 import { Alert,Card, NavBar,ListGroup,Row, Column, Button, Form} from './widgets';
 const history = createHashHistory();
 
+class EmployeeUpdatePWord {
+  emp_id: number;
+  password: string;
+}
+
 export default class ChangePassword extends Component {
   userid = -1;
   user = new Object();
@@ -87,66 +92,44 @@ export default class ChangePassword extends Component {
       this.meldning = "Nytt passord må være ulik det gamle passordet"
       this.forceUpdate();
     }else{
-    const passwordInfo = {
+
+    //Will be used once backend check works
+    /*const passwordInfo = {
       user_id : this.userid,
     	oldPassword: this.oldPassword,
     	newpassword: this.newPassword1
-    };
-    const passwordInfoUpdatePasswordInDB = {
-      user_id : this.userid,
-    	password: this.newPassword1
-    };
+    };*/
+
+    const passwordInfo = {
+      emp_id: this.userid,
+      password: this.newPassword1
+    }
 
     employeeService
       .verifyOldPassword(this.userid, this.oldPassword)
       .then((response) => {
           console.log("verify:", response);
-          /*employeeService.updateUserPWord(passwordInfoUpdatePasswordInDB)
-            .then(response => {
-							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+          console.log(passwordInfo);
+          employeeService.updateEmpPw(passwordInfo)
+            .then(pwUpdateResponse => {
+              console.log(pwUpdateResponse);
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
-              console.log("this.meldning =" + this.meldning);
               this.forceUpdate();
-						})
-            .catch(err => {
-              console.log(err, "REJECTED FEIL I DATABASE");
-            });*/
-        })
-     .catch((error: Error) => {
-       Alert.danger("noooooo");
-       this.meldning = "Feil ved endring av passord,Prøv på nytt";
-       this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
-       this.forceUpdate();
-		 });
-
-    /*
-    userService
-      .verifyOldPasswordAndUpdatePWord(passwordInfo)
-      .then((response) => {
-          console.log(response + "Skal oppdatere passord");
-          userService.updateUserPWord(passwordInfoUpdatePasswordInDB)
-            .then(response => {
-							console.log(response, "response from updatepassword ok", "Passord oppdatert");
-              this.meldning = "Passord endring er vellyket";
-              this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
-              console.log("this.meldning =" + this.meldning);
-              this.forceUpdate();
-						})
-            .catch(err => {
-              console.log(err, "REJECTED FEIL I DATABASE");
             })
+            .catch(error => {
+              console.error(error);
+            });
         })
      .catch((error: Error) => {
        Alert.danger("noooooo");
-       this.meldning = "Feil ved endring av passord,Prøv på nytt";
+       this.meldning = "Feil ved endring av passord. Prøv på nytt";
        this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
        this.forceUpdate();
 		 });
-     */
 
     }
-  }
 
+  }
 
 }

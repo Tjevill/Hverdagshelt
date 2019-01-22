@@ -14,7 +14,8 @@ import {geocodeByAddress, geocodeByPlaceId, getLatLng} from 'react-places-autoco
 const style = {
     width: '100%',
     height: '100%',
-    position: "relative"
+    margin: "0 0 0 0",
+    padding: "0 0 0 0"
 }
 
 const history = createHistory({
@@ -214,7 +215,7 @@ export class Report extends Component {
                             <Map
                                 className="report-map"
                                 google={this.props.google}
-                                zoom={8}
+                                zoom={9}
                                 center={{
                                     lat: this.lat,
                                     lng: this.lng
@@ -229,7 +230,7 @@ export class Report extends Component {
                                 onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
                             >
                                 <Marker
-                                    name={"current location"}
+                                    name={"current-location"}
                                     draggable={true}
                                     position={{ lat: this.lat, lng: this.lng }}
                                     onDragend={(t, map, coord) => this.onMarkerDragEnd(coord)}
@@ -445,4 +446,3 @@ export class Report extends Component {
 export default GoogleApiWrapper({
     apiKey: "AIzaSyDJEriw-U4wGtoFxuXALVyYLboVWl3wyhc"
 })(Report);
-

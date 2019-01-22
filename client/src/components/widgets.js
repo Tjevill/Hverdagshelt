@@ -277,3 +277,14 @@ export class Form {
   static Input = FormInput;
 }
 
+
+export class LoadingFirkant extends Component {
+    render(){
+        return (
+            <div className="loading-animation">
+                <img className="svgfixer" src='./images/35.svg' />
+            </div>
+        );
+    }
+}
+
