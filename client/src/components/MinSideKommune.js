@@ -9,7 +9,7 @@ import {employeeService, userService , orgService , geoService, caseService} fro
 const history = createHashHistory();
 
 
-let id = sessionStorage.getItem("userid");
+// let id = sessionStorage.getItem("userid");
 let access = sessionStorage.getItem("access");
 
 export default class MinSideKommune extends Component {
@@ -34,7 +34,7 @@ export default class MinSideKommune extends Component {
 
         console.log("MinSide mounted :-)");
         employeeService
-            .getOne(id)
+            .getEmployeeByToken()
             .then(enemp => {
                 this.employee = enemp[0];
                 console.log(this.employee);

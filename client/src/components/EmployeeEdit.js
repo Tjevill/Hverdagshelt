@@ -32,10 +32,10 @@ export default class EmployeeEdit extends Component {
   communeOptions = [];
 
   componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
+    // this.userid = sessionStorage.getItem("userid");
     console.log("id: " + this.userid);
     employeeService
-      .getOne(this.userid)
+      .getEmployeeByToken()
       .then(user => {
         console.log(user[0]);
         this.user = user[0];

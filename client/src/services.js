@@ -267,7 +267,7 @@ class CaseService {
 	 * @returns {AxiosPromise<any>}
 	 */
 	getCasesForOrganization(id: number): Promise<Case[]>{
-		return axios.get(url + '/getCasesOnOrgID/' + id);
+		return axios.get(url + '/getCasesOnOrgID/' + id, axiosConfig);
 	}
 
 	/**  Update one case_status */
@@ -404,7 +404,14 @@ class OrgService{
     return axios.get(url + '/org/' + id);
   }
 
-  updateOrgByID(org: Organization): Promise<void>{
+
+    getOrganizationByToken(): Promise<Organization[]>{
+        console.log("Requesting Organization information")
+        return axios.get(url + '/getorg/', axiosConfig);
+    }
+
+
+    updateOrgByID(org: Organization): Promise<void>{
     return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
   }
 
@@ -519,6 +526,11 @@ export default class EmployeeService {
     }
 
 
+    getEmployeeByToken(): Promise<Employee[]>{
+	    console.log("Requesting Employee information")
+        return axios.get(url + '/getemployee/', axiosConfig);
+    }
+
 
   /** Create employee
   * JSON sent in postman:
@@ -558,7 +570,7 @@ export default class EmployeeService {
   }
 
   /** Get one employee with employee_id */
-  getOne(employee_id : number): Promise<Employee[]>{
+  getEployeeByID(employee_id : number): Promise<Employee[]>{
     return axios.get(url+'/employee/'+employee_id);
   }
 

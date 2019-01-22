@@ -486,6 +486,32 @@ app.get('/org/:id', (req: Request, res: Response) => {
 });
 
 
+
+/**
+ * Get one org by token
+ */
+app.get('/getorg/', (req: Request, res: Response) => {
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            orgDao.getOneByID(decoded.userid, (status, data) =>{
+                res.status(status);
+                res.json(data);
+                console.log("/getorg/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+
+
+});
+
+
+
 /**
  * Adds a new organization or the Organization table
  */
@@ -682,6 +708,33 @@ app.get("/employee/:employee_id", (req, res) =>{
         res.json(data);
     });
 });
+
+
+
+/**
+ * Get one Employeee from DB by token
+ */
+app.get('/getemployee/', (req: Request, res: Response) => {
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            empDao.getOne(decoded.userid, (status, data) =>{
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+
+
+});
+
+
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
@@ -1224,7 +1277,7 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 });
 
 
-app.get("/getCasesOnOrgID/:id", (req, res) => {
+app.get("/getCasesOnOrgID/:id", checkIfOrganization,  (req, res) => {
 	caseDao.getCasesForOrganization(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
@@ -1575,21 +1628,23 @@ app.post("/loginb", (req, res) => {
 
                 console.log("data email: " + req.body.email2);
                 const lagretPass = data[0].password;
+                const org_id = data[0].org_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password2, data[0].secret);
                 console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, org_id : org_id});
                 } else {
                     resolve(false);
-                }} else { resolve(false); }
+                }} else { resolve({valid: false}); }
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        if (value.valid) {
             employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
-                let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
+                let token = jwt.sign({email: value.email, userid: value.org_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, user_id: data[0].org_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
             });
@@ -1712,6 +1767,51 @@ function checkIfEmployee(req, res, next) {
 function checkIfOrganization(req, res, next) {
     try {
         let token = req.headers['x-access-token'] || req.headers['authorization'];
+        console.log ("JSHKDJSHKJFHK: ", req.headers);
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded && decoded.email) {
+                let promise1 = new Promise(function (resolve, reject) {
+                    empDao.searchOrgEmail(decoded.email, (status, data) => {
+                        console.log("fra emdao promise: " + data[0].verify);
+                        if (!isNaN(data[0].verify)) {
+                            resolve(data[0].verify);
+                        } else {
+                            reject(console.log("ererrerererer"));
+                        }
+                    });
+                }  );
+
+                promise1.then(function (value) {
+                    // console.log("decoded.email : " + decoded.email);
+                    // console.log("decoded : " + decoded);
+                    // console.log("value : " + value);
+
+                    if (decoded && decoded.email && (value === 1)) {
+                        console.log("******************  Operasjonen gikk gjennom!  ******************")
+                        next();
+                    } else {
+                        console.log("Feil innlogging! Sender brevbombe 1.");
+                        res.sendStatus(403);
+                    }
+                });
+            } else {
+                console.log("Feil innlogging! Sender brevbombe 2.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        // console.log("Oops: " + err)
+        console.log("Feil innlogging! Sender brevbombe 3.");
+        res.sendStatus(403);
+        return false;
+    }
+}
+
+
+
+function checkIdsdsdsfOrganization(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
         // console.log ("JSHKDJSHKJFHK: ", req.headers);
         jwt.verify(token, privateKey, function(err, decoded)  {
             if (decoded && decoded.email) {
@@ -1727,9 +1827,9 @@ function checkIfOrganization(req, res, next) {
                 }  );
 
                 promise1.then(function (value) {
-                    // console.log("decoded.email : " + decoded.email);
-                    // console.log("decoded : " + decoded);
-                    // console.log("value : " + value);
+                    console.log("decoded.email : " + decoded.email);
+                    console.log("decoded : ",decoded);
+                    console.log("value : " + value);
 
                     if (decoded && decoded.email && (value === 1)) {
                         console.log("******************  Operasjonen gikk gjennom!  ******************")

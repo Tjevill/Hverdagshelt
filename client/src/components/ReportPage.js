@@ -25,7 +25,6 @@ const history = createHistory({
 export class Report extends Component {
     message = " ";
     error = " ";
-    currentUser = 0;
 
     categories = [];
     selectedFile: null;
@@ -432,7 +431,7 @@ export class Report extends Component {
     }
 
     componentDidMount(){
-        this.currentUser = sessionStorage.getItem("userid");
+
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));
