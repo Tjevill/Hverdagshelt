@@ -5,7 +5,6 @@ import { Router, NavLink } from "react-router-dom";
 import { caseService, categoryService, userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
-  Alert,
   Card,
   NavBar,
   ListGroup,
@@ -92,7 +91,7 @@ export default class IssueOverview extends Component<{
               console.log("All the cases",this.casesbyStatus);
               this.forceUpdate();
           })
-          .catch((error: Error) => console.log("fails by getting fylker"));
+          .catch((error: Error) => console.log("fails by getting cases from fylker"));
     }
 
 
@@ -129,7 +128,7 @@ export default class IssueOverview extends Component<{
                 console.log("kommuner: ", this.kommuner);
                 this.forceUpdate();
             })
-            .catch((error: Error) => Alert.danger(error.message));
+            .catch((error: Error) => console.log("Fails by getting available kommuner"));
       }
     }
 
@@ -432,7 +431,7 @@ export default class IssueOverview extends Component<{
         this.loaded = true;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available cases"));
 
     categoryService
       .getAllCategories()
@@ -440,7 +439,7 @@ export default class IssueOverview extends Component<{
         this.categories = categories;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available categories"));
 
     userService
       .getDistricts()
@@ -448,6 +447,6 @@ export default class IssueOverview extends Component<{
         this.fylker = fylker;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log("Errors by getting all the available fylker"));
   }
 }

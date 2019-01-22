@@ -151,7 +151,7 @@ body,
 
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .collapse.dont-collapse-sm {
     display: block;
     height: auto !important;

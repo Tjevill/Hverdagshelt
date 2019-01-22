@@ -195,7 +195,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
-                                {/* MIDLERTIDIG */}
+                                {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             </div>

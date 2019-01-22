@@ -137,7 +137,7 @@ export default class OrgIssueOverview extends Component<{
               console.log("kommuner: ", this.kommuner);
               this.forceUpdate();
           })
-          .catch((error: Error) => Alert.danger(error.message));
+          .catch((error: Error) => console.log("Errors by getting kommuner"));
     }
   }
 
@@ -527,7 +527,7 @@ export default class OrgIssueOverview extends Component<{
             this.fylker = fylker;
             this.forceUpdate();
         })
-        .catch((error: Error) => Alert.danger(error.message));
+        .catch((error: Error) => console.log("Error: getting fylker"));
 
 
   }
