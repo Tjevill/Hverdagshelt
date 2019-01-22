@@ -251,10 +251,6 @@ app.post("/reset/org/:email", (req, res) => {
 });
 
 
-
-
-
-
 app.put("/newuser", (req, res) => {
     console.log("Fikk POST-request fra klienten");
     userdao.addUser(req.body, (status, data) => {
@@ -1001,36 +997,38 @@ app.delete("/deleteCase/:case_id", (req, res) =>{
 /** create case on user side  */
 app.post("/createUserCase", (req, res) => {
     console.log("Received post-request from client on endpoint /createUserCase");
-    caseDao.createUserCase(req.body, (status, data) => {
+     var promise1 = new Promise(function(resolve, reject) {
+        caseDao.createUserCase(req.body, (status, data) => {
         console.log(req.body);
         res.status(status);
         res.json(data);
+        resolve(data);
+        });
+    });
 
+    promise1.then(data => {
         userdao.getOneByID(req.body.user_id, (status,data) => {
-            
-            let email = req.body.email;
-            const mailOptionsUpdateCase = {
-                from: 'bedrehverdagshelt@gmail.com',
-                to: email,
-                subject: 'Saken er oppdatert!',
-                html:
-                    '<h1> Status: ' + req.body.status_id + '</h1>' +
-                    '<p><b> HverdagsHelt Support Team </b></p>' +
-                    '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
-                    '<p> <b> HverdagsHelt AS </b> </p>' +
-                    '<p> 72 59 50 00 </p>'
-            };
+            let sub = req.body.headline;
+            let des = req.body.description;
+            let email = data[0].email;
 
-            transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+            const mailOptionsCase = {
+                    from: 'bedrehverdagshelt@gmail.com',
+                    to: email,
+                    subject: 'Takk for din henvendelse, saken er registert!',
+                    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+                };
+
+            transporter.sendMail(mailOptionsCase, function(error, info){
                 if (error) {
                     console.log(error);
                 } else {
                     console.log('Email sent: ' + info.response);
                 }
-            });
-        });
-    });
-});
+            }); // transporter
+        }); //getOneByID
+    }); // promise1.then
+}); // app
 
 
 // Redundant method, /createUserCase instaed
