@@ -197,7 +197,7 @@ body,
     padding: 4% 0 4% 0;
     display: grid;
     grid-template-columns: 20% 50% 30%;
-    grid-template-rows: 1auto;
+    grid-template-rows: auto;
     grid-template-areas: ". . ." "date info image" ". . .";
     background-color: #fff;
 }
@@ -206,7 +206,7 @@ body,
 
     #events-page .userHome-event {
         grid-template-columns: 30% 70%;
-        grid-template-rows: 1auto 1auto;
+        grid-template-rows: auto auto;
         grid-template-areas: "date image" "info info";
         border-style: solid;
         border-color: gray;
@@ -227,7 +227,7 @@ body,
 
 #events-page .event-info {
     grid-area: info;
-    width:100%
+    width:100%;
     padding: 10%;
 }
 
@@ -260,7 +260,7 @@ body,
     text-align: center;
     display: grid;
     grid-template-columns: 70% 30%;
-    grid-template-rows: 1auto;
+    grid-template-rows: auto;
     grid-template-areas: "user-form user-image";
 }
 
@@ -272,6 +272,6 @@ body,
     grid-area: user-image;
 }
 
-#user-edit-page #main-image img{
+#user-edit-page #main-image img {
     bottom: 0;
 }
