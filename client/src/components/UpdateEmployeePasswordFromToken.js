@@ -74,7 +74,7 @@ export default class UpdateEmployeePasswordFromToken extends Component <{ match:
     }else{
     
     const passwordInfoUpdatePasswordInDB = {
-        emp_id : this.employee.emp_id,
+        emp_id : this.employee.employee_id,
     	password: this.newPassword1
     };
         employeeService.updateEmpPw(passwordInfoUpdatePasswordInDB)
@@ -97,11 +97,12 @@ export default class UpdateEmployeePasswordFromToken extends Component <{ match:
       employeeService.verifyResetToken(this.props.match.params.token)
         .then( emp => {
           this.employee = emp[0];
-          console.log('user:'+ emp[0]);
+          console.log('user:'+ emp[0].email + " id: " + emp[0].employee_id);
           if(emp[0]) {
-            console.log("available user"+this.emp.name);
+            console.log("available user: "+this.employee.name);
             this.loaded = true;
           }
+          console.log("if passert");
           this.forceUpdate();
       })
       .catch((error: Error) => Alert.danger(error.message));
