@@ -692,3 +692,25 @@ class GeoService {
 }
 
 export let geoService = new GeoService();
+
+class StatisticsService {
+	
+	/**
+   * Get statistics for registered cases past 7 days
+	 * @returns {AxiosPromise<any>}
+	 */
+  getRegisteredCases(): Promise<{dag: string, registerert: number}>{
+    return axios.get(url + "/statistics/cases");
+  }
+	
+	/**
+   * Gets a count of cases registered on categories in database
+	 * @returns {AxiosPromise<any>} An array [{antall: number, description: string, category_id: number}]
+	 */
+	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
+    return axios.get(url + "/statistics/casesCategory");
+  }
+	
+}
+
+export let statisticsService = new StatisticsService();

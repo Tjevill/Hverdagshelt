@@ -72,6 +72,7 @@ const Categorydao = require("../dao/categorydao.js");
 const Empdao = require("../dao/employeedao.js");
 const Statusdao = require("../dao/statusdao.js");
 const GeoDao = require("../dao/geodao.js");
+const StatDao = require("../dao/statisticsdao.js");
 
 const Employeedao = require("../dao/employeedao.js");
 
@@ -97,6 +98,7 @@ let categoryDao = new Categorydao(pool);
 let empDao = new Empdao(pool);
 let statusDao = new Statusdao(pool);
 let geodao = new GeoDao(pool);
+let statDao = new StatDao(pool);
 
 
 /** Send password reset link for user*/
@@ -1035,6 +1037,30 @@ app.get("/getCommunesKommune", (req, res) => {
 	});
 });
 
+
+// Statistics
+
+/**
+ * Get statistics for registered cases past 7 days
+ */
+app.get("/statistics/cases", (req, res) => {
+	statDao.getCaseRegPast7Days((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+/**
+ * Gets a count of cases registered on categories in database
+ */
+app.get("/statistics/casesCategory", (req, res) => {
+	statDao.getAllCasesCategory((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
+// End statistics
 
 
 // Login
