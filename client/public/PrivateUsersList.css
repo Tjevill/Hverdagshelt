@@ -1,19 +1,11 @@
-
-
-
-
-
-
 .title{
   margin-left: 40%;
-  background-color: red;
-   
 }
 
 
 .logo {
   font: 84px 'Arial Narrow', sans-serif;/* I picked this font because it's the closest looking 'web safe' font http://cssfontstack.com/ */
-  color: #fefefe;
+  color: black;
   text-transform: uppercase;
   letter-spacing: -4px;
 }

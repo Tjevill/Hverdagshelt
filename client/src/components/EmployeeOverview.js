@@ -53,7 +53,7 @@ export default class EmployeeOverview extends Component {
    
       <h1 class="logo">
   <span class="word1">Kommune</span>
-  <span class="word2">Ansatt</span>
+  <span class="word2">Ansatte</span>
 </h1>
 </div>
 
