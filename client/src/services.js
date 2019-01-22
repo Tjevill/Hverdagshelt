@@ -170,19 +170,7 @@ class CaseService {
     });
 
   }
-
-
-
-   /**  Update one case_status */
-   /*
-  updateCaseStatus(case_id: number, info: json): Promise<void>{
-    return axios.put(url+'/updateCaseStatus/'+case_id, info,{
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-  }*/
+  
 
   /** Delete one case by case_id */
   deleteById(case_id : number): Promise<void>{
@@ -256,6 +244,17 @@ class CaseService {
 	 */
 	getCasesForOrganization(id: number): Promise<Case[]>{
 		return axios.get(url + '/getCasesOnOrgID/' + id);
+	}
+	
+	/**  Update one case_status */
+	updateCaseStatus (case_id: number, status_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseStatus/' + case_id + '/' + status_id);
+		
+	}
+	
+	updateCaseComment (case_id: number, comment: string): Promise<void> {
+		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
+		
 	}
 
 }
