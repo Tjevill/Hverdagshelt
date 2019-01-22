@@ -1,4 +1,4 @@
-//@flow
+
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -7,7 +7,8 @@ import {
   categoryService,
   userService,
   employeeService,
-  statusService
+  statusService,
+  orgService
 } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -62,6 +63,7 @@ export default class OrgIssueOverview extends Component<{
   fylker =[];
   kommuner = [];
   casesbyKommune = [];
+  currentCase = [];
 
 
   handleChangeKommune = event =>{
@@ -245,6 +247,20 @@ export default class OrgIssueOverview extends Component<{
     console.log(event.target.value);
     console.log(this.casesbyStatus);
   }
+  saveComment (string) {
+        document.getElementById('comment-input').value = string;
+        console.log('test');
+        console.log(this.currentCase)
+        window.alert("Kommentar lagret!");
+    }
+
+    handleSelected(id) {
+    console.log(this.cases);
+    console.log('Sak id: ', id);
+        let filteredCase = this.cases.filter(e =>
+            e.case_id == id)
+      this.currentCase = filteredCase;
+    }
 
   render() {
     let lists;
@@ -267,13 +283,6 @@ export default class OrgIssueOverview extends Component<{
       lists = (
         <tbody>
           {this.casesbyStatus.map(casen => (
-              {saveComment (string, id) {
-                      document.getElementById("comment-input").value = string;
-                      let filteredCase = this.cases.filter(e =>
-                          e.case_id == id)
-                      casen.comment = string;
-                      window.alert("Kommentar lagret!");
-                  }},
             <tr>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>
@@ -284,36 +293,44 @@ export default class OrgIssueOverview extends Component<{
                 {" "}
                 <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning edit-button">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp; Rediger &nbsp;
-                    	&nbsp;Endre Status
+                      &nbsp;Endre Status
                   </span>
                 </a>
                   &nbsp;&nbsp;&nbsp;
-                  <a data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
-                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true">
+                  <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
                     	&nbsp;Legg inn kommentar&nbsp;
                   </span>
-                      <div className="modal fade" id={casen.case_id} tabIndex="-1" role="dialog"
-                           aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  </button>
+                      <div className="modal fade" id={casen.case_id} tabIndex="-1"
+                           aria-labelledby="exampleModalLabel" aria-hidden="true"
+                           data-backdrop="static">
                           <div className="modal-dialog" role="document">
                               <div className="modal-content">
                                   <div className="modal-header">
                                       <h5 className="modal-title" id="exampleModalLabel">Kommenter sak</h5>
-                                  </div>
-                                  <input
-                                      className="form-control"
-                                      id="comment-input"
-                                      defaultValue={casen.comment}>
-                                  </input>
-                                  <div className="modal-footer">
-                                      <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk
+                                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
                                       </button>
-                                      <button type="button" className="btn btn-primary" onClick={this.saveComment}>Lagre changes</button>
+                                  </div>
+                                  <div className="modal-body">
+                                      <input
+                                          className="form-control"
+                                          id="comment-input"
+                                          defaultValue={casen.comment}>
+                                      </input>
+                                  </div>
+                                  <div className="modal-footer">
+                                      <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                      <button type="button" className="btn btn-primary"
+                                              onClick={this.saveComment}>
+                                          Lagre endringer
+                                      </button>
                                   </div>
                               </div>
                           </div>
                       </div>
-                  </a>
+
                 &nbsp;&nbsp;&nbsp;
                 <span class="badge badge-primary">{this.statusname[casen.status_id-1]}</span>
               </td>

@@ -670,6 +670,8 @@ class StatusService {
   }
 }
 
+export let statusService = new StatusService();
+
 class GeoService {
 
 	/** Get all communes from Place ordered by zip code.*/
