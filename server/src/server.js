@@ -956,6 +956,27 @@ app.put("/updateCase/:case_id", (req, res) =>{
             res.status(status);
             res.json(data);
             console.log(req.body);
+
+            let email = req.body.email;
+            const mailOptionsUpdateCase = {
+                from: 'bedrehverdagshelt@gmail.com',
+                to: email,
+                subject: 'Saken er oppdatert!',
+                html:
+                    '<h1> Status: ' + req.body.status_id + '</h1>' +
+                    '<p><b> HverdagsHelt Support Team </b></p>' +
+                    '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
+                    '<p> <b> HverdagsHelt AS </b> </p>' +
+                    '<p> 72 59 50 00 </p>'
+            };
+
+            transporter.sendMail(mailOptionsUpdateCase, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
         });
     });
 
