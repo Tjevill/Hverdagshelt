@@ -133,14 +133,12 @@
 
 
 
-.events-body li{
+.events-body li {
 	  margin-bottom: 80px;
 }
 
-.events-body img{
-  width: 200px;
-  position: absolute;
-  padding: 10px;
+.events-body img {
+
 }
 
 
@@ -166,7 +164,7 @@
 
 .userHome-container{
     background-color:inherit; /* BYTTES UT MED HVIT */
-    width: 1000px;
+    width: 100%;
     margin:0 auto;
 }
 
@@ -180,52 +178,11 @@
 
 }
 
-.userHome-events{
-    /* background-color: grey;  BYTTES UT MED HVIT */
-
-     width: 700px;
-     margin:0 auto;
-}
-
-.userHome-event{
-    height: 200px;
-    background-color: #fff;
-}
-
-.cell1{
-    margin-bottom:10px;
-    background-color: white;
-    height:auto;
-   padding-top: 25px;
-   padding-left: 30px;
-}
-
-.cell2{
-    padding-left: 50px;
-    background-color: white;
-    height: auto;
-}
-
-.cell3{
-    background-color: white;
-    padding-top: 25px;
-    height: auto;
-}
-
-.cell3 img{
-    height: 150px;
-    width: 150px;
-}
-
 .userHome-event h5{
     color:#1c7f7f;
-
-
-
 }
 
 .userHome-event p{
-
     color: grey;
 }
 
@@ -303,12 +260,15 @@ summary:focus {
 .events-container img {
     width: 100px;
 }
-.calender{
 
+.calender{
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    text-align: center;
     border: 1px solid;
     border-radius: 5px;
     border-color: #e1e8e8;
-
 }
 
 

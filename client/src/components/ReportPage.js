@@ -149,7 +149,7 @@ export class Report extends Component {
 
     render(){
         return(
-            <div className="row row-style" style={style}>
+            <div id="report-page" className="row row-style" style={style}>
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="rapporter">
@@ -292,7 +292,7 @@ export class Report extends Component {
                             </select>
                             <div className="invalid-feedback">Du må velge en kategori</div>
                         </div>
-                        <button type="button" onClick={this.register} className="btn btn-primary fullfør">
+                        <button id="submit" type="button" onClick={this.register} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
                         <h2 className="feilmelding">{this.error}</h2>
