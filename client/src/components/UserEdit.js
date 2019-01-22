@@ -165,20 +165,20 @@ export default class UserEdit extends Component {
   }
 
 
-  componentDidMount(){
+    componentDidMount(){
     // this.userid = sessionStorage.getItem("userid");
-    userService
-      .getUserByToken()
-      .then(user => {
-          console.log("User info: " , user)
-        this.user = user[0];
-        this.state.tel = this.user.tel;
-        this.state.zip = this.user.zipcode;
-        this.loaded = true;
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log(error.message));
-  }
+        userService
+            .getUserByToken()
+                .then(user => {
+                    console.log("User info: " , user);
+                    this.user = user[0];
+                    this.state.tel = this.user.tel;
+                    this.state.zip = this.user.zipcode;
+                    this.loaded = true;
+                    this.forceUpdate();
+                })
+                .catch((error: Error) => console.log(error.message));
+    }
 
   subscribe(user){
     //console.log("this.user.name:" + user.name);

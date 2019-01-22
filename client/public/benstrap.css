@@ -183,7 +183,7 @@ body,
     margin: 0;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 640px) {
 
     #login-page .login-title:hover {
         cursor: pointer;
@@ -272,6 +272,6 @@ body,
     grid-area: user-image;
 }
 
-#user-edit-page #main-image img{
+#user-edit-page #main-image img {
     bottom: 0;
 }
