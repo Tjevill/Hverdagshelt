@@ -62,7 +62,8 @@ const history = createHashHistory();
 
 
 class forsideMain extends Component {
-    render () {
+
+    render() {
         return(
             <section id="pageintro" className="hoc clear">
                 <div>
@@ -75,6 +76,8 @@ class forsideMain extends Component {
             </section>
         );
     }
+
+
 }
 
 class ikkeforsideMain extends Component {
@@ -151,13 +154,12 @@ class Main extends Component {
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <Route exact path="/glemtpassord" component={ForgottenPassword} />
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
                                 <Route exact path="/reset" component={ForgottenPassword} />
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/profile" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
                                 <PrivateRoute exact path="/bedrift/issues" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -188,7 +190,7 @@ class Main extends Component {
                             </div>
 
                             {/*Bottom banner*/}
-                            <div className="wrapper row5">
+                            <div className="wrapper row5" style={{position: "inherit"}}>
                                 <div id="copyright" className="hoc clear">
                                     <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
                                     <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
