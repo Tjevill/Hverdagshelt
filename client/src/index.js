@@ -154,7 +154,6 @@ class Main extends Component {
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <Route exact path="/glemtpassord" component={ForgottenPassword} />
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
                                 <Route exact path="/reset" component={ForgottenPassword} />
 
