@@ -70,14 +70,14 @@ export default class UserEdit extends Component {
     let button;
     if(this.user.subscription==1){
       button = (
-        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-danger">
+        <button type="button" onClick={() => this.subscribe(this.user)} className="btn btn-danger w-100 mb-2">
           Motta oppdateringer på e-post
         </button>
       );
       this.user_id = this.user.user_id;
     } else {
       button = (
-        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success">
+        <button type="button" onClick={() => this.unsubscribe(this.user)} className="btn btn-success w-100 mb-2">
           Slutt å motta oppdateringer på e-post
         </button>
       );
@@ -86,17 +86,8 @@ export default class UserEdit extends Component {
 
     if(this.loaded){
     return (
-      <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h4>Edit</h4>
-          </div>
-      </div>
-
-
-        <div className="container text-center">
-          <div className="row">
-            <div className="col">
+          <div id="user-edit-page">
+            <div id="main-form" className="col">
          <div className="form-group">
           Navn:{" "}
           <input
@@ -157,21 +148,14 @@ export default class UserEdit extends Component {
           />
           <div className="invalid-feedback">Ugydig Email</div>
           </div>
-          <br/>
-          <br/>
           {button}
-          <br/>
-          <br/>
           <Button.Success onClick={() => this.save(this.user,this.state)}>Save</Button.Success>
-          <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
+          <button type="button" className="btn btn-secondary" onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</button>
           </div>
-          <div className="col">
-          <br/><br/><br/><br/>
+          <div id="main-image" className="col">
             <img src={this.bilde} width="200"/>
           </div>
         </div>
-      </div>
-    </>
     );
     } else {
       return (

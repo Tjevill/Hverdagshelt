@@ -67,7 +67,7 @@ export default class Register extends Component {
 
     return (
 
-        <div className="row">
+        <div id="register-page" className="row">
             <div className="col-sm-4"></div>
             <div className="col-sm-4">
 
@@ -156,7 +156,7 @@ export default class Register extends Component {
         </div>
         <h3>{this.passworderror}</h3>
         <div className="form-group">
-        <label htmlFor="subscription">Vil du motta informasjon om events?</label>
+        <label htmlFor="subscription">Vil du motta informasjon om events på mail?</label>
         <input
           className="form-control"
           name="subscription"
@@ -165,7 +165,7 @@ export default class Register extends Component {
           onChange={this.handleChange} />{" "}
 
         </div>
-        <button type="button" onClick={this.save} className="btn btn-primary">
+        <button id="save" type="button" onClick={this.save} className="btn btn-primary">
           Lagre og send
         </button>
         <h1 className="abcd">{this.message}</h1>
