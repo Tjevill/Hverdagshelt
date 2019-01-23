@@ -198,8 +198,9 @@ body,
 
 #map-page #map-search {
     width: 100%;
-    padding: 4%;
+    padding: 5% 20%;
     text-align: center;
+    color: black;
 }
 
 #map-page .center-button-wrapper {

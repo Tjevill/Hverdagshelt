@@ -78,7 +78,7 @@ export class MapContainer extends Component {
                             this.changeCommune(event);
                           }}
                         />
-                        <div className="card" style={{minWidth: "19rem", width: "100%"}}>
+                        <div className="card" style={{width: "100%"}}>
                           <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
                             {
                               this.communeOptions.map(
@@ -147,9 +147,30 @@ export class MapContainer extends Component {
         }
       );
       //console.log(options);
-      this.communeOptions = options.sort().slice(0, 3);
-      //console.log(this.communeOptions);
-      this.forceUpdate();
+      this.communeOptions = this.sortBySearch(options, event.target.value).slice(0, 5);
+    }
+
+    sortBySearch(inArray, search) {
+
+        search = search.toUpperCase();
+
+        let length = search.length;
+
+        if(inArray.length <= 1){
+            return inArray;
+        }
+
+        inArray.sort();
+
+        let first = [];
+        let others = [];
+
+        inArray.map(item => {
+            if(item.substring(0, length).toUpperCase() === search) first.push(item);
+            else others.push(item);
+        });
+
+        return first.concat(others);
     }
 
     confirmCommune(event, commune){
