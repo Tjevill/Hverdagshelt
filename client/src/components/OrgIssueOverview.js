@@ -241,7 +241,7 @@ export default class OrgIssueOverview extends Component<{
 
   search = event => {
     this.casesbyStatus = this.backup.filter(function(value){
-        return value.headline.indexOf(event.target.value)!=(-1);
+        return value.headline.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
     });
     this.forceUpdate();
     console.log(event.target.value);
