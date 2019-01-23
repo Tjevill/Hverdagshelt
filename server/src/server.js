@@ -1299,16 +1299,19 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
             caseDao.updateCaseByEmployee(req.body, (status, data) => {
                 res.status(status);
                 res.json(data);
+                console.log('::::::::::::::::::updating case');
                 
                 statusDao.getOneById(req.body.status, (status,data) => {
                     let statusName = data[0].description;
+                    console.log(':::::::::::::::::: fetching status name');
 
                     caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
-                        let email = data;
+                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
                         console.log(data);
+                        
                         const mailOptionsCase = {
                             from: 'bedrehverdagshelt@gmail.com',
-                            to: email,
+                            to: data[0].email,
                             subject: 'Din sak har blitt oppdaert!',
                             html:
                                 '<h1> Status: ' + statusName + ' </h1>' +
