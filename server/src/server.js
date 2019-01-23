@@ -116,7 +116,7 @@ app.post("/reset/user/:email", (req, res) => {
     });
 
     promise1.then(data => {
-        console.log(data[0].user_id);            
+        console.log(data[0].user_id);
         if (data[0] == undefined) {
         console.log(':::email entered not found in database::::');
         } else {
@@ -124,8 +124,8 @@ app.post("/reset/user/:email", (req, res) => {
         const token = crypto.randomBytes(20).toString('hex');
         console.log(':::::::::' + token);
         userdao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].user_id, (status, data) => {
-        }); 
-        
+        });
+
         const mailOptions = {
             from: `bedrehverdagshelt@gmail.com`,
             to: `${req.params.email}`,
@@ -248,8 +248,8 @@ app.post("/reset/org/:email", (req, res) => {
             }
 
         }); // transporter end
-        } //ifelse end 
-    
+        } //ifelse end
+
     });
 });
 
@@ -758,9 +758,9 @@ app.delete("/employee/:employee_id", checkIfEmployee, (req, res) =>{
 
 /** Update an employee in db on employee_id. Does NOT include password change. */
 app.put("/employee/:employee_id", checkIfEmployee,(req: Request, res: Response) =>{
-    console.log("Received put-request on endpoint /employee/"+req.params.employee_id);
+    console.log("Received put-request on endpoint /employee/"+req.body.employee_id);
     console.log("body & soul "+req.body.email);
-    empDao.updateEmp(req.body, req.params.employee_id, (status, data) =>{
+    empDao.updateEmp(req.body, req.body.employee_id, (status, data) =>{
         res.status(status);
         res.json(data);
     });
@@ -1343,25 +1343,25 @@ app.post('/userVerification', (req: Request, res: Response) => {
 
  app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
-    
+
     userdao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user. 
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
             console.log(':::::::::::::::::::::::Token not accepted.');
             res.status(500).json("Token not accepted.");
 
         }else if (data[0].resetPasswordExpire < Date.now()) {
             console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire 
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
             console.log('Token expired');
             res.status(400).json("Token expired");
-           
+
 
         } else { //
-            
+
             console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-            
-            res.status(200).json(data); 
-        } 
+
+            res.status(200).json(data);
+        }
     });
  });
 

@@ -18,13 +18,7 @@ export default class ChangePassword extends Component {
 
   render(){
     return(
-      <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h4>Endre passord</h4>
-        </div>
-      </div>
-
+      <div id="change-password-user-page">
         <div className="container text-center">
           <div className="row">
             <div className="col">
@@ -66,7 +60,7 @@ export default class ChangePassword extends Component {
               </div>
               </div>
               </div>
-      </>
+      </div>
     );
   }
 
