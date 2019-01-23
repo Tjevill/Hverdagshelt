@@ -163,6 +163,28 @@ export default class AdminEditEmployee extends Component < {
 
   }
 
+  addDeleteButton(){
+   
+      if(this.superuser==0){
+         return(
+       <div className="deleteCase">
+              <button
+                onClick={() => {
+                   this.delete(this.props.match.params.id);
+                }}
+              >
+                {" "}
+                Slett bruker{" "}
+              </button>
+            </div>
+      
+      );
+  
+  } else {
+    return ( <div> </div>);
+  }
+  }
+
 render(){
 	 const { formErrors } = this.state;
       return (
@@ -307,6 +329,8 @@ render(){
             <div className="editCase">
               <button type="submit"> Lagre endringer </button>
             </div>
+          
+            {this.addDeleteButton(this.superuser)}
 
 
 
