@@ -27,24 +27,32 @@ export class MapContainer extends Component {
     infoTitle = "Ukjent";
     infoId = -1;
 
+    places = [];
+
     commune = "";
     communes = [];
     communeOptions = [];
 
-    componentDidMount(){
-        caseService.getAllCases()
-            .then( cases => {
-                    this.cases = cases;
-                    console.log(this.cases);
-                    geoService.getCommunesKommune()
-                      .then(communes => {
-                          this.communes = communes;
-                          //this.commune = communes[this.user.commune - 1].province;
-                          this.loaded = true;
-                          this.forceUpdate();
-                      })
-                      .catch((error: Error) => Alert.danger(error.message));
-            });
+    async componentDidMount(){
+        this.cases = await caseService.getAllCases();
+        this.communes = await geoService.getCommunesKommune();
+        console.log(this.communes);
+        this.loaded = true;
+        this.forceUpdate();
+        this.casesByCommune("OSLO");
+    }
+
+    casesByCommune(name) {
+        name = name.toUpperCase();
+        let id = -1;
+        for(let i = 0; i < this.communes.length; i++){
+            if(this.communes[i].navn.toUpperCase() === name){
+                id = this.communes[i].ID;
+                break;
+            }
+        }
+        console.log("id:", id);
+
     }
 
     render() {
