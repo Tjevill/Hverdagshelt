@@ -195,7 +195,7 @@ export default class IssueOverviewForEmployee extends Component<{
             <tr>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>
-                {casen.headline} category: {casen.category_id}
+                {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
@@ -220,6 +220,8 @@ export default class IssueOverviewForEmployee extends Component<{
                   </span>
                 </span>
                 &nbsp;&nbsp;&nbsp;
+
+
                 <span className="badge badge-primary">
                   {this.statusname[casen.status_id - 1]}
                 </span>
