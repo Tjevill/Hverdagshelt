@@ -190,7 +190,7 @@ export default class IssueOverviewForEmployee extends Component<{
 
     saveUpdate (id) {
         if(document.getElementById('status1').checked) {
-            caseService.updateStatusAndCommentForOrg(id, 2, document.getElementById('comment-input').value)
+            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 2, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
                 })
@@ -199,7 +199,7 @@ export default class IssueOverviewForEmployee extends Component<{
             window.alert("Kommentar, status og bedrift endret!");
             // window.location.reload();
         } else if(document.getElementById('status2').checked) {
-            caseService.updateStatusAndCommentForOrg(id, 3, document.getElementById('comment-input').value)
+            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 3, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
                 })
@@ -207,7 +207,7 @@ export default class IssueOverviewForEmployee extends Component<{
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
         } else if(document.getElementById('status3').checked) {
-            caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
+            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 4, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
                 })
@@ -215,7 +215,7 @@ export default class IssueOverviewForEmployee extends Component<{
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
         } else if(document.getElementById('status4').checked) {
-            caseService.updateStatusAndCommentForOrg(id, 5, document.getElementById('comment-input').value)
+            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 5, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
                 })
@@ -223,15 +223,14 @@ export default class IssueOverviewForEmployee extends Component<{
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
         } else if(document.getElementById('status5').checked) {
-            caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
+            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 6, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
                 })
                 .catch((error: Error) => Alert.danger(error.message));
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        }
-        else {
+        } else {
             window.alert("Vennligst anngi en status på saken");
             return null;
         }
@@ -245,13 +244,11 @@ export default class IssueOverviewForEmployee extends Component<{
             this.currentCase = filteredCase[0];
         console.log(this.currentCase.org_id)
         if(this.currentCase.org_id == null) {
-            this.currentOrgName = '';
+            this.currentOrg = null;
         } else {
             this.currentOrg = this.orgs.filter(e =>
                 e.org_id == this.currentCase.org_id);
         }
-        console.log(this.currentOrg[0].name)
-
     }
 
     getCurrentOrg() {
@@ -502,8 +499,6 @@ export default class IssueOverviewForEmployee extends Component<{
           })
           .catch((error: Error) =>
               console.log("Fails by getting the available organizations", error))
-    this.employeeid = sessionStorage.getItem("userid");
-    console.log("employeeid" + this.employeeid);
     employeeService
       .getEmployeeByToken()
       .then(employee => {

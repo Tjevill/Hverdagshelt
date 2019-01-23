@@ -329,7 +329,7 @@ class CaseService {
       status: status_id,
       employee_id: employee_id,
       org_id: org_id
-    });
+    }, axiosConfig);
 		
 	}
 	
