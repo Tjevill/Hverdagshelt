@@ -207,7 +207,7 @@ class CaseService {
     return axios.put(url + '/updateStatusAndComment/' + case_id, {
       status: status,
       comment: comment
-    });
+    }, axiosConfig);
   }
 
 	/**  Update one case_status */

@@ -24,6 +24,7 @@ const style = {
  */
 export default class PrivateUsersList extends Component {
   users = [];
+  usersbackup=[];
   superUser = "";
 
   render() {
@@ -127,14 +128,10 @@ export default class PrivateUsersList extends Component {
 
   searchUsers(searchString) {
     console.log(searchString);
-    userService
-      .getUsersBySearchingOnName(searchString)
-      .then(response => {
-        this.users = response;
-      })
-      .catch(err => {
-        console.log("No users with this name");
-      });
+    this.users = this.usersbackup.filter(function(value){
+        return value.name.indexOf(searchString)!=(-1);
+    });
+    this.forceUpdate();
   }
 
   edit(id) {
@@ -175,7 +172,10 @@ export default class PrivateUsersList extends Component {
     this.superUser = sessionStorage.getItem("superuser");
     userService
       .getAllUsers()
-      .then(user => (this.users = user))
+      .then(user => {
+        this.users = user;
+        this.usersbackup = user;
+      })
       .catch((error: Error) => console.log(error.message));
   }
 }
