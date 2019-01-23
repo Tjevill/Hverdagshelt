@@ -33,13 +33,13 @@ export default class OrgEdit extends Component {
 
   componentDidMount(){
    // this.userid = sessionStorage.getItem("userid");
-    console.log("id: " + this.userid);
     orgService
       .getOrganizationByToken()
       .then(user => {
           console.log("User info: " , user)
         console.log(user[0]);
         this.user = user[0];
+        console.log("id: " + this.user.org_id);
         this.loaded = true;
         this.forceUpdate();
       })

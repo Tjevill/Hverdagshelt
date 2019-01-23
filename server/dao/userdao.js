@@ -99,7 +99,7 @@ module.exports = class UserDao extends Dao {
 	updateUser (json: jsonUpdate, callback: mixed) {
 		let val = [json.name, json.address, json.zipcode, json.tel, json.email, json.subscription, json.user_id];
 		super.query(
-			"update User set name = ?, address = ?, zipcode = ?, tel = ?, email = ?, subscription = ? where user_id = ?",
+			"UPDATE User SET name = ?, address = ?, zipcode = ?, tel = ?, email = ?, subscription = ? WHERE user_id = ?",
 			val,
 			callback
 		);
