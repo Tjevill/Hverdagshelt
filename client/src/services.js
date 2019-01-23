@@ -763,6 +763,15 @@ class EventService {
   updateEvent(event_id:number, event:Event):Promise<Void>{
       return axios.put(url+/updateEvent/+event_id, event);
   }
+	
+	/**
+	 * Get events in selected commune ID
+	 * @param commune_ID
+	 * @returns {AxiosPromise<any>}
+	 */
+	getEventsOnOnCommuneID(commune_ID: number): Promise<Case[]>{
+		return axios.get(url + '/getCasesOnCommuneID/' + commune_ID);
+	}
 
 
 }

@@ -3,6 +3,7 @@ import { Component } from "react-simplified";
 import {statisticsService} from "../services";
 import Charts from "./Charts";
 import {Loading} from "./widgets";
+import html2pdf from "html2pdf.js";
 
 export default class StatisticsPage extends Component{
 	
@@ -32,12 +33,24 @@ export default class StatisticsPage extends Component{
 		'rgba(75, 192, 192, 0.6)'
 	];
 	
+	opt = {
+/*
+		margin:       0,
+*/
+		filename:     'statistikkHverdagsHelt.pdf',
+		html2pdf:			{type: 'view'},
+/*		image:        { type: 'jpeg', quality: 0.98 },
+		html2canvas:  { scale: 1,
+										width: 1400},*/
+		jsPDF:        { unit: 'mm', format: 'letter', orientation: 'l' }
+	};
+
+	
 	render(){
 		if (this.loaded) {
 			
 			return (
 				<div id="statistics-page">
-					
 					<div className = "case-chart">
 						<Charts type={"bar"}
 										labels = {this.labelsRegCases}
@@ -57,7 +70,7 @@ export default class StatisticsPage extends Component{
 						 				color={this.colorCaseCount}
 						/>
 					</div>
-					
+					<button onClick={() => this.saveDoc(document.getElementById("statistics-page"))}> save </button>
 				</div>
 			)
 		}else {
@@ -65,6 +78,9 @@ export default class StatisticsPage extends Component{
 		}
 	}
 	
+	saveDoc(element){
+		html2pdf().set(this.opt).from(element).save();
+	}
 	
 	componentDidMount () {
 		statisticsService.getRegisteredCases()
@@ -82,7 +98,6 @@ export default class StatisticsPage extends Component{
 				statisticsService.getAllCasesCategory()
 					.then(res => {
 						this.caseCountCat = res;
-						console.log(this.caseCountCat, "NOE");
 						this.caseCountCat.map(item => {
 							this.labelsCaseCount.push(item.description)
 						});
@@ -92,6 +107,8 @@ export default class StatisticsPage extends Component{
 						});
 						
 						this.loaded = true;
+						
+						
 					});
 				
 			})
