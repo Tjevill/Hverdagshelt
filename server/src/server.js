@@ -253,12 +253,32 @@ app.post("/reset/org/:email", (req, res) => {
     });
 });
 
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
+/** Create user and send welcome-email */
+app.post("/user", (req, res) => {
+    console.log("POST-request from client /user");
+    
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
+
+        let email = req.body.email;
+        const mailOptionsCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Velkommen som HverdagsHelt!',
+            html:
+                '<h1> Velkommen som helt! </h1>' +
+                '<p> Logg inn på hverdagshelt for å legge inn saker! :) </p>'
+
+        };
+
+        transporter.sendMail(mailOptionsCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        }); // transporter
     });
 });
 
@@ -344,22 +364,20 @@ app.get('/user/:id', (req: Request, res: Response) => {
  */
 app.get('/getuser/', (req: Request, res: Response) => {
 
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
-        jwt.verify(token, privateKey, function(err, decoded)  {
-            if (decoded) {
-                console.log("DECODED: ", decoded.userid)
-                userdao.getOneByID(decoded.userid, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                    console.log("/getuser/ sending: ", data)
-                })
-            } else {
-                console.log("Feil innlogging! Sender brevbombe.");
-                res.sendStatus(403);
-            }
-        });
-
-
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            userdao.getOneByID(decoded.userid, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
 });
 
 /**
@@ -452,8 +470,6 @@ app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
     })
 });
 
-
-
 // End User
 
 // Organization
@@ -478,8 +494,6 @@ app.get('/org/:id', (req: Request, res: Response) => {
     })
 });
 
-
-
 /**
  * Get one org by token
  */
@@ -502,8 +516,6 @@ app.get('/getorg/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /**
  * Adds a new organization or the Organization table
@@ -692,6 +704,10 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 
 
+
+
+
+
 // Employee
 
 /** Get all employees from the db */
@@ -711,8 +727,6 @@ app.get("/employee/:employee_id", (req, res) =>{
         res.json(data);
     });
 });
-
-
 
 /**
  * Get one Employeee from DB by token
@@ -736,8 +750,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
@@ -803,8 +815,6 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
     });
 });
 
-
-
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
 		console.log(req.params.id);
@@ -864,6 +874,16 @@ app.get("/searchUserEmail/:email", (req, res) => {
 
 // Events
 
+/**
+ * Get events in selected commune ID
+ */
+app.get("/getEventsOnCommuneID/:id", (req, res) => {
+	eventDao.getEventsOnCommuneID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 /** Get all events */
 app.get("/events", (req, res) => {
     console.log("Received get-request on endpoint /events");
@@ -900,15 +920,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
-});
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    userdao.addUser(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
+}); 
 
 
 app.get("/user/:username", (req, res) => {
@@ -1124,16 +1136,15 @@ app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     jwt.verify(token, privateKey, function(err, decoded)  {
         if (decoded) {
-            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.userid);
+            console.log("DECODED: ", decoded.email);
 
-    
             req.body.user_id = decoded.userid;
             caseDao.updateCase(req.body, (status, data) => {
                 res.status(status);
                 res.json(data);
 
-                
-                let email = req.body.email;
+                let email = decoded.email;
                 const mailOptionsCase = {
                     from: 'bedrehverdagshelt@gmail.com',
                     to: email,
@@ -1276,7 +1287,8 @@ app.put("/changeCaseStatus/:case_id/:status_id", (req, res) => {
 /**
  * Change/insert comment on one case by case_id
  */
-app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
+app.put("/changeCaseComment/:case_id/:comment", checkIfOrganization, (req, res) => {
+    console.log(req.params.case_id)
 	caseDao.updateCaseComment(req.params.case_id, req.params.comment, (status, data) => {
 		res.status(status);
 		res.json(data);
@@ -1287,11 +1299,53 @@ app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
  * Update case with {employee_id, comment, org_id, status_id, case_id} for employees
  */
 app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
-	caseDao.updateCaseByEmployee(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
+    
+   let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            console.log("body: ", req.body);
+
+            caseDao.updateCaseByEmployee(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log('::::::::::::::::::updating case');
+                
+                statusDao.getOneById(req.body.status, (status,data) => {
+                    let statusName = data[0].description;
+                    console.log(':::::::::::::::::: fetching status name');
+
+                    caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
+                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
+                        console.log(data);
+                        
+                        const mailOptionsCase = {
+                            from: 'bedrehverdagshelt@gmail.com',
+                            to: data[0].email,
+                            subject: 'Din sak har blitt oppdaert!',
+                            html:
+                                '<h1> Status: ' + statusName + ' </h1>' +
+                                '<p> "' + req.body.comment + '" </p>' + 
+                                '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                        };
+
+                        transporter.sendMail(mailOptionsCase, function(error, info){
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                            }
+                        }); //transporter
+                    }); //reply
+                }); //status
+            }); //update
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    }); //JWT
+}); //APP
 
 // End Cases
 

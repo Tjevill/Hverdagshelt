@@ -86,6 +86,20 @@ module.exports = class EventDao extends Dao {
             callback
         );
     }
+	
+	
+	/**
+	 * Get events in selected commune ID
+	 * @param id Commune ID in kommune table
+	 * @param callback
+	 */
+	getEventsOnCommuneID(id: number, callback: mixed){
+		super.query(
+			"SELECT * FROM Evnets INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?)",
+			[id],
+			callback
+		)
+	}
 
 }
 
