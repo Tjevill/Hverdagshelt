@@ -287,7 +287,6 @@ export default class OrgIssueOverview extends Component<{
   render() {
     let lists;
     let sidebuttons;
-      console.log("Table now:",this.casesbyStatus);
     if (this.casesbyStatus.length == 0) {
       this.caseside = this.casesbyStatus.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
       lists = (
