@@ -1310,6 +1310,7 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                         console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
                         console.log(data);
                         
+                        if(data[0].subscription === 1) {
                         const mailOptionsCase = {
                             from: 'bedrehverdagshelt@gmail.com',
                             to: data[0].email,
@@ -1321,12 +1322,16 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                         };
 
                         transporter.sendMail(mailOptionsCase, function(error, info){
-                            if (error) {
+                            if (error) { 
                                 console.log(error);
                             } else {
                                 console.log('Email sent: ' + info.response);
                             }
                         }); //transporter
+                        } //subscribed ifelse
+                        else {
+                            console.log('user does not want spam');
+                        }
                     }); //reply
                 }); //status
             }); //update
