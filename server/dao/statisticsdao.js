@@ -53,7 +53,7 @@ module.exports = class StatisticsDao extends Dao {
 	 */
 	getAllCasesCategory(callback: mixed){
 		super.query(
-			"SELECT COUNT(Cases.category_id) AS 'antall', Category.description, Cases.category_id FROM Cases INNER JOIN Category ON Category.category_id = Cases.category_id GROUP BY Category.category_id\n",
+			"SELECT COUNT(Cases.category_id) AS 'antall', Category.description, Cases.category_id FROM Cases INNER JOIN Category ON Category.category_id = Cases.category_id GROUP BY Category.category_id",
 			[],
 			callback
 		)

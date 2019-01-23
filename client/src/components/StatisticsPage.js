@@ -4,6 +4,8 @@ import {statisticsService} from "../services";
 import Charts from "./Charts";
 import {Loading} from "./widgets";
 import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
+import * as jsPDF from 'jspdf';
 
 export default class StatisticsPage extends Component{
 	
@@ -33,44 +35,55 @@ export default class StatisticsPage extends Component{
 		'rgba(75, 192, 192, 0.6)'
 	];
 	
-	opt = {
-/*
-		margin:       0,
-*/
-		filename:     'statistikkHverdagsHelt.pdf',
-		html2pdf:			{type: 'view'},
-		image:        { type: 'jpeg', quality: 0.98 },
-		html2canvas:  { scale: 1
-										/*width: 1400*/},
-		jsPDF:        { unit: 'mm', format: 'a4', orientation: 'l' }
-	};
-
+	
+	print() {
+		const input = document.getElementById("statistics-page");
+		const filename = "statistikk_Hverdags_Helt.pdf";
+		
+		html2canvas(input, {
+				scale: 1
+			}
+		).then(canvas => {
+			let pdf = new jsPDF('p', 'mm', 'a4');
+			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 200, 200);
+			pdf.save(filename);
+		})
+		
+	}
 	
 	render(){
 		if (this.loaded) {
 			
 			return (
-				<div id="statistics-page">
-					<div className = "case-chart">
-						<Charts type={"bar"}
-										labels = {this.labelsRegCases}
-										dataSets = {this.dataSetsRegCases}
-										headline = {this.headlineRegCases}
-						 				display = {this.displayRegCase}
-						 				color={this.colorRegCAse}
-						/>
+				<div id="wrapper-chart">
+					
+					<div className = "button-wrapper" id="button-chart">
+						<button className="save-pdf" onClick = {() => this.print()}> Save as PDF</button>
 					</div>
 					
-					<div className = "case-chart">
-						<Charts type={"line"}
-										labels = {this.labelsCaseCount}
-										dataSets = {this.dataSetsCaseCount}
-										headline = {this.headlineCaseCount}
-						 				display = {this.displayCaseCount}
-						 				color={this.colorCaseCount}
-						/>
+					<div id = "statistics-page">
+						<div className = "case-chart">
+							<Charts type = {"bar"}
+											labels = {this.labelsRegCases}
+											dataSets = {this.dataSetsRegCases}
+											headline = {this.headlineRegCases}
+											display = {this.displayRegCase}
+											color = {this.colorRegCAse}
+							/>
+						</div>
+						
+						<div className = "case-chart">
+							<Charts type = {"line"}
+											labels = {this.labelsCaseCount}
+											dataSets = {this.dataSetsCaseCount}
+											headline = {this.headlineCaseCount}
+											display = {this.displayCaseCount}
+											color = {this.colorCaseCount}
+							/>
+						</div>
+					
 					</div>
-					<button onClick={() => this.saveDoc(document.getElementById("statistics-page"))}> save </button>
+					
 				</div>
 			)
 		}else {
@@ -78,15 +91,6 @@ export default class StatisticsPage extends Component{
 		}
 	}
 	
-	saveDoc(element){
-		element.className = "pdf-form";
-		
-		
-		
-		html2pdf().set(this.opt).from(element).save();
-		
-		element.className = "";
-	}
 	
 	componentDidMount () {
 		statisticsService.getRegisteredCases()
