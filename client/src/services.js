@@ -430,7 +430,7 @@ class OrgService{
 	 * @param updatePassword Includes variables {org_id, oldPassword}
 	 */
 	verifyOldPassword (org_id: number, oldPassword: string, newPassword: string): Promise<number> {
-		return axios.put(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword}, axiosConfig);
+		return axios.put(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword, newPassword: newPassword}, axiosConfig);
 
 	}
 

@@ -1652,27 +1652,62 @@ app.put('/employeeVerification', (req: Request, res: Response) => {
 /**
  * Verifies old password for organization.
  */
-app.post('/organizationVerification', (req: Request, res: Response) => {
+// app.post('/organizationVerification', (req: Request, res: Response) => {
 
-    let dbHash;
-    orgDao.getHashedPWord(req.body.org_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+//     let dbHash;
+//     orgDao.getHashedPWord(req.body.org_id, (status, data) => {
+//         console.log(data[0].password + " DATABASE!******************************");
+//         let savedPassword = data[0].password;
+//         let passwordData = sha512(req.body.oldPassword, data[0].secret);
+//         console.log(passwordData.passwordHash, "NEW***********************");
+//         dbHash = passwordData.passwordHash === savedPassword;
+//         console.log(dbHash, " FRA VERIFY FALSE TRUE");
 
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
+//         if (dbHash) {
+//             console.log("STATUS: ", "200");
+//             res.status(200).json(1);
+//         } else {
+//             console.log("STATUS: ", "500");
+//             res.status(500).json("Wrong password. Try again");
+//         }
+
+//     });
+
+// });
+
+
+app.put('/organizationVerification', (req: Request, res: Response) => {
+    console.log("app.put(/organizationVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log('decoded: ' +decoded);
+            console.log('body: ' + req.body)
+            let dbHash;
+
+            orgDao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    orgDao.updateOrgPassword({org_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
         } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
+            console.log("Feil innlogging! Sender brevbombe.");
         }
-
     });
-
 });
 
 
