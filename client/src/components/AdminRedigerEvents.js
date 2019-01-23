@@ -123,7 +123,7 @@ export default class AdminRedigerEvents extends Component <{ match: { params: { 
     }else{
       return(
           <Loading/>
-          );
+          ); 
 
     }
   }
@@ -156,16 +156,7 @@ export default class AdminRedigerEvents extends Component <{ match: { params: { 
               Lagre endringer
             </button>
 
-            <button
-                className = "btn btn-danger ml-5"
-                id = "superuserbutton2"
-                onClick={ () => this.delete(this.props.match.params.id) }
-
-            >
-              Slett
-            </button>
-
-            </div>
+          </div>
       )
     }else {
       return(
@@ -185,8 +176,13 @@ export default class AdminRedigerEvents extends Component <{ match: { params: { 
         .updateEvent(
             this.props.match.params.id,
             this.event
-            );
-    history.push("/admin/events");
+            )
+        .then(response =>{
+            console.log("Edit event response: ", response);
+            // history.push("/admin/events");
+        })
+        .catch((error: Error) => (console.log(error.message)));
+
   }
 
 }

@@ -41,7 +41,7 @@ export default class EmployeeOverview extends Component {
   search(event){
     console.log(event.target.value);
     this.employees = this.employeesbackup.filter(function(value){
-        return value.name.indexOf(event.target.value)!=(-1);
+        return value.name.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
     });
     this.forceUpdate();
   }

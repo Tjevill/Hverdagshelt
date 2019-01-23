@@ -57,18 +57,28 @@ CREATE TABLE Category (
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;
 
 
-CREATE TABLE User (
- user_id int(8) NOT NULL AUTO_INCREMENT,
- name varchar(200) NOT NULL,
- address varchar(200) NOT NULL,
- zipcode int(4) NOT NULL,
- tel int(8) NOT NULL,
- email varchar(100) NOT NULL,
- password text NOT NULL,
- secret varchar(32) NOT NULL,
- subscription tinyint(1) NOT NULL,
- PRIMARY KEY (user_id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+
+CREATE TABLE `User` (
+  `user_id` int(8) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `tel` int(8) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` text NOT NULL,
+  `secret` varchar(32) NOT NULL,
+  `subscription` tinyint(1) NOT NULL,
+  `zipcode` varchar(4) NOT NULL,
+  `resetPasswordToken` varchar(255) DEFAULT NULL,
+  `resetPasswordExpire` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `User`
+MODIFY `user_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+COMMIT;
 
 
 CREATE TABLE StatusTable (
