@@ -52,8 +52,7 @@ export class Report extends Component {
         longitude: "",
         picture: "",
         zipcode: "",
-        category_id: "",
-        user_id: sessionStorage.getItem("userid"),
+        category_id: ""
     };
 
     fileSelectedHandler = event => {
@@ -149,7 +148,7 @@ export class Report extends Component {
 
     render(){
         return(
-            <div className="row row-style" style={style}>
+            <div id="report-page" className="row row-style" style={style}>
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="rapporter">
@@ -228,6 +227,7 @@ export class Report extends Component {
                                 }}
                                 disableDefaultUI={true}
                                 onClick={(t, map, coord) => this.onMarkerDragEnd(coord)}
+                                language="no"
                             >
                                 <Marker
                                     name={"current-location"}
@@ -292,7 +292,7 @@ export class Report extends Component {
                             </select>
                             <div className="invalid-feedback">Du må velge en kategori</div>
                         </div>
-                        <button type="button" onClick={this.register} className="btn btn-primary fullfør">
+                        <button id="submit" type="button" onClick={this.register} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
                         <h2 className="feilmelding">{this.error}</h2>
@@ -414,9 +414,10 @@ export class Report extends Component {
                     longitude: this.lng,
                     zipcode: this.state.zipcode,
                     picture: this.state.picture,
-                    category_id: this.state.category_id,
-                    user_id: this.state.user_id
+                    category_id: this.state.category_id
                 };
+
+
 
                 if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
                 caseService.createUserCase(casedata)
@@ -430,6 +431,7 @@ export class Report extends Component {
     }
 
     componentDidMount(){
+
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
             .catch((error: Error) => console.log(error.message));

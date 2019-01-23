@@ -231,36 +231,63 @@ module.exports = class UserDao extends Dao {
 		);
     }
 
-	/**
-	 * Verify if email exists
-	 * @param email the email to search for
-	 * @param callback
-	 */
-	searchEmail (email: string, callback: mixed) {
-		super.query(
-			"SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
-			[email],
-			callback
-		)
-	}
+    /**
+     * Verify if email exists in Employee table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchEmployeeEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM Employee WHERE Employee.email = ?",
+            [email],
+            callback
+        )
+    }
+
+    /**
+     * Verify if email exists in Organization table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchOrgEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM Organization WHERE Organization.email = ?",
+            [email],
+            callback
+        )
+    }
+
+    /**
+     * Verify if email exists in User table
+     * @param email the email to search for
+     * @param callback
+     */
+    searchUserEmail (email: string, callback: mixed) {
+        super.query(
+            "SELECT COUNT(email) as verify FROM User WHERE User.email = ?",
+            [email],
+            callback
+        )
+    }
+
 
     updateResetPasswordToken(json: json, employee_id: number, callback: any) {
-		let val = [json.resetPasswordToken, json.resetPasswordExpire, employee_id];
-		super.query(
-			"update Employee set resetPasswordToken = ?, expirePasswordToken = ? where employee_id = ?",
-			val,
-			callback
-		);
-	}
+        let val = [json.resetPasswordToken, json.resetPasswordExpire, employee_id];
+        super.query(
+            "update Employee set resetPasswordToken = ?, expirePasswordToken = ? where employee_id = ?",
+            val,
+            callback
+        );
+    }
 
-	 getUserFromResetToken(token: string, callback: any) {
+    getUserFromResetToken(token: string, callback: any) {
 
-		 super.query(
-			"SELECT * FROM Employee WHERE resetPasswordToken = ?",
-			[token],
-			callback
-		 );
-	 }
+        super.query(
+            "SELECT * FROM Employee WHERE resetPasswordToken = ?",
+            [token],
+            callback
+        );
+    }
 
 
 };

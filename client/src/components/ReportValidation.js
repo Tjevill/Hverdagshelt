@@ -12,7 +12,7 @@ const history = createHistory({
 export default class ReportValidation extends Component {
 
     componentDidMount() {
-        setTimeout(() => (window.location = "#profile"), 5000);
+        setTimeout(() => (window.location = "#profile"), 10);
     }
 
     render(){

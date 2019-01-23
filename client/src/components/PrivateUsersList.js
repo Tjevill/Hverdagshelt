@@ -12,8 +12,6 @@ import { Component } from "react-simplified";
 import { userService } from "../services.js";
 import RaisedButton from "material-ui/RaisedButton";
 import SearchBar from "material-ui-search-bar";
-
-import { BrowserRouter, Route } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
@@ -30,12 +28,12 @@ export default class PrivateUsersList extends Component {
 
   render() {
     return (
-     
+
 
       <MuiThemeProvider>
        <div className="title">
      <link rel="stylesheet" href="PrivateUsersList.css" />
-   
+
       <h1 class="logo">
   <span class="word1">Hverdags</span>
   <span class="word2">helter</span>
@@ -52,16 +50,16 @@ export default class PrivateUsersList extends Component {
               <TableHeaderColumn>Abonnement_status</TableHeaderColumn>
               <TableHeaderColumn>Postnr</TableHeaderColumn>
               <TableHeaderColumn />
-              
+
               <TableHeaderColumn>
-             
-        
+
+
                 {" "}
                 <SearchBar
                   onChange={event => this.searchUsers(event)}
                   style={{
                     margin: "0 auto",
-                   
+
                     maxWidth: 900
                   }}
                 />
@@ -75,7 +73,7 @@ export default class PrivateUsersList extends Component {
                   {user.user_id}
                 </TableRowColumn>
                 <TableRowColumn className="name">{user.name}</TableRowColumn>
-                
+
                 <TableRowColumn className="address">
                   {user.address}
                 </TableRowColumn>
@@ -97,14 +95,14 @@ export default class PrivateUsersList extends Component {
                 <TableRowColumn className="edit">
                   {this.addEditRowColumn(this.superUser, user)}
                   {/*
-               
+
                  <RaisedButton label="rediger" primary={true} style={style} onClick={() => {
                   this.edit();
                 }}>
-                  
-                    
+
+
                   </RaisedButton>
-             
+
             */}
                 </TableRowColumn>
 
@@ -123,7 +121,7 @@ export default class PrivateUsersList extends Component {
           </TableBody>
         </Table>
       </MuiThemeProvider>
-       
+
     );
   }
 
@@ -146,7 +144,7 @@ export default class PrivateUsersList extends Component {
 
   delete(id) {
     if (window.confirm("Er du sikker på at du ønsker å slette brukeren?")) {
-      console.log("The user  with id " + " " + "has been deleted");
+      //console.log("The user  with id " + " " + "has been deleted");
       userService
         .deleteUser(id)
         .then(user => console.log(user))
@@ -157,7 +155,7 @@ export default class PrivateUsersList extends Component {
   }
 
   addEditRowColumn(id, user) {
-    if (id == 1) {
+    if (id === 1) {
       return (
         <RaisedButton
           label="rediger"

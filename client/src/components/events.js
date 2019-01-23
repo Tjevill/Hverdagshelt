@@ -25,7 +25,7 @@ export default class Events extends Component {
 	events = [];
 	render() {
 		return (
-			<div className="events-body">
+			<div id="events-page" className="events-body">
 				<div className="userHome-body">
 					<div className="userHome-container">
 						<div className="userHome-events">
@@ -33,9 +33,7 @@ export default class Events extends Component {
 
 							{this.events.map((e, i) => (
 								<div key={i} className="userHome-event">
-									<Grid className="grid1">
-										<Cell col={2}>
-											<div className="cell1">
+										<div className="event-date">
 												<div className="calender">
 													<p>
 														{this.getMonth(
@@ -68,11 +66,9 @@ export default class Events extends Component {
 														}
 													</h4>
 												</div>
-											</div>
-										</Cell>
+										</div>
 
-										<Cell col={6}>
-											<div className="cell2">
+										<div className="event-info">
 												<h5>{e.name}</h5>
 												<p>
 													{" "}
@@ -125,17 +121,11 @@ export default class Events extends Component {
 														</div>
 													</div>
 												</div>
+										</div>
 
-
-											</div>
-										</Cell>
-
-										<Cell col={4}>
-											<div className="cell3">
-												<img src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
-											</div>
-										</Cell>
-									</Grid>
+										<div className="event-image">
+											<img className="max" src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" />
+										</div>
 								</div>
 							))}
 						</div>
@@ -220,8 +210,8 @@ export default class Events extends Component {
 	 	eventService //Endre til event senere
 	 	.getAllEvents()
 	 	.then( sak => this.setState({events: sak}))
-	 	.catch((error: Error) => console.log(error.message)); 
-	 	
-	 	
-   
+	 	.catch((error: Error) => console.log(error.message));
+
+
+
   } */

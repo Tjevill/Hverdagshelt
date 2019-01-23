@@ -51,9 +51,9 @@ export default class EmployeeOverview extends Component {
         <div className="title">
      <link rel="stylesheet" href="PrivateUsersList.css" />
    
-      <h1 class="logo">
-  <span class="word1">Kommune</span>
-  <span class="word2">Ansatt</span>
+      <h1 className="logo">
+  <span className="word1">Kommune</span>
+  <span className="word2">Ansatt</span>
 </h1>
 </div>
 

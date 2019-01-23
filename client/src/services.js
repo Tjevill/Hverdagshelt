@@ -206,7 +206,7 @@ class CaseService {
   *   Sets status_id = 1.
   */
   createUserCase(casee: Case): Promise<void>{
-    return axios.post(url+'/createUserCase', casee);
+    return axios.post(url+'/createUserCase', casee, axiosConfig);
   }
 
   /** Search for case by category */
@@ -224,34 +224,34 @@ class CaseService {
     return axios.get(url+'/allCases/'+province);
   }
 
-
-
-    getCategories(): Promise<Category[]> {
-        return axios.get(url + '/categories');
-    }
+  getCategories(): Promise<Category[]> {
+      return axios.get(url + '/categories');
+  }
 
   getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
-    createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
-        return axios.post('/cases', {
-            headline: headline,
-            description: description,
-            longitude: longitude,
-            latitude: latitude,
-            picture: picture,
-            category_id: category_id
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+
+  /* Redundant, CreateUserCase will be used instead.
+  createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
+      return axios.post('/cases', {
+          headline: headline,
+          description: description,
+          longitude: longitude,
+          latitude: latitude,
+          picture: picture,
+          category_id: category_id
+      })
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+  } */
 
 	changeCaseStatus (case_id: number): Promise<void> {
-		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
+		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id, axiosConfig);
 	}
 
 	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
@@ -267,7 +267,7 @@ class CaseService {
 	 * @returns {AxiosPromise<any>}
 	 */
 	getCasesForOrganization(id: number): Promise<Case[]>{
-		return axios.get(url + '/getCasesOnOrgID/' + id);
+		return axios.get(url + '/getCasesOnOrgID/' + id, axiosConfig);
 	}
 
 	/**  Update one case_status */
@@ -316,16 +316,24 @@ class UserService {
     return axios.get(url + '/user');
   }
 
-  getUserByID(id: number): Promise<User[]>{
-    return axios.get(url + '/user/' + id);
-  }
+    getUserByID(id: number): Promise<User[]>{
+        return axios.get(url + '/user/' + id);
+    }
 
-  updateOne(user: User): Promise<void>{
-    return axios.put(url + '/user/' + user.user_id, user);
-  }
+    getUserByToken(): Promise<User>{
+        return axios.get(url + '/getuser/', axiosConfig);
+    }
+
+    updateOne(user: User): Promise<void>{
+        return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
+    }
+
+    updateMyUserInfo(user: User): Promise<void>{
+        return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
+    }
 
   deleteUser(id: number): Promise<void>{
-    return axios.delete(url + '/user/' + id);
+    return axios.delete(url + '/user/' + id, axiosConfig);
   }
 
   getCountUsers(): Promise<number>{
@@ -358,7 +366,7 @@ class UserService {
 
 	}
 
-  
+
 
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
@@ -396,31 +404,38 @@ class OrgService{
     return axios.get(url + '/org/' + id);
   }
 
-  updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id, org);
+
+    getOrganizationByToken(): Promise<Organization[]>{
+        console.log("Requesting Organization information")
+        return axios.get(url + '/getorg/', axiosConfig);
+    }
+
+
+    updateOrgByID(org: Organization): Promise<void>{
+    return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
   }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
-    return axios.put(url + '/updateOrgPWord', org);
+    return axios.put(url + '/updateOrgPWord', org, axiosConfig);
   }
 
   deleteOrgByID(id: number): Promise<void>{
-    return axios.delete(url + '/org/' + id);
+    return axios.delete(url + '/org/' + id, axiosConfig);
   }
 
   addNewOrg(org: Organization): Promise<void>{
-    return axios.post(url + '/newOrg', org);
+    return axios.post(url + '/newOrg', org, axiosConfig);
   }
 
   getCountOrg(): Promise<number>{
-    return axios.get(url + '/orgCount');
+    return axios.get(url + '/orgCount', axiosConfig);
   }
 
 
-  addOrganization(newemployee: Register): Promise<void> {
-      console.log("ORG TIL SERVICE: ", newemployee);
-      return axios.put(url + "/neworganization", newemployee);
-  }
+    addOrganization(newemployee: Register): Promise<void> {
+        console.log("ORG TIL SERVICE: ", newemployee);
+        return axios.put(url + "/neworganization", newemployee, axiosConfig);
+    }
 
   verifyResetToken (resetToken : string): Promise<Organization[]> {
     return axios.get(url + '/tokenVerification/org/'+ resetToken);
@@ -445,24 +460,24 @@ class CategoryService {
   }
 
   updateCategoryByID(category: Category): Promise<void>{
-    return axios.put(url + '/category/' + category.category_id, category);
+    return axios.put(url + '/category/' + category.category_id, category, axiosConfig);
   }
 
-    checkIfChecked(cat: number, org: number): Promise<Category[]>{
+  checkIfChecked(cat: number, org: number): Promise<Category[]>{
         return axios.get(url + '/categoryorg/' + cat + '/' + org);
-    }
+  }
 
   addCategory(newcat: Category): Promise<void> {
     console.log("CATEGORY TIL SERVICE: ", newcat);
-    return axios.post(url + "/addcategory", newcat);
+    return axios.post(url + "/addcategory", newcat, axiosConfig);
   }
 
     deleteCategoryByID(id: number): Promise<void>{
-        return axios.delete(url + '/category/' + id);
+        return axios.delete(url + '/category/' + id, axiosConfig);
     }
 
     deleteCategoryByOrgID(id: number): Promise<void>{
-        return axios.delete(url + '/category_org/' + id);
+        return axios.delete(url + '/category_org/' + id, axiosConfig);
     }
 
   getCountCategories(): Promise<number>{
@@ -472,7 +487,7 @@ class CategoryService {
 
 	addOrgCat (newemployee: Register, company_id: number): Promise<void> {
 		console.log("KOBLINGSTABELL TIL SERVICE: ", newemployee);
-		return axios.put(url + "/neworgcat/" + company_id, newemployee);
+		return axios.put(url + "/neworgcat/" + company_id, newemployee, axiosConfig);
 	}
 
 	/**
@@ -481,10 +496,10 @@ class CategoryService {
 	 * @returns {AxiosPromise<any>} {category_id, description}
 	 */
 	getCategoriesForOrganization (id: number): Promise<Category[]> {
-		return axios.get(url + "/categoriesOrg/" + id);
+		return axios.get(url + "/categoriesOrg/" + id, axiosConfig);
 	}
 
-  
+
 
 }
 
@@ -510,6 +525,11 @@ export default class EmployeeService {
         return axios.put(url + "/newemployee", newemployee);
     }
 
+
+    getEmployeeByToken(): Promise<Employee[]>{
+	    console.log("Requesting Employee information")
+        return axios.get(url + '/getemployee/', axiosConfig);
+    }
 
 
   /** Create employee
@@ -550,7 +570,7 @@ export default class EmployeeService {
   }
 
   /** Get one employee with employee_id */
-  getOne(employee_id : number): Promise<Employee[]>{
+  getEployeeByID(employee_id : number): Promise<Employee[]>{
     return axios.get(url+'/employee/'+employee_id);
   }
 
@@ -587,15 +607,35 @@ export default class EmployeeService {
   getCaseByEmployeeID(emp_id: number): Promise<Case[]>{
     return axios.get(url + '/getCaseOnEmployeeID/' + emp_id);
   }
-	
-	/**
-   * Verify if email exists.
-	 * @param email The employees email
-	 * @returns {AxiosPromise<any>} 1 if true, 0 if not
-	 */
-  searchForEmail(email: string): Promise<{verify: number}>{
-    return axios.get(url + '/searchEmail/' + email);
-  }
+
+    /**
+     * Verify if email exists.
+     * @param email The employees email
+     * @returns {AxiosPromise<any>} 1 if true, 0 if not
+     */
+    searchForEmployeeEmail(email: string): Promise<{verify: number}>{
+        return axios.get(url + '/searchEmployeeEmail/' + email);
+    }
+
+
+    /**
+     * Verify if email exists.
+     * @param email The employees email
+     * @returns {AxiosPromise<any>} 1 if true, 0 if not
+     */
+    searchForOrgEmail(email: string): Promise<{verify: number}>{
+        return axios.get(url + '/searchOrgEmail/' + email);
+    }
+
+
+    /**
+     * Verify if email exists.
+     * @param email The employees email
+     * @returns {AxiosPromise<any>} 1 if true, 0 if not
+     */
+    searchForUserEmail(email: string): Promise<{verify: number}>{
+        return axios.get(url + '/searchUserEmail/' + email);
+    }
 
   verifyResetToken (resetToken : string): Promise<Employee[]> {
     return axios.get(url + '/tokenVerification/emp/'+ resetToken);
@@ -647,12 +687,12 @@ class EventService {
    * @param event - event object.
    */
   createEvent(event:Event):Promise<Void> {
-    return axios.post(url+"/createEvent", event);
+    return axios.post(url+"/createEvent", event, axiosConfig);
 
   }
 
   deleteEvent(event_id: number): Promise<Void>{
-    return axios.delete(url+"/deleteEvent/"+event_id);
+    return axios.delete(url+"/deleteEvent/"+event_id, axiosConfig);
   }
 
 
@@ -701,7 +741,7 @@ class GeoService {
    }
 
 	getCommunesCounty(county_id: number): Promise<County[]> {
-		return axios.get(url + "/getCommunesCounty/", county_id);
+		return axios.get(url + "/getCommunesCounty/" + county_id);
 	}
 
 	getCommunesKommune(): Promise<{ID: number, navn: string, fylke_id: number}>{

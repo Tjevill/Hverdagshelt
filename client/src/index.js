@@ -107,25 +107,29 @@ class ikkeforsideMain extends Component {
 class LoginStatus extends Component {
     render () {
         return (
-            (this.props.loggedin) ? <div className="logged-in-as">Not logged in</div> :
-            <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+            (this.props.loggedin)
+                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+                : <div className="logged-in-as">Not logged in</div>
         );
     }
 }
-
 
 
 class Main extends Component {
 
     amILoggedin = null;
 
-
     componentDidMount() {
         // console.log("This location (from componentDidMount: " + window.location);
+
         const promiseObject = refreshToken();
+        console.log("PO:  ", sessionStorage.getItem("storedtoken"))  // returns pending
         promiseObject.then(value => {
+            console.log("Am I logged in? " + value);  // does not get triggerede
             if (value != 'undefined') {
                 this.amILoggedin = value;
+            } else {
+                this.amILoggedin = false;
             }
         });
     }
@@ -134,11 +138,9 @@ class Main extends Component {
        //  console.log("Path: " + window.location.href);
 
 
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-        else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
-        else {
+        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
             return this.amILoggedin == null ? "<div></div>" : (
+
                 <div>
                     <HashRouter>
                         <div>
@@ -168,7 +170,7 @@ class Main extends Component {
                                 <Route exact path="/nyansatt" component={NewEmployee}/>
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
-                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />¨
+                                <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
                                 <Route exact path="/reset/emp/:token" component={UpdateEmployeePasswordFromToken} />
                                 <Route exact path="/reset/org/:token" component={UpdateOrgPasswordFromToken} />
                                 <Route exact path="/reset/user" component={ForgottenPasswordUser} />
@@ -209,7 +211,7 @@ class Main extends Component {
                             </div>
 
                             {/*Bottom banner*/}
-                            <div className="wrapper row5" style={{position: "inherit"}}>
+                            <div className="wrapper row1" style={{position: "inherit"}}>
                                 <div id="copyright" className="hoc clear">
                                     <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
                                     <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
