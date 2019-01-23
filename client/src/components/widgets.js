@@ -98,6 +98,17 @@ export class Alert extends Component {
   }
 }
 
+//might be implemented later
+/*export class TitleBanner extends Componenet <{ id: string }> {
+
+    render(){
+        <div className="title-banner">
+            <h1> </h1>
+        </div>
+    }
+
+}*/
+
 
 export class Card extends Component<{ title: React.Node, children?: React.Node }> {
   render() {
@@ -276,4 +287,3 @@ function getDate(date) {
 export class Form {
   static Input = FormInput;
 }
-

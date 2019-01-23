@@ -30,7 +30,7 @@ export default class EmployeeEdit extends Component {
   commune = "";
   communes = [];
   communeOptions = [];
- 
+
   componentDidMount(){
     // this.userid = sessionStorage.getItem("userid");
     console.log("id: " + this.userid);
@@ -237,7 +237,7 @@ export default class EmployeeEdit extends Component {
       return;
     }
 
-    employeeService.updateEmpData(this.user);
+    employeeService.updateEmpDataByToken(this.user);
     window.location.reload();
 
   }
