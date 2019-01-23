@@ -2,19 +2,10 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import {caseService, orgService} from "../services";
 import createHashHistory from "history/createHashHistory";
+import {LoadingFirkant} from './widgets';
+
 const history = createHashHistory();
 
-
-
-class LoadingFirkant extends Component {
-    render(){
-        return (
-            <div className="loading-animation">
-                <img className="svgfixer" src='./images/35.svg' />
-            </div>
-        );
-    }
-}
 
 
 export default class AdminBedrift extends Component {

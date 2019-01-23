@@ -10,7 +10,7 @@ class LoadingFirkant extends Component {
     render(){
         return (
             <div className="loading-animation">
-                <img className="svgfixer" src='./images/35.svg' />
+                <img className="svgfixer" src='./images/805.svg' />
             </div>
         );
     }

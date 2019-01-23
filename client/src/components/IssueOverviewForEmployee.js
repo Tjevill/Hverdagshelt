@@ -1,4 +1,4 @@
-
+//@flow
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -340,7 +340,7 @@ export default class IssueOverviewForEmployee extends Component<{
           {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
             <button
               type="button"
-              class="btn btn-outline-dark"
+              className="btn btn-outline-dark"
               id="Saker-side-button"
               onClick={() => history.push("/admin/issues/All/" + sidetall)}
             >
@@ -354,31 +354,29 @@ export default class IssueOverviewForEmployee extends Component<{
     if (this.loaded) {
       return (
         <>
-          <br />
-          <br />
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-8">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 col-md-8">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
                   id="Saker-icon-pic"
                 />
               </div>
-              <div class="col-6 col-md-4" />
+              <div className="col-6 col-md-4" />
             </div>
 
-            <div class="row">
-              <div class="col">
-                <h2 class="display-4" id="Saker-tittel">Saker</h2>
+            <div className="row">
+              <div className="col">
+                <h2 className="display-4" id="Saker-tittel">Saker</h2>
               </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="inputKommune">Kategorier &nbsp;</label>
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="inputKommune">Kategorier &nbsp;</label>
                   <select
-                    class="w-auto"
+                    className="w-auto"
                     id="kommune"
                     name="kommune"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeCategories}
                   >
                     <option value={0}>Alle</option>
@@ -390,14 +388,14 @@ export default class IssueOverviewForEmployee extends Component<{
                   </select>
                 </div>
               </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="inputStatus">Status &nbsp;</label>
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="inputStatus">Status &nbsp;</label>
                   <select
-                    class="w-auto"
+                    className="w-auto"
                     id="status"
                     name="status"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeStatus}
                   >
                     <option value={0}>Alle</option>
@@ -412,16 +410,16 @@ export default class IssueOverviewForEmployee extends Component<{
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-6 col-md-4" />
-              <div class="col-6 col-md-4" />
-              <div class="col-4 col-md-4">
+            <div className="row">
+              <div className="col-6 col-md-4" />
+              <div className="col-6 col-md-4" />
+              <div className="col-4 col-md-4">
               </div>
             </div>
           </div>
 
-          <div class="container">
-          <span class="glyphicon glyphicon-search" aria-hidden="true" />
+          <div className="container">
+          <span className="glyphicon glyphicon-search" aria-hidden="true" />
           <input
             type="text"
             id="search"
@@ -430,7 +428,7 @@ export default class IssueOverviewForEmployee extends Component<{
             onChange={this.search}
           />
             <Router history={history}>
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
@@ -440,16 +438,14 @@ export default class IssueOverviewForEmployee extends Component<{
                   </tr>
                 </thead>
                 {lists}
-                <br />
-                <br />
+
               </table>
             </Router>
-            <br />
-            <br />
+
           </div>
           <div id="toolbar">
             <div className="wrapper text-center">
-              <div class="btn-group">{sidebuttons}</div>
+              <div className="btn-group">{sidebuttons}</div>
             </div>
           </div>
         </>
@@ -469,9 +465,10 @@ export default class IssueOverviewForEmployee extends Component<{
     this.employeeid = sessionStorage.getItem("userid");
     console.log("employeeid" + this.employeeid);
     employeeService
-      .getOne(this.employeeid)
+      .getEmployeeByToken()
       .then(employee => {
         this.employee = employee[0];
+        console.log("This employyeee :  ", this.employee)
         employeeService
           .getCasesOnOnCommuneID(this.employee.commune)
           .then(cases => {

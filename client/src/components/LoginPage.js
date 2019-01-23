@@ -2,7 +2,6 @@
 /* eslint eqeqeq: "off" */
 import React from 'react';
 import $ from 'jquery';
-import { authService } from '../authservices';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
 import createHashHistory from "history/createHashHistory";
@@ -13,7 +12,7 @@ export default class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        authService.logout();
+
 
         this.state = {
             height1: 400,
@@ -94,10 +93,8 @@ export default class LoginPage extends React.Component {
                 console.log("response: " + response.reply)
                 this.setState({message1: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'user');
-                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 // console.log("email: " + sessionStorage.getItem("email"));
                 // console.log("user: " + sessionStorage.getItem("userid"));
                 window.location.reload()
@@ -127,8 +124,6 @@ export default class LoginPage extends React.Component {
             .then(response => {
                 this.setState({message2: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'bedrift');
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
@@ -160,8 +155,6 @@ export default class LoginPage extends React.Component {
             .then(response => {
                 this.setState({message3: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'kommune');
                 sessionStorage.setItem('commune', response.commune);
                 sessionStorage.setItem('superuser', response.superuser);
