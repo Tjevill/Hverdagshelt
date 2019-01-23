@@ -994,6 +994,16 @@ app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
 	})
 });
 
+/**
+ * Update case with {employee_id, comment, org_id, status_id, case_id} for employees
+ */
+app.put("/updateCaseEmployee", (req, res) => {
+	caseDao.updateCaseByEmployee(req.body, (status, data) => {
+		res.status(status);
+		res.json(data);
+	})
+});
+
 // End Cases
 
 // GEO (Place, kommune, fylke)

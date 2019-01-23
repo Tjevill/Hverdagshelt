@@ -5,6 +5,14 @@ type jsonUpdateCommentNStatus = {
   comment: string
 }
 
+type jsonUpdateCaseByEmployee = {
+	status: number,
+	comment: string,
+	case_id: number,
+	org_id: number,
+	employee_id: number
+}
+
 module.exports = class CasesDao extends Dao {
 
     /** Get all cases from db ordered by timestamp.*/
@@ -230,6 +238,20 @@ module.exports = class CasesDao extends Dao {
 			val,
 			callback
 		);
+	}
+	
+	/**
+	 * Update case with for employees
+	 * @param json json object: {employee_id, comment, org_id, status_id, case_id}
+	 * @param callback
+	 */
+	updateCaseByEmployee(json: jsonUpdateCaseByEmployee, callback: mixed){
+		const val = [json.employee_id, json.comment, json.org_id, json.status, json.case_id];
+		super.query(
+			"UPDATE Cases SET employee_id = ?, comment = ?, org_id = ?, status_id = ? WHERE case_id = ?",
+			val,
+			callback
+		)
 	}
 	
 };

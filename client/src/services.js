@@ -258,10 +258,37 @@ class CaseService {
 		
 	}
 	
+	/**
+   * Update case comment for one case by case_id
+	 * @param case_id
+	 * @param comment
+	 * @returns {AxiosPromise<any>}
+	 */
 	updateCaseComment (case_id: number, comment: string): Promise<void> {
 		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
 		
 	}
+	
+	/**
+   * Update case for employee
+	 * @param case_id The case_id to update
+	 * @param comment The comment to update
+	 * @param status_id The status to update
+	 * @param employee_id The employees id that changes the case
+	 * @param org_id The organization id who gets the job
+	 * @returns {AxiosPromise<any>}
+	 */
+	updateCaseByEmployee (case_id: number, comment: string, status_id: number, employee_id: number, org_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseEmployee', {
+		  case_id: case_id,
+      comment: comment,
+      status: status_id,
+      employee_id: employee_id,
+      org_id: org_id
+    });
+		
+	}
+	
 
 }
 export let caseService = new CaseService();
