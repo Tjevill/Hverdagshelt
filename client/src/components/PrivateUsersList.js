@@ -3,7 +3,7 @@ import React from "react";
 
 import { Component } from "react-simplified";
 import { userService } from "../services.js";
-
+import {LoadingFirkant} from './widgets';
 import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
@@ -18,8 +18,10 @@ export default class PrivateUsersList extends Component {
   users = [];
   usersbackup=[];
   superUser = "";
+  loaded = false;
 
   render() {
+     if(this.loaded){
     return (
 
 
@@ -76,6 +78,16 @@ export default class PrivateUsersList extends Component {
                     </table>
                 </div>
             );
+          } else {
+            return (
+                <div className="group btmspace-50 demo">
+                    <div className="one_third first">&nbsp;</div>
+                    <div className="one_third centered padded"><LoadingFirkant /></div>
+                    <div className="one_third">&nbsp;</div>
+                </div>
+
+            );
+        }
         } 
 
   search(event) {
@@ -123,6 +135,7 @@ export default class PrivateUsersList extends Component {
       .then(user => {
         this.users = user;
         this.usersbackup = user;
+        this.loaded = true;
       })
       .catch((error: Error) => console.log(error.message));
   }
