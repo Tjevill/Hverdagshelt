@@ -123,7 +123,7 @@ export default class AdminRedigerEvents extends Component <{ match: { params: { 
     }else{
       return(
           <Loading/>
-          );
+          ); 
 
     }
   }
