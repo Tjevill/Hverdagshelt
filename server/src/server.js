@@ -1207,6 +1207,61 @@ app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
 	});
 });
 
+
+app.put("::::::::::::::::::::::::::::./updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+    
+   let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            console.log("body: ", req.body);
+
+            caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log('::::::::::::::::::updating case');
+                
+                statusDao.getOneById(req.body.status, (status,data) => {
+                    let statusName = data[0].description;
+                    console.log(':::::::::::::::::: fetching status name');
+
+                    caseDao.getCaseReplyMail(req.params.id, (status,data) => {
+                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
+                        console.log(data);
+                        
+                        if(data[0].subscription === 1) {
+                            const mailOptionsCase = {
+                                from: 'bedrehverdagshelt@gmail.com',
+                                to: data[0].email,
+                                subject: 'Din sak har blitt oppdaert!',
+                                html:
+                                    '<h1> Status: ' + statusName + ' </h1>' +
+                                    '<p> "' + req.body.comment + '" </p>' + 
+                                    '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                            };
+
+                            transporter.sendMail(mailOptionsCase, function(error, info){
+                                if (error) { 
+                                    console.log(error);
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                }
+                            }); //transporter
+                        } //subscribed ifelse
+                        else {
+                            console.log('user does not want spam');
+                        }
+                    }); //reply
+                }); //status
+            }); //update
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    }); //JWT
+}); //APP
+
 /**
  * Gets cases on employees id
  */
