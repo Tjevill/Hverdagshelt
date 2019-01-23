@@ -429,8 +429,8 @@ class OrgService{
 	 * Service object for verifying and changing password for logged in users.
 	 * @param updatePassword Includes variables {org_id, oldPassword}
 	 */
-	verifyOldPassword (org_id: number, oldPassword: string): Promise<number> {
-		return axios.post(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword});
+	verifyOldPassword (org_id: number, oldPassword: string, newPassword: string): Promise<number> {
+		return axios.put(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword}, axiosConfig);
 
 	}
 
@@ -562,8 +562,8 @@ export default class EmployeeService {
 	 * Service object for verifying old password.
 	 * @param updatePassword Includes variables {employee_id, oldPassword}
 	 */
-	verifyOldPassword (employee_id: number, oldPassword: string): Promise<number> {
-		return axios.post(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword});
+	verifyOldPassword (employee_id: number, oldPassword: string, newPassword: string): Promise<number> {
+		return axios.put(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword, newPassword: newPassword}, axiosConfig);
 
 	}
     getCategories(): Promise<Category[]> {

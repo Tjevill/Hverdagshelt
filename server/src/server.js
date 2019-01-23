@@ -1462,12 +1462,14 @@ app.put('/userVerification', (req: Request, res: Response) => {
 /**
  * For updating users password. Send object with user_id and new password
  */
+
+ /* Redundant, /userVerification handles this.
 app.put('/updateUserPWord', (req: Request, res: Response) => {
     userdao.updateUserPassword(req.body, (status, data) => {
         res.status(status);
         res.json(data);
     })
-});
+}); */
 
 /**
  * Verifies Token for Users, emps and orgs. Only difference in the methods are the dao used. Everything else is the same.
@@ -1546,10 +1548,49 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
  });
 
 
+ /**
+ * Verifies old and Updates password for user.
+ */
+
+app.put('/userVerification', (req: Request, res: Response) => {
+    console.log("app.get(/userverification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log(decoded);
+            let dbHash;
+
+            userdao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    userdao.updateUserPassword({user_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+        }
+    });
+});
+
+
 /**
  * Verifies old password for employee.
  */
-app.post('/employeeVerification', (req: Request, res: Response) => {
+ /*
+app.put('/employeeVerification', (req: Request, res: Response) => {
 
     let dbHash;
     empDao.getHashedPWord(req.body.employee_id, (status, data) => {
@@ -1570,7 +1611,43 @@ app.post('/employeeVerification', (req: Request, res: Response) => {
 
     });
 
+}); */
+
+
+app.put('/employeeVerification', (req: Request, res: Response) => {
+    console.log("app.put(/employeeVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log('decoded: ' +decoded);
+            console.log('body: ' + req.body)
+            let dbHash;
+
+            employeeDao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    employeeDao.updateEmpPassword({emp_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+        }
+    });
 });
+
 
 /**
  * Verifies old password for organization.
