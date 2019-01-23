@@ -745,8 +745,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
             res.sendStatus(403);
         }
     });
-
-
 });
 
 /** Get all employees in one province */
@@ -990,7 +988,7 @@ app.get("/fiveLatestCommune/:id", (req, res) => {
     });
 });
 
-/*
+/* Will probably be removed, use -> /updatecasebyemployee, /updateCase, /updateCaseandcomment
 app.put("/changeCaseStatus/:id", (req, res) => {
     caseDao.updateCaseStatus(req.params.id, (status, data) => {
         res.status(status);
@@ -1081,51 +1079,6 @@ app.get("/getAllCategories", (req, res) => {
 
 
 /** update case on case_id */
-/*
-app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
-      console.log("Received put-request from client.");
-        console.log("Trying to update case with id: " + req.params.case_id);
-
-
-        
-
-    var promise1 = new Promise(function(resolve, reject) {
-        caseDao.updateCase(req.body, (status, data) =>{
-            if (!(req.body instanceof Object)) return res.sendStatus(400);
-            res.status(status);
-            res.json(data);
-            resolve(data);
-        });
-    });
-
-    promise1.then(data => {
-        console.log('getting email from user_id: ' +req.body.user_id);
-        userdao.getOneByID(req.body.user_id, (status,data) => {
-
-            let email = data[0].email;
-            const mailOptionsCase = {
-                    from: 'bedrehverdagshelt@gmail.com',
-                    to: email,
-                    subject: 'Din sak har blitt oppdaert!',
-                    html:
-                        '<h1>' + req.body.status_id + ' </h1>' +
-                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
-
-                };
-
-            transporter.sendMail(mailOptionsCase, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            }); // transporter
-        }); //getOneByID
-    });
-});
-
-
-*/
 
 app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
     console.log("Received put-request on /updateCase/:case_id from client.");
@@ -1419,61 +1372,9 @@ app.get("/statistics/casesCategory", (req, res) => {
 // End statistics
 
 
-// Login
+// Login, Verification and Password
 
-/**
- * Verifies old and Updates password for user.
- */
-
-app.put('/userVerification', (req: Request, res: Response) => {
-    console.log("app.get(/userverification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
-
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    jwt.verify(token, privateKey, function(err, decoded)  {
-        if (decoded) {
-            console.log(decoded);
-            let dbHash;
-
-            userdao.getHashedPWord(decoded.userid, (status, data) => {
-                let savedPassword = data[0].password;
-                let passwordData = sha512(req.body.oldPassword, data[0].secret);
-                dbHash = passwordData.passwordHash === savedPassword;
-
-                if (dbHash) {
-                    userdao.updateUserPassword({user_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
-                            console.log("STATUS: ", "200");
-                            res.status(200).json('Password verified, and changed.');
-
-                    });
-
-                } else {
-                    console.log("STATUS: ", "500");
-                    res.status(500).json("Wrong password. Try again");
-                }
-            });
-
-        } else {
-            console.log("Feil innlogging! Sender brevbombe.");
-        }
-    });
-});
-
-
-/**
- * For updating users password. Send object with user_id and new password
- */
-
- /* Redundant, /userVerification handles this.
-app.put('/updateUserPWord', (req: Request, res: Response) => {
-    userdao.updateUserPassword(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-}); */
-
-/**
- * Verifies Token for Users, emps and orgs. Only difference in the methods are the dao used. Everything else is the same.
- */
+/** Token verification for user */
 
  app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
@@ -1499,6 +1400,8 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
     });
  });
 
+/** Token verification for employee */
+
  app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
 
@@ -1517,11 +1420,12 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
         } else { //
 
             console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-
             res.status(200).json(data);
         }
     });
  });
+
+ /** Token verification for organization */
 
  app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
     console.log("Received GET-request for /tokenVerification/user/:token");
@@ -1541,7 +1445,6 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
         } else { //
 
             console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-
             res.status(200).json(data);
         }
     });
@@ -1549,7 +1452,7 @@ app.put('/updateUserPWord', (req: Request, res: Response) => {
 
 
  /**
- * Verifies old and Updates password for user.
+ * Verifies old password and updates new password for user.
  */
 
 app.put('/userVerification', (req: Request, res: Response) => {
@@ -1587,32 +1490,8 @@ app.put('/userVerification', (req: Request, res: Response) => {
 
 
 /**
- * Verifies old password for employee.
+ * Verifies old password and updates new password for employee.
  */
- /*
-app.put('/employeeVerification', (req: Request, res: Response) => {
-
-    let dbHash;
-    empDao.getHashedPWord(req.body.employee_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
-
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
-        } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
-        }
-
-    });
-
-}); */
-
 
 app.put('/employeeVerification', (req: Request, res: Response) => {
     console.log("app.put(/employeeVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
@@ -1650,29 +1529,41 @@ app.put('/employeeVerification', (req: Request, res: Response) => {
 
 
 /**
- * Verifies old password for organization.
+ * Verifies old password and updates to new password for organization.
  */
-app.post('/organizationVerification', (req: Request, res: Response) => {
 
-    let dbHash;
-    orgDao.getHashedPWord(req.body.org_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+app.put('/organizationVerification', (req: Request, res: Response) => {
+    console.log("app.put(/organizationVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
 
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log('decoded: ' +decoded);
+            console.log('body: ' + req.body)
+            let dbHash;
+
+            orgDao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    orgDao.updateOrgPassword({org_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
         } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
+            console.log("Feil innlogging! Sender brevbombe.");
         }
-
     });
-
 });
 
 
