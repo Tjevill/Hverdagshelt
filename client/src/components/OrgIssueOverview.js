@@ -344,13 +344,13 @@ export default class OrgIssueOverview extends Component<{
                                       </input>
                                   </div>
                                   <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
-                                  <label className="container">Arbeid pågår
+                                  <label className="container inline">
                                       <input type="radio" id="status1" name="radio" checked={true}/>
-                                          <span className="checkmark"></span>
+                                          <span className="checkmark"></span>Arbeid pågår
                                   </label>
-                                  <label className="container">Sak løst
+                                  <label className="container inline">
                                       <input type="radio" id="status2" name="radio"/>
-                                          <span className="checkmark"></span>
+                                          <span className="checkmark"></span>Sak løst
                                   </label>
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
