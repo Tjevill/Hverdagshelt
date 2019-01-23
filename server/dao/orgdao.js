@@ -178,4 +178,12 @@ console.log("Kall til updateOrg: ");
             callback
         );
     }
+
+    getAllCasesOrg(org_id, callback){
+		super.query(
+			"SELECT * FROM Cases WHERE org_id = ?",
+			[org_id],
+			callback
+		);
+	}
 };
