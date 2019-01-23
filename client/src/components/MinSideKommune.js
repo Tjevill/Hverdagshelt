@@ -9,9 +9,6 @@ import {employeeService, geoService, caseService} from "../services.js";
 const history = createHashHistory();
 
 
-// let id = sessionStorage.getItem("userid");
-let access = sessionStorage.getItem("access");
-
 export default class MinSideKommune extends Component {
 
     user = new Object();
@@ -87,6 +84,7 @@ export default class MinSideKommune extends Component {
                                     <h5>Siste 5 feil:</h5>
 
                                     <table className="table">
+
                                         <thead>
                                             <tr>
                                                 <th scope="col">#ID</th>
@@ -96,47 +94,65 @@ export default class MinSideKommune extends Component {
                                                 <th scope="col">Valg</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                        {this.cases.map( (ca, i) => (
-                                            <tr
-                                                key={i}
-                                                onClick={ () => window.alert("Skal redirecte til redigere-event siden. Id: "+ca.case_id+". Fikses på linje 101 i MinSideKommune.js") }
 
-                                            >
-                                                <th scope="row">
-                                                    {ca.case_id}
-                                                </th>
-                                                <td>
-                                                    {ca.headline}
-                                                </td>
-                                                <td>
-                                                    {ca.zipcode}
-                                                </td>
-                                                <td>
-                                                    {ca.timestamp.substring(0,16).replace("T", " kl ")}
-                                                </td>
-                                                <td>
-                                                    <select className="form-control" id="sel1">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        <tbody>
+
+                                            {this.cases.map( (ca, i) => (
+
+                                                <tr
+                                                    key={i}
+                                                    onClick={ () => window.alert("Skal redirecte til redigere-event siden. Id: "+ca.case_id+". Fikses på linje 101 i MinSideKommune.js") }
+                                                >
+
+                                                    <th scope="row">
+                                                        {ca.case_id}
+                                                    </th>
+
+                                                    <td>
+                                                        {ca.headline}
+                                                    </td>
+
+                                                    <td>
+                                                        {ca.zipcode}
+                                                    </td>
+
+                                                    <td>
+                                                        {ca.timestamp.substring(0,16).replace("T", " kl ")}
+                                                    </td>
+
+                                                    <td>
+                                                        <select className="form-control" id="sel1">
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                        </select>
+                                                    </td>
+
+                                                </tr>
+                                            ))}
 
                                         </tbody>
+
                                     </table>
                                 </div>
                                 <div className = "col-sm">
+
                                     <h5>Forhåndsvisning av valgt sak</h5>
 
                                 </div>
                             </div>
 
                             <div>
-                                <p><a className = "text-dark" href="https://gitlab.stud.idi.ntnu.no/SUV19_T5/hverdagshelt_t5/wikis/home">Lenke til WIKI-siden</a> </p>
+                                <p>
+                                    <a
+                                        className = "text-dark"
+                                        href = "https://gitlab.stud.idi.ntnu.no/SUV19_T5/hverdagshelt_t5/wikis/home"
+                                        target = "_blank"
+                                    >
+                                        Lenke til WIKI-siden
+                                    </a>
+                                </p>
                             </div>
                         </div>
 

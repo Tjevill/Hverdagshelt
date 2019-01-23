@@ -40,7 +40,8 @@ import LoginPage from "./components/LoginPage";
 import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
-import MinSideKommune from "./components/MinSideKommune";
+import MinSideBedrift from "./components/MinSideBedrift.js";
+import MinSideKommune from "./components/MinSideKommune.js";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
@@ -92,6 +93,14 @@ class forsideMain extends Component {
 }
 
 class ikkeforsideMain extends Component {
+
+    render(){
+        return(
+                <div/>
+        )
+    }
+
+    /*TOOD: Implementeres senere?
     render () {
         return(
             <section id="breadcrumb" className="hoc clear">
@@ -100,7 +109,7 @@ class ikkeforsideMain extends Component {
                 </div>
             </section>
         );
-    }
+    }*/
 }
 
 
@@ -136,10 +145,10 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-	
-	
+
+
 			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<StatisticsPage />)}
 			else {
 				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
@@ -168,7 +177,7 @@ class Main extends Component {
                                 <Route exact path="/issues/:id" component={IssueOverview} />
                                 <Route exact path="/events" component={Events}/>
                                 <Route exact path="/map" component={Map} />
-                                <Route exact path="/nyansatt" component={NewEmployee}/>
+
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
@@ -184,6 +193,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
+                                <PrivateRoute exact path="/bedrift" component={MinSideBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/issues/:id" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/changePassword" component={ChangePasswordOrg} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -202,14 +212,15 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune/nyansatt" component={NewEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                                 {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            </div>
+                                </div>
 
                             {/*Bottom banner*/}
                             <div className="wrapper row1" style={{position: "inherit"}}>
