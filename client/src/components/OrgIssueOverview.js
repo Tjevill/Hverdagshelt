@@ -281,10 +281,7 @@ export default class OrgIssueOverview extends Component<{
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
         console.log(filteredCase)
-
-        //// DENNE MÅ LØSES PÅ EN ANNEN MÅTE
-
-            this.currentCase = filteredCase;
+            this.currentCase = filteredCase[0];
     }
 
   render() {
@@ -533,13 +530,13 @@ export default class OrgIssueOverview extends Component<{
       .getCasesForOrganization(this.org_id)
       .then(cases => {
         this.cases = cases.filter(function(value) {
-          return value.status_id != 7;
+          return value.status_id != 7 || value.status_id != 5;
         });
         this.casesbyStatus = cases.filter(function(value) {
-          return value.status_id != 7;
+          return value.status_id != 7 || value.status_id != 5;
         });
         this.backup = cases.filter(function(value) {
-          return value.status_id != 7;
+          return value.status_id != 7 || value.status_id != 5;
         });
         this.loaded = true;
         this.forceUpdate();

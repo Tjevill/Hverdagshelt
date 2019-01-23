@@ -1,4 +1,4 @@
-//@flow
+
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -45,6 +45,8 @@ function count(array) {
 export default class IssueOverviewForEmployee extends Component<{
   match: { params: { name: string, id: number } }
 }> {
+    currentCase = [];
+    currentOrg = [];
   orgs = [];
   loaded = false;
   employeeid = "";
@@ -188,30 +190,50 @@ export default class IssueOverviewForEmployee extends Component<{
 
     saveUpdate (id) {
         if(document.getElementById('status1').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 2, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            console.log(this.state.org_id);
+            window.alert("Kommentar, status og bedrift endret!");
+            // window.location.reload();
+        } else if(document.getElementById('status2').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 3, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar, status og bedrift endret!");
+            window.location.reload();
+        } else if(document.getElementById('status3').checked) {
             caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
                 .then(res => {
                     console.log(res);
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar og status endret!");
+            window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        } else if(document.getElementById('status2').checked) {
+        } else if(document.getElementById('status4').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 5, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar, status og bedrift endret!");
+            window.location.reload();
+        } else if(document.getElementById('status5').checked) {
             caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
                 .then(res => {
                     console.log(res);
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar og status endret!");
+            window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        } else {
-            caseService.updateCaseComment(id, document.getElementById('comment-input').value)
-                .then(res => {
-                    console.log(res);
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-            console.log(document.getElementById('comment-input').value);
-            window.alert("Kommentar lagret!");
-            window.location.reload();
+        }
+        else {
+            window.alert("Vennligst anngi en status på saken");
+            return null;
         }
     }
 
@@ -220,13 +242,20 @@ export default class IssueOverviewForEmployee extends Component<{
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
         console.log(filteredCase)
-        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
-            this.currentCase = filteredCase;
+            this.currentCase = filteredCase[0];
+        console.log(this.currentCase.org_id)
+        if(this.currentCase.org_id == null) {
+            this.currentOrgName = '';
         } else {
-            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
-            window.location.reload();
-            return null;
+            this.currentOrg = this.orgs.filter(e =>
+                e.org_id == this.currentCase.org_id);
         }
+        console.log(this.currentOrg[0].name)
+
+    }
+
+    getCurrentOrg() {
+        return this.currentOrg[0].name;
     }
 
   render() {
@@ -254,13 +283,13 @@ export default class IssueOverviewForEmployee extends Component<{
             <tr>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>
-                {casen.headline} category: {casen.category_id}
+                {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
                     <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
-                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
                     	&nbsp;Oppdater sak&nbsp;
                   </span>
                     </button>
@@ -285,31 +314,42 @@ export default class IssueOverviewForEmployee extends Component<{
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
                                 <label className="container inline">
                                     <input type="radio" id="status1" name="radio" checked={true}/>
-                                    <span className="checkmark"></span>Arbeid pågår
+                                    <span className="checkmark"></span>Under vurdering
                                 </label>
                                 <label className="container inline">
                                     <input type="radio" id="status2" name="radio"/>
+                                    <span className="checkmark"></span>Satt på vent
+                                </label>
+                                <label className="container inline">
+                                    <input type="radio" id="status3" name="radio"/>
+                                    <span className="checkmark"></span>Arbeid pågår
+                                </label>
+                                <label className="container inline">
+                                    <input type="radio" id="status4" name="radio"/>
+                                    <span className="checkmark"></span>Avvist
+                                </label>
+                                <label className="container inline">
+                                    <input type="radio" id="status5" name="radio"/>
                                     <span className="checkmark"></span>Sak løst
                                 </label>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
-                                    <button type="button" className="btn btn-primary"
-                                            onClick={() => this.saveUpdate(casen.case_id)}>
-                                        Lagre endringer
-                                    </button>
-                                </div>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
                                 <div className="form-group form-group-style">
                                     <select className={'browser-default custom-select'}
                                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
-                                            defaultValue=''>
-                                        <option disabled value=''> -- velg bedrift -- </option>
+                                            defaultValue={this.getCurrentOrg}>
                                         {this.orgs.map(org => (
                                             <option key={org.org_id} value={org.org_id}>
                                                 {org.name}
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-primary"
+                                            onClick={() => this.saveUpdate(casen.case_id)}>
+                                        Lagre endringer
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -431,7 +471,7 @@ export default class IssueOverviewForEmployee extends Component<{
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">#</th>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
                     <th scope="col">Handling</th>
@@ -461,7 +501,7 @@ export default class IssueOverviewForEmployee extends Component<{
             this.orgs = orgs
           })
           .catch((error: Error) =>
-              console.log("Fails by getting the available cases", error))
+              console.log("Fails by getting the available organizations", error))
     this.employeeid = sessionStorage.getItem("userid");
     console.log("employeeid" + this.employeeid);
     employeeService
