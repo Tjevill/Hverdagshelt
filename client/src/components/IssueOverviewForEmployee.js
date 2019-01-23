@@ -390,7 +390,7 @@ export default class IssueOverviewForEmployee extends Component<{
               type="button"
               className="btn btn-outline-dark"
               id="Saker-side-button"
-              onClick={() => history.push("/admin/issues/All/" + sidetall)}
+              onClick={() => history.push("/admin/issues/" + sidetall)}
             >
               {sidetall}{" "}
             </button>
