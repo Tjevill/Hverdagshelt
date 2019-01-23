@@ -874,6 +874,16 @@ app.get("/searchUserEmail/:email", (req, res) => {
 
 // Events
 
+/**
+ * Get events in selected commune ID
+ */
+app.get("/getEventsOnCommuneID/:id", (req, res) => {
+	eventDao.getEventsOnCommuneID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 /** Get all events */
 app.get("/events", (req, res) => {
     console.log("Received get-request on endpoint /events");

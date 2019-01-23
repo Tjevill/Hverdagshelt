@@ -39,6 +39,7 @@ export default class OrgEdit extends Component {
         console.log("User info: " , user);
         console.log(user[0]);
         this.user = user[0];
+        console.log("id: " + this.user.org_id);
         this.loaded = true;
         this.forceUpdate();
       })

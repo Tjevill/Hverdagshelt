@@ -133,7 +133,7 @@ export default class MinSideBedrift extends Component {
                                     </td>
 
                                     <td>
-                                        {this.caseStatus[ca.status_id].description}
+                                        {this.caseStatus[ca.status_id - 1].description}
                                     </td>
 
                                 </tr>
