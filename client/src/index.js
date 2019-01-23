@@ -79,7 +79,7 @@ class forsideMain extends Component {
         }
         return(
             <section id="pageintro" className="hoc clear">
-                <div>
+                <div id="intro-text">
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
