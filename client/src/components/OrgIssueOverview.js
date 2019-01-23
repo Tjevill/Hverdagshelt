@@ -255,7 +255,7 @@ export default class OrgIssueOverview extends Component<{
           })
           .catch((error: Error) => Alert.danger(error.message));
         window.alert("Kommentar og status endret!");
-        window.location.reload();
+        // window.location.reload();
     } else if(document.getElementById('status2').checked) {
         caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
             .then(res => {
@@ -284,13 +284,7 @@ export default class OrgIssueOverview extends Component<{
 
         //// DENNE MÅ LØSES PÅ EN ANNEN MÅTE
 
-        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
             this.currentCase = filteredCase;
-        } else {
-            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
-            window.location.reload();
-            return null;
-        }
     }
 
   render() {
@@ -534,8 +528,6 @@ export default class OrgIssueOverview extends Component<{
 
     //this.org_id = sessionStorage.getItem("userid");
     // console.log(sessionStorage.getItem("userid"));
-
-
 
     caseService
       .getCasesForOrganization(this.org_id)
