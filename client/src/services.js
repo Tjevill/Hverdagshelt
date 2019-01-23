@@ -291,11 +291,11 @@ class CaseService {
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
 	 * @returns {AxiosPromise<any>}
-	 */
+
 	getCasesForOrganization(id: number): Promise<Case[]>{
 		return axios.get(url + '/getCasesOnOrgID/' + id);
 	}
-
+*/
 	/**  Update one case_status */
 	updateCaseStatus (case_id: number, status_id: number): Promise<void> {
 		return axios.put(url + '/updateCaseStatus/' + case_id + '/' + status_id);
@@ -611,7 +611,7 @@ export default class EmployeeService {
 
   /** Delete an employee with employee_id. Yolo */
   deleteEmp(employee_id): Promise<void>{
-    return axios.delete(url + '/employee/'+employee_id);
+    return axios.delete(url + '/employee/'+employee_id, axiosConfig);
   }
 
 

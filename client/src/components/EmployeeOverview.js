@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
-import { employeeService, geoService } from "../services";
+import {employeeService, geoService, orgService} from "../services";
 import { BrowserRouter, Route } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -46,7 +46,24 @@ export default class EmployeeOverview extends Component {
     this.forceUpdate();
   }
 
-  render() {
+
+    delete(employeeid) {
+
+
+        if ( window.confirm("Er du sikker på at du ønsker å slette denne ansatte?") ){
+            employeeService.deleteEmp(employeeid)
+                .then(response => {
+                    console.log(response, "Slettet kommuneansatt");
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err, "Error ved sletting");
+                });
+        }
+    }
+
+
+    render() {
     return (
 
       <div>
@@ -57,7 +74,7 @@ export default class EmployeeOverview extends Component {
                         <div className="col-md-6">
                             <div className="group btmspace-50 headerlayout">
                                 <div className="one_half first"><h3>Kategorier</h3></div>
-                                <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/nyAnsatt/') }}>Legg til ny ansatt</button></div>
+                                <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/admin/kommune/nyansatt') }}>Legg til ny ansatt</button></div>
                             </div>
                         <table className="">
                                 <thead>
@@ -98,7 +115,7 @@ export default class EmployeeOverview extends Component {
                                             <td className="edit">
                                           {this.addEditRowColumn(this.superUser, employee)}
                                         </td>
-                                          <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.user_id)}>Slett</button></td>
+                                          <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.employee_id)}>Slett</button></td>
 
                                       </tr>
                                     ))}
