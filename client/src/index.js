@@ -70,7 +70,7 @@ class forsideMain extends Component {
 
     render() {
         let button;
-        if(sessionStorage.getItem("access")=="kommune"){
+        if(sessionStorage.getItem("access")=="kommune"||sessionStorage.getItem("access")=="bedrift"){
 
         }else{
           button =(
