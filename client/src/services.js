@@ -839,7 +839,15 @@ class StatisticsService {
 	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
     return axios.get(url + "/statistics/casesCategory");
   }
-
+	
+	/**
+	 * Gets count of all users of the system in one table
+	 * @returns {AxiosPromise<any>}
+	 */
+  getCountAllUsers(): Promise<{bruker: string, antall: number}>{
+		return axios.get(url + '/statistics/countUsers');
+	}
+  
 }
 
 export let statisticsService = new StatisticsService();

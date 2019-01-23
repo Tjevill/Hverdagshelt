@@ -1416,6 +1416,16 @@ app.get("/statistics/casesCategory", (req, res) => {
 	});
 });
 
+/**
+ * Gets count of all users of the system in one table
+ */
+app.get("/statistics/countUsers", (req, res) => {
+	statDao.getCountAllUsers((status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
+
 // End statistics
 
 

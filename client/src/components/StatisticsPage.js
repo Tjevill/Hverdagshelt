@@ -3,7 +3,6 @@ import { Component } from "react-simplified";
 import {statisticsService} from "../services";
 import Charts from "./Charts";
 import {Loading} from "./widgets";
-import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 import * as jsPDF from 'jspdf';
 
@@ -35,6 +34,17 @@ export default class StatisticsPage extends Component{
 		'rgba(75, 192, 192, 0.6)'
 	];
 	
+	userCount = [];
+	labelsUserCount = [];
+	dataSetsUserCount = [];
+	headlineUserCount = "Antall brukere per type bruker";
+	displayUserCount = true;
+	colorUserCount = [
+		'rgba(255, 99, 132, 0.6)',
+		'rgba(75, 192, 192, 0.6)',
+		'rgba(54, 162, 235, 0.6)'
+	];
+	
 	
 	print() {
 		const input = document.getElementById("statistics-page");
@@ -45,7 +55,7 @@ export default class StatisticsPage extends Component{
 			}
 		).then(canvas => {
 			let pdf = new jsPDF('p', 'mm', 'a4');
-			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 200, 200);
+			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 200, 300);
 			pdf.save(filename);
 		})
 		
@@ -81,7 +91,24 @@ export default class StatisticsPage extends Component{
 											color = {this.colorCaseCount}
 							/>
 						</div>
+						
+						<div className = "case-chart">
+							<Charts type = {"pie"}
+											labels = {this.labelsUserCount}
+											dataSets = {this.dataSetsUserCount}
+											headline = {this.headlineUserCount}
+											display = {this.displayUserCount}
+											color = {this.colorUserCount}
+							/>
+						</div>
 					
+					</div>
+					
+					<div className="wrapper row1" style={{position: "inherit"}}>
+						<div id="copyright" className="hoc clear">
+							<p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
+							<p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+						</div>
 					</div>
 					
 				</div>
@@ -113,10 +140,22 @@ export default class StatisticsPage extends Component{
 						});
 						
 						this.caseCountCat.map(item => {
-							this.dataSetsCaseCount.push(item.antall)
+							this.dataSetsCaseCount.push(item.antall);
 						});
 						
-						this.loaded = true;
+						statisticsService.getCountAllUsers()
+							.then(response => {
+								this.userCount = response;
+								
+								this.userCount.map(item => {
+									this.labelsUserCount.push(item.bruker);
+									this.dataSetsUserCount.push(item.antall);
+								});
+								
+								this.loaded = true;
+								
+							});
+						
 						
 						
 					});

@@ -58,5 +58,21 @@ module.exports = class StatisticsDao extends Dao {
 			callback
 		)
 	}
+	
+	/**
+	 * Gets count of all users of the system in one table
+	 * @param callback {bruker, antall}
+	 */
+	getCountAllUsers(callback: mixed){
+		super.query(
+			"SELECT 'Hverdagshelter' AS 'bruker', COUNT(*) AS 'antall' FROM User " +
+			"UNION ALL " +
+			"SELECT 'Kommuneansatte' AS 'bruker', COUNT(*) AS 'antall' FROM Employee " +
+			"UNION ALL " +
+			"SELECT 'Bedrifter' AS 'bruker', COUNT(*) AS 'antall' FROM Organization ",
+			[],
+			callback
+		)
+	}
 
 };
