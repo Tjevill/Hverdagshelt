@@ -36,6 +36,16 @@ body,
     color: black;
 }
 
+@media (max-width: 640px){
+
+    #pageintro h2 {
+
+        font-size: 1.7rem !important;
+
+    }
+
+}
+
 #case-page {
   height: 100%;
   width: 100%;
@@ -192,6 +202,15 @@ body,
 
 #employee-edit-page .commune-option:hover{
   cursor: pointer;
+}
+
+#login-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/frontpage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #login-page .justify-content-center {

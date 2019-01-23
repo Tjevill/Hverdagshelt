@@ -93,6 +93,14 @@ class forsideMain extends Component {
 }
 
 class ikkeforsideMain extends Component {
+
+    render(){
+        return(
+                <div/>
+        )
+    }
+
+    /*TOOD: Implementeres senere?
     render () {
         return(
             <section id="breadcrumb" className="hoc clear">
@@ -101,7 +109,7 @@ class ikkeforsideMain extends Component {
                 </div>
             </section>
         );
-    }
+    }*/
 }
 
 
@@ -137,10 +145,10 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-	
-	
+
+
 			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<StatisticsPage />)}
 			else {
 				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
