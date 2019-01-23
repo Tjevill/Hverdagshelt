@@ -8,6 +8,11 @@ import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
 
+function isEmail(str) {
+  var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+  return reg.test(str);
+}
+
 export default class AdminNyBedrift extends Component {
   organization = [];
 
@@ -16,7 +21,7 @@ export default class AdminNyBedrift extends Component {
   _value = "";
   info = {
     org: "",
-    tel:  ""
+    tel: ""
   };
 
   categories = [];
@@ -70,46 +75,49 @@ export default class AdminNyBedrift extends Component {
         this.conns[i].checked = event.target.checked;
       }
     }
-
     console.log(event.target.value + " " + event.target.checked);
     console.log("conns: ", this.conns);
   };
 
-  changeNr = event =>{
+  changeNr = event => {
     const target = event.target;
     var value = target.value;
     const name = target.name;
 
-    if(name =="organizationnumber" ){
-      console.log("org timeee")
-      if(isNaN(value)){
-          value = this._value;
-          this.info.org = "kun skriv inn nummer";
-          setTimeout(function(){
-             this.info.org = " ";
-             document.getElementById("organizationnumber").value = this._value;
-          }.bind(this),500);
-      }else{
-          this._value=value;
+    if (name == "organizationnumber") {
+      console.log("org timeee");
+      if (isNaN(value)) {
+        value = this._value;
+        this.info.org = "kun skriv inn nummer";
+        setTimeout(
+          function() {
+            this.info.org = " ";
+            document.getElementById("organizationnumber").value = this._value;
+          }.bind(this),
+          500
+        );
+      } else {
+        this._value = value;
       }
-      this.setState({"organizationnumber":value});
-    }else if(name =="tel"){
-      console.log("tel timeee")
-
-      if(isNaN(value)){
-          value = this._value;
-          this.info.tel = "kun skriv inn nummer";
-          setTimeout(function(){
-             this.info.tel = " ";
-          }.bind(this),2000);
-      }else{
-          this._value=value;
+      this.setState({ organizationnumber: value });
+    } else if (name == "tel") {
+      console.log("tel timeee");
+      if (isNaN(value)) {
+        value = this._value;
+        this.info.tel = "kun skriv inn nummer";
+        setTimeout(
+          function() {
+            this.info.tel = " ";
+            document.getElementById("tel").value = this._value;
+          }.bind(this),
+          500
+        );
+      } else {
+        this._value = value;
       }
-      this.setState({"tel":value});
+      this.setState({ tel: value });
     }
-
-
-  }
+  };
 
   render() {
     if (!this.organization) return null;
@@ -149,10 +157,12 @@ export default class AdminNyBedrift extends Component {
                 className="form-control"
                 type="text"
                 defaultValue=""
+                id="tel"
                 name="tel"
                 maxLength="8"
                 onChange={this.changeNr}
               />
+              <p>{this.info.tel}</p>
             </div>
             <div className="form-group">
               Email:{" "}
@@ -226,9 +236,22 @@ export default class AdminNyBedrift extends Component {
   }
 
   save() {
+    let pass = this.state.password;
+    let passlength = pass.length;
+    let minlength = 8;
+    let email = this.state.email;
+    let organizationnumber = this.state.organizationnumber;
+    let name = this.state.name;
+    let tel = this.state.tel;
+
     if (!this.organization) {
       console.log("Returning null!");
       this.message = "Error";
+      return null;
+    }
+
+    if (email == "" || organizationnumber == "" || name == "" || tel == "") {
+      this.passworderror = "Feltet kan ikke være null";
       return null;
     }
 
@@ -239,12 +262,15 @@ export default class AdminNyBedrift extends Component {
       this.passworderror = "";
     }
 
-    let pass = this.state.password;
-    let passlength = pass.length;
-    let minlength = 8;
-
     if (passlength < minlength) {
       this.passworderror = "Passordet er for kort";
+      return null;
+    } else {
+      this.passworderror = "";
+    }
+
+    if (!isEmail(email)) {
+      this.passworderror = "Ugydig email";
       return null;
     } else {
       this.passworderror = "";
@@ -284,6 +310,7 @@ export default class AdminNyBedrift extends Component {
             console.log("2nd response: ", response);
           })
           .catch((error: Error) => (this.message = error.message));
+        this.message = "Vellyket!";
         history.push("/admin/bedrift/");
       })
       .catch((error: Error) => (this.message = error.message));
