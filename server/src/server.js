@@ -253,12 +253,32 @@ app.post("/reset/org/:email", (req, res) => {
     });
 });
 
-
-app.post("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
+/** Create user and send welcome-email */
+app.post("/user", (req, res) => {
+    console.log("POST-request from client /user");
+    
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
+
+        let email = req.body.email;
+        const mailOptionsCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Velkommen som HverdagsHelt!',
+            html:
+                '<h1> Velkommen som helt! </h1>' +
+                '<p> Logg inn på hverdagshelt for å legge inn saker! :) </p>'
+
+        };
+
+        transporter.sendMail(mailOptionsCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        }); // transporter
     });
 });
 
