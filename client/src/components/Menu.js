@@ -86,7 +86,6 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift/rapporter">Rapporter</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                             </ul>
                         </li>
@@ -113,7 +112,6 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/rapporter">Mine rapporter</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                             </ul>
                         </li>
