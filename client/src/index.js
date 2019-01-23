@@ -114,10 +114,14 @@ class ikkeforsideMain extends Component {
 
 
 class LoginStatus extends Component {
+    handleLogOut(){
+      sessionStorage.clear();
+      window.location.reload();
+    };
     render () {
         return (
             (this.props.loggedin)
-                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={()=>this.handleLogOut()}>Logg ut</NavLink></div>
                 : <div className="logged-in-as">Not logged in</div>
         );
     }
