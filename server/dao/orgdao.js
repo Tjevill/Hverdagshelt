@@ -181,7 +181,7 @@ console.log("Kall til updateOrg: ");
 
     getAllCasesOrg(org_id, callback){
 		super.query(
-			"SELECT * FROM Cases WHERE org_id = ?",
+			"SELECT * FROM Cases WHERE org_id = ? AND status_id = 6",
 			[org_id],
 			callback
 		);

@@ -90,7 +90,7 @@ export default class AdminEditPrivateUSers extends Component < {
 
          case "tel":
         formErrors.tel =
-          value.length < 3 ? "minimum 3 bokstaver, tlf" : "";
+           value.length < 3 || value.length>9 ? "minst 3 tall, maks 9 tall" : "";
         break;
 
           case "email":
@@ -337,6 +337,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 .deleteUser(id)
                 .then(user => console.log(user))
                 .catch((error: Error) => console.log(error.message));
+                window.location.reload();
                 history.push("/admin/heroes/"); 
             
         }

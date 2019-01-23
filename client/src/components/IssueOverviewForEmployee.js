@@ -47,6 +47,11 @@ export default class IssueOverviewForEmployee extends Component<{
 }> {
     currentCase = [];
     currentOrg = [];
+    stat1 = false;
+    stat2 = true;
+    stat3 = false;
+    stat4 = false;
+    stat5 = false;
   orgs = [];
   loaded = false;
   employeeid = "";
@@ -70,7 +75,8 @@ export default class IssueOverviewForEmployee extends Component<{
   caseside = "";
 
     state = {
-        org_id: 0
+        org_id: 0,
+        comment:''
     };
 
   handleChangeStatus = event => {
@@ -152,7 +158,7 @@ export default class IssueOverviewForEmployee extends Component<{
 
   search = event => {
     this.casesbyStatus = this.backup.filter(function(value) {
-      return value.headline.indexOf(event.target.value) != -1;
+      return value.headline.toLowerCase().indexOf(event.target.value.toLowerCase()) != -1;
     });
     this.forceUpdate();
     console.log(event.target.value);
@@ -189,57 +195,95 @@ export default class IssueOverviewForEmployee extends Component<{
     };
 
     saveUpdate (id) {
-        if(document.getElementById('status01').checked) {
-            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 2, this.employee.employee_id, this.state.org_id)
+        console.log(this.state.comment)
+        let comment = this.state.comment;
+
+        if(IssueOverviewForEmployee.stat1 == true) {
+            caseService.updateCaseByEmployee(id, comment, 2, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            console.log(this.state.org_id);
-            window.alert("Kommentar, status og bedrift endret!");
-            // window.location.reload();
-        } else if(document.getElementById('status02').checked) {
-            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 3, this.employee.employee_id, this.state.org_id)
+
+        } else if(IssueOverviewForEmployee.stat2 == true) {
+            caseService.updateCaseByEmployee(id, comment, 3, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar, status og bedrift endret!");
-            window.location.reload();
-        } else if(document.getElementById('status03').checked) {
-            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 4, this.employee.employee_id, this.state.org_id)
+
+        } else if(IssueOverviewForEmployee.stat3 == true) {
+            caseService.updateCaseByEmployee(id, comment, 4, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar, status og bedrift endret!");
-            window.location.reload();
-        } else if(document.getElementById('status04').checked) {
-            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 5, this.employee.employee_id, this.state.org_id)
+
+        } else if(IssueOverviewForEmployee.stat4 == true) {
+            caseService.updateCaseByEmployee(id, comment, 5, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar, status og bedrift endret!");
-            window.location.reload();
-        } else if(document.getElementById('status05').checked) {
-            caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 6, this.employee.employee_id, this.state.org_id)
+
+        } else if(IssueOverviewForEmployee.stat5 == true) {
+            caseService.updateCaseByEmployee(id, comment, 6, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
                 })
                 .catch((error: Error) => Alert.danger(error.message));
-            window.alert("Kommentar, status og bedrift endret!");
-            window.location.reload();
+
         } else {
-            console.log(document.getElementById('status01').checked);
-            console.log(document.getElementById('status02').checked);
-            console.log(document.getElementById('status03').checked);
-            console.log(document.getElementById('status04').checked);
-            console.log(document.getElementById('status05').checked);
             window.alert("Vennligst anngi en status på saken");
             return null;
         }
     }
+
+    handleClick1() {
+            IssueOverviewForEmployee.stat1 = true;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick2() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = true;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick3() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = true;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick4() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = true;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick5() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = true;
+        }
 
 
     handleSelected(id) {
@@ -310,35 +354,38 @@ export default class IssueOverviewForEmployee extends Component<{
                                     <input
                                         className="form-control"
                                         id="comment-input"
-                                        defaultValue={casen.comment}>
+                                        defaultValue={casen.comment}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.comment = event.target.value)}>
+
                                     </input>
                                 </div>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
                                 <label className="container inline">
-                                    <input type="radio" id="status01" name="radio"/>
-                                    <span className="checkmark"></span>Under vurdering
+                                    <input type="radio" id="status01" name="radio" onClick={this.handleClick1}></input>
+                                    Under vurdering
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status02" name="radio"/>
-                                    <span className="checkmark"></span>Satt på vent
+                                    <input type="radio" id="status02" name="radio" onClick={this.handleClick2}></input>
+                                    Satt på vent
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status03" name="radio"/>
-                                    <span className="checkmark"></span>Arbeid pågår
+                                    <input type="radio" id="status03" name="radio" onClick={this.handleClick3}></input>
+                                    Arbeid pågår
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status04" name="radio"/>
-                                    <span className="checkmark"></span>Avvist
+                                    <input type="radio" id="status04" name="radio" onClick={this.handleClick4}></input>
+                                    Avvist
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status05" name="radio"/>
-                                    <span className="checkmark"></span>Sak løst
+                                    <input type="radio" id="status05" name="radio" onClick={this.handleClick5}></input>
+                                    Sak løst
                                 </label>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
                                 <div className="form-group form-group-style">
                                     <select className={'browser-default custom-select'}
                                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
-                                            defaultValue={this.getCurrentOrg}>
+                                            defaultValue=''>
+                                        <option disabled value=''> -- velg bedrift til å løse problemet -- </option>
                                         {this.orgs.map(org => (
                                             <option key={org.org_id} value={org.org_id}>
                                                 {org.name}
@@ -390,7 +437,7 @@ export default class IssueOverviewForEmployee extends Component<{
               type="button"
               className="btn btn-outline-dark"
               id="Saker-side-button"
-              onClick={() => history.push("/admin/issues/All/" + sidetall)}
+              onClick={() => history.push("/admin/issues/" + sidetall)}
             >
               {sidetall}{" "}
             </button>

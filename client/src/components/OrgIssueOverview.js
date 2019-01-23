@@ -46,7 +46,8 @@ function count(array) {
 export default class OrgIssueOverview extends Component<{
   match: { params: { id: number } }
 }> {
-
+    stat1 = false;
+    stat2 = false;
   loaded = false;
   org_id = "";
   employee = new Object();
@@ -64,6 +65,10 @@ export default class OrgIssueOverview extends Component<{
   kommuner = [];
   casesbyKommune = [];
   currentCase = {};
+
+    state = {
+        comment:''
+    };
 
 
   handleChangeKommune = event =>{
@@ -241,38 +246,42 @@ export default class OrgIssueOverview extends Component<{
 
   search = event => {
     this.casesbyStatus = this.backup.filter(function(value){
-        return value.headline.indexOf(event.target.value)!=(-1);
+        return value.headline.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
     });
     this.forceUpdate();
     console.log(event.target.value);
     console.log(this.casesbyStatus);
   }
   saveComment (id) {
-    if(document.getElementById('status1').checked) {
-      caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
+      console.log(this.state.comment)
+      let comment = this.state.comment;
+    if(OrgIssueOverview.stat1 == true) {
+      caseService.updateStatusAndCommentForOrg(id, 4, comment)
           .then(res => {
               console.log(res);
+              window.alert("Kommentar og status endret!");
+              window.location.reload();
           })
           .catch((error: Error) => Alert.danger(error.message));
-        window.alert("Kommentar og status endret!");
-        // window.location.reload();
-    } else if(document.getElementById('status2').checked) {
-        caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
+
+    } else if(OrgIssueOverview.stat2 == true) {
+        caseService.updateStatusAndCommentForOrg(id, 6, comment)
             .then(res => {
                 console.log(res);
+                window.alert("Kommentar og status endret!");
+                window.location.reload();
             })
             .catch((error: Error) => Alert.danger(error.message));
-        window.alert("Kommentar og status endret!");
-        window.location.reload();
+
     } else {
-        caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+        caseService.updateCaseComment(id, comment)
             .then(res => {
                 console.log(res);
+                console.log(document.getElementById('comment-input').value);
+                window.alert("Kommentar lagret!");
+                window.location.reload();
             })
             .catch((error: Error) => Alert.danger(error.message));
-        console.log(document.getElementById('comment-input').value);
-        window.alert("Kommentar lagret!");
-        window.location.reload();
       }
     }
 
@@ -282,6 +291,26 @@ export default class OrgIssueOverview extends Component<{
             e.case_id == id)
         console.log(filteredCase)
             this.currentCase = filteredCase[0];
+    }
+
+    handleChange = event => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+
+        this.setState((state, props) => ({
+            [name]: value
+        }));
+    };
+
+    handleClick1() {
+        OrgIssueOverview.stat1 = true;
+        OrgIssueOverview.stat2 = false;
+    }
+    handleClick2() {
+        OrgIssueOverview.stat1 = false;
+        OrgIssueOverview.stat2 = true;
     }
 
   render() {
@@ -333,17 +362,18 @@ export default class OrgIssueOverview extends Component<{
                                       <input
                                           className="form-control"
                                           id="comment-input"
-                                          defaultValue={casen.comment}>
+                                          defaultValue={casen.comment}
+                                          onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.comment = event.target.value)}>
                                       </input>
                                   </div>
                                   <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
                                   <label className="container inline">
-                                      <input type="radio" id="status1" name="radio"/>
-                                          <span className="checkmark"></span>Arbeid pågår
+                                      <input type="radio" id="status1" name="radio" onClick={this.handleClick1}/>
+                                          Arbeid pågår
                                   </label>
                                   <label className="container inline">
-                                      <input type="radio" id="status2" name="radio"/>
-                                          <span className="checkmark"></span>Sak løst
+                                      <input type="radio" id="status2" name="radio" onClick={this.handleClick2}/>
+                                          Sak løst
                                   </label>
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
