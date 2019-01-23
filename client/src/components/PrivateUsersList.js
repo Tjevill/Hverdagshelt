@@ -93,7 +93,7 @@ export default class PrivateUsersList extends Component {
   search(event) {
     console.log(event.target.value);
     this.users = this.usersbackup.filter(function(value){
-        return value.name.indexOf(event.target.value)!=(-1);
+        return value.name.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
     });
     this.forceUpdate();
   }
