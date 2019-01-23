@@ -527,8 +527,14 @@ export default class EmployeeService {
 
 
     getEmployeeByToken(): Promise<Employee[]>{
-	    console.log("Requesting Employee information")
+        console.log("Requesting Employee information")
         return axios.get(url + '/getemployee/', axiosConfig);
+    }
+
+
+    getOne(id: number): Promise<Employee[]>{
+        console.log("Requesting Employee information")
+        return axios.get(url + '/employee/' + id, axiosConfig);
     }
 
 
@@ -561,7 +567,7 @@ export default class EmployeeService {
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
   updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/' + emp.employee_id, emp);
+    return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
   }
 
   /** Get all employees */

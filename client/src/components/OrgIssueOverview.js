@@ -280,17 +280,9 @@ export default class OrgIssueOverview extends Component<{
     handleSelected(id) {
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
-        console.log(filteredCase)
-
-        //// DENNE MÅ LØSES PÅ EN ANNEN MÅTE
-
-        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
+            console.log(filteredCase)
             this.currentCase = filteredCase;
-        } else {
-            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
-            window.location.reload();
-            return null;
-        }
+
     }
 
   render() {

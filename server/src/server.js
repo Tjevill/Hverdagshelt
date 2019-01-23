@@ -1737,15 +1737,15 @@ function checkIfEmployee(req, res, next) {
                   }  );
 
                   promise1.then(function (value) {
-                      // console.log("decoded.email : " + decoded.email);
-                      // console.log("decoded : " + decoded);
-                      // console.log("value : " + value);
+                      console.log("decoded.email : " + decoded.email);
+                      console.log("decoded : ", decoded);
+                      console.log("value : " + value);
 
                       if (decoded && decoded.email && (value === 1)) {
                           console.log("******************  Operasjonen gikk gjennom!  ******************")
                           next();
                       } else {
-                          // console.log("Feil innlogging! Sender brevbombe.");
+                          console.log("Feil innlogging! Sender brevbombe. 1");
                           res.sendStatus(403);
                       }
                   });
