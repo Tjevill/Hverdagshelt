@@ -53,7 +53,7 @@ export default class Menu extends Component {
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                        <li><a className="drop" href="/user">Min side</a>
+                        <li><a className="drop" href="#/user">Min side</a>
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
@@ -80,7 +80,7 @@ export default class Menu extends Component {
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                        <li><a className="drop" href="/bedrift">Min side</a>
+                        <li><a className="drop" href="#/bedrift">Min side</a>
                             <ul>
                                 <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
@@ -106,9 +106,9 @@ export default class Menu extends Component {
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                        <li><a className="drop" href="#">Min side</a>
+                        <li><a className="drop" href="#/admin">Min side</a>
                             <ul>
-                                <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/admin">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
