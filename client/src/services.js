@@ -463,9 +463,14 @@ class OrgService{
   }
 
 
-  updateOrgByID(org: Organization): Promise<void>{
-  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
-  }
+    updateOrgByID(org: Organization): Promise<void>{
+        return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+    }
+
+
+    updateOrgByToken(org: Organization): Promise<void>{
+        return axios.put(url + '/orgedit/' + org.org_id, org, axiosConfig);
+    }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
     return axios.put(url + '/updateOrgPWord', org, axiosConfig);

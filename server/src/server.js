@@ -553,6 +553,14 @@ app.put('/org/:id', checkIfEmployee, (req: Request, res: Response) => {
     })
 });
 
+
+app.put('/orgedit/:id', checkIfOrganization, (req: Request, res: Response) => {
+    orgDao.updateOrg(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
 /**
  * Update org password by ID send object including new password and org_id
  */
