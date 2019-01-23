@@ -50,64 +50,65 @@ export default class EmployeeOverview extends Component {
     return (
 
       <div>
-      {/*
-      <h1> Liste over ansatte i din kommune: {this.commune} </h1> */}
         <div className="title">
             <div id="cat-page">
                 <div className="row">
-                    <div className="col-sm-3">&nbsp;</div>
-                    <div className="col-sm-6">
-                        <div className="group btmspace-50 headerlayout">
-                            <div className="one_half first"><h3>Kategorier</h3></div>
-                            <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/nyAnsatt/') }}>Legg til ny ansatt</button></div>
-                        </div>
+                    <div className="col-md-3"></div>
+                        <div className="col-md-6">
+                            <div className="group btmspace-50 headerlayout">
+                                <div className="one_half first"><h3>Kategorier</h3></div>
+                                <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/nyAnsatt/') }}>Legg til ny ansatt</button></div>
+                            </div>
                         <table className="">
-                            <thead>
-                            <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Navn</th>
-                              <th scope="col">Tlf</th>
-                              <th scope="col">Superbruker</th>
-                              <th scope="col" colSpan="2">
+                                <thead>
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Navn</th>
+                                  <th scope="col">Tlf</th>
+                                  <th scope="col">Superbruker</th>
+                                  <th scope="col" colSpan="2">
 
 
-                                      <input
-                                          id="searchbar"
-                                          type="text"
-                                          onChange={event => this.searchUsers(event)}
-                                      />
+                                          <input
+                                              id="searchbar"
+                                              type="text"
+                                              onChange={event => this.search(event)}
+                                          />
 
 
-                                  {" "}
-                              </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {this.employees.map((employee, i) => (
-                                  <tr key={i} className="PrivateUsersList-TableRow">
-                                     <td className="employee_id">
-                                      {employee.employee_id}
-                                    </td>
-                                         <td className="name">
-                                       {employee.name}
+                                      {" "}
+                                  </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {this.employees.map((employee, i) => (
+                                      <tr key={i} className="PrivateUsersList-TableRow">
+                                         <td className="employee_id">
+                                          {employee.employee_id}
                                         </td>
-                                         <td className="tel">
-                                        {employee.tel}
+                                             <td className="name">
+                                           {employee.name}
+                                            </td>
+                                             <td className="tel">
+                                            {employee.tel}
+                                            </td>
+                                            <td className="superuser">
+                                             {employee.superuser}
+                                            </td>
+                                            <td className="edit">
+                                          {this.addEditRowColumn(this.superUser, employee)}
                                         </td>
-                                        <td className="superuser">
-                                         {employee.superuser}
-                                        </td>
-                                        <td className="edit">
-                                      {this.addEditRowColumn(this.superUser, employee)}
-                                    </td>
-                                      <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.user_id)}>Slett</button></td>
+                                          <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.user_id)}>Slett</button></td>
 
-                                  </tr>
-                                ))}
-                            </tbody>
-                         </table>
-                    </div>
-                </div></div></div>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                             </table>
+                        </div>
+                    <div className="col-md-3"></div>
+                </div>
+            </div>
+        </div>
       </div>
 
     );
