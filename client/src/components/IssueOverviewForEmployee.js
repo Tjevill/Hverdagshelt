@@ -367,7 +367,10 @@ export default class IssueOverviewForEmployee extends Component<{
 
 
                 <span className="badge badge-primary">
+                    <div>
                   {this.statusname[casen.status_id - 1]}
+                    </div>
+                </span>
                 </span>
               </td>
             </tr>
