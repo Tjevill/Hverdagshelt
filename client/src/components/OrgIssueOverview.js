@@ -280,11 +280,9 @@ export default class OrgIssueOverview extends Component<{
     handleSelected(id) {
         let filteredCase = this.cases.filter(e =>
             e.case_id == id)
-        console.log(filteredCase)
-
-        //// DENNE MÅ LØSES PÅ EN ANNEN MÅTE
-
+            console.log(filteredCase)
             this.currentCase = filteredCase;
+
     }
 
   render() {

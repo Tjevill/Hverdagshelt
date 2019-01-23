@@ -16,17 +16,12 @@ import {
   Form,
   Loading
 } from "./widgets";
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from "material-ui/Table";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+// import {Table,TableBody,TableHeader,TableHeaderColumn,TableRow,TableRowColumn} from "material-ui/Table";
+// import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RaisedButton from "material-ui/RaisedButton";
 import SearchBar from "material-ui-search-bar";
+import {TableHeaderColumn} from "material-ui/Table";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 const history = createHashHistory();
 
@@ -58,106 +53,62 @@ export default class EmployeeOverview extends Component {
       {/*
       <h1> Liste over ansatte i din kommune: {this.commune} </h1> */}
         <div className="title">
-     <link rel="stylesheet" href="PrivateUsersList.css" />
-
-      <h1 className="logo">
-  <span className="word1">Kommune</span>
-  <span className="word2">Ansatt</span>
-</h1>
-</div>
-
-        <a href={"#/nyAnsatt/"} className="btn btn-primary">
-          Legg til ny ansatt
-        </a>
-       <MuiThemeProvider>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>Ansatt_ID</TableHeaderColumn>
-              <TableHeaderColumn>Navn</TableHeaderColumn>
-              <TableHeaderColumn>Tlf</TableHeaderColumn>
-              <TableHeaderColumn>Superbruker</TableHeaderColumn>
-              <TableHeaderColumn />
-               <TableHeaderColumn>
+            <div id="cat-page">
+                <div className="row">
+                    <div className="col-sm-3">&nbsp;</div>
+                    <div className="col-sm-6">
+                        <div className="group btmspace-50 headerlayout">
+                            <div className="one_half first"><h3>Kategorier</h3></div>
+                            <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/nyAnsatt/') }}>Legg til ny ansatt</button></div>
+                        </div>
+                        <table className="">
+                            <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Navn</th>
+                              <th scope="col">Tlf</th>
+                              <th scope="col">Superbruker</th>
+                              <th scope="col" colSpan="2">
 
 
-                {" "}
-                <SearchBar
-                  onChange={event => this.search(event)}
-                  style={{
-                    margin: "0 auto",
-
-                    maxWidth: 900
-                  }}
-                />
-              </TableHeaderColumn>
+                                      <input
+                                          id="searchbar"
+                                          type="text"
+                                          onChange={event => this.searchUsers(event)}
+                                      />
 
 
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {this.employees.map((employee, i) => (
-              <TableRow key={i} className="PrivateUsersList-TableRow">
-                 <TableRowColumn className="employee_id">
-                  {employee.employee_id}
-                </TableRowColumn>
-                     <TableRowColumn className="name">
-                   {employee.name}
-                    </TableRowColumn>
-                     <TableRowColumn className="tel">
-                    {employee.tel}
-                    </TableRowColumn>
-                    <TableRowColumn className="superuser">
-                     {employee.superuser}
-                    </TableRowColumn>
-                    <TableRowColumn className="edit">
-                  {this.addEditRowColumn(this.superUser, employee)}
+                                  {" "}
+                              </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {this.employees.map((employee, i) => (
+                                  <tr key={i} className="PrivateUsersList-TableRow">
+                                     <td className="employee_id">
+                                      {employee.employee_id}
+                                    </td>
+                                         <td className="name">
+                                       {employee.name}
+                                        </td>
+                                         <td className="tel">
+                                        {employee.tel}
+                                        </td>
+                                        <td className="superuser">
+                                         {employee.superuser}
+                                        </td>
+                                        <td className="edit">
+                                      {this.addEditRowColumn(this.superUser, employee)}
+                                    </td>
+                                      <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.user_id)}>Slett</button></td>
 
-                </TableRowColumn>
-                   <TableRowColumn/>
-
-
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </MuiThemeProvider>
-         </div>
-
-          /*
-      <h1> Liste over ansatte i din kommune: {this.commune} </h1>
-        <a href={"#/nyAnsatt/"} className="btn btn-primary">
-          Legg til ny ansatt
-        </a>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">tel</th>
-              <th scope="col">email</th>
-              <th scope="col">super?</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.employees.map((e, i) => (
-
-              <tr key={i} onClick={()=>history.push('/admin/kommune/edit/'+ e.employee_id)}>
-                <th  scope="row">{e.employee_id}</th>
-                <td   >{e.name}</td>
-                <td> {e.tel}</td>
-                <td> {e.email}</td>
-                <td> {this.super(e.superuser) }</td>
-
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        */
-
-
-
+                                  </tr>
+                                ))}
+                            </tbody>
+                         </table>
+                    </div>
+                </div></div></div>
+      </div>
 
     );
   }
@@ -165,14 +116,12 @@ export default class EmployeeOverview extends Component {
     addEditRowColumn(id, employee) {
     if (id == 1) {
       return (
-        <RaisedButton
-          label="rediger"
-          primary={true}
-          style={style}
+        <button type="button" className="btn btn-primary"
+
           onClick={() => {
            history.push('/admin/kommune/edit/'+ employee.employee_id);
           }}
-        />
+        >Rediger</button>
       );
     } else {
       return "";

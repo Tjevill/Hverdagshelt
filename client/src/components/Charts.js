@@ -1,57 +1,69 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import {Bar, Line, Pie} from "react-chartjs-2";
-import {caseService} from "../services";
+import {Bar, Line, Pie, HorizontalBar} from "react-chartjs-2";
 
-/*<{ imgLink: string, title: React.Node, to: string, children?: React.Node }>*/
 
-export default class Charts extends Component <{headline: string, labels: [], label: string, dataSets: [], children?: React.Node }>{
+export default class Charts extends Component <{color: []; display: boolean, type: string, headline: string, labels: [], dataSets: [], children?: React.Node }>{
 	
-	labels = this.props.labels;
 	data = {
 		labels: this.props.labels,
 		datasets: [
 			{
-				label: this.props.label,
 				data: this.props.dataSets,
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.6)',
-					'rgba(54, 162, 235, 0.6)',
-					'rgba(255, 206, 86, 0.6)',
-					'rgba(75, 192, 192, 0.6)',
-					'rgba(153, 102, 255, 0.6)',
-					'rgba(255, 159, 54, 0.6)'
-				
-				]
-				
+				backgroundColor: this.props.color
 			}
 		]
 	};
-
 	
 	options = {
 		legend: {
-			display: false
+			display: this.props.display
 		},
-		
 		title: {
 			display: true,
 			text: this.props.headline,
 			fontSize: 25
+		},
+		layout: {
+			padding: {
+				left: 50,
+				right: 0,
+				bottom: 0,
+				top: 0
+			}
+		},
+		tooltips: {
+			enabled: true,
+			
 		}
 	};
 	
 	
 	render(){
+		if(this.props.type === "bar"){
+			return (
+				<div>
+					
+					<Bar data = {this.data} options = {this.options} />
+					
+				</div>
+			)
+		} else if(this.props.type === "line"){
+			console.log(this.data);
+			return(
+				<div>
+					<Line data={this.data} options={this.options} />
+				</div>
+			)
+		} else if (this.props.type === "pie"){
+			return(
+				<div>
+					<Pie data={this.data} options={this.options} />
+				</div>
+			)
+		}
 		
-		return(
-			<div>
-				
-				<Bar data={this.data} options = {this.options} />
-				
-				
-			</div>
-		)
+		
 	}
 	
 	componentDidMount(){
