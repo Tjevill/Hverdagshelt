@@ -442,7 +442,7 @@ export default class AdminEvents extends Component {
         if(conf){
             eventService
                 .deleteEvent(event_id);
-
+ 
             history.push("/admin/events");
         }else{
             console.log("false");
