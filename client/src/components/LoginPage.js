@@ -207,7 +207,7 @@ export default class LoginPage extends React.Component {
 
                 <div className="row justify-content-center">
 
-                    <div className="group btmspace-50 demo">
+                    <div className="group">
                         <div className="one_third first">
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
