@@ -621,7 +621,8 @@ export default class EmployeeService {
   */
   updateEmpData(emp: Employee) : Promise<void>{
     return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
-
+  }
+  
   updateEmpDataByToken(emp: Employee) : Promise<void>{
     return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
   }
