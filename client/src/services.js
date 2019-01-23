@@ -604,7 +604,7 @@ export default class EmployeeService {
 
   /** Delete an employee with employee_id. Yolo */
   deleteEmp(employee_id): Promise<void>{
-    return axios.delete(url + '/employee/'+employee_id);
+    return axios.delete(url + '/employee/'+employee_id, axiosConfig);
   }
 
 

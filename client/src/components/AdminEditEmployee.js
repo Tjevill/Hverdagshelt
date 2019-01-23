@@ -154,6 +154,7 @@ export default class AdminEditEmployee extends Component < {
     })
     .then(res => {
         console.log("Response recieved:", res); //ENDRINGER ER BLITT LAGRET
+        history.push("/admin/kommune")
       })
       .catch(err => {
         console.log("AXIOS ERROR:", err);
@@ -306,7 +307,7 @@ render(){
               <button type="submit"> Lagre endringer </button>
             </div>
 
-           {this.addDeleteButton(this.superuser)} 
+         
 
           </form>
         </div>
