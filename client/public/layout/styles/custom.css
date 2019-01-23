@@ -31,7 +31,6 @@
 
 .padded {
 	padding:30px;
-
 	height:400px;
 }
 
@@ -43,4 +42,8 @@
 .largebutton {
 	margin-top:20px;
 	text-align: right;
+}
+
+.hovedmeny {
+	padding-top:27px;
 }

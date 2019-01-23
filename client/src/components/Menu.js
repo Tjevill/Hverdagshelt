@@ -27,24 +27,51 @@ export default class Menu extends Component {
         // console.log("Menu.js: loggedin = " + this.props.loggedin);
         if (!this.props.loggedin) {
             return (
-                <nav id="mainav" className="fl_right">
-                     <ul className="hovedmeny">
-                            <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
-                        </ul>
+                <div>
+                    <nav id="mainav" className="fl_right">
+                         <ul className="hovedmeny">
+                                <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
+                            </ul>
 
-                </nav>
+                    </nav>
+                    <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
+                        <div className="container">
+                            <div className="navbar-header">
+                                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span className="sr-only">Toggle navigation</span>
+                                    <span className="icon-bar"></span>
+                                    <span className="icon-bar"></span>
+                                    <span className="icon-bar"></span>
+                                </button>
+                            </div>
+
+
+                            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul className="nav navbar-nav">
+                                    <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
             );
         }
 
         if (this.props.loggedin && (sessionStorage.getItem("access") == "user")) {
 
             return (
-
+            <div>
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
@@ -64,6 +91,39 @@ export default class Menu extends Component {
                     </ul>
 
                 </nav>
+                <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
+                    <div className="container">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                        </div>
+
+
+                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul className="nav navbar-nav">
+                                <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                <li><NavLink to="#">---------------------</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                </div>
+
+
 
             );
 
@@ -72,7 +132,7 @@ export default class Menu extends Component {
         if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
 
             return (
-
+            <div>
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
@@ -91,6 +151,39 @@ export default class Menu extends Component {
                     </ul>
 
                 </nav>
+
+
+                <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
+                    <div className="container">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                        </div>
+
+
+                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul className="nav navbar-nav">
+                                <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                <li><NavLink to="#">---------------------</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+
             );
 
         }
@@ -99,34 +192,73 @@ export default class Menu extends Component {
 
 
             return (
-                <nav id="mainav" className="fl_right">
-                    <ul className="hovedmeny">
-                        <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                <div>
+                    <nav id="mainav" className="fl_right">
+                        <ul className="hovedmeny">
+                            <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                        <li><a className="drop" href="#">Min side</a>
-                            <ul>
-                                <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
-                            </ul>
-                        </li>
-                        <li><a className="drop" href="#">Administrator</a>
-                            <ul>
-                                <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
-                                <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
-                                <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                            <li><a className="drop" href="#">Min side</a>
+                                <ul>
+                                    <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
+                                    <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                                </ul>
+                            </li>
+                            <li><a className="drop" href="#">Administrator</a>
+                                <ul>
+                                    <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
+                                    <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
+                                    <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+
+
+                    <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
+                        <div className="container">
+                        <div className="navbar-header">
+                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                        </div>
+
+
+                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul className="nav navbar-nav">
+                            <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                            <li><NavLink to="#">---------------------</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
+                            <li><NavLink to="#">---------------------</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
+                            <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
+                            <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                        </ul>
+                    </div>
+        </div>
+        </nav>
+
+            </div>
             );
 
 
