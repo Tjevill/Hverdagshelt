@@ -144,7 +144,7 @@ class CaseService {
   getAllCases(): Promise <Case[]> {
     return axios.get(url+'/case');
   }
-  
+
   getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
@@ -229,7 +229,7 @@ class CaseService {
       }
     });
   }
-  
+
   /** Get number of cases in the db */
   countCases(): Promise <number>{
     return axios.get(url+'/countCases');
@@ -250,16 +250,89 @@ class CaseService {
     return axios.get(url+'/allCases/'+province);
   }
 
-  /**  Update one case_status */
-   /*
-  updateCaseStatus(case_id: number, info: json): Promise<void>{
-    return axios.put(url+'/updateCaseStatus/'+case_id, info,{
-      headers: {
-        "Content-Type": "application/json"
-      }
+
+
+    getCategories(): Promise<Category[]> {
+        return axios.get(url + '/categories');
+    }
+
+  getCase(id: number): Promise<Case> {
+    return axios.get(url + '/cases/' + id);
+  }
+    createCase(headline: string, description: string, longitude: number, latitude: number, picture: string, category_id: number): Promise<void> {
+        return axios.post('/cases', {
+            headline: headline,
+            description: description,
+            longitude: longitude,
+            latitude: latitude,
+            picture: picture,
+            category_id: category_id
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+	changeCaseStatus (case_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
+	}
+
+	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
+    return axios.put(url + '/updateStatusAndComment/' + case_id, {
+      status: status,
+      comment: comment
+    });
+  }
+
+	/**
+	 * Gets all cases for one organization
+	 * @param id The organizations id number
+	 * @returns {AxiosPromise<any>}
+	 */
+	getCasesForOrganization(id: number): Promise<Case[]>{
+		return axios.get(url + '/getCasesOnOrgID/' + id);
+	}
+
+	/**  Update one case_status */
+	updateCaseStatus (case_id: number, status_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseStatus/' + case_id + '/' + status_id);
+
+	}
+
+	/**
+   * Update case comment for one case by case_id
+	 * @param case_id
+	 * @param comment
+	 * @returns {AxiosPromise<any>}
+	 */
+	updateCaseComment (case_id: number, comment: string): Promise<void> {
+		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
+
+	}
+
+	/**
+   * Update case for employee
+	 * @param case_id The case_id to update
+	 * @param comment The comment to update
+	 * @param status_id The status to update
+	 * @param employee_id The employees id that changes the case
+	 * @param org_id The organization id who gets the job
+	 * @returns {AxiosPromise<any>}
+	 */
+	updateCaseByEmployee (case_id: number, comment: string, status_id: number, employee_id: number, org_id: number): Promise<void> {
+		return axios.put(url + '/updateCaseEmployee', {
+		  case_id: case_id,
+      comment: comment,
+      status: status_id,
+      employee_id: employee_id,
+      org_id: org_id
     });
 
-  }*/
+	}
+
 
 }
 export let caseService = new CaseService();
@@ -507,8 +580,14 @@ export default class EmployeeService {
 
 
     getEmployeeByToken(): Promise<Employee[]>{
-	    console.log("Requesting Employee information")
+        console.log("Requesting Employee information")
         return axios.get(url + '/getemployee/', axiosConfig);
+    }
+
+
+    getOne(id: number): Promise<Employee[]>{
+        console.log("Requesting Employee information")
+        return axios.get(url + '/employee/' + id, axiosConfig);
     }
 
 
@@ -540,6 +619,10 @@ export default class EmployeeService {
   * Example on JSON in postman:
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
+  updateEmpData(emp: Employee) : Promise<void>{
+    return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
+  }
+  
   updateEmpDataByToken(emp: Employee) : Promise<void>{
     return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
   }
@@ -732,3 +815,25 @@ class GeoService {
 }
 
 export let geoService = new GeoService();
+
+class StatisticsService {
+
+	/**
+   * Get statistics for registered cases past 7 days
+	 * @returns {AxiosPromise<any>}
+	 */
+  getRegisteredCases(): Promise<{dag: string, registerert: number}>{
+    return axios.get(url + "/statistics/cases");
+  }
+
+	/**
+   * Gets a count of cases registered on categories in database
+	 * @returns {AxiosPromise<any>} An array [{antall: number, description: string, category_id: number}]
+	 */
+	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
+    return axios.get(url + "/statistics/casesCategory");
+  }
+
+}
+
+export let statisticsService = new StatisticsService();

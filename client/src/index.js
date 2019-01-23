@@ -144,11 +144,12 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
-            return this.amILoggedin == null ? "<div></div>" : (
-
+	
+	
+			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else {
+				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
                     <HashRouter>
                         <div>
