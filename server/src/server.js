@@ -253,12 +253,32 @@ app.post("/reset/org/:email", (req, res) => {
     });
 });
 
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
+/** Create user and send welcome-email */
+app.post("/user", (req, res) => {
+    console.log("POST-request from client /user");
+    
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
+
+        let email = req.body.email;
+        const mailOptionsCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Velkommen som HverdagsHelt!',
+            html:
+                '<h1> Velkommen som helt! </h1>' +
+                '<p> Logg inn på hverdagshelt for å legge inn saker! :) </p>'
+
+        };
+
+        transporter.sendMail(mailOptionsCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        }); // transporter
     });
 });
 
@@ -344,22 +364,20 @@ app.get('/user/:id', (req: Request, res: Response) => {
  */
 app.get('/getuser/', (req: Request, res: Response) => {
 
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
-        jwt.verify(token, privateKey, function(err, decoded)  {
-            if (decoded) {
-                console.log("DECODED: ", decoded.userid)
-                userdao.getOneByID(decoded.userid, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                    console.log("/getuser/ sending: ", data)
-                })
-            } else {
-                console.log("Feil innlogging! Sender brevbombe.");
-                res.sendStatus(403);
-            }
-        });
-
-
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            userdao.getOneByID(decoded.userid, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
 });
 
 /**
@@ -452,8 +470,6 @@ app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
     })
 });
 
-
-
 // End User
 
 // Organization
@@ -478,8 +494,6 @@ app.get('/org/:id', (req: Request, res: Response) => {
     })
 });
 
-
-
 /**
  * Get one org by token
  */
@@ -502,8 +516,6 @@ app.get('/getorg/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /**
  * Adds a new organization or the Organization table
@@ -692,6 +704,10 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 
 
+
+
+
+
 // Employee
 
 /** Get all employees from the db */
@@ -711,8 +727,6 @@ app.get("/employee/:employee_id", (req, res) =>{
         res.json(data);
     });
 });
-
-
 
 /**
  * Get one Employeee from DB by token
@@ -736,8 +750,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
@@ -802,8 +814,6 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
         res.json(data);
     });
 });
-
-
 
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
@@ -900,15 +910,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
-});
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    userdao.addUser(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
+}); 
 
 
 app.get("/user/:username", (req, res) => {
@@ -1124,16 +1126,15 @@ app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     jwt.verify(token, privateKey, function(err, decoded)  {
         if (decoded) {
-            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.userid);
+            console.log("DECODED: ", decoded.email);
 
-    
             req.body.user_id = decoded.userid;
             caseDao.updateCase(req.body, (status, data) => {
                 res.status(status);
                 res.json(data);
 
-                
-                let email = req.body.email;
+                let email = decoded.email;
                 const mailOptionsCase = {
                     from: 'bedrehverdagshelt@gmail.com',
                     to: email,

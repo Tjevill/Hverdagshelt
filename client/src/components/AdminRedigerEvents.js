@@ -12,7 +12,7 @@ const history = createHashHistory();
 let superuser = sessionStorage.getItem("superuser");
 
 
-export default class EventsEdit extends Component <{ match: { params: { id: number } } }> {
+export default class AdminRedigerEvents extends Component <{ match: { params: { id: number } } }> {
 
   event = new Object();
 
@@ -23,19 +23,13 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
       return (
           <>
             <div className="jumbotron jumbotron-fluid">
-
               <div className="container text-center">
                 <h1 className="display-4">Rediger Event</h1>
               </div>
-
             </div>
-
             <div className="container">
-
               <div className="row">
-
                 <div className="col">
-
                   <form>
                     <div className="form-group">
                       <label for="exampleInputName">Event navn</label>
@@ -195,16 +189,4 @@ export default class EventsEdit extends Component <{ match: { params: { id: numb
     history.push("/admin/events");
   }
 
-  delete(event_id : number){
-
-    let conf = window.confirm("Er du sikker på at du vil slette denne eventen?");
-    if(conf){
-      eventService
-          .deleteEvent(event_id);
-
-        history.push("/admin/events");
-    }else{
-      console.log("false");
-    }
-  }
 }

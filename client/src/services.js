@@ -329,49 +329,48 @@ class UserService {
   addUser(newuser: Register): Promise<void> {
     console.log("DATA TIL SERVICE: ", newuser);
     // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-    return axios.put(url + "/newuser", newuser);
+    return axios.post(url + "/user", newuser);
   }
 
+  loginHverdagshelt(login: Login[]): Promise<void> {
+      return axios.post(url + "/loginhh", login);
+  }
 
-    loginHverdagshelt(login: Login[]): Promise<void> {
-        return axios.post(url + "/loginhh", login);
-    }
+  loginBedrift(login: Login): Promise<void> {
+      return axios.post(url + "/loginb", login);
+  }
 
-    loginBedrift(login: Login): Promise<void> {
-        return axios.post(url + "/loginb", login);
-    }
-
-    loginKommune(login: Login): Promise<void> {
-        return axios.post(url + "/logink", login);
-    }
+  loginKommune(login: Login): Promise<void> {
+      return axios.post(url + "/logink", login);
+  }
 
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
   }
 
-    getProvince(province: number): Promise<Province[]> {
-        return axios.get(url + '/getdistricts/' + province);
-    }
+  getProvince(province: number): Promise<Province[]> {
+      return axios.get(url + '/getdistricts/' + province);
+  }
 
   getAllUsers(): Promise<User[]>{
     return axios.get(url + '/user');
   }
 
-    getUserByID(id: number): Promise<User[]>{
-        return axios.get(url + '/user/' + id);
-    }
+  getUserByID(id: number): Promise<User[]>{
+      return axios.get(url + '/user/' + id);
+  }
 
-    getUserByToken(): Promise<User>{
-        return axios.get(url + '/getuser/', axiosConfig);
-    }
+  getUserByToken(): Promise<User>{
+      return axios.get(url + '/getuser/', axiosConfig);
+  }
 
-    updateOne(user: User): Promise<void>{
-        return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
-    }
+  updateOne(user: User): Promise<void>{
+      return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
+  }
 
-    updateMyUserInfo(user: User): Promise<void>{
-        return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
-    }
+  updateMyUserInfo(user: User): Promise<void>{
+      return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
+  }
 
   deleteUser(id: number): Promise<void>{
     return axios.delete(url + '/user/' + id, axiosConfig);
@@ -406,8 +405,6 @@ class UserService {
 		return axios.post(url + '/userVerification', updatePassword);
 
 	}
-
-
 
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
@@ -448,14 +445,14 @@ class OrgService{
   }
 
 
-    getOrganizationByToken(): Promise<Organization[]>{
-        console.log("Requesting Organization information")
-        return axios.get(url + '/getorg/', axiosConfig);
-    }
+  getOrganizationByToken(): Promise<Organization[]>{
+      console.log("Requesting Organization information")
+      return axios.get(url + '/getorg/', axiosConfig);
+  }
 
 
-    updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+  updateOrgByID(org: Organization): Promise<void>{
+  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
   }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
@@ -766,7 +763,7 @@ class EventService {
   }
 
   updateEvent(event_id:number, event:Event):Promise<Void>{
-      return axios.put(url+/updateEvent/+event_id, event);
+      return axios.put(url+/updateEvent/+event_id, event, axiosConfig   );
   }
 
 

@@ -33,17 +33,16 @@ export default class OrgEdit extends Component {
 
   componentDidMount(){
    // this.userid = sessionStorage.getItem("userid");
-    console.log("id: " + this.userid);
     orgService
       .getOrganizationByToken()
       .then(user => {
-          console.log("User info: " , user)
+        console.log("User info: " , user);
         console.log(user[0]);
         this.user = user[0];
         this.loaded = true;
         this.forceUpdate();
       })
-      .catch((error: Error) => Alert.danger(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   /*<div className="jumbotron">
@@ -123,7 +122,7 @@ export default class OrgEdit extends Component {
   }
 
   async save(){
-
+    console.log("info:",this.user);
     //validForm keeps track of whether the data is valid to be used for updating the database
     let validForm = true;
 
@@ -156,8 +155,13 @@ export default class OrgEdit extends Component {
       return;
     }
 
-    orgService.updateOrgByID(this.user);
-    window.location.reload();
+    orgService
+      .updateOrgByToken(this.user)
+      .then(response =>{
+          console.log(response);
+          window.location.reload();
+      })
+      .catch((error: Error) => (console.log(error.message)));
 
   }
 
