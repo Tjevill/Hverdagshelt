@@ -37,10 +37,19 @@ const style = {
 //<{ match: { params: { name: string, id: number } } }>
 export default class EmployeeOverview extends Component {
   employees = [];
+  employeesbackup = [];
   commune = "";
   superUser = "";
 
   //sessionStorage.getItem('superuser')
+
+  search(event){
+    console.log(event);
+    this.employees = this.employeesbackup.filter(function(value){
+        return value.name.indexOf(event)!=(-1);
+    });
+    this.forceUpdate();
+  }
 
   render() {
     return (
@@ -50,7 +59,7 @@ export default class EmployeeOverview extends Component {
       <h1> Liste over ansatte i din kommune: {this.commune} </h1> */}
         <div className="title">
      <link rel="stylesheet" href="PrivateUsersList.css" />
-   
+
       <h1 className="logo">
   <span className="word1">Kommune</span>
   <span className="word2">Ansatt</span>
@@ -70,20 +79,20 @@ export default class EmployeeOverview extends Component {
               <TableHeaderColumn>Superbruker</TableHeaderColumn>
               <TableHeaderColumn />
                <TableHeaderColumn>
-             
-        
+
+
                 {" "}
                 <SearchBar
-                  onChange={event => this.searchUsers(event)}
+                  onChange={event => this.search(event)}
                   style={{
                     margin: "0 auto",
-                   
+
                     maxWidth: 900
                   }}
                 />
               </TableHeaderColumn>
-              
-             
+
+
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -103,11 +112,11 @@ export default class EmployeeOverview extends Component {
                     </TableRowColumn>
                     <TableRowColumn className="edit">
                   {this.addEditRowColumn(this.superUser, employee)}
-              
+
                 </TableRowColumn>
                    <TableRowColumn/>
-             
-                
+
+
               </TableRow>
             ))}
           </TableBody>
@@ -132,7 +141,7 @@ export default class EmployeeOverview extends Component {
           </thead>
           <tbody>
             {this.employees.map((e, i) => (
-                
+
               <tr key={i} onClick={()=>history.push('/admin/kommune/edit/'+ e.employee_id)}>
                 <th  scope="row">{e.employee_id}</th>
                 <td   >{e.name}</td>
@@ -140,13 +149,13 @@ export default class EmployeeOverview extends Component {
                 <td> {e.email}</td>
                 <td> {this.super(e.superuser) }</td>
 
-                
+
               </tr>
             ))}
           </tbody>
         </table>
         */
-      
+
 
 
 
@@ -176,7 +185,7 @@ export default class EmployeeOverview extends Component {
     geoService
     .getCommuneName(sessionStorage.getItem('commune'))
     .then(commune => {
-      this.commune = commune[0].navn;  
+      this.commune = commune[0].navn;
       this.forceUpdate();
     });
 
@@ -185,11 +194,14 @@ export default class EmployeeOverview extends Component {
       .getEmpCommune(sessionStorage.getItem('commune'))
       .then(employees => {
         this.employees = employees;
+        this.employeesbackup = employees;
         this.forceUpdate();
-        
+
       })
       .catch((error: Error) => Alert.danger(error.message));
   }
+
+
 
   super(value) {
     if (value === 1) {
