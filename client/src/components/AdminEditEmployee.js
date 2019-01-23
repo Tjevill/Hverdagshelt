@@ -307,7 +307,7 @@ render(){
               <button type="submit"> Lagre endringer </button>
             </div>
 
-         
+
 
           </form>
         </div>
