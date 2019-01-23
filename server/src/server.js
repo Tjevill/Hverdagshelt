@@ -287,15 +287,6 @@ app.put("/neworgcat/:id", (req, res) => {
     });
 });
 
-
-app.get("/cases", (req, res) => {
-    console.log("/cases fikk request.");
-    hverdagsdao.getAllCases((status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
 app.get("/events/:commune_id", (req, res) =>{
     console.log("Fikk GET-request from client");
     eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
@@ -892,7 +883,7 @@ app.get("/eventSearch/:keyword", (req, res) =>{
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
-        hverdagsDao.getAllCases((status, data) => {
+        casedao.getAllCases((status, data) => {
             res.status(status);
             res.json(data);
         });
@@ -957,7 +948,7 @@ app.put("/updateEvent/:event_id", checkIfEmployee, (req, res) => {
 // Cases
 
 /** Get all cases */
-app.get("/allCases", (req, res) => {
+app.get("/case", (req, res) => {
     console.log("Received get-request on endpoint /allCases");
     caseDao.getAllCases((status, data) => {
         res.status(status);
@@ -1138,45 +1129,28 @@ app.delete("/deleteCase/:case_id", checkIfEmployee, (req, res) =>{
 });
 
 
+/** create case by user  */
+app.post("/case", (req, res) => {
+    console.log("Received post-request from client on endpoint /case");
+    let promise1 = new Promise(function(resolve, reject) {
 
-/** create case on user side  */
-app.post("/createUserCase", checkIfUser ,(req, res) => {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded) {
+                console.log("DECODED: ", decoded.userid)
 
+        
+                req.body.user_id = decoded.userid;
+                caseDao.createUserCase(req.body, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                    resolve(data);
+                });
 
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    jwt.verify(token, privateKey, function(err, decoded)  {
-        if (decoded) {
-            console.log("DECODED: ", decoded.userid)
-
-            console.log("Received post-request from client on endpoint /createEvent");
-            req.body.user_id = decoded.userid;
-            caseDao.createUserCase(req.body, (status, data) => {
-                res.status(status);
-                res.json(data);
-            });
-
-        } else {
-            console.log("Feil innlogging! Sender brevbombe.");
-            res.sendStatus(403);
-        }
-    });
-
-
-
-});
-
-
-/*
-
-/** create case on user side and send email
-app.post("/createUserCase", (req, res) => {
-    console.log("Received post-request from client on endpoint /createUserCase");
-     var promise1 = new Promise(function(resolve, reject) {
-        caseDao.createUserCase(req.body, (status, data) => {
-        console.log(req.body);
-        res.status(status);
-        res.json(data);
-        resolve(data);
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
         });
     });
 
@@ -1204,56 +1178,6 @@ app.post("/createUserCase", (req, res) => {
     }); // promise1.then
 }); // app
 
-*/
-
-
-
-// Redundant method, /createUserCase instaed
-/** create case and send confirmation mail */
-/*
-app.post("/cases", (req, res) => {
-    console.log("/cases received POST-request");
-    console.log(req.body.description);
-
-    if(!req.body) {
-        return res.sendStatus(400);
-    } else {
-        caseDao.create({
-                headline: req.body.headline,
-                description: req.body.description,
-                longitude: req.body.longitude,
-                latitude: req.body.latitude,
-                zipcode: req.body.zipcode,
-                user_id: req.body.user_id,
-                category_id: req.body.category_id,
-                picture: req.body.picture,
-                email: req.body.email
-            },
-            (status, data) => {
-                res.status(status);
-                res.json(data);
-                console.log("json.data:" + data[0]);
-            });
-    }
-    // mail
-    let sub = req.body.headline;
-    let des = req.body.description;
-    let email = req.body.email;
-    const mailOptionsCreateCase = {
-        from: 'bedrehverdagshelt@gmail.com',
-        to: email,
-        subject: 'Takk for din henvendelse, saken er registert!',
-        html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
-    };
-
-    transporter.sendMail(mailOptionsCreateCase, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-}); */
 
 /**
  * For organizations to update comment and status of a case they are registered as working on
