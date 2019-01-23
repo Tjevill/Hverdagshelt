@@ -329,8 +329,8 @@ class CaseService {
       status: status_id,
       employee_id: employee_id,
       org_id: org_id
-    });
-
+    }, axiosConfig);
+		
 	}
 
 
@@ -449,6 +449,8 @@ class OrgService{
 
 	}
 
+
+
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
   }
@@ -497,6 +499,11 @@ class OrgService{
   sendResetLink(email: string): Promise<void> {
     return axios.post(url + '/reset/org/' + email);
   }
+
+  getAllCases(org_id:number): Promise<Cases[]>{
+	  return axios.get(url+"/getAllCasesOrg/"+org_id);
+  }
+
 }
 
 export let orgService = new OrgService();
@@ -604,7 +611,7 @@ export default class EmployeeService {
 
   /** Delete an employee with employee_id. Yolo */
   deleteEmp(employee_id): Promise<void>{
-    return axios.delete(url + '/employee/'+employee_id);
+    return axios.delete(url + '/employee/'+employee_id, axiosConfig);
   }
 
 
@@ -619,10 +626,10 @@ export default class EmployeeService {
   * Example on JSON in postman:
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
-  updateEmpData(emp: Employee) : Promise<void>{
-    return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
+  updateEmpData(emp: Employee) : Promise<void> {
+      return axios.put(url + '/employee/' + emp.employee_id, emp, axiosConfig);
   }
-  
+
   updateEmpDataByToken(emp: Employee) : Promise<void>{
     return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
   }

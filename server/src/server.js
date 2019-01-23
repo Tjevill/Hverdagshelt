@@ -1,4 +1,4 @@
-// @flow
+
 /* eslint eqeqeq: "off" */
 
 const express = require("express");
@@ -546,6 +546,16 @@ app.put('/org/:id', checkIfEmployee, (req: Request, res: Response) => {
  */
 app.put('/updateOrgPWord', (req: Request, res: Response) => {
     orgDao.updateOrgPassword(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Get every case for one organization using the org_id.
+ */
+app.get("/getAllCasesOrg/:org_id", (req: Request, res: Response) => {
+    orgDao.getAllCasesOrg(req.params.org_id, (status, data) =>{
         res.status(status);
         res.json(data);
     })
@@ -1276,7 +1286,7 @@ app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
 /**
  * Update case with {employee_id, comment, org_id, status_id, case_id} for employees
  */
-app.put("/updateCaseEmployee", (req, res) => {
+app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
 	caseDao.updateCaseByEmployee(req.body, (status, data) => {
 		res.status(status);
 		res.json(data);
