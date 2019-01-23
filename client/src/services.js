@@ -330,7 +330,6 @@ class CaseService {
       employee_id: employee_id,
       org_id: org_id
     }, axiosConfig);
-		
 	}
 
 

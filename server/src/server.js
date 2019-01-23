@@ -1288,11 +1288,50 @@ app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
  * Update case with {employee_id, comment, org_id, status_id, case_id} for employees
  */
 app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
-	caseDao.updateCaseByEmployee(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
+    
+   let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            console.log("body: ", req.body);
+
+            caseDao.updateCaseByEmployee(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                
+                statusDao.getOneById(req.body.status, (status,data) => {
+                    let statusName = data[0].description;
+
+                    caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
+                        let email = data;
+                        console.log(data);
+                        const mailOptionsCase = {
+                            from: 'bedrehverdagshelt@gmail.com',
+                            to: email,
+                            subject: 'Din sak har blitt oppdaert!',
+                            html:
+                                '<h1> Status: ' + statusName + ' </h1>' +
+                                '<p> "' + req.body.comment + '" </p>' + 
+                                '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                        };
+
+                        transporter.sendMail(mailOptionsCase, function(error, info){
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                            }
+                        }); //transporter
+                    }); //reply
+                }); //status
+            }); //update
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    }); //JWT
+}); //APP
 
 // End Cases
 
