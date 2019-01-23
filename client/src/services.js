@@ -216,11 +216,6 @@ class CaseService {
 
 	}
 
-	updateCaseComment (case_id: number, comment: string): Promise<void> {
-		return axios.put(url + '/changeCaseComment/' + case_id + '/' + comment);
-
-	}
-
   /**  Update one case */
   updateCase(case_id: number, info: json): Promise<void>{
     return axios.put(url+'/updateCase/'+case_id, info,{
@@ -280,13 +275,6 @@ class CaseService {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
 
-	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
-    return axios.put(url + '/updateStatusAndComment/' + case_id, {
-      status: status,
-      comment: comment
-    });
-  }
-
 	/**
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
@@ -309,7 +297,7 @@ class CaseService {
 	 * @returns {AxiosPromise<any>}
 	 */
 	updateCaseComment (case_id: number, comment: string): Promise<void> {
-		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
+		return axios.put(url + '/changeCaseComment/' + case_id + '/' + comment, axiosConfig);
 
 	}
 

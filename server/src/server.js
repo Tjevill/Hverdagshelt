@@ -1276,7 +1276,8 @@ app.put("/changeCaseStatus/:case_id/:status_id", (req, res) => {
 /**
  * Change/insert comment on one case by case_id
  */
-app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
+app.put("/changeCaseComment/:case_id/:comment", checkIfOrganization, (req, res) => {
+    console.log(req.params.case_id)
 	caseDao.updateCaseComment(req.params.case_id, req.params.comment, (status, data) => {
 		res.status(status);
 		res.json(data);
