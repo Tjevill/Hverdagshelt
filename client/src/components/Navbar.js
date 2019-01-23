@@ -24,7 +24,7 @@ import ChangePassword from "./ChangePassword";
 import IssueOverviewForEmployee from "./IssueOverviewForEmployee";
 import Map from "./Map";
 import CaseEdit from "./caseEdit";
-import EventsEdit from "./EventsEdit";
+import AdminRedigerEvents from "./AdminRedigerEvents";
 import NewEvents from "./NewEvents";
 
 

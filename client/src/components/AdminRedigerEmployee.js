@@ -21,7 +21,7 @@ class Employee{
   county: string;
 }
 
-export default class EmployeeEdit extends Component {
+export default class AdminRedigerEmployee extends Component {
 
   loaded = false;
 

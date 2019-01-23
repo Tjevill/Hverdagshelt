@@ -26,11 +26,11 @@ import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
 import ChangePasswordOrg from "./components/ChangePasswordOrg";
 import createHashHistory from "history/createHashHistory";
-import EmployeeEdit from "./components/EmployeeEdit";
-import EmployeeEvents from "./components/employeeEvents";
+import AdminRedigerEmployee from "./components/AdminRedigerEmployee";
+import AdminEvents from "./components/AdminEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
-import EventsEdit from "./components/EventsEdit";
+import AdminRedigerEvents from "./components/AdminRedigerEvents";
 import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
 import ForgottenPasswordEmployee from "./components/ForgottenPasswordEmployee";
 import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganization";
@@ -207,20 +207,20 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/events/:id/edit" component={EventsEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/edit" component={AdminRedigerEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events" component={AdminEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events/rediger/:id" component={AdminRedigerEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/nyansatt" component={NewEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                                 {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
