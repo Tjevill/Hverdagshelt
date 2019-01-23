@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-import { caseService, geoService } from "../services";
+import { caseService, employeeService, geoService } from "../services";
 import { Alert, Loading } from "./widgets";
 
 
 const style = {
     width: "90%",
-    height: "80vh",
-    margin: "5%"
+    height: "70vh",
+    margin: "0 5%"
 }
 
 class Info {
@@ -27,11 +27,13 @@ export class MapContainer extends Component {
     infoTitle = "Ukjent";
     infoId = -1;
 
-    places = [];
-
     commune = "";
     communes = [];
     communeOptions = [];
+
+    latitude = 63.4283065;
+    longitude = 10.3876995;
+    zoom = 5;
 
     async componentDidMount(){
         this.cases = await caseService.getAllCases();
@@ -39,10 +41,9 @@ export class MapContainer extends Component {
         console.log(this.communes);
         this.loaded = true;
         this.forceUpdate();
-        this.casesByCommune("OSLO");
     }
 
-    casesByCommune(name) {
+    async casesByCommune(name) {
         name = name.toUpperCase();
         let id = -1;
         for(let i = 0; i < this.communes.length; i++){
@@ -51,7 +52,13 @@ export class MapContainer extends Component {
                 break;
             }
         }
-        console.log("id:", id);
+
+        this.casesShowing = await employeeService.getCasesOnOnCommuneID(id);
+        if(this.casesShowing.length  >  0){
+            this.latitude = this.casesShowing[0].latitude;
+            this.longitude = this.casesShowing[0].longitude;
+            this.zoom = 10;
+        }
 
     }
 
@@ -59,7 +66,7 @@ export class MapContainer extends Component {
         if(this.loaded){
             return (
                 <div id="map-page" className="max">
-                    <div>
+                    <div id="map-search">
                         Din lokasjon:
                         <input
                           id="map-commune-input"
@@ -82,14 +89,17 @@ export class MapContainer extends Component {
                             }
                           </ul>
                         </div>
+                        <div className="center-button-wrapper">
+                            <button type="button" className="btn btn-lg btn-primary" onClick={() => this.casesByCommune(this.commune)}>Søk</button>
+                        </div>
                     </div>
                     <Map
                         google={this.props.google}
                         style={style}
-                        zoom={6}
-                        initialCenter={{
-                            lat: 63.4283065,
-                            lng: 10.3876995
+                        zoom={this.zoom}
+                        center={{
+                            lat: this.latitude,
+                            lng: this.longitude
                         }}
                         onClick={this.onMapClick}
                     >
@@ -147,7 +157,6 @@ export class MapContainer extends Component {
       this.communeOptions = [];
       let communeField = document.getElementById("map-commune-input");
       communeField.value = commune;
-      this.forceUpdate();
     }
 
     onMapClick(){
@@ -158,7 +167,7 @@ export class MapContainer extends Component {
 
     onMarkerClick = (props, marker, e) => {
       console.log("onMarkerClick");
-      let selectedCase = this.cases.find(caseItem => {
+      let selectedCase = this.casesShowing.find(caseItem => {
         return caseItem.case_id == marker.name;
       });
       console.log(selectedCase);
