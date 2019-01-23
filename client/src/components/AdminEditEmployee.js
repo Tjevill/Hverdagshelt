@@ -116,6 +116,7 @@ export default class AdminEditEmployee extends Component < {
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke (Stor forbokstav)" : "";
         formErrors.commune =
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn gyldig kommune (Stor forbokstav)" : "";
+        
         break;
 
          case "commune":
@@ -160,6 +161,28 @@ export default class AdminEditEmployee extends Component < {
         console.log("AXIOS ERROR:", err);
       });
 
+  }
+
+  addDeleteButton(){
+   
+      if(this.superuser==0){
+         return(
+       <div className="deleteCase">
+              <button
+                onClick={() => {
+                   this.delete(this.props.match.params.id);
+                }}
+              >
+                {" "}
+                Slett bruker{" "}
+              </button>
+            </div>
+      
+      );
+  
+  } else {
+    return ( <div> </div>);
+  }
   }
 
 render(){
@@ -306,6 +329,8 @@ render(){
             <div className="editCase">
               <button type="submit"> Lagre endringer </button>
             </div>
+          
+            {this.addDeleteButton(this.superuser)}
 
 
 

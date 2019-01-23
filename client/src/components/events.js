@@ -18,13 +18,96 @@ import {
 	Textfield
 } from "react-mdl";
 
-import { eventService } from "../services.js";
+import { eventService, userService} from "../services.js";
+
+
+function sliceArray(array, size) {
+  var result = [];
+  for (var x = 0; x < Math.ceil(array.length / size); x++) {
+    var start = x * size;
+    var end = start + size;
+    result.push(array.slice(start, end));
+  }
+  return result;
+}
+
+function count(array) {
+  var result = [];
+  for (var x = 1; x < array.length + 1; x++) {
+    result.push(x);
+  }
+  return result;
+}
 
 export default class Events extends Component {
 	/*user= "haki"; // Endre til case senere */
 	events = [];
+	backup = [];
+	fylker = [];
+	kommuner = [];
+
+  search = event =>{
+		this.events = this.backup.filter(function(value){
+        return value.name.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
+    });
+    this.forceUpdate();
+	}
+
 	render() {
 		return (
+		<>
+			<div className="container">
+				<div className="row">
+					<div className="col-12 col-md-8">
+						<img
+							src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
+							id ="Saker-icon-pic"
+						/>
+					</div>
+					<div className="col-6 col-md-4">
+					</div>
+				</div>
+
+				<div className="row">
+				<div className="col-4 col-md-4">
+				</div>
+					<div className="col-6 col-md-4">
+						<div className="form-group">
+							<label htmlFor="inputFylke">Velg Fylke</label>
+							<select id="fylke" name="fylke" className="form-control" onChange={this.handleChangeFylke}>
+								<option selected value={0}>Alle </option>
+									{this.fylker.map((fylke, i) => {
+											return(<option value={fylke.ID} key={i}>{fylke.navn}</option>)
+									})}
+							</select>
+						</div>
+					</div>
+					<div className="col-6 col-md-4">
+						<div className="form-group">
+							<label htmlFor="inputKommune">Velg Kommune</label>
+								<select id="kommune" name="kommune" className="form-control" onChange={this.handleChangeKommune}>
+									<option selected >Velg fylke først </option>
+									{this.kommuner.map(kommune => {
+											return(<option value={kommune.Name}>{kommune.navn}</option>)
+									})}
+								</select>
+							</div>
+					</div>
+				</div>
+
+				<div className="row">
+				<div className="col-4 col-md-4">
+					<span className="glyphicon glyphicon-search" aria-hidden="true" />
+					<input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
+				</div>
+					<div className="col-6 col-md-4">
+					</div>
+					<div className="col-6 col-md-4">
+					</div>
+				</div>
+			</div>
+
+
 			<div id="events-page" className="events-body">
 				<div className="userHome-body">
 					<div className="userHome-container">
@@ -131,7 +214,7 @@ export default class Events extends Component {
 					</div>
 				</div>
 			</div>
-
+			</>
 		);
 	}
 
@@ -139,8 +222,19 @@ export default class Events extends Component {
 		console.log("events mounted");
 		eventService //Endre til event senere
 			.getAllEvents()
-			.then(sak => (this.events = sak))
+			.then(sak => {
+				this.events = sak;
+				this.backup = sak;
+			})
 			.catch((error: Error) => console.log(error.message));
+
+			userService
+				.getDistricts()
+				.then(fylker => {
+						this.fylker = fylker;
+						this.forceUpdate();
+				})
+				.catch((error: Error) => console.log("Error: getting fylker"));
 	}
 
 	getMonth(month) {
