@@ -189,7 +189,7 @@ export default class IssueOverviewForEmployee extends Component<{
     };
 
     saveUpdate (id) {
-        if(document.getElementById('status1').checked) {
+        if(document.getElementById('status01').checked) {
             caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 2, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
@@ -198,7 +198,7 @@ export default class IssueOverviewForEmployee extends Component<{
             console.log(this.state.org_id);
             window.alert("Kommentar, status og bedrift endret!");
             // window.location.reload();
-        } else if(document.getElementById('status2').checked) {
+        } else if(document.getElementById('status02').checked) {
             caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 3, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
@@ -206,7 +206,7 @@ export default class IssueOverviewForEmployee extends Component<{
                 .catch((error: Error) => Alert.danger(error.message));
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        } else if(document.getElementById('status3').checked) {
+        } else if(document.getElementById('status03').checked) {
             caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 4, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
@@ -214,7 +214,7 @@ export default class IssueOverviewForEmployee extends Component<{
                 .catch((error: Error) => Alert.danger(error.message));
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        } else if(document.getElementById('status4').checked) {
+        } else if(document.getElementById('status04').checked) {
             caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 5, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
@@ -222,7 +222,7 @@ export default class IssueOverviewForEmployee extends Component<{
                 .catch((error: Error) => Alert.danger(error.message));
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
-        } else if(document.getElementById('status5').checked) {
+        } else if(document.getElementById('status05').checked) {
             caseService.updateCaseByEmployee(id, document.getElementById('comment-input').value, 6, this.employee.employee_id, this.state.org_id)
                 .then(res => {
                     console.log(res);
@@ -231,6 +231,11 @@ export default class IssueOverviewForEmployee extends Component<{
             window.alert("Kommentar, status og bedrift endret!");
             window.location.reload();
         } else {
+            console.log(document.getElementById('status01').checked);
+            console.log(document.getElementById('status02').checked);
+            console.log(document.getElementById('status03').checked);
+            console.log(document.getElementById('status04').checked);
+            console.log(document.getElementById('status05').checked);
             window.alert("Vennligst anngi en status på saken");
             return null;
         }
@@ -310,23 +315,23 @@ export default class IssueOverviewForEmployee extends Component<{
                                 </div>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
                                 <label className="container inline">
-                                    <input type="radio" id="status1" name="radio" checked={true}/>
+                                    <input type="radio" id="status01" name="radio"/>
                                     <span className="checkmark"></span>Under vurdering
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status2" name="radio"/>
+                                    <input type="radio" id="status02" name="radio"/>
                                     <span className="checkmark"></span>Satt på vent
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status3" name="radio"/>
+                                    <input type="radio" id="status03" name="radio"/>
                                     <span className="checkmark"></span>Arbeid pågår
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status4" name="radio"/>
+                                    <input type="radio" id="status04" name="radio"/>
                                     <span className="checkmark"></span>Avvist
                                 </label>
                                 <label className="container inline">
-                                    <input type="radio" id="status5" name="radio"/>
+                                    <input type="radio" id="status05" name="radio"/>
                                     <span className="checkmark"></span>Sak løst
                                 </label>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
