@@ -745,8 +745,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
             res.sendStatus(403);
         }
     });
-
-
 });
 
 /** Get all employees in one province */
@@ -787,7 +785,7 @@ app.put("/employee/:employee_id", checkIfEmployee,(req: Request, res: Response) 
 });
 
 /** Update an employee password in the db on employee_id */
-app.put("/updateEmpPW", checkIfEmployee, (req: Request, res: Response) =>{
+app.put("/updateEmpPW", (req: Request, res: Response) =>{
     console.log("Received post-request on endpoint /updateEmpPw");
     empDao.updateEmpPassword(req.body, (status, data) =>{
         res.status(status);
@@ -990,7 +988,7 @@ app.get("/fiveLatestCommune/:id", (req, res) => {
     });
 });
 
-/*
+/* Will probably be removed, use -> /updatecasebyemployee, /updateCase, /updateCaseandcomment
 app.put("/changeCaseStatus/:id", (req, res) => {
     caseDao.updateCaseStatus(req.params.id, (status, data) => {
         res.status(status);
@@ -1081,51 +1079,6 @@ app.get("/getAllCategories", (req, res) => {
 
 
 /** update case on case_id */
-/*
-app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
-      console.log("Received put-request from client.");
-        console.log("Trying to update case with id: " + req.params.case_id);
-
-
-        
-
-    var promise1 = new Promise(function(resolve, reject) {
-        caseDao.updateCase(req.body, (status, data) =>{
-            if (!(req.body instanceof Object)) return res.sendStatus(400);
-            res.status(status);
-            res.json(data);
-            resolve(data);
-        });
-    });
-
-    promise1.then(data => {
-        console.log('getting email from user_id: ' +req.body.user_id);
-        userdao.getOneByID(req.body.user_id, (status,data) => {
-
-            let email = data[0].email;
-            const mailOptionsCase = {
-                    from: 'bedrehverdagshelt@gmail.com',
-                    to: email,
-                    subject: 'Din sak har blitt oppdaert!',
-                    html:
-                        '<h1>' + req.body.status_id + ' </h1>' +
-                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
-
-                };
-
-            transporter.sendMail(mailOptionsCase, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            }); // transporter
-        }); //getOneByID
-    });
-});
-
-
-*/
 
 app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
     console.log("Received put-request on /updateCase/:case_id from client.");
@@ -1245,14 +1198,73 @@ app.post("/case", (req, res) => {
 /**
  * For organizations to update comment and status of a case they are registered as working on
  */
-app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+/*app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
     console.log("Received PUT-request /updateStatusAndComment/:id");
 	caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
     console.log(req.params.id);
 		res.status(status);
 		res.json(data);
 	});
-});
+});*/
+
+
+app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+    
+   let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            console.log("body: ", req.body);
+
+            caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log('::::::::::::::::::updating case');
+                
+                statusDao.getOneById(req.body.status, (status,data) => {
+                    let statusName = data[0].description;
+                    console.log(':::::::::::::::::: fetching status name');
+
+                    caseDao.getCaseReplyMail(req.params.id, (status,data) => {
+                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
+                        console.log(data);
+
+                        if(data[0] === undefined) {
+                            console.log('undefined data from replymail');
+                        }
+                        else if(data[0].subscription === 1) {
+                            const mailOptionsCase = {
+                                from: 'bedrehverdagshelt@gmail.com',
+                                to: data[0].email,
+                                subject: 'Din sak har blitt oppdaert!',
+                                html:
+                                    '<h1> Status: ' + statusName + ' </h1>' +
+                                    '<p> "' + req.body.comment + '" </p>' + 
+                                    '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                            };
+
+                            transporter.sendMail(mailOptionsCase, function(error, info){
+                                if (error) { 
+                                    console.log(error);
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                    console.log(mailOptionsCase);
+                                }
+                            }); //transporter
+                        } //subscribed ifelse
+                        else {
+                            console.log('user does not want spam');
+                        }
+                    }); //reply
+                }); //status
+            }); //update
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    }); //JWT
+}); //APP
 
 /**
  * Gets cases on employees id
@@ -1429,10 +1441,87 @@ app.get("/statistics/countUsers", (req, res) => {
 // End statistics
 
 
-// Login
+// Login, Verification and Password
 
-/**
- * Verifies old and Updates password for user.
+/** Token verification for user */
+
+ app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+
+    userdao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+
+
+        } else { //
+
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+
+            res.status(200).json(data);
+        }
+    });
+ });
+
+/** Token verification for employee */
+
+ app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+
+    empDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+
+
+        } else { //
+
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+            res.status(200).json(data);
+        }
+    });
+ });
+
+ /** Token verification for organization */
+
+ app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+
+    orgDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+
+
+        } else { //
+
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+            res.status(200).json(data);
+        }
+    });
+ });
+
+
+ /**
+ * Verifies old password and updates new password for user.
  */
 
 app.put('/userVerification', (req: Request, res: Response) => {
@@ -1468,144 +1557,94 @@ app.put('/userVerification', (req: Request, res: Response) => {
     });
 });
 
+/** UpdateUserPassword */
+app.put('/updateUserPassword', (req: Request, res:Response) => {
+    console.log('PUT-request for updatePassword');
+    console.log(req.body);
 
-/**
- * For updating users password. Send object with user_id and new password
- */
-app.put('/updateUserPWord', (req: Request, res: Response) => {
-    userdao.updateUserPassword(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
+    userdao.updateUserPassword({user_id: req.body.user_id, password: req.body.password}, (status,data) => {
+        console.log("STATUS: ", "200");
+        res.status(200).json('Password verified, and changed.');
+
+    });
 });
 
-/**
- * Verifies Token for Users, emps and orgs. Only difference in the methods are the dao used. Everything else is the same.
- */
-
- app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
-    console.log("Received GET-request for /tokenVerification/user/:token");
-
-    userdao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user.
-            console.log(':::::::::::::::::::::::Token not accepted.');
-            res.status(500).json("Token not accepted.");
-
-        }else if (data[0].resetPasswordExpire < Date.now()) {
-            console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
-            console.log('Token expired');
-            res.status(400).json("Token expired");
-
-
-        } else { //
-
-            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-
-            res.status(200).json(data);
-        }
-    });
- });
-
- app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
-    console.log("Received GET-request for /tokenVerification/user/:token");
-
-    empDao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user.
-            console.log(':::::::::::::::::::::::Token not accepted.');
-            res.status(500).json("Token not accepted.");
-
-        }else if (data[0].resetPasswordExpire < Date.now()) {
-            console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
-            console.log('Token expired');
-            res.status(400).json("Token expired");
-
-
-        } else { //
-
-            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-
-            res.status(200).json(data);
-        }
-    });
- });
-
- app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
-    console.log("Received GET-request for /tokenVerification/user/:token");
-
-    orgDao.getUserFromResetToken(req.params.token, (status, data) => {
-        if (data[0] === undefined) { //If reset token is not assigned to a user.
-            console.log(':::::::::::::::::::::::Token not accepted.');
-            res.status(500).json("Token not accepted.");
-
-        }else if (data[0].resetPasswordExpire < Date.now()) {
-            console.log('now: ' + Date.now());
-            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
-            console.log('Token expired');
-            res.status(400).json("Token expired");
-
-
-        } else { //
-
-            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
-
-            res.status(200).json(data);
-        }
-    });
- });
-
 
 /**
- * Verifies old password for employee.
+ * Verifies old password and updates new password for employee.
  */
-app.post('/employeeVerification', (req: Request, res: Response) => {
 
-    let dbHash;
-    empDao.getHashedPWord(req.body.employee_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+app.put('/employeeVerification', (req: Request, res: Response) => {
+    console.log("app.put(/employeeVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
 
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log('decoded: ' +decoded);
+            console.log('body: ' + req.body)
+            let dbHash;
+
+            employeeDao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    employeeDao.updateEmpPassword({emp_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
         } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
+            console.log("Feil innlogging! Sender brevbombe.");
         }
-
     });
-
 });
 
+
 /**
- * Verifies old password for organization.
+ * Verifies old password and updates to new password for organization.
  */
-app.post('/organizationVerification', (req: Request, res: Response) => {
 
-    let dbHash;
-    orgDao.getHashedPWord(req.body.org_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+app.put('/organizationVerification', (req: Request, res: Response) => {
+    console.log("app.put(/organizationVerification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
 
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log('decoded: ' +decoded);
+            console.log('body: ' + req.body)
+            let dbHash;
+
+            orgDao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    orgDao.updateOrgPassword({org_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
         } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
+            console.log("Feil innlogging! Sender brevbombe.");
         }
-
     });
-
 });
 
 
