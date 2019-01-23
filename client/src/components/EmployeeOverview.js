@@ -39,9 +39,9 @@ export default class EmployeeOverview extends Component {
   //sessionStorage.getItem('superuser')
 
   search(event){
-    console.log(event);
+    console.log(event.target.value);
     this.employees = this.employeesbackup.filter(function(value){
-        return value.name.indexOf(event)!=(-1);
+        return value.name.indexOf(event.target.value)!=(-1);
     });
     this.forceUpdate();
   }
@@ -69,11 +69,11 @@ export default class EmployeeOverview extends Component {
                                   <th scope="col" colSpan="2">
 
 
-                                          <input
-                                              id="searchbar"
-                                              type="text"
-                                              onChange={event => this.search(event)}
-                                          />
+                                      <input
+                                          id="searchbar"
+                                          type="text"
+                                          onChange={event => this.search(event)}
+                                      />
 
 
                                       {" "}
