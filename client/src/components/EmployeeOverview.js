@@ -32,10 +32,19 @@ const style = {
 //<{ match: { params: { name: string, id: number } } }>
 export default class EmployeeOverview extends Component {
   employees = [];
+  employeesbackup = [];
   commune = "";
   superUser = "";
 
   //sessionStorage.getItem('superuser')
+
+  search(event){
+    console.log(event);
+    this.employees = this.employeesbackup.filter(function(value){
+        return value.name.indexOf(event)!=(-1);
+    });
+    this.forceUpdate();
+  }
 
   render() {
     return (
@@ -125,7 +134,7 @@ export default class EmployeeOverview extends Component {
     geoService
     .getCommuneName(sessionStorage.getItem('commune'))
     .then(commune => {
-      this.commune = commune[0].navn;  
+      this.commune = commune[0].navn;
       this.forceUpdate();
     });
 
@@ -134,11 +143,14 @@ export default class EmployeeOverview extends Component {
       .getEmpCommune(sessionStorage.getItem('commune'))
       .then(employees => {
         this.employees = employees;
+        this.employeesbackup = employees;
         this.forceUpdate();
-        
+
       })
       .catch((error: Error) => Alert.danger(error.message));
   }
+
+
 
   super(value) {
     if (value === 1) {

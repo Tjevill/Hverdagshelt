@@ -70,7 +70,7 @@ class forsideMain extends Component {
 
     render() {
         let button;
-        if(sessionStorage.getItem("access")=="kommune"){
+        if(sessionStorage.getItem("access")=="kommune"||sessionStorage.getItem("access")=="bedrift"){
 
         }else{
           button =(
@@ -79,7 +79,7 @@ class forsideMain extends Component {
         }
         return(
             <section id="pageintro" className="hoc clear">
-                <div>
+                <div id="intro-text">
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
@@ -136,11 +136,12 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) } else {
-            return this.amILoggedin == null ? "<div></div>" : (
-
+	
+	
+			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else {
+				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
                     <HashRouter>
                         <div>

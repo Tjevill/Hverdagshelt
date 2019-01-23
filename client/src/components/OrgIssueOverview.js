@@ -255,7 +255,7 @@ export default class OrgIssueOverview extends Component<{
           })
           .catch((error: Error) => Alert.danger(error.message));
         window.alert("Kommentar og status endret!");
-        window.location.reload();
+        // window.location.reload();
     } else if(document.getElementById('status2').checked) {
         caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
             .then(res => {
@@ -339,13 +339,13 @@ export default class OrgIssueOverview extends Component<{
                                       </input>
                                   </div>
                                   <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
-                                  <label className="container">Arbeid pågår
+                                  <label className="container inline">
                                       <input type="radio" id="status1" name="radio" checked={true}/>
-                                          <span className="checkmark"></span>
+                                          <span className="checkmark"></span>Arbeid pågår
                                   </label>
-                                  <label className="container">Sak løst
+                                  <label className="container inline">
                                       <input type="radio" id="status2" name="radio"/>
-                                          <span className="checkmark"></span>
+                                          <span className="checkmark"></span>Sak løst
                                   </label>
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
@@ -526,8 +526,6 @@ export default class OrgIssueOverview extends Component<{
 
     //this.org_id = sessionStorage.getItem("userid");
     // console.log(sessionStorage.getItem("userid"));
-
-
 
     caseService
       .getCasesForOrganization(this.org_id)

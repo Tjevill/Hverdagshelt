@@ -210,7 +210,6 @@ module.exports = class UserDao extends Dao {
 	getUserByNameSearch (searchString: string, callback: mixed) {
 		super.query(
 			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
-			"SELECT * FROM User WHERE name LIKE '%"+searchString+"%'",
 			[searchString],
 			callback
 		);

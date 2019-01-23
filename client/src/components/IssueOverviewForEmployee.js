@@ -3,11 +3,11 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import {
-  caseService,
-  categoryService,
-  userService,
-  employeeService,
-  statusService
+    caseService,
+    categoryService,
+    userService,
+    employeeService,
+    statusService, orgService
 } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -45,6 +45,7 @@ function count(array) {
 export default class IssueOverviewForEmployee extends Component<{
   match: { params: { name: string, id: number } }
 }> {
+  orgs = [];
   loaded = false;
   employeeid = "";
   employee = new Object();
@@ -65,6 +66,10 @@ export default class IssueOverviewForEmployee extends Component<{
     "Løst"
   ];
   caseside = "";
+
+    state = {
+        org_id: 0
+    };
 
   handleChangeStatus = event => {
     document.getElementById("search").value = "";
@@ -170,6 +175,60 @@ export default class IssueOverviewForEmployee extends Component<{
 
   checkName() {}
 
+    handleChange = event => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+
+        this.setState((state, props) => ({
+            [name]: value
+        }));
+    };
+
+    saveUpdate (id) {
+        if(document.getElementById('status1').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar og status endret!");
+            window.location.reload();
+        } else if(document.getElementById('status2').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar og status endret!");
+            window.location.reload();
+        } else {
+            caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            console.log(document.getElementById('comment-input').value);
+            window.alert("Kommentar lagret!");
+            window.location.reload();
+        }
+    }
+
+
+    handleSelected(id) {
+        let filteredCase = this.cases.filter(e =>
+            e.case_id == id)
+        console.log(filteredCase)
+        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
+            this.currentCase = filteredCase;
+        } else {
+            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
+            window.location.reload();
+            return null;
+        }
+    }
+
   render() {
     let lists;
     let sidebuttons;
@@ -200,17 +259,64 @@ export default class IssueOverviewForEmployee extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a
-                  href={"#/Issues/" + casen.case_id}
-                  className="btn btn-sm btn-warning"
-                >
-                  <span className="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp;Rediger&nbsp;
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true">
+                    	&nbsp;Oppdater sak&nbsp;
                   </span>
-                </a>
-                <span className="btn btn-sm btn-danger">
+                    </button>
+                    <div className="modal fade" id={casen.case_id} tabIndex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h4 className="modal-title" id="exampleModalLabel">&nbsp;Oppdater sak</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Legg til en kommentar</h6>
+                                <div className="modal-body">
+                                    <input
+                                        className="form-control"
+                                        id="comment-input"
+                                        defaultValue={casen.comment}>
+                                    </input>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
+                                <label className="container inline">
+                                    <input type="radio" id="status1" name="radio" checked={true}/>
+                                    <span className="checkmark"></span>Arbeid pågår
+                                </label>
+                                <label className="container inline">
+                                    <input type="radio" id="status2" name="radio"/>
+                                    <span className="checkmark"></span>Sak løst
+                                </label>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-primary"
+                                            onClick={() => this.saveUpdate(casen.case_id)}>
+                                        Lagre endringer
+                                    </button>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
+                                <div className="form-group form-group-style">
+                                    <select className={'browser-default custom-select'}
+                                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
+                                            defaultValue=''>
+                                        <option disabled value=''> -- velg bedrift -- </option>
+                                        {this.orgs.map(org => (
+                                            <option key={org.org_id} value={org.org_id}>
+                                                {org.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <button class="btn btn-sm btn-danger edit-button">
                   <span
-                    className="glyphicon glyphicon-remove"
+                    class="glyphicon glyphicon-remove"
                     aria-hidden="true"
                     onClick={() => {
                       this.delete(casen.case_id);
@@ -218,9 +324,9 @@ export default class IssueOverviewForEmployee extends Component<{
                   >
                     &nbsp;Slett&nbsp;&nbsp;
                   </span>
-                </span>
+                </button>
                 &nbsp;&nbsp;&nbsp;
-                <span className="badge badge-primary">
+                <span class="badge badge-primary">
                   {this.statusname[casen.status_id - 1]}
                 </span>
               </td>
@@ -350,6 +456,14 @@ export default class IssueOverviewForEmployee extends Component<{
   }
 
   componentDidMount() {
+      orgService.getAllOrg()
+          .then(orgs => {
+            this.orgs = orgs
+          })
+          .catch((error: Error) =>
+              console.log("Fails by getting the available cases", error))
+    this.employeeid = sessionStorage.getItem("userid");
+    console.log("employeeid" + this.employeeid);
     employeeService
       .getEmployeeByToken()
       .then(employee => {

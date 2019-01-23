@@ -237,7 +237,7 @@ export default class EmployeeEdit extends Component {
       return;
     }
 
-    employeeService.updateEmpData(this.user);
+    employeeService.updateEmpDataByToken(this.user);
     window.location.reload();
 
   }
