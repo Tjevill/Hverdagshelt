@@ -9,10 +9,10 @@ const history = createHashHistory();
 
 
 export default class AdminBedrift extends Component {
-
+    orgbackup= [];
     loaded = false;
     openMap = false;
-    org = {};
+    org =  [];
 
     province = "";
 
@@ -36,8 +36,16 @@ export default class AdminBedrift extends Component {
                             <th scope="col">Navn</th>
                             <th scope="col">Telefon</th>
                             <th scope="col">Email</th>
-                            <th scope="col">&nbsp;</th>
-                            <th scope="col">&nbsp;</th>
+                            <th scope="col" colSpan="2">
+                                      <input
+                                          id="searchbar"
+                                          type="text"
+                                          onChange={event => this.search(event)}
+                                      />
+
+
+                                      {" "}
+                                  </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -86,6 +94,14 @@ export default class AdminBedrift extends Component {
         }
     }
 
+    search(event) {
+    console.log(event.target.value);
+    this.org = this.orgbackup.filter(function(value){
+        return value.name.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
+    });
+    this.forceUpdate();
+  }
+
 
     componentDidMount(){
 
@@ -99,6 +115,7 @@ export default class AdminBedrift extends Component {
             //console.log(orgData[0]);
             this.org = orgData;
             this.loaded = true;
+            this.orgbackup=orgData;
         });
     }
 

@@ -441,16 +441,6 @@ app.put('/userSubscriptionUpdate', (req: Request, res: Response) => {
 });
 
 /**
- * For updating users password. Send object with user_id and new password
- */
-app.put('/updateUserPWord', (req: Request, res: Response) => {
-    userdao.updateUserPassword(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
-
-/**
  * Get province from User by users ID
  */
 app.get('/userProvince/:id', (req: Request, res: Response) => {
@@ -1328,23 +1318,28 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                         console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
                         console.log(data);
                         
-                        const mailOptionsCase = {
-                            from: 'bedrehverdagshelt@gmail.com',
-                            to: data[0].email,
-                            subject: 'Din sak har blitt oppdaert!',
-                            html:
-                                '<h1> Status: ' + statusName + ' </h1>' +
-                                '<p> "' + req.body.comment + '" </p>' + 
-                                '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
-                        };
+                        if(data[0].subscription === 1) {
+                            const mailOptionsCase = {
+                                from: 'bedrehverdagshelt@gmail.com',
+                                to: data[0].email,
+                                subject: 'Din sak har blitt oppdaert!',
+                                html:
+                                    '<h1> Status: ' + statusName + ' </h1>' +
+                                    '<p> "' + req.body.comment + '" </p>' + 
+                                    '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                            };
 
-                        transporter.sendMail(mailOptionsCase, function(error, info){
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log('Email sent: ' + info.response);
-                            }
-                        }); //transporter
+                            transporter.sendMail(mailOptionsCase, function(error, info){
+                                if (error) { 
+                                    console.log(error);
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                }
+                            }); //transporter
+                        } //subscribed ifelse
+                        else {
+                            console.log('user does not want spam');
+                        }
                     }); //reply
                 }); //status
             }); //update
@@ -1427,29 +1422,51 @@ app.get("/statistics/casesCategory", (req, res) => {
 // Login
 
 /**
- * Verifies old password for user.
+ * Verifies old and Updates password for user.
  */
-app.post('/userVerification', (req: Request, res: Response) => {
-    console.log("app.get(/userverification):::::" + req.body.user_id + "----------" + req.body.oldPassword);
 
-    let dbHash;
-    userdao.getHashedPWord(req.body.user_id, (status, data) => {
-        console.log(data[0].password + " DATABASE!******************************");
-        let savedPassword = data[0].password;
-        let passwordData = sha512(req.body.oldPassword, data[0].secret);
-        console.log(passwordData.passwordHash, "NEW***********************");
-        dbHash = passwordData.passwordHash === savedPassword;
-        console.log(dbHash, " FRA VERIFY FALSE TRUE");
+app.put('/userVerification', (req: Request, res: Response) => {
+    console.log("app.get(/userverification):::::" + req.body.oldPassword + " => " + req.body.newPassword);
 
-        if (dbHash) {
-            console.log("STATUS: ", "200");
-            res.status(200).json(1);
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log(decoded);
+            let dbHash;
+
+            userdao.getHashedPWord(decoded.userid, (status, data) => {
+                let savedPassword = data[0].password;
+                let passwordData = sha512(req.body.oldPassword, data[0].secret);
+                dbHash = passwordData.passwordHash === savedPassword;
+
+                if (dbHash) {
+                    userdao.updateUserPassword({user_id: decoded.userid, password: req.body.newPassword}, (status,data) => {
+                            console.log("STATUS: ", "200");
+                            res.status(200).json('Password verified, and changed.');
+
+                    });
+
+                } else {
+                    console.log("STATUS: ", "500");
+                    res.status(500).json("Wrong password. Try again");
+                }
+            });
+
         } else {
-            console.log("STATUS: ", "500");
-            res.status(500).json("Wrong password. Try again");
+            console.log("Feil innlogging! Sender brevbombe.");
         }
-
     });
+});
+
+
+/**
+ * For updating users password. Send object with user_id and new password
+ */
+app.put('/updateUserPWord', (req: Request, res: Response) => {
+    userdao.updateUserPassword(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
 });
 
 /**
