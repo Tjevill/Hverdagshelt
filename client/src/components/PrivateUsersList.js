@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from "material-ui/Table";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+
+
 import { Component } from "react-simplified";
 import { userService } from "../services.js";
-import RaisedButton from "material-ui/RaisedButton";
-import SearchBar from "material-ui-search-bar";
+
 import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
@@ -31,105 +23,65 @@ export default class PrivateUsersList extends Component {
     return (
 
 
-      <MuiThemeProvider>
-       <div className="title">
-     <link rel="stylesheet" href="PrivateUsersList.css" />
+         <div id="org-page">
 
-      <h1 class="logo">
-  <span class="word1">Hverdags</span>
-  <span class="word2">helter</span>
-</h1>
-</div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>Bruker_ID</TableHeaderColumn>
-              <TableHeaderColumn>Navn</TableHeaderColumn>
-              <TableHeaderColumn>Adresse</TableHeaderColumn>
-              <TableHeaderColumn>Tlf</TableHeaderColumn>
-              <TableHeaderColumn>Epost</TableHeaderColumn>
-              <TableHeaderColumn>Abonnement_status</TableHeaderColumn>
-              <TableHeaderColumn>Postnr</TableHeaderColumn>
-              <TableHeaderColumn />
+                    <div className="group btmspace-50 headerlayout">
+                        <div className="one_half first"><h3>HverdagsHelter</h3></div>
+                       
+                    </div>
 
-              <TableHeaderColumn>
-
-
-                {" "}
-                <SearchBar
-                  onChange={event => this.searchUsers(event)}
-                  style={{
-                    margin: "0 auto",
-
-                    maxWidth: 900
-                  }}
-                />
-              </TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {this.users.map((user, i) => (
-              <TableRow key={i} className="PrivateUsersList-TableRow">
-                <TableRowColumn className="user_id">
-                  {user.user_id}
-                </TableRowColumn>
-                <TableRowColumn className="name">{user.name}</TableRowColumn>
-
-                <TableRowColumn className="address">
-                  {user.address}
-                </TableRowColumn>
-
-                <TableRowColumn className="phone_number">
-                  {user.tel}
-                </TableRowColumn>
-
-                <TableRowColumn className="email">{user.email}</TableRowColumn>
-
-                <TableRowColumn className="subscription">
-                  {user.subscription}
-                </TableRowColumn>
-
-                <TableRowColumn className="zipcode">
-                  {user.zipcode}
-                </TableRowColumn>
-
-                <TableRowColumn className="edit">
-                  {this.addEditRowColumn(this.superUser, user)}
-                  {/*
-
-                 <RaisedButton label="rediger" primary={true} style={style} onClick={() => {
-                  this.edit();
-                }}>
+                    <table className="">
+                        <thead>
+                        <tr>
+                            <th scope="col">Bruker ID</th>
+                            <th scope="col">Navn</th>
+                            <th scope="col">Adresse</th>
+                            <th scope="col">Telefon</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Abonnement Status</th>
+                            <th scope="col">Postnr</th>
+                            <th scope="col" colSpan="2">
+                                      <input
+                                          id="searchbar"
+                                          type="text"
+                                          onChange={event => this.search(event)}
+                                      />
 
 
-                  </RaisedButton>
+                                      {" "}
+                                  </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                         {this.users.map((item, i) => (
+                                
+                               
+                                <tr key={i} className="PrivateUsersList-TableRow">
 
-            */}
-                </TableRowColumn>
+                                <th scope="row">{item.user_id}</th>
+                                <td>{item.name}</td>
+                                <td>{item.address}</td>
+                                <td>{item.tel}</td>
+                                <td>{item.email}</td>
+                                <td>{item.subscription}</td>
+                                <td>{item.zipcode}</td>
+                                <td>{this.addEditRowColumn(item)}</td>
+                                 <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(item.user_id)}>Slett</button></td>
+                                </tr>
 
-                <TableRowColumn className="delete">
-                  <RaisedButton
-                    label="Slett"
-                    secondary={true}
-                    style={style}
-                    onClick={() => {
-                      this.delete(user.user_id);
-                    }}
-                  />
-                </TableRowColumn>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </MuiThemeProvider>
+                                    ))}
+                       
 
-    );
-  }
+                        </tbody>
+                    </table>
+                </div>
+            );
+        } 
 
-  searchUsers(searchString) {
-    console.log(searchString);
+  search(event) {
+    console.log(event.target.value);
     this.users = this.usersbackup.filter(function(value){
-        return value.name.indexOf(searchString)!=(-1);
+        return value.name.indexOf(event.target.value)!=(-1);
     });
     this.forceUpdate();
   }
@@ -138,6 +90,17 @@ export default class PrivateUsersList extends Component {
     console.log("Her er vi" + id);
     //window.location('/admin/heroes/' +id + '/edit');
   }
+
+   addEditRowColumn(user) {
+        if (this.superUser == 1) {
+            return (
+                <button type="button" className="btn btn-primary" onClick={() => {history.push("/admin/heroes/" + user.user_id + "/edit"); }}>Rediger</button>
+
+    );
+  }else {
+      return "";
+    }
+}
 
   delete(id) {
     if (window.confirm("Er du sikker på at du ønsker å slette brukeren?")) {
@@ -151,22 +114,7 @@ export default class PrivateUsersList extends Component {
     }
   }
 
-  addEditRowColumn(id, user) {
-    if (id === 1) {
-      return (
-        <RaisedButton
-          label="rediger"
-          primary={true}
-          style={style}
-          onClick={() => {
-            history.push("/admin/heroes/" + user.user_id + "/edit");
-          }}
-        />
-      );
-    } else {
-      return "";
-    }
-  }
+  
 
   componentDidMount() {
     this.superUser = sessionStorage.getItem("superuser");
