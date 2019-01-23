@@ -203,7 +203,7 @@ export default class LoginPage extends React.Component {
         const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;
 
         return (
-            <div id="login-page" className="container">
+            <div id="login-page">
 
                 <div className="row justify-content-center">
 

@@ -92,6 +92,14 @@ class forsideMain extends Component {
 }
 
 class ikkeforsideMain extends Component {
+
+    render(){
+        return(
+                <div/>
+        )
+    }
+
+    /*TOOD: Implementeres senere?
     render () {
         return(
             <section id="breadcrumb" className="hoc clear">
@@ -100,7 +108,7 @@ class ikkeforsideMain extends Component {
                 </div>
             </section>
         );
-    }
+    }*/
 }
 
 
