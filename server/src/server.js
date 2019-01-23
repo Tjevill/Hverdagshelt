@@ -254,7 +254,7 @@ app.post("/reset/org/:email", (req, res) => {
 });
 
 
-app.put("/newuser", (req, res) => {
+app.post("/user", (req, res) => {
     console.log("Fikk POST-request fra klienten");
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
@@ -344,22 +344,20 @@ app.get('/user/:id', (req: Request, res: Response) => {
  */
 app.get('/getuser/', (req: Request, res: Response) => {
 
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
-        jwt.verify(token, privateKey, function(err, decoded)  {
-            if (decoded) {
-                console.log("DECODED: ", decoded.userid)
-                userdao.getOneByID(decoded.userid, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                    console.log("/getuser/ sending: ", data)
-                })
-            } else {
-                console.log("Feil innlogging! Sender brevbombe.");
-                res.sendStatus(403);
-            }
-        });
-
-
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            userdao.getOneByID(decoded.userid, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
 });
 
 /**
@@ -892,15 +890,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
-});
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    userdao.addUser(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
+}); 
 
 
 app.get("/user/:username", (req, res) => {
