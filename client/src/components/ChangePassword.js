@@ -25,9 +25,9 @@ export default class ChangePassword extends Component {
         </div>
       </div>
 
-        <div class="container text-center">
-          <div class="row">
-            <div class="col">
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
               <div className="form-group">
                 Gammelt passord:{" "}
                 <input
@@ -58,9 +58,9 @@ export default class ChangePassword extends Component {
                 <br/>
                 <br/>
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
-                <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
+                <Button.Light onClick={() => history.push("/user")}>Cancel</Button.Light>
               </div>
-              <div class="col">
+              <div className="col">
               <p>{this.meldning}</p>
               <img src={this.bilde} width="200"/>
               </div>
@@ -109,7 +109,8 @@ export default class ChangePassword extends Component {
             })
         })
      .catch((error: Error) => {
-       Alert.danger("noooooo");
+       console.log(error);
+       console.log("Verify fail");
        this.meldning = "Feil ved endring av passord,Prøv på nytt";
        this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
        this.forceUpdate();
@@ -118,16 +119,7 @@ export default class ChangePassword extends Component {
   }
 
   componentDidMount(){
-    this.userid = sessionStorage.getItem("userid");
-    console.log(this.userid);
-    userService
-      .getUserByID(this.id)
-      .then(user => {
-        this.user = user[0];
-        if(user) console.log("available user"+this.user.name);
-        this.forceUpdate();
-      })
-      .catch((error: Error) => Alert.danger(error.message));
+
   }
 
 

@@ -105,7 +105,24 @@ module.exports = class CasesDao extends Dao {
             callback
         );
     }
-	
+
+
+
+
+/*
+    updateCaseStatus(json, callback) {
+        var val = [
+            json.status_id,
+            json.case_id
+        ];
+        super.query(
+            "UPDATE Cases set status_id = ? WHERE case_id = ?",
+            val,
+            callback
+        );
+    }
+    */
+
 	/**
 	 * Updates status_id to DELETED in database when user deletes one of their cases
 	 * @param id The case id
@@ -136,8 +153,10 @@ module.exports = class CasesDao extends Dao {
     *   @param json - json-object with the necessary attributes.
      */
     createUserCase(json:json, callback){
+        console.log('::::::::::: desc: ' + json.description + ' user_id: ' + json.user_id);
         let status_id = "1";
         let val = [json.description, json.longitude, json.latitude, status_id, json.user_id, json.category_id, json.zipcode, json.headline, json.picture];
+        console.log("VALVALVALVALVALVLA: ", val)
         super.query(
             "INSERT INTO Cases  ( description, longitude, latitude, status_id, user_id, category_id, zipcode, headline, picture ) VALUES ( ?, ? ,?, ?, ?, ?, ?, ?, ? )",
             val,
@@ -170,6 +189,17 @@ module.exports = class CasesDao extends Dao {
         super.query("SELECT * FROM Cases LEFT JOIN Place ON Cases.zipcode = Place.zipcode WHERE Place.province = ? ORDER BY Cases.timestamp DESC",
         [province],
         callback
+        );
+    }
+
+    /**
+     * Get the 5 latest cases in your commune that has status "registrert" and no assigned employee.
+     * @param id - commune_id.
+     */
+    getFiveLatestRegistered(id, callback){
+        super.query("SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) AND status_id = 1 AND Cases.employee_id IS NULL ORDER BY Cases.timestamp DESC LIMIT 5",
+            [id],
+            callback
         );
     }
 
@@ -209,7 +239,7 @@ module.exports = class CasesDao extends Dao {
       callback
     )
   }
-	
+
 	/**
 	 * Update status_id on one case
 	 * @param case_id The case you want to update
@@ -224,7 +254,7 @@ module.exports = class CasesDao extends Dao {
 			callback
 		);
 	}
-	
+
 	/**
 	 * Update comment on one case
 	 * @param case_id The case you want to update
@@ -253,7 +283,7 @@ module.exports = class CasesDao extends Dao {
 			callback
 		)
 	}
-	
+
 };
 
 

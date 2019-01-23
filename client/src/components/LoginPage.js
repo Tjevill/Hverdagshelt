@@ -1,7 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import React from 'react';
-import { authService } from '../authservices';
+import $ from 'jquery';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
 import createHashHistory from "history/createHashHistory";
@@ -12,7 +12,7 @@ export default class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        authService.logout();
+
 
         this.state = {
             height1: 400,
@@ -93,10 +93,8 @@ export default class LoginPage extends React.Component {
                 console.log("response: " + response.reply)
                 this.setState({message1: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'user');
-                //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
+                console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 // console.log("email: " + sessionStorage.getItem("email"));
                 // console.log("user: " + sessionStorage.getItem("userid"));
                 window.location.reload()
@@ -126,8 +124,6 @@ export default class LoginPage extends React.Component {
             .then(response => {
                 this.setState({message2: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'bedrift');
                 //console.log("storedtoken: " + sessionStorage.getItem("storedtoken"));
                 //console.log("email: " + sessionStorage.getItem("email"));
@@ -159,8 +155,6 @@ export default class LoginPage extends React.Component {
             .then(response => {
                 this.setState({message3: response.reply});
                 sessionStorage.setItem("storedtoken", response.jwt);
-                sessionStorage.setItem('email', response.email);
-                sessionStorage.setItem('userid', response.user_id);
                 sessionStorage.setItem('access', 'kommune');
                 sessionStorage.setItem('commune', response.commune);
                 sessionStorage.setItem('superuser', response.superuser);
@@ -178,8 +172,28 @@ export default class LoginPage extends React.Component {
     }
 
     componentDidMount() {
-
+        //window.addEventListener("resize", this.onResize.bind(this));
+        //this.onResize();
+        if(window.innerWidth <= 640){
+            $(".login-collapsable").addClass("collapse");
+        } else {
+            $("#login-user-title").removeAttr("data-toggle");
+            $("#login-org-title").removeAttr("data-toggle");
+            $("#login-emp-title").removeAttr("data-toggle");
+        }
     }
+
+    //mobile = false;
+
+    /*onResize() {
+        if(window.innerWidth <= 640 && !this.mobile){
+            this.mobile = true;
+            $('#login-user-title').attr('data-toggle', 'collapse');
+        }else if(window.innerWidth > 640 && this.mobile){
+            this.mobile = false;
+            $("#login-user-title").removeAttr("data-toggle");
+        }
+    }*/
 
     componentWillReceiveProps() {
         console.log("WillRecieveProps: ", this.props)
@@ -189,22 +203,23 @@ export default class LoginPage extends React.Component {
         const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;
 
         return (
-            <div className="container">
+            <div id="login-page" className="container">
 
-                <div className="row">
+                <div className="row justify-content-center">
 
                     <div className="group btmspace-50 demo">
                         <div className="one_third first">
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
 
-                                <h3 data-toggle="collapse" data-target="#login-user-image">HVERDAGSHELT</h3>
-                                <div id="login-user-image" className="profilbilde collapse">
+                                <h3 id="login-user-title" data-toggle="collapse" data-target="#login-user-image, #login-user-form" className="login-title">HVERDAGSHELT</h3>
+                                <div id="login-user-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                                 </div>
 
                                 <AnimateHeight
                                     id="login-user-form"
+                                    className="login-collapsable"
                                     duration={ 500 }
                                     height={ height1 } // see props documentation bellow
                                 >
@@ -229,7 +244,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/user" className="justalink">Glemt passord?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -247,13 +262,14 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
-                                <h3 onClick={() => this.toggle2Mobile()}>BEDRIFT</h3>
-                                <div id="login-org-image" className="profilbilde">
+                                <h3 id="login-org-title" data-toggle="collapse" data-target="#login-org-image, #login-org-form" className="login-title">BEDRIFT</h3>
+                                <div id="login-org-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
                                 </div>
 
                                 <AnimateHeight
                                     id="login-org-form"
+                                    className="login-collapsable"
                                     duration={ 500 }
                                     height={ height2 } // see props documentation bellow
                                 >
@@ -278,7 +294,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitBedrift()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/org" className="justalink">Glemt passord?</a></div>
                                                 {loading2 &&
                                                 <div>Loading</div>}
                                             </div>
@@ -296,13 +312,14 @@ export default class LoginPage extends React.Component {
 
                             <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
-                                <h3 onClick={() => this.toggle3Mobile()}>KOMMUNE</h3>
-                                <div id="login-emp-image" className="profilbilde">
+                                <h3 id="login-emp-title" data-toggle="collapse" data-target="#login-emp-image, #login-emp-form" className="login-title">KOMMUNE</h3>
+                                <div id="login-emp-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                                 </div>
 
                                 <AnimateHeight
                                     id="login-emp-form"
+                                    className="login-collapsable"
                                     duration={ 500 }
                                     height={ height3 } // see props documentation bellow
                                 >
@@ -327,7 +344,7 @@ export default class LoginPage extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitKommune()}}>Login</button>
-                                                <div className="justadiv"><a href="#reset" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#reset/emp" className="justalink">Glemt passord?</a></div>
                                                 {loading3 &&
                                                 <div> Loading </div>}
                                             </div>

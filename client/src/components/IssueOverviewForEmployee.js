@@ -3,11 +3,11 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import {
-  caseService,
-  categoryService,
-  userService,
-  employeeService,
-  statusService
+    caseService,
+    categoryService,
+    userService,
+    employeeService,
+    statusService, orgService
 } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -45,6 +45,7 @@ function count(array) {
 export default class IssueOverviewForEmployee extends Component<{
   match: { params: { name: string, id: number } }
 }> {
+  orgs = [];
   loaded = false;
   employeeid = "";
   employee = new Object();
@@ -56,124 +57,186 @@ export default class IssueOverviewForEmployee extends Component<{
   statusid = "";
   categoryid = 0;
   casesbyStatus = [];
-  statusname = ["Registrert","Under Vurdering","Satt på vent", "Arbeid pågår", "Avvist", "Løst"];
-  caseside ="";
+  statusname = [
+    "Registrert",
+    "Under Vurdering",
+    "Satt på vent",
+    "Arbeid pågår",
+    "Avvist",
+    "Løst"
+  ];
+  caseside = "";
+
+    state = {
+        org_id: 0
+    };
 
   handleChangeStatus = event => {
-    document.getElementById('search').value = "";
+    document.getElementById("search").value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
-      if(this.categoryid>0){
+      if (this.categoryid > 0) {
         console.log("category er valgt");
-        this.casesbyStatus = this.cases.filter(function(value){
-           return value.category_id == categoryid;
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.category_id == categoryid;
         });
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }else{
+      } else {
         console.log("Show the cases of all the status");
         this.casesbyStatus = this.cases;
         this.backup = this.casesbyStatus;
         this.forceUpdate();
       }
     } else {
-      if(this.categoryid>0){
+      if (this.categoryid > 0) {
         console.log("2.category er valgt");
-        this.casesbyStatus = this.cases.filter(function(value){
-           return value.category_id == categoryid;
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.category_id == categoryid;
         });
         this.casesbyStatus = this.casesbyStatus.filter(function(value) {
           return value.status_id == event.target.value;
         });
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }else{
-      this.casesbyStatus = this.cases.filter(function(value) {
-        return value.status_id == event.target.value;
-      });
-      this.backup = this.casesbyStatus;
+      } else {
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.status_id == event.target.value;
+        });
+        this.backup = this.casesbyStatus;
 
-      this.forceUpdate();
+        this.forceUpdate();
       }
-  }};
-
+    }
+  };
 
   handleChangeCategories = event => {
-    document.getElementById('search').value = "";
+    document.getElementById("search").value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
     let statusid = this.statusid;
-    if(event.target.value == 0){
-      if(this.statusid>0){
+    if (event.target.value == 0) {
+      if (this.statusid > 0) {
         this.casesbyStatus = this.cases.filter(function(value) {
           return value.status_id == statusid;
         });
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }else{
+      } else {
         this.casesbyStatus = this.cases;
         this.backup = this.casesbyStatus;
         this.forceUpdate();
       }
-    }else{
-      if(this.statusid>0){
+    } else {
+      if (this.statusid > 0) {
         this.casesbyStatus = this.cases.filter(function(value) {
           return value.status_id == statusid;
         });
-        this.casesbyStatus = this.casesbyStatus.filter(function(value){
-           return value.category_id == event.target.value;
+        this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+          return value.category_id == event.target.value;
         });
         this.backup = this.casesbyStatus;
         this.forceUpdate();
-      }else{
-      this.casesbyStatus = this.cases.filter(function(value){
-         return value.category_id == event.target.value;
-      });
-      this.backup = this.casesbyStatus;
-      this.forceUpdate();
-    }
+      } else {
+        this.casesbyStatus = this.cases.filter(function(value) {
+          return value.category_id == event.target.value;
+        });
+        this.backup = this.casesbyStatus;
+        this.forceUpdate();
+      }
     }
   };
 
   search = event => {
-    this.casesbyStatus = this.backup.filter(function(value){
-        return value.headline.indexOf(event.target.value)!=(-1);
+    this.casesbyStatus = this.backup.filter(function(value) {
+      return value.headline.indexOf(event.target.value) != -1;
     });
     this.forceUpdate();
     console.log(event.target.value);
     console.log(this.casesbyStatus);
-  }
+  };
 
   delete(case_id) {
-		console.log("Er du sikker på at du vil slette følgende sak?");
-		if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
-
-
-			caseService
-				.changeCaseStatus(case_id)
-				.then(res => {
-					console.log("Response recieved:", res);
-					this.status=7;
-				})
-				.catch(err => {
-					console.log("AXIOS ERROR:", err);
-				});
-		}
+    console.log("Er du sikker på at du vil slette følgende sak?");
+    if (window.confirm("Er du sikker på at du vil slette følgende sak?")) {
+      caseService
+        .changeCaseStatus(case_id)
+        .then(res => {
+          console.log("Response recieved:", res);
+          this.status = 7;
+        })
+        .catch(err => {
+          console.log("AXIOS ERROR:", err);
+        });
+    }
     window.location.reload();
-	}
-
-
+  }
 
   checkName() {}
 
+    handleChange = event => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
+
+        this.setState((state, props) => ({
+            [name]: value
+        }));
+    };
+
+    saveUpdate (id) {
+        if(document.getElementById('status1').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 4, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar og status endret!");
+            window.location.reload();
+        } else if(document.getElementById('status2').checked) {
+            caseService.updateStatusAndCommentForOrg(id, 6, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            window.alert("Kommentar og status endret!");
+            window.location.reload();
+        } else {
+            caseService.updateCaseComment(id, document.getElementById('comment-input').value)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+            console.log(document.getElementById('comment-input').value);
+            window.alert("Kommentar lagret!");
+            window.location.reload();
+        }
+    }
+
+
+    handleSelected(id) {
+        let filteredCase = this.cases.filter(e =>
+            e.case_id == id)
+        console.log(filteredCase)
+        if(sessionStorage.getItem("userid") == filteredCase[0].org_id) {
+            this.currentCase = filteredCase;
+        } else {
+            window.alert("Du kan bare endre status og legge til kommentar på saker du er blitt tildelt!");
+            window.location.reload();
+            return null;
+        }
+    }
 
   render() {
     let lists;
     let sidebuttons;
     if (this.casesbyStatus.length == 0) {
-      this.caseside = this.casesbyStatus.slice((this.props.match.params.id-1)*15,(this.props.match.params.id-1)*15+15);
+      this.caseside = this.casesbyStatus.slice(
+        (this.props.match.params.id - 1) * 15,
+        (this.props.match.params.id - 1) * 15 + 15
+      );
       lists = (
         <tbody>
           <tr>
@@ -184,7 +247,6 @@ export default class IssueOverviewForEmployee extends Component<{
           </tr>
         </tbody>
       );
-
     } else {
       lists = (
         <tbody>
@@ -197,62 +259,127 @@ export default class IssueOverviewForEmployee extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                <a href={"#/Issues/"+casen.case_id} class="btn btn-sm btn-warning">
-                  <span class="glyphicon glyphicon-pencil" aria-hidden="true">
-                    &nbsp;Rediger&nbsp;
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
+                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true">
+                    	&nbsp;Oppdater sak&nbsp;
                   </span>
-                </a>
-                <span class="btn btn-sm btn-danger">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true"
-                   onClick={() => {
-  									this.delete(casen.case_id);
-  								 }}>
+                    </button>
+                    <div className="modal fade" id={casen.case_id} tabIndex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h4 className="modal-title" id="exampleModalLabel">&nbsp;Oppdater sak</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Legg til en kommentar</h6>
+                                <div className="modal-body">
+                                    <input
+                                        className="form-control"
+                                        id="comment-input"
+                                        defaultValue={casen.comment}>
+                                    </input>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
+                                <label className="container inline">
+                                    <input type="radio" id="status1" name="radio" checked={true}/>
+                                    <span className="checkmark"></span>Arbeid pågår
+                                </label>
+                                <label className="container inline">
+                                    <input type="radio" id="status2" name="radio"/>
+                                    <span className="checkmark"></span>Sak løst
+                                </label>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-primary"
+                                            onClick={() => this.saveUpdate(casen.case_id)}>
+                                        Lagre endringer
+                                    </button>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
+                                <div className="form-group form-group-style">
+                                    <select className={'browser-default custom-select'}
+                                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
+                                            defaultValue=''>
+                                        <option disabled value=''> -- velg bedrift -- </option>
+                                        {this.orgs.map(org => (
+                                            <option key={org.org_id} value={org.org_id}>
+                                                {org.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <button class="btn btn-sm btn-danger edit-button">
+                  <span
+                    class="glyphicon glyphicon-remove"
+                    aria-hidden="true"
+                    onClick={() => {
+                      this.delete(casen.case_id);
+                    }}
+                  >
                     &nbsp;Slett&nbsp;&nbsp;
                   </span>
-                </span>&nbsp;&nbsp;&nbsp;
-                <span class="badge badge-primary">{this.statusname[casen.status_id-1]}</span>
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <span class="badge badge-primary">
+                  {this.statusname[casen.status_id - 1]}
+                </span>
               </td>
             </tr>
           ))}
         </tbody>
       );
 
-      sidebuttons =(
+      sidebuttons = (
         <div>
-        {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" class="btn btn-outline-dark" onClick={() => history.push('/admin/issues/All/'+sidetall)}>{sidetall} </button>
-        ))}
+          {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
+            <button
+              type="button"
+              className="btn btn-outline-dark"
+              id="Saker-side-button"
+              onClick={() => history.push("/admin/issues/All/" + sidetall)}
+            >
+              {sidetall}{" "}
+            </button>
+          ))}
         </div>
       );
-
     }
 
     if (this.loaded) {
       return (
         <>
-          <br />
-          <br />
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-8">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 col-md-8">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
-                  width="10"
+                  id="Saker-icon-pic"
                 />
               </div>
-              <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputKommune">Kategorier &nbsp;</label>
+              <div className="col-6 col-md-4" />
+            </div>
+
+            <div className="row">
+              <div className="col">
+                <h2 className="display-4" id="Saker-tittel">Saker</h2>
+              </div>
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="inputKommune">Kategorier &nbsp;</label>
                   <select
-                    class="w-auto"
+                    className="w-auto"
                     id="kommune"
                     name="kommune"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeCategories}
                   >
-                    <option value={0}>
-                      Alle
-                    </option>
+                    <option value={0}>Alle</option>
                     {this.categories.map(category => (
                       <option value={category.category_id}>
                         {category.description} {category.category_id}
@@ -261,21 +388,14 @@ export default class IssueOverviewForEmployee extends Component<{
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="col-6 col-md-4">
-                <h2 class="display-4">Saker</h2>
-              </div>
-              <div class="col-6 col-md-4" />
-              <div class="col-6 col-md-4">
-                <div class="form-group">
-                  <label for="inputStatus">Status &nbsp;</label>
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="inputStatus">Status &nbsp;</label>
                   <select
-                    class="w-auto"
+                    className="w-auto"
                     id="status"
                     name="status"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeStatus}
                   >
                     <option value={0}>Alle</option>
@@ -290,20 +410,25 @@ export default class IssueOverviewForEmployee extends Component<{
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-6 col-md-4"></div>
-              <div class="col-6 col-md-4" />
-              <div class="col-4 col-md-4">
-              <span class="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search}/>
-
+            <div className="row">
+              <div className="col-6 col-md-4" />
+              <div className="col-6 col-md-4" />
+              <div className="col-4 col-md-4">
               </div>
             </div>
           </div>
 
-          <div class="container">
+          <div className="container">
+          <span className="glyphicon glyphicon-search" aria-hidden="true" />
+          <input
+            type="text"
+            id="search"
+            name="search"
+            placeholder="Search.."
+            onChange={this.search}
+          />
             <Router history={history}>
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
@@ -313,19 +438,16 @@ export default class IssueOverviewForEmployee extends Component<{
                   </tr>
                 </thead>
                 {lists}
-                <br />
-                <br />
+
               </table>
             </Router>
-          <br/><br/>
-        </div>
-        <div id='toolbar'>
-          <div className='wrapper text-center'>
-            <div class="btn-group">
-              {sidebuttons}
+
           </div>
+          <div id="toolbar">
+            <div className="wrapper text-center">
+              <div className="btn-group">{sidebuttons}</div>
+            </div>
           </div>
-        </div>
         </>
       );
     } else {
@@ -334,12 +456,19 @@ export default class IssueOverviewForEmployee extends Component<{
   }
 
   componentDidMount() {
+      orgService.getAllOrg()
+          .then(orgs => {
+            this.orgs = orgs
+          })
+          .catch((error: Error) =>
+              console.log("Fails by getting the available cases", error))
     this.employeeid = sessionStorage.getItem("userid");
-    console.log("employeeid"+this.employeeid)
+    console.log("employeeid" + this.employeeid);
     employeeService
-      .getOne(this.employeeid)
+      .getEmployeeByToken()
       .then(employee => {
         this.employee = employee[0];
+        console.log("This employyeee :  ", this.employee)
         employeeService
           .getCasesOnOnCommuneID(this.employee.commune)
           .then(cases => {
@@ -363,7 +492,7 @@ export default class IssueOverviewForEmployee extends Component<{
         this.forceUpdate();
       })
       .catch((error: Error) =>
-        console.log("Fails by getting the available employee" ,error)
+        console.log("Fails by getting the available employee", error)
       );
 
     categoryService

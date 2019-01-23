@@ -31,7 +31,9 @@ import EmployeeEvents from "./components/employeeEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
 import EventsEdit from "./components/EventsEdit";
-import ForgottenPassword from "./components/ForgottenPassword";
+import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
+import ForgottenPasswordEmployee from "./components/ForgottenPasswordEmployee";
+import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganization";
 import IssueOverview from "./components/IssueOverview";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import LoginPage from "./components/LoginPage";
@@ -46,6 +48,7 @@ import OrgEdit from "./components/OrgEdit"
 import OrgIssueOverview from "./components/OrgIssueOverview";
 import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
+import StatisticsPage from "./components/StatisticsPage";
 import PrivateRoute from 'react-private-route';
 import PrivateUsersList from "./components/PrivateUsersList";
 import ProfilePage from "./components/ProfilePage";
@@ -57,7 +60,8 @@ import ReportValidation from "./components/ReportValidation";
 import UserEdit from "./components/UserEdit";
 import UserHome from "./components/userHome";
 import UpdateUserPasswordFromToken from "./components/UpdateUserPasswordFromToken";
-import StatisticsPage from "./components/StatisticsPage";
+import UpdateEmployeePasswordFromToken from "./components/UpdateEmployeePasswordFromToken";
+import UpdateOrgPasswordFromToken from "./components/UpdateOrgPasswordFromToken";
 
 const history = createHashHistory();
 
@@ -65,13 +69,21 @@ const history = createHashHistory();
 class forsideMain extends Component {
 
     render() {
+        let button;
+        if(sessionStorage.getItem("access")=="kommune"||sessionStorage.getItem("access")=="bedrift"){
+
+        }else{
+          button =(
+            <button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button>
+          );
+        }
         return(
             <section id="pageintro" className="hoc clear">
-                <div>
+                <div id="intro-text">
 
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
-                    <footer><button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button></footer>
+                    <footer>{button}</footer>
 
                 </div>
             </section>
@@ -95,38 +107,41 @@ class ikkeforsideMain extends Component {
 class LoginStatus extends Component {
     render () {
         return (
-            (this.props.loggedin) ? <div className="logged-in-as">Not logged in</div> :
-            <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+            (this.props.loggedin)
+                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+                : <div className="logged-in-as">Not logged in</div>
         );
     }
 }
-
 
 
 class Main extends Component {
 
     amILoggedin = null;
 
-
     componentDidMount() {
         // console.log("This location (from componentDidMount: " + window.location);
+
         const promiseObject = refreshToken();
+        console.log("PO:  ", sessionStorage.getItem("storedtoken"))  // returns pending
         promiseObject.then(value => {
+            console.log("Am I logged in? " + value);  // does not get triggerede
             if (value != 'undefined') {
                 this.amILoggedin = value;
+            } else {
+                this.amILoggedin = false;
             }
         });
     }
 
     render() {
        //  console.log("Path: " + window.location.href);
-      
-      
-
-        if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-        else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
-        else {
-            return this.amILoggedin == null ? "<div></div>" : (
+	
+	
+			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else {
+				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
                     <HashRouter>
                         <div>
@@ -157,7 +172,12 @@ class Main extends Component {
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
-                                <Route exact path="/reset" component={ForgottenPassword} />
+                                <Route exact path="/reset/emp/:token" component={UpdateEmployeePasswordFromToken} />
+                                <Route exact path="/reset/org/:token" component={UpdateOrgPasswordFromToken} />
+                                <Route exact path="/reset/user" component={ForgottenPasswordUser} />
+                                <Route exact path="/reset/emp" component={ForgottenPasswordEmployee} />
+                                <Route exact path="/reset/org" component={ForgottenPasswordOrganization} />
+
 
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -186,13 +206,13 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
-                                {/* MIDLERTIDIG */}
+                                {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                             </div>
 
                             {/*Bottom banner*/}
-                            <div className="wrapper row5" style={{position: "inherit"}}>
+                            <div className="wrapper row1" style={{position: "inherit"}}>
                                 <div id="copyright" className="hoc clear">
                                     <p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
                                     <p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>

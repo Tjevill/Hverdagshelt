@@ -1,5 +1,6 @@
 // @flow
 /* eslint eqeqeq: "off" */
+
 const express = require("express");
 const mysql = require("mysql");
 const app = express();
@@ -103,8 +104,8 @@ let statDao = new StatDao(pool);
 
 /** Send password reset link for user*/
 
-app.post("/forgotPassword/user/:email", (req, res) => {
-    console.log("/forgotPassword fikk POST request");
+app.post("/reset/user/:email", (req, res) => {
+    console.log("/reset fikk POST request");
     console.log("email: " + req.params.email);
     var promise1 = new Promise(function(resolve, reject) {
         userdao.getUserByEmail(req.params.email, (status, data) => {
@@ -146,13 +147,111 @@ app.post("/forgotPassword/user/:email", (req, res) => {
             }
 
         }); // transporter end
-        } //ifelse end 
-    
+        } //ifelse end
+
+    });
+});
+
+/** Send password reset link for employee*/
+
+app.post("/reset/emp/:email", (req, res) => {
+    console.log("/reset fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        empDao.getEmployeeByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].employee_id);
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        empDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].employee_id, (status, data) => {
+        });
+
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/emp/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end
+
     });
 });
 
 
+/** Send password reset link for organization*/
 
+app.post("/reset/org/:email", (req, res) => {
+    console.log("/reset/org/:email fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        orgDao.getOrgByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].org_id);
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        orgDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].org_id, (status, data) => {
+        });
+
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/org/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end 
+    
+    });
+});
 
 
 app.put("/newuser", (req, res) => {
@@ -187,15 +286,6 @@ app.put("/neworgcat/:id", (req, res) => {
     employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
         res.status(status);
         //  res.json(data);
-    });
-});
-
-
-app.get("/cases", (req, res) => {
-    console.log("/cases fikk request.");
-    hverdagsdao.getAllCases((status, data) => {
-        res.status(status);
-        res.json(data);
     });
 });
 
@@ -246,14 +336,46 @@ app.get('/user/:id', (req: Request, res: Response) => {
     userdao.getOneByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
-
     })
 });
 
 /**
- * Updates user by id
+ * Get one user from DB by token
  */
-app.put('/user/:id', (req: Request, res: Response) => {
+app.get('/getuser/', (req: Request, res: Response) => {
+
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded) {
+                console.log("DECODED: ", decoded.userid)
+                userdao.getOneByID(decoded.userid, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                    console.log("/getuser/ sending: ", data)
+                })
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+
+
+});
+
+/**
+ * Updates user by id by an Employee
+ */
+app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
+    userdao.updateUser(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Updates user by id by themselves
+ */
+app.put('/user/:id', checkIfUser, (req: Request, res: Response) => {
     userdao.updateUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -263,7 +385,7 @@ app.put('/user/:id', (req: Request, res: Response) => {
 /**
  * Deletes user by id
  */
-app.delete('/user/:id', (req: Request, res: Response) => {
+app.delete('/user/:id', checkIfEmployee, (req: Request, res: Response) => {
     userdao.deleteUserByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
@@ -356,10 +478,63 @@ app.get('/org/:id', (req: Request, res: Response) => {
     })
 });
 
+
+
+/**
+ * Get one org by token
+ */
+app.get('/getorg/', (req: Request, res: Response) => {
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            orgDao.getOneByID(decoded.userid, (status, data) =>{
+                res.status(status);
+                res.json(data);
+                console.log("/getorg/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+
+
+});
+
+
+
+/**
+ * Adds a new organization or the Organization table
+ */
+
+app.put("/neworganization", checkIfEmployee, (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    orgDao.addOrganization(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+/**
+ * Adds organization- and category ids to the reference table.
+ */
+
+app.put("/neworgcat/:id", checkIfEmployee, (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
+        res.status(status);
+        //  res.json(data);
+    });
+});
+
+
 /**
  * Update org by ID (does not include password update)
  */
-app.put('/org/:id', (req: Request, res: Response) => {
+app.put('/org/:id', checkIfEmployee, (req: Request, res: Response) => {
     orgDao.updateOrg(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -379,7 +554,7 @@ app.put('/updateOrgPWord', (req: Request, res: Response) => {
 /**
  * Delete one org by ID
  */
-app.delete('/org/:id', (req: Request, res: Response) => {
+app.delete('/org/:id', checkIfEmployee, (req: Request, res: Response) => {
     orgDao.deleteOrgByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
@@ -389,7 +564,7 @@ app.delete('/org/:id', (req: Request, res: Response) => {
 /**
  * Add new organization
  */
-app.post("/newOrg", (req, res) => {
+app.post("/newOrg", checkIfEmployee, (req, res) => {
     orgDao.addOrg(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -405,6 +580,11 @@ app.get('/orgCount', (req: Request, res: Response) => {
         res.json(data);
     })
 });
+
+
+
+
+
 
 // Category
 /**
@@ -440,7 +620,7 @@ app.get("/categoryorg/:cat/:org", (req: Request, res: Response) =>{
 /**
  * Update category
  */
-app.put('/category/:id', (req: Request, res: Response) => {
+app.put('/category/:id', checkIfEmployee, (req: Request, res: Response) => {
     categoryDao.updateCategory(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -450,7 +630,7 @@ app.put('/category/:id', (req: Request, res: Response) => {
 /**
  * Add category
  */
-app.post('/addcategory', (req: Request, res: Response) => {
+app.post('/addcategory', checkIfEmployee, (req: Request, res: Response) => {
     categoryDao.addCategory(req.body, (status, data) => {
         res.status(status);
         res.json(data);
@@ -460,7 +640,7 @@ app.post('/addcategory', (req: Request, res: Response) => {
 /**
  * Deletes one category by ID
  */
-app.delete('/category/:id', (req: Request, res: Response) => {
+app.delete('/category/:id', checkIfEmployee, (req: Request, res: Response) => {
     categoryDao.deleteCategoryByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
@@ -470,7 +650,7 @@ app.delete('/category/:id', (req: Request, res: Response) => {
 /**
  * Deletes one category by ID
  */
-app.delete('/category_org/:id', (req: Request, res: Response) => {
+app.delete('/category_org/:id', checkIfEmployee, (req: Request, res: Response) => {
     categoryDao.deleteCategoryByOrgID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
@@ -522,6 +702,33 @@ app.get("/employee/:employee_id", (req, res) =>{
     });
 });
 
+
+
+/**
+ * Get one Employeee from DB by token
+ */
+app.get('/getemployee/', (req: Request, res: Response) => {
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            empDao.getOne(decoded.userid, (status, data) =>{
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+
+
+});
+
+
+
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
     console.log("Received get-request on endpoint /employee/commune/"+req.params.commune);
@@ -541,7 +748,7 @@ app.put("/employee", (req, res) =>{
 });
 
 /** Delete an employee in the db on employee_id */
-app.delete("/employee/:employee_id", (req, res) =>{
+app.delete("/employee/:employee_id", checkIfEmployee, (req, res) =>{
     console.log("Received delete-request on endpoint /employee/"+req.employee_id);
     empDao.deleteEmpById(req.params.employee_id, (status, data)=>{
         res.status(status);
@@ -550,7 +757,7 @@ app.delete("/employee/:employee_id", (req, res) =>{
 });
 
 /** Update an employee in db on employee_id. Does NOT include password change. */
-app.put("/employee/:employee_id", (req: Request, res: Response) =>{
+app.put("/employee/:employee_id", checkIfEmployee,(req: Request, res: Response) =>{
     console.log("Received put-request on endpoint /employee/"+req.params.employee_id);
     console.log("body & soul "+req.body.email);
     empDao.updateEmp(req.body, req.params.employee_id, (status, data) =>{
@@ -560,7 +767,7 @@ app.put("/employee/:employee_id", (req: Request, res: Response) =>{
 });
 
 /** Update an employee password in the db on employee_id */
-app.put("/updateEmpPW", (req: Request, res: Response) =>{
+app.put("/updateEmpPW", checkIfEmployee, (req: Request, res: Response) =>{
     console.log("Received post-request on endpoint /updateEmpPw");
     empDao.updateEmpPassword(req.body, (status, data) =>{
         res.status(status);
@@ -615,12 +822,30 @@ app.get("/getCasesOnCommuneID/:id", (req, res) => {
 /**
  * Verify if email exists. Returns 1 if true, 0 if not
  */
-app.get("/searchEmail/:email", (req, res) => {
-	empDao.searchEmail(req.params.email, (status, data) => {
-		res.status(status);
-		res.json(data);
-	});
+
+app.get("/searchEmployeeEmail/:email", (req, res) => {
+    empDao.searchEmployeeEmail(req.params.email, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
 });
+
+
+app.get("/searchOrgEmail/:email", (req, res) => {
+    empDao.searchOrgEmail(req.params.email, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+
+app.get("/searchUserEmail/:email", (req, res) => {
+    empDao.searchUserEmail(req.params.email, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
 
 // End employee
 
@@ -660,7 +885,7 @@ app.get("/eventSearch/:keyword", (req, res) =>{
 app.get("/eventOnDateAsc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateAsc/" + req.params.date);
     eventDao.onDateAsc(req.params.date, (status, data) => {
-        hverdagsDao.getAllCases((status, data) => {
+        casedao.getAllCases((status, data) => {
             res.status(status);
             res.json(data);
         });
@@ -693,7 +918,7 @@ app.get("/eventOnDateDesc/:date", (req, res) => {
     });
 });
 
-app.post("/createEvent", (req, res) => {
+app.post("/createEvent", checkIfEmployee, (req, res) => {
     console.log("Received post-request from client on endpoint /createEvent");
     eventDao.createEvent(req.body, (status, data) => {
         res.status(status);
@@ -701,7 +926,7 @@ app.post("/createEvent", (req, res) => {
     });
 });
 
-app.delete("/deleteEvent/:event_id", (req, res) => {
+app.delete("/deleteEvent/:event_id", checkIfEmployee, (req, res) => {
     console.log("Received delete-request from client.");
     console.log("Trying to delete event with id: " + req.params.event_id);
     eventDao.deleteEvent(req.params.event_id, (status, data) => {
@@ -710,7 +935,7 @@ app.delete("/deleteEvent/:event_id", (req, res) => {
     });
 });
 
-app.put("/updateEvent/:event_id", (req, res) => {
+app.put("/updateEvent/:event_id", checkIfEmployee, (req, res) => {
     console.log("received post-request from client");
     console.log("Trying to update event with id: " + req.params.event_id);
     eventDao.updateEvent(req.params.event_id, req.body, (status, data) => {
@@ -725,13 +950,34 @@ app.put("/updateEvent/:event_id", (req, res) => {
 // Cases
 
 /** Get all cases */
-app.get("/allCases", (req, res) => {
+app.get("/case", (req, res) => {
     console.log("Received get-request on endpoint /allCases");
     caseDao.getAllCases((status, data) => {
         res.status(status);
         res.json(data);
     });
 });
+
+/**
+ * Get the 5 latest cases with status "Registrert" in you commune.
+ * :id is commune_id.
+ */
+app.get("/fiveLatestCommune/:id", (req, res) => {
+    console.log("Received get-request on endpoint /fiveLatestCommune/"+req.params.id);
+    caseDao.getFiveLatestRegistered(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/*
+app.put("/changeCaseStatus/:id", (req, res) => {
+    caseDao.updateCaseStatus(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+*/
 
 app.put("/updateCaseStatusToDeleted/:id", (req, res) => {
 	caseDao.updateCaseStatusToDeleted(req.params.id, (status, data) => {
@@ -815,49 +1061,44 @@ app.get("/getAllCategories", (req, res) => {
 
 
 /** update case on case_id */
-/*app.put("/updateCase/:case_id", (req, res) =>{
-    console.log("Received delete-request from client.");
-    console.log("Trying to update case with id: "+req.params.case_id);
-    caseDao.updateCase(req.params.case_id, req.body, (status, data) =>{
-        res.status(status);
-        res.json(data);
-        console.log(req.body);
-    });
-
-    let email = req.body.email;
-    const mailOptionsUpdateCase = {
-        from: 'bedrehverdagshelt@gmail.com',
-        to: email,
-        subject: 'Saken er oppdatert!',
-        html:
-            '<h1> Status: ' + req.body.status_id + '</h1>' +
-            '<p><b> HverdagsHelt Support Team </b></p>' +
-            '<a href="mailto:bedrehverdagshelt@gmail.com" style="color: rgb(71, 124, 204); text-decoration: none; display: inline;">bedrehverdagshelt@gmail.com</a>' +
-            '<p> <b> HverdagsHelt AS </b> </p>' +
-            '<p> 72 59 50 00 </p>'
-    };
-
-    transporter.sendMail(mailOptionsUpdateCase, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-}); */
-
-
-/** update case on case_id */
-app.put("/updateCase/:case_id", (req, res) =>{
+app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
       console.log("Received put-request from client.");
-        console.log("Trying to update case with id: "+req.params.case_id);
-   caseDao.updateCase(req.body, (status, data) =>{
+        console.log("Trying to update case with id: " + req.params.case_id);
+
+    var promise1 = new Promise(function(resolve, reject) {
+        caseDao.updateCase(req.body, (status, data) =>{
             if (!(req.body instanceof Object)) return res.sendStatus(400);
             res.status(status);
             res.json(data);
-            console.log(req.body);
+            resolve(data);
         });
     });
+
+    promise1.then(data => {
+        console.log('getting email from user_id: ' +req.body.user_id);
+        userdao.getOneByID(req.body.user_id, (status,data) => {
+
+            let email = data[0].email;
+            const mailOptionsCase = {
+                    from: 'bedrehverdagshelt@gmail.com',
+                    to: email,
+                    subject: 'Din sak har blitt oppdaert!',
+                    html:
+                        '<h1>' + req.body.status_id + ' </h1>' +
+                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+
+                };
+
+            transporter.sendMail(mailOptionsCase, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            }); // transporter
+        }); //getOneByID
+    });
+});
 
 
 
@@ -880,7 +1121,7 @@ app.get("/searchCaseDesc/:description",(req, res) =>{
 });
 
 /** delete case by case_id */
-app.delete("/deleteCase/:case_id", (req, res) =>{
+app.delete("/deleteCase/:case_id", checkIfEmployee, (req, res) =>{
     console.log("Received delete-request from client.");
     console.log("Trying to delete event with id: "+req.params.case_id);
     caseDao.deleteCase(req.params.case_id, (status, data) =>{
@@ -889,66 +1130,61 @@ app.delete("/deleteCase/:case_id", (req, res) =>{
     });
 });
 
-/** create case on user side  */
-app.post("/createUserCase", (req, res) => {
-    console.log("Received post-request from client on endpoint /createEvent");
-    caseDao.createUserCase(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
+
+/** create case by user  */
+app.post("/case", (req, res) => {
+    console.log("Received post-request from client on endpoint /case");
+    let promise1 = new Promise(function(resolve, reject) {
+
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded) {
+                console.log("DECODED: ", decoded.userid)
+
+        
+                req.body.user_id = decoded.userid;
+                caseDao.createUserCase(req.body, (status, data) => {
+                    res.status(status);
+                    res.json(data);
+                    resolve(data);
+                });
+
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
     });
-});
 
+    promise1.then(data => {
+        userdao.getOneByID(req.body.user_id, (status,data) => {
+            let sub = req.body.headline;
+            let des = req.body.description;
+            let email = data[0].email;
 
+            const mailOptionsCase = {
+                    from: 'bedrehverdagshelt@gmail.com',
+                    to: email,
+                    subject: 'Takk for din henvendelse, saken er registert!',
+                    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+                };
 
-/** create case and send confirmation mail */
-app.post("/cases", (req, res) => {
-    console.log("/cases received POST-request");
-    console.log(req.body.description);
+            transporter.sendMail(mailOptionsCase, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            }); // transporter
+        }); //getOneByID
+    }); // promise1.then
+}); // app
 
-    if(!req.body) {
-        return res.sendStatus(400);
-    } else {
-        caseDao.create({
-                headline: req.body.headline,
-                description: req.body.description,
-                longitude: req.body.longitude,
-                latitude: req.body.latitude,
-                zipcode: req.body.zipcode,
-                user_id: req.body.user_id,
-                category_id: req.body.category_id,
-                picture: req.body.picture,
-                email: req.body.email
-            },
-            (status, data) => {
-                res.status(status);
-                res.json(data);
-                console.log("json.data:" + data[0]);
-            });
-    }
-    // mail
-    let sub = req.body.headline;
-    let des = req.body.description;
-    let email = req.body.email;
-    const mailOptionsCreateCase = {
-        from: 'bedrehverdagshelt@gmail.com',
-        to: email,
-        subject: 'Takk for din henvendelse, saken er registert!',
-        html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
-    };
-
-    transporter.sendMail(mailOptionsCreateCase, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-});
 
 /**
  * For organizations to update comment and status of a case they are registered as working on
  */
-app.put("/updateStatusAndComment/:id", (req, res) => {
+app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
 	caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
     console.log(req.params.id);
 		res.status(status);
@@ -967,7 +1203,7 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 });
 
 
-app.get("/getCasesOnOrgID/:id", (req, res) => {
+app.get("/getCasesOnOrgID/:id", checkIfOrganization,  (req, res) => {
 	caseDao.getCasesForOrganization(req.params.id, (status, data) => {
 		res.status(status);
 		res.json(data);
@@ -1102,13 +1338,11 @@ app.post('/userVerification', (req: Request, res: Response) => {
 });
 
 /**
- * Verifies Token for Users.
+ * Verifies Token for Users, emps and orgs. Only difference in the methods are the dao used. Everything else is the same.
  */
 
- app.get('/tokenVerification/:token', (req: Request, res: Response) => {
-    console.log("Received GET-request for /tokenVerification/:token");
-    
-    let verify;
+ app.get('/tokenVerification/user/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
     
     userdao.getUserFromResetToken(req.params.token, (status, data) => {
         if (data[0] === undefined) { //If reset token is not assigned to a user. 
@@ -1129,8 +1363,57 @@ app.post('/userVerification', (req: Request, res: Response) => {
             res.status(200).json(data); 
         } 
     });
-     
  });
+
+ app.get('/tokenVerification/emp/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+
+    empDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+
+
+        } else { //
+
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+
+            res.status(200).json(data);
+        }
+    });
+ });
+
+ app.get('/tokenVerification/org/:token', (req: Request, res: Response) => {
+    console.log("Received GET-request for /tokenVerification/user/:token");
+
+    orgDao.getUserFromResetToken(req.params.token, (status, data) => {
+        if (data[0] === undefined) { //If reset token is not assigned to a user.
+            console.log(':::::::::::::::::::::::Token not accepted.');
+            res.status(500).json("Token not accepted.");
+
+        }else if (data[0].resetPasswordExpire < Date.now()) {
+            console.log('now: ' + Date.now());
+            console.log('exp: ' + data[0].resetPasswordExpire); //token expire
+            console.log('Token expired');
+            res.status(400).json("Token expired");
+
+
+        } else { //
+
+            console.log(':::::::::::::::::::.Token accepted, change password allowed.');
+
+            res.status(200).json(data);
+        }
+    });
+ });
+
+
 /**
  * Verifies old password for employee.
  */
@@ -1156,6 +1439,7 @@ app.post('/employeeVerification', (req: Request, res: Response) => {
     });
 
 });
+
 /**
  * Verifies old password for organization.
  */
@@ -1184,6 +1468,27 @@ app.post('/organizationVerification', (req: Request, res: Response) => {
 
 
 
+
+/** Get all status */
+app.get("/status", (req, res) => {
+    console.log("Received get-request on endpoint /allCases");
+    statusDao.getAllStatuses((status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get status by ID */
+app.get("/status/:id", (req, res) => {
+    console.log("Received get-request on endpoint /allCases");
+    statusDao.getOneById( req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+
+    });
+});
+
+
 app.post("/loginhh", (req, res) => {
 
     let promise1 = new Promise(function (resolve, reject) {
@@ -1194,24 +1499,26 @@ app.post("/loginhh", (req, res) => {
                 console.log("data email: " + data[0].password);
 
                 const lagretPass = data[0].password;
+                const user_id = data[0].user_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password1, data[0].secret);
                 // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, user_id : user_id});
                 } else {
                     resolve(false);
-                }
-            } else { resolve(false); }
+                }} else { resolve({valid: false}); }
 
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        // console.log("Value: ", value)
+        if (value.valid) {
             userdao.getUserByEmail(req.body.email1, (status, data) => {
-                console.log("STATUS: ", status);
-                let token = jwt.sign({email: req.body.email1}, privateKey, { expiresIn: 60000 });
+                // console.log("STATUS: ", status);
+                let token = jwt.sign({email: value.email, userid: value.user_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].user_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email1);
             });
@@ -1237,22 +1544,27 @@ app.post("/logink", (req, res) => {
 
                 console.log("data email: " + req.body.email3);
                 const lagretPass = data[0].password;
+                const employee_id = data[0].employee_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password3, data[0].secret);
                 // console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, employee_id : employee_id});
                 } else {
                     resolve(false);
-                }} else { resolve(false); }
+                }} else { resolve({valid: false}); }
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        // console.log("Value: ", value)
+        if (value.valid) {
             employeeDao.getEmployeeByEmail(req.body.email3, (status, data) => {
 
-                let token = jwt.sign({email: req.body.email3}, privateKey, { expiresIn: 60000 });
+                console.log("employee_id; " + value.employee_id)
+
+                let token = jwt.sign({email: value.email, userid: value.employee_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, username: data[0].username, user_id: data[0].employee_id, name: data[0].name, commune: data[0].commune, superuser: data[0].superuser});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email3);
             });
@@ -1274,25 +1586,25 @@ app.post("/loginb", (req, res) => {
         employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
             if (data[0] != undefined) {
 
-
                 console.log("data email: " + req.body.email2);
                 const lagretPass = data[0].password;
+                const org_id = data[0].org_id;
+                const email = data[0].email;
                 const passwordData = sha512(req.body.password2, data[0].secret);
                 console.log(lagretPass.localeCompare(passwordData.passwordHash));
 
                 if (passwordData.passwordHash == lagretPass) {
-                    resolve(true);
+                    resolve({valid : true, email : email, org_id : org_id});
                 } else {
                     resolve(false);
-                }} else { resolve(false); }
+                }} else { resolve({valid: false}); }
         });
     })
 
     promise1.then(function (value) {
-        if (value) {
+        if (value.valid) {
             employeeDao.getBedriftByEmail(req.body.email2, (status, data) => {
-
-                let token = jwt.sign({email: req.body.email2}, privateKey, { expiresIn: 60000 });
+                let token = jwt.sign({email: value.email, userid: value.org_id}, privateKey, { expiresIn: 60000 });
                 res.json({jwt: token, reply: "Success", email: data[0].email, user_id: data[0].org_id, name: data[0].name});
                 console.log("Brukernavn & passord ok, velkommen " + req.body.email2);
             });
@@ -1304,89 +1616,266 @@ app.post("/loginb", (req, res) => {
 
         }
     });
-});
+})
 
 
 
+function checkIfLoggedIn(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            console.log("decoded; ", decoded)
+            console.log("decoded; ", decoded.email)
+            if (decoded && decoded.email) {
+
+
+                /*
+                  let promise1 = new Promise(function (resolve, reject) {
+
+
+                      // console.log("asynkron?", decoded.email)
+
+                      empDao.searchEmail(decoded.email, (status, data) => {
+                        //  console.log("data[0].verify: " + data[0].verify)
+                          resolve(data[0].verify);
+                      });
+                  })
+
+                  console.log("promise1 ;" , promise1);
+
+                  promise1.then(function () {
+
+                      // console.log("data[0].verify; ", data[0].verify);
+
+                      if (decoded && decoded.email && (data[0].verify === 1)) {
+                          next();
+                      } else {
+                          console.log("Feil innlogging! Sender brevbombe.");
+                          res.sendStatus(403);
+                      }
+
+                  })
+
+
+          */
+
+
+
+
+
+                next();
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        console.log("Oops: " + err)
+        console.log("Feil innlogging! Sender brevbombe.");
+        // res.sendStatus(403);
+        return false;
+    }
+}
+
+
+
+function checkIfEmployee(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        // console.log ("JSHKDJSHKJFHK: ", req.headers);
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded && decoded.email) {
+                  let promise1 = new Promise(function (resolve, reject) {
+                      empDao.searchEmployeeEmail(decoded.email, (status, data) => {
+                          // console.log("fra emdao promise: " + data[0].verify);
+                          if (!isNaN(data[0].verify)) {
+                              resolve(data[0].verify);
+                          } else {
+                              reject(console.log("ererrerererer"));
+                          }
+                      });
+                  }  );
+
+                  promise1.then(function (value) {
+                      // console.log("decoded.email : " + decoded.email);
+                      // console.log("decoded : " + decoded);
+                      // console.log("value : " + value);
+
+                      if (decoded && decoded.email && (value === 1)) {
+                          console.log("******************  Operasjonen gikk gjennom!  ******************")
+                          next();
+                      } else {
+                          // console.log("Feil innlogging! Sender brevbombe.");
+                          res.sendStatus(403);
+                      }
+                  });
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        // console.log("Oops: " + err)
+        // console.log("Feil innlogging! Sender brevbombe.");
+        res.sendStatus(403);
+        return false;
+    }
+}
+
+
+
+function checkIfOrganization(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        console.log ("JSHKDJSHKJFHK: ", req.headers);
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded && decoded.email) {
+                let promise1 = new Promise(function (resolve, reject) {
+                    empDao.searchOrgEmail(decoded.email, (status, data) => {
+                        console.log("fra emdao promise: " + data[0].verify);
+                        if (!isNaN(data[0].verify)) {
+                            resolve(data[0].verify);
+                        } else {
+                            reject(console.log("ererrerererer"));
+                        }
+                    });
+                }  );
+
+                promise1.then(function (value) {
+                    // console.log("decoded.email : " + decoded.email);
+                    // console.log("decoded : " + decoded);
+                    // console.log("value : " + value);
+
+                    if (decoded && decoded.email && (value === 1)) {
+                        console.log("******************  Operasjonen gikk gjennom!  ******************")
+                        next();
+                    } else {
+                        console.log("Feil innlogging! Sender brevbombe 1.");
+                        res.sendStatus(403);
+                    }
+                });
+            } else {
+                console.log("Feil innlogging! Sender brevbombe 2.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        // console.log("Oops: " + err)
+        console.log("Feil innlogging! Sender brevbombe 3.");
+        res.sendStatus(403);
+        return false;
+    }
+}
+
+
+
+function checkIdsdsdsfOrganization(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        // console.log ("JSHKDJSHKJFHK: ", req.headers);
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded && decoded.email) {
+                let promise1 = new Promise(function (resolve, reject) {
+                    empDao.searchOrgEmail(decoded.email, (status, data) => {
+                        // console.log("fra emdao promise: " + data[0].verify);
+                        if (!isNaN(data[0].verify)) {
+                            resolve(data[0].verify);
+                        } else {
+                            reject(console.log("ererrerererer"));
+                        }
+                    });
+                }  );
+
+                promise1.then(function (value) {
+                    console.log("decoded.email : " + decoded.email);
+                    console.log("decoded : ",decoded);
+                    console.log("value : " + value);
+
+                    if (decoded && decoded.email && (value === 1)) {
+                        console.log("******************  Operasjonen gikk gjennom!  ******************")
+                        next();
+                    } else {
+                        // console.log("Feil innlogging! Sender brevbombe.");
+                        res.sendStatus(403);
+                    }
+                });
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        // console.log("Oops: " + err)
+        // console.log("Feil innlogging! Sender brevbombe.");
+        res.sendStatus(403);
+        return false;
+    }
+}
+
+
+function checkIfUser(req, res, next) {
+    try {
+        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        console.log ("JSHKDJSHKJFHK: ", req.headers);
+        jwt.verify(token, privateKey, function(err, decoded)  {
+            if (decoded && decoded.email) {
+                let promise1 = new Promise(function (resolve, reject) {
+                    empDao.searchUserEmail(decoded.email, (status, data) => {
+                        console.log("fra emdao promise: " + data[0].verify);
+                        if (!isNaN(data[0].verify)) {
+                            resolve(data[0].verify);
+                        } else {
+                            reject(console.log("ererrerererer"));
+                        }
+                    });
+                }  );
+
+                promise1.then(function (value) {
+                    console.log("decoded.email : " + decoded.email);
+                    console.log("decoded : " + decoded);
+                    console.log("value : " + value);
+
+                    if (decoded && decoded.email && (value === 1)) {
+                        console.log("******************  Operasjonen gikk gjennom!  ******************")
+                        next();
+                    } else {
+                        console.log("Feil innlogging! Sender brevbombe.");
+                        res.sendStatus(403);
+                    }
+                });
+            } else {
+                console.log("Feil innlogging! Sender brevbombe.");
+                res.sendStatus(403);
+            }
+        });
+    } catch (err) {
+        // console.log("Oops: " + err)
+        // console.log("Feil innlogging! Sender brevbombe.");
+        res.sendStatus(403);
+        return false;
+    }
+}
 
 // REFRESHING TOKEN
 app.use("/refreshtoken", (req, res) => {
     let token = req.headers["x-access-token"];
     jwt.verify(token, privateKey, (err, decoded) => {
         if (err) {
-            console.log("Token IKKE ok, så du får    ikke refreshet");
+            console.log("Token IKKE ok, så du får ikke refreshet");
             res.status(401);
             res.json({ error: "No old token detected, no refresh for you!" });
         } else {
-            let token = jwt.sign({ email: req.body.email }, privateKey, {
-                expiresIn: 60000
-            });
+            console.log("/Refreshtoken: decoded.userid from token: " + decoded.userid)
+            console.log()
+            let token = jwt.sign({
+                email: decoded.email, userid: decoded.userid
+            }, privateKey, { expiresIn: 60000 });
             res.json({ jwt: token });
+            // console.log(lib.verify.token)
         }
     });
 });
 
-// PASSWORD PROTECTED AREA!! DONT PUT ANYTHING OUTSIDE OF /admin AND
-// DONT PUT ANYTHING THAT SHOULD BE PASSWORD PROTECTED
-
-
-app.use("/admin", (req, res, next) => {
-    var token = req.headers["x-access-token"];
-    console.log("/admin : req.headers: ", req.headers["x-access-token"]);
-    console.log("/admin : req.headers: ", req.headers);
-    jwt.verify(token, publicKey, (err, decoded) => {
-        if (err) {
-            console.log("Token IKKE ok");
-            res.status(401);
-            res.json({ error: "Not authorized" });
-        } else {
-            console.log("Token ok: " + decoded.brukernavn);
-            next();
-        }
-    });
-});
-
-app.post("/admin/legginn", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    artikkelDao.addArtikkel(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-app.put("/admin/edit/:id", (req, res) => {
-    console.log("Fikk PUT-request fra klienten: " + res.params);
-    artikkelDao.editArtikkel(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-app.delete("/admin/delete/:id", (req, res) => {
-    console.log("/admin/delete/:id fikk request: " + req.params.id);
-    artikkelDao.delArtikkel(req.params.id, (status, data) => {
-        res.status(status);
-        res.json(data[0]);
-    });
-});
-
-/** Get all status */
-app.get("/status", (req, res) => {
-    console.log("Received get-request on endpoint /allCases");
-    statusDao.getAllStatuses((status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-/** Get status by ID */
-app.get("/status/:id", (req, res) => {
-    console.log("Received get-request on endpoint /allCases");
-    statusDao.getOneById( req.params.id, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
 
 
 
@@ -1395,3 +1884,13 @@ const server = app.listen(process.env.PORT || "8080", function () {
     console.log("App listening on port %s", server.address().port);
     console.log("Press Ctrl+C to quit");
 });
+
+if(process.env.NODE_ENV !== 'production') {
+    process.once('uncaughtException', function(err) {
+        console.error('FATAL: Uncaught exception.');
+        console.error(err.stack||err);
+        setTimeout(function(){
+            process.exit(1);
+        }, 100);
+    });
+}

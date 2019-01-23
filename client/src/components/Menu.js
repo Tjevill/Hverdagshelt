@@ -77,7 +77,7 @@ export default class Menu extends Component {
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="bedrift/issues/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
@@ -86,7 +86,6 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift/rapporter">Rapporter</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                             </ul>
                         </li>
@@ -104,7 +103,7 @@ export default class Menu extends Component {
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="admin/issues/1">Saker</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
@@ -113,7 +112,6 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/rapporter">Mine rapporter</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                             </ul>
                         </li>
@@ -122,7 +120,6 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/admin/rapporter">Feilrapporter</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
