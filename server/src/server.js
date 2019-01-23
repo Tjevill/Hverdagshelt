@@ -254,7 +254,7 @@ app.post("/reset/org/:email", (req, res) => {
 });
 
 
-app.post("/user", (req, res) => {
+app.post("/newuser", (req, res) => {
     console.log("Fikk POST-request fra klienten");
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
