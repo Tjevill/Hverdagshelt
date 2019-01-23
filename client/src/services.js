@@ -94,6 +94,7 @@ class EmployeeUpdatePWord {
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
+  newPassword: string;
 }
 
 class Organization {
@@ -401,7 +402,7 @@ class UserService {
 	 * @param updatePassword Includes variables {user_id, oldPassword}
 	 */
 	verifyOldPassword (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
-		return axios.post(url + '/userVerification', updatePassword);
+		return axios.put(url + '/userVerification', updatePassword, axiosConfig );
 
 	}
 
