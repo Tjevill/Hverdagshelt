@@ -40,7 +40,8 @@ import LoginPage from "./components/LoginPage";
 import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
-import MinSideKommune from "./components/MinSideKommune";
+import MinSideBedrift from "./components/MinSideBedrift.js";
+import MinSideKommune from "./components/MinSideKommune.js";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
@@ -184,6 +185,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
+                                <PrivateRoute exact path="/bedrift" component={MinSideBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/issues/:id" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/changePassword" component={ChangePasswordOrg} isAuthenticated={this.amILoggedin} redirect="/login"/>

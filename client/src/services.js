@@ -329,8 +329,8 @@ class CaseService {
       status: status_id,
       employee_id: employee_id,
       org_id: org_id
-    });
-
+    }, axiosConfig);
+		
 	}
 
 
@@ -449,6 +449,8 @@ class OrgService{
 
 	}
 
+
+
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
   }
@@ -497,6 +499,11 @@ class OrgService{
   sendResetLink(email: string): Promise<void> {
     return axios.post(url + '/reset/org/' + email);
   }
+
+  getAllCases(org_id:number): Promise<Cases[]>{
+	  return axios.get(url+"/getAllCasesOrg/"+org_id);
+  }
+
 }
 
 export let orgService = new OrgService();
