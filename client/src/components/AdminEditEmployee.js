@@ -116,6 +116,7 @@ export default class AdminEditEmployee extends Component < {
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke (Stor forbokstav)" : "";
         formErrors.commune =
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn gyldig kommune (Stor forbokstav)" : "";
+        
         break;
 
          case "commune":
