@@ -1114,16 +1114,15 @@ app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
     let token = req.headers['x-access-token'] || req.headers['authorization'];
     jwt.verify(token, privateKey, function(err, decoded)  {
         if (decoded) {
-            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.userid);
+            console.log("DECODED: ", decoded.email);
 
-    
             req.body.user_id = decoded.userid;
             caseDao.updateCase(req.body, (status, data) => {
                 res.status(status);
                 res.json(data);
 
-                
-                let email = req.body.email;
+                let email = decoded.email;
                 const mailOptionsCase = {
                     from: 'bedrehverdagshelt@gmail.com',
                     to: email,
