@@ -124,6 +124,7 @@ export default class NewEmployee extends Component {
                 className="form-control"
                 type="text"
                 defaultValue=""
+                maxLength="8"
                 id="tel"
                 name="tel"
                 onChange={this.changeNr}

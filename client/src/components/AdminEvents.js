@@ -22,6 +22,7 @@ let superuser = sessionStorage.getItem("superuser");
 export default class AdminEvents extends Component {
 
     events = [];
+    eventsbackup= [];
     event = new Object();
     editedEvent = new Object();
 
@@ -44,7 +45,16 @@ export default class AdminEvents extends Component {
                         <th scope="col">Adresse</th>
                         <th scope="col">Postkode</th>
                         <th scope="col">Dato</th>
-                        <th colSpan="2" scope="col">&nbsp; </th>
+                         <th scope="col" colSpan="2">
+                                      <input
+                                          id="searchbar"
+                                          type="text"
+                                          onChange={event => this.search(event)}
+                                      />
+
+
+                                      {" "}
+                                  </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -231,7 +241,8 @@ export default class AdminEvents extends Component {
         eventService
             .getEventsCommune(commune_id)
             .then(event => {
-                this.events = event
+                this.events = event;
+                this.eventsbackup =event;
             })
             .catch((error: Error) => console.log(error.message));
     }
@@ -254,6 +265,14 @@ export default class AdminEvents extends Component {
             return null;
         }
     }
+
+    search(event) {
+    console.log(event.target.value);
+    this.events = this.eventsbackup.filter(function(value){
+        return value.name.toLowerCase().indexOf(event.target.value.toLowerCase())!=(-1);
+    });
+    this.forceUpdate();
+  }
 
     addEvent(){
         console.log(this.event.name);
@@ -442,7 +461,7 @@ export default class AdminEvents extends Component {
         if(conf){
             eventService
                 .deleteEvent(event_id);
- 
+
             history.push("/admin/events");
         }else{
             console.log("false");

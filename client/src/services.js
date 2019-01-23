@@ -451,9 +451,14 @@ class OrgService{
   }
 
 
-  updateOrgByID(org: Organization): Promise<void>{
-  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
-  }
+    updateOrgByID(org: Organization): Promise<void>{
+        return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+    }
+
+
+    updateOrgByToken(org: Organization): Promise<void>{
+        return axios.put(url + '/orgedit/' + org.org_id, org, axiosConfig);
+    }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
     return axios.put(url + '/updateOrgPWord', org, axiosConfig);
@@ -763,9 +768,9 @@ class EventService {
   }
 
   updateEvent(event_id:number, event:Event):Promise<Void>{
-      return axios.put(url+/updateEvent/+event_id, event, axiosConfig   );
+      return axios.put(url+ "/updateEvent/" + event_id, event, axiosConfig);
   }
-	
+
 	/**
 	 * Get events in selected commune ID
 	 * @param commune_ID

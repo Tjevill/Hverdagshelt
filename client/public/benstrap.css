@@ -190,6 +190,12 @@ body,
 
 }
 
+#map-page #map-spacer {
+    height: 100vh;
+    width: 100%;
+    margin-bottom: 10%;
+}
+
 .loading-animation {
   text-align: center;
 }

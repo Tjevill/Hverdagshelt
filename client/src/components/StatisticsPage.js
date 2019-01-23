@@ -39,10 +39,10 @@ export default class StatisticsPage extends Component{
 */
 		filename:     'statistikkHverdagsHelt.pdf',
 		html2pdf:			{type: 'view'},
-/*		image:        { type: 'jpeg', quality: 0.98 },
-		html2canvas:  { scale: 1,
-										width: 1400},*/
-		jsPDF:        { unit: 'mm', format: 'letter', orientation: 'l' }
+		image:        { type: 'jpeg', quality: 0.98 },
+		html2canvas:  { scale: 1
+										/*width: 1400*/},
+		jsPDF:        { unit: 'mm', format: 'a4', orientation: 'l' }
 	};
 
 	
@@ -79,7 +79,13 @@ export default class StatisticsPage extends Component{
 	}
 	
 	saveDoc(element){
+		element.className = "pdf-form";
+		
+		
+		
 		html2pdf().set(this.opt).from(element).save();
+		
+		element.className = "";
 	}
 	
 	componentDidMount () {
