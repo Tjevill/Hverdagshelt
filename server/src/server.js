@@ -552,6 +552,16 @@ app.put('/updateOrgPWord', (req: Request, res: Response) => {
 });
 
 /**
+ * Get every case for one organization using the org_id.
+ */
+app.get("/getAllCasesOrg/:org_id", (req: Request, res: Response) => {
+    orgDao.getAllCasesOrg(req.params.org_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
  * Delete one org by ID
  */
 app.delete('/org/:id', checkIfEmployee, (req: Request, res: Response) => {

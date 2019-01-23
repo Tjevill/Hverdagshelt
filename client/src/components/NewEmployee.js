@@ -6,6 +6,7 @@ import { employeeService } from "../services";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
 
+const history = createHashHistory();
 
 export default class NewEmployee extends Component {
   user = [];
@@ -226,7 +227,7 @@ export default class NewEmployee extends Component {
     employeeService
       .addEmployee(brukerdata)
       .then(response => {
-        // history.push("/artikler/" + response.insertId);
+        history.push("/admin/kommune");
         console.log("hmm: ", response);
       })
       .catch(
