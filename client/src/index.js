@@ -26,11 +26,11 @@ import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
 import ChangePasswordOrg from "./components/ChangePasswordOrg";
 import createHashHistory from "history/createHashHistory";
-import EmployeeEdit from "./components/EmployeeEdit";
-import EmployeeEvents from "./components/employeeEvents";
+import AdminRedigerEmployee from "./components/AdminRedigerEmployee";
+import AdminEvents from "./components/AdminEvents";
 import EmployeeOverview from "./components/EmployeeOverview";
 import Events from "./components/events";
-import EventsEdit from "./components/EventsEdit";
+import AdminRedigerEvents from "./components/AdminRedigerEvents";
 import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
 import ForgottenPasswordEmployee from "./components/ForgottenPasswordEmployee";
 import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganization";
@@ -40,7 +40,8 @@ import LoginPage from "./components/LoginPage";
 import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
-import MinSideKommune from "./components/MinSideKommune";
+import MinSideBedrift from "./components/MinSideBedrift.js";
+import MinSideKommune from "./components/MinSideKommune.js";
 import NewEmployee from "./components/NewEmployee";
 import NewEvents from "./components/NewEvents";
 import NewOrganization from "./components/NewOrganization";
@@ -92,6 +93,14 @@ class forsideMain extends Component {
 }
 
 class ikkeforsideMain extends Component {
+
+    render(){
+        return(
+                <div/>
+        )
+    }
+
+    /*TOOD: Implementeres senere?
     render () {
         return(
             <section id="breadcrumb" className="hoc clear">
@@ -100,15 +109,19 @@ class ikkeforsideMain extends Component {
                 </div>
             </section>
         );
-    }
+    }*/
 }
 
 
 class LoginStatus extends Component {
+    handleLogOut(){
+      sessionStorage.clear();
+      window.location.reload();
+    };
     render () {
         return (
             (this.props.loggedin)
-                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></div>
+                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={()=>this.handleLogOut()}>Logg ut</NavLink></div>
                 : <div className="logged-in-as">Not logged in</div>
         );
     }
@@ -136,10 +149,10 @@ class Main extends Component {
 
     render() {
        //  console.log("Path: " + window.location.href);
-	
-	
+
+
 			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<HashRouter><Route exact path="/statistics" component={StatisticsPage} /></HashRouter>)}
+			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<StatisticsPage />)}
 			else {
 				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
@@ -168,7 +181,7 @@ class Main extends Component {
                                 <Route exact path="/issues/:id" component={IssueOverview} />
                                 <Route exact path="/events" component={Events}/>
                                 <Route exact path="/map" component={Map} />
-                                <Route exact path="/nyansatt" component={NewEmployee}/>
+
                                 <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
@@ -184,6 +197,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/login" component={LoginPage} isAuthenticated={!this.amILoggedin} redirect="/"/>
 
+                                <PrivateRoute exact path="/bedrift" component={MinSideBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/issues/:id" component={OrgIssueOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/edit" component={OrgEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/bedrift/changePassword" component={ChangePasswordOrg} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -193,23 +207,24 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/edit" component={EmployeeEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/events" component={EmployeeEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/events/:id/edit" component={EventsEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/edit" component={AdminRedigerEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events" component={AdminEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/events/rediger/:id" component={AdminRedigerEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune/nyansatt" component={NewEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
                                 {/* MIDLERTIDIG? */}
                                 <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                            </div>
+                                </div>
 
                             {/*Bottom banner*/}
                             <div className="wrapper row1" style={{position: "inherit"}}>

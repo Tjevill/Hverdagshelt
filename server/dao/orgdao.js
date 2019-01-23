@@ -70,7 +70,7 @@ module.exports = class OrgDao extends Dao {
 	updateOrg (json: jsonUpdate, callback: mixed){
 console.log("Kall til updateOrg: ");
 		let val = [json.organizationnumber, json.name, json.email, json.tel, json.org_id];
-		console.log("val: ", val)
+		console.log("val: ", val);
 		super.query(
 			"update Organization set organizationnumber = ?, name = ?, email = ?, tel = ? where org_id = ?",
 			val,
@@ -178,4 +178,12 @@ console.log("Kall til updateOrg: ");
             callback
         );
     }
+
+    getAllCasesOrg(org_id, callback){
+		super.query(
+			"SELECT * FROM Cases WHERE org_id = ?",
+			[org_id],
+			callback
+		);
+	}
 };

@@ -19,7 +19,7 @@ let superuser = sessionStorage.getItem("superuser");
   }
  */
 
-export default class EmployeeEvents extends Component {
+export default class AdminEvents extends Component {
 
     events = [];
     event = new Object();
@@ -44,23 +44,20 @@ export default class EmployeeEvents extends Component {
                         <th scope="col">Adresse</th>
                         <th scope="col">Postkode</th>
                         <th scope="col">Dato</th>
+                        <th colSpan="2" scope="col">&nbsp; </th>
                     </tr>
                     </thead>
                     <tbody>
                         {this.events.map( (e, i) => (
 
-                            <tr
-                                key={i}
-                                data-toggle = "modal"
-                                data-target = "#exampleModal2"
-                                onClick={()=>history.push("/admin/events/"+ e.event_id+"/edit")}
-                            >
-
+                            <tr key={i}>
                                 <th scope="row">{e.event_id}</th>
                                 <td> {e.name} </td>
                                 <td> {e.address} </td>
                                 <td> {e.zipcode} </td>
                                 <td> {e.date.substring(0,10)} </td>
+                                <td><button type="button" className="btn btn-primary" onClick={() => { history.push('/admin/events/rediger/' + e.event_id) }}>Rediger</button></td>
+                                <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(e.event_id)}>Slett</button></td>
 
                             </tr>
                             ))}
@@ -436,6 +433,20 @@ export default class EmployeeEvents extends Component {
 
 
         );
+    }
+
+
+    delete(event_id : number){
+
+        let conf = window.confirm("Er du sikker på at du vil slette denne eventen?");
+        if(conf){
+            eventService
+                .deleteEvent(event_id);
+ 
+            history.push("/admin/events");
+        }else{
+            console.log("false");
+        }
     }
 
     save(){

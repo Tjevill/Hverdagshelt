@@ -1,6 +1,7 @@
 // @flow
 /* eslint eqeqeq: "off" */
 import React from 'react';
+import { Component } from 'react-simplified';
 import $ from 'jquery';
 import {userService} from "../services";
 import AnimateHeight from 'react-animate-height';
@@ -8,7 +9,7 @@ import createHashHistory from "history/createHashHistory";
 const history = createHashHistory();
 
 
-export default class LoginPage extends React.Component {
+export default class LoginPage extends Component {
     constructor(props) {
         super(props);
 
@@ -106,12 +107,11 @@ export default class LoginPage extends React.Component {
             });
     }
 
-    handleSubmitBedrift(e) {
+    handleSubmitBedrift() {
         this.setState({submitted: true});
         const { email2, password2, returnUrl } = this.state;
         if (!(email2 && password2)) return;
         const login2 = {
-
 
             email2: this.state.email2,
             password2: this.state.password2
@@ -138,7 +138,7 @@ export default class LoginPage extends React.Component {
             });
     }
 
-    handleSubmitKommune(e) {
+    handleSubmitKommune() {
         this.setState({submitted: true});
         const { email3, password3, returnUrl } = this.state;
         if (!(email3 && password3)) return;
@@ -169,6 +169,24 @@ export default class LoginPage extends React.Component {
                 if (error.message.includes("401"))
                     this.state.message3 = "Feil brukernavn eller passord.";
             });
+    }
+
+    handleKeyPressUser(e) {
+        if (e.key === 'Enter') {
+            this.handleSubmitHverdagshelt();
+        }
+    }
+
+    handleKeyPressOrg(e) {
+        if (e.key === 'Enter') {
+            this.handleSubmitBedrift();
+        }
+    }
+
+    handleKeyPressEmp(e) {
+        if (e.key === 'Enter') {
+            this.handleSubmitKommune();
+        }
     }
 
     componentDidMount() {
@@ -203,11 +221,11 @@ export default class LoginPage extends React.Component {
         const { email1, password1, email2, password2, email3, password3, submitted1, submitted2, submitted3, loading1, loading2, loading3, error1, error2, error3, height1, height2, height3 } = this.state;
 
         return (
-            <div id="login-page" className="container">
+            <div id="login-page">
 
                 <div className="row justify-content-center">
 
-                    <div className="group btmspace-50 demo">
+                    <div className="group">
                         <div className="one_third first">
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
@@ -230,14 +248,14 @@ export default class LoginPage extends React.Component {
                                         <form name="formuser" id="formuser">
                                             <div className={'form-group' + (submitted1 && !email1 ? ' has-error' : '')}>
                                                 <label htmlFor="email1">E-mail</label>
-                                                <input type="text" className="form-control" name="email1"  onChange={this.handleChange} />
+                                                <input type="text" className="form-control" name="email1"  onChange={this.handleChange} onKeyPress={this.handleKeyPressUser}/>
                                                 {submitted1 && !email1 &&
                                                 <div className="help-block">E-mail is required</div>
                                                 }
                                             </div>
                                             <div className={'form-group' + (submitted1 && !password1 ? ' has-error' : '')}>
                                                 <label htmlFor="password1">Password</label>
-                                                <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} />
+                                                <input type="password" className="form-control" name="password1" autoComplete="password1" onChange={this.handleChange} onKeyPress={this.handleKeyPressUser}/>
                                                 {submitted1 && !password1 &&
                                                 <div className="help-block">Password is required</div>
                                                 }
@@ -280,14 +298,14 @@ export default class LoginPage extends React.Component {
                                         <form name="formbedrift" id="formbedrift">
                                             <div className={'form-group' + (submitted2 && !email2 ? ' has-error' : '')}>
                                                 <label htmlFor="email2">E-mail</label>
-                                                <input type="text" className="form-control" name="email2"  onChange={this.handleChange} />
+                                                <input type="text" className="form-control" name="email2" onChange={this.handleChange} onKeyPress={this.handleKeyPressOrg}/>
                                                 {submitted2 && !email2 &&
                                                 <div className="help-block">E-mail is required</div>
                                                 }
                                             </div>
                                             <div className={'form-group' + (submitted2 && !password2 ? ' has-error' : '')}>
                                                 <label htmlFor="password2">Password</label>
-                                                <input type="password" className="form-control" name="password2" autoComplete="password2" onChange={this.handleChange} />
+                                                <input type="password" className="form-control" name="password2" autoComplete="password2" onChange={this.handleChange} onKeyPress={this.handleKeyPressOrg}/>
                                                 {submitted2 && !password2 &&
                                                 <div className="help-block">Password is required</div>
                                                 }
@@ -330,14 +348,14 @@ export default class LoginPage extends React.Component {
                                         <form name="formkommune" id="formkommune">
                                             <div className={'form-group' + (submitted3 && !email3 ? ' has-error' : '')}>
                                                 <label htmlFor="email3">E-mail</label>
-                                                <input type="text" className="form-control" name="email3"  onChange={this.handleChange} />
+                                                <input type="text" className="form-control" name="email3"  onChange={this.handleChange} onKeyPress={this.handleKeyPressEmp}/>
                                                 {submitted3 && !email3 &&
                                                 <div className="help-block">E-mail is required</div>
                                                 }
                                             </div>
                                             <div className={'form-group' + (submitted3 && !password3 ? ' has-error' : '')}>
                                                 <label htmlFor="password3">Password</label>
-                                                <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} />
+                                                <input type="password" className="form-control" name="password3" autoComplete="password3" onChange={this.handleChange} onKeyPress={this.handleKeyPressEmp}/>
                                                 {submitted3 && !password3 &&
                                                 <div className="help-block">Password is required</div>
                                                 }

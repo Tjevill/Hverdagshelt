@@ -1,4 +1,4 @@
-// @flow
+
 /* eslint eqeqeq: "off" */
 
 const express = require("express");
@@ -253,12 +253,32 @@ app.post("/reset/org/:email", (req, res) => {
     });
 });
 
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
+/** Create user and send welcome-email */
+app.post("/user", (req, res) => {
+    console.log("POST-request from client /user");
+    
     userdao.addUser(req.body, (status, data) => {
         res.status(status);
         res.json(data);
+
+        let email = req.body.email;
+        const mailOptionsCase = {
+            from: 'bedrehverdagshelt@gmail.com',
+            to: email,
+            subject: 'Velkommen som HverdagsHelt!',
+            html:
+                '<h1> Velkommen som helt! </h1>' +
+                '<p> Logg inn på hverdagshelt for å legge inn saker! :) </p>'
+
+        };
+
+        transporter.sendMail(mailOptionsCase, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        }); // transporter
     });
 });
 
@@ -344,22 +364,20 @@ app.get('/user/:id', (req: Request, res: Response) => {
  */
 app.get('/getuser/', (req: Request, res: Response) => {
 
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
-        jwt.verify(token, privateKey, function(err, decoded)  {
-            if (decoded) {
-                console.log("DECODED: ", decoded.userid)
-                userdao.getOneByID(decoded.userid, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                    console.log("/getuser/ sending: ", data)
-                })
-            } else {
-                console.log("Feil innlogging! Sender brevbombe.");
-                res.sendStatus(403);
-            }
-        });
-
-
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            userdao.getOneByID(decoded.userid, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
 });
 
 /**
@@ -452,8 +470,6 @@ app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
     })
 });
 
-
-
 // End User
 
 // Organization
@@ -478,8 +494,6 @@ app.get('/org/:id', (req: Request, res: Response) => {
     })
 });
 
-
-
 /**
  * Get one org by token
  */
@@ -502,8 +516,6 @@ app.get('/getorg/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /**
  * Adds a new organization or the Organization table
@@ -546,6 +558,16 @@ app.put('/org/:id', checkIfEmployee, (req: Request, res: Response) => {
  */
 app.put('/updateOrgPWord', (req: Request, res: Response) => {
     orgDao.updateOrgPassword(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Get every case for one organization using the org_id.
+ */
+app.get("/getAllCasesOrg/:org_id", (req: Request, res: Response) => {
+    orgDao.getAllCasesOrg(req.params.org_id, (status, data) =>{
         res.status(status);
         res.json(data);
     })
@@ -682,6 +704,10 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 
 
+
+
+
+
 // Employee
 
 /** Get all employees from the db */
@@ -701,8 +727,6 @@ app.get("/employee/:employee_id", (req, res) =>{
         res.json(data);
     });
 });
-
-
 
 /**
  * Get one Employeee from DB by token
@@ -726,8 +750,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
@@ -792,8 +814,6 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
         res.json(data);
     });
 });
-
-
 
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
@@ -900,15 +920,7 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
             res.json(data);
         });
     });
-});
-
-app.put("/newuser", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    userdao.addUser(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
+}); 
 
 
 app.get("/user/:username", (req, res) => {
@@ -1071,9 +1083,13 @@ app.get("/getAllCategories", (req, res) => {
 
 
 /** update case on case_id */
+/*
 app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
       console.log("Received put-request from client.");
         console.log("Trying to update case with id: " + req.params.case_id);
+
+
+        
 
     var promise1 = new Promise(function(resolve, reject) {
         caseDao.updateCase(req.body, (status, data) =>{
@@ -1111,6 +1127,52 @@ app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
 });
 
 
+*/
+
+app.put("/updateCase/:case_id", checkIfEmployee, (req, res) =>{
+    console.log("Received put-request on /updateCase/:case_id from client.");
+    console.log("Trying to update case with id: " + req.params.case_id);
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid);
+            console.log("DECODED: ", decoded.email);
+
+            req.body.user_id = decoded.userid;
+            caseDao.updateCase(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+
+                let email = decoded.email;
+                const mailOptionsCase = {
+                    from: 'bedrehverdagshelt@gmail.com',
+                    to: email,
+                    subject: 'Din sak har blitt oppdaert!',
+                    html:
+                        '<h1>' + req.body.status_id + ' </h1>' +
+                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+
+                };
+
+                transporter.sendMail(mailOptionsCase, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                }); // transporter
+
+            }); //updateUserCase
+
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        } // else
+    });
+});
+
+
 
 /** search case by category description */
 app.get("/searchCaseCategory/:description", (req, res) =>{
@@ -1144,57 +1206,49 @@ app.delete("/deleteCase/:case_id", checkIfEmployee, (req, res) =>{
 /** create case by user  */
 app.post("/case", (req, res) => {
     console.log("Received post-request from client on endpoint /case");
-    let promise1 = new Promise(function(resolve, reject) {
 
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
-        jwt.verify(token, privateKey, function(err, decoded)  {
-            if (decoded) {
-                console.log("DECODED: ", decoded.userid)
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            req.body.user_id = decoded.userid;
+            caseDao.createUserCase(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                
+                let sub = req.body.headline;
+                let des = req.body.description;
+                let email = decoded.email;
 
-        
-                req.body.user_id = decoded.userid;
-                caseDao.createUserCase(req.body, (status, data) => {
-                    res.status(status);
-                    res.json(data);
-                    resolve(data);
-                });
+                const mailOptionsCase = {
+                        from: 'bedrehverdagshelt@gmail.com',
+                        to: email,
+                        subject: 'Takk for din henvendelse, saken er registert!',
+                        html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
+                    };
 
-            } else {
-                console.log("Feil innlogging! Sender brevbombe.");
-                res.sendStatus(403);
-            }
-        });
+                transporter.sendMail(mailOptionsCase, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                }); 
+            });
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
     });
-
-    promise1.then(data => {
-        userdao.getOneByID(req.body.user_id, (status,data) => {
-            let sub = req.body.headline;
-            let des = req.body.description;
-            let email = data[0].email;
-
-            const mailOptionsCase = {
-                    from: 'bedrehverdagshelt@gmail.com',
-                    to: email,
-                    subject: 'Takk for din henvendelse, saken er registert!',
-                    html: '<h1>'+ sub + '</h1><p> ' + des + '</p>'
-                };
-
-            transporter.sendMail(mailOptionsCase, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            }); // transporter
-        }); //getOneByID
-    }); // promise1.then
-}); // app
+});
 
 
 /**
  * For organizations to update comment and status of a case they are registered as working on
  */
 app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+    console.log("Received PUT-request /updateStatusAndComment/:id");
 	caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
     console.log(req.params.id);
 		res.status(status);
@@ -1233,7 +1287,8 @@ app.put("/changeCaseStatus/:case_id/:status_id", (req, res) => {
 /**
  * Change/insert comment on one case by case_id
  */
-app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
+app.put("/changeCaseComment/:case_id/:comment", checkIfOrganization, (req, res) => {
+    console.log(req.params.case_id)
 	caseDao.updateCaseComment(req.params.case_id, req.params.comment, (status, data) => {
 		res.status(status);
 		res.json(data);
@@ -1243,12 +1298,54 @@ app.put("/changeCaseComment/:case_id/:comment", (req, res) => {
 /**
  * Update case with {employee_id, comment, org_id, status_id, case_id} for employees
  */
-app.put("/updateCaseEmployee", (req, res) => {
-	caseDao.updateCaseByEmployee(req.body, (status, data) => {
-		res.status(status);
-		res.json(data);
-	})
-});
+app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
+    
+   let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            console.log("DECODED: ", decoded.email);
+            console.log("body: ", req.body);
+
+            caseDao.updateCaseByEmployee(req.body, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log('::::::::::::::::::updating case');
+                
+                statusDao.getOneById(req.body.status, (status,data) => {
+                    let statusName = data[0].description;
+                    console.log(':::::::::::::::::: fetching status name');
+
+                    caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
+                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
+                        console.log(data);
+                        
+                        const mailOptionsCase = {
+                            from: 'bedrehverdagshelt@gmail.com',
+                            to: data[0].email,
+                            subject: 'Din sak har blitt oppdaert!',
+                            html:
+                                '<h1> Status: ' + statusName + ' </h1>' +
+                                '<p> "' + req.body.comment + '" </p>' + 
+                                '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                        };
+
+                        transporter.sendMail(mailOptionsCase, function(error, info){
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                            }
+                        }); //transporter
+                    }); //reply
+                }); //status
+            }); //update
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    }); //JWT
+}); //APP
 
 // End Cases
 
@@ -1707,15 +1804,15 @@ function checkIfEmployee(req, res, next) {
                   }  );
 
                   promise1.then(function (value) {
-                      // console.log("decoded.email : " + decoded.email);
-                      // console.log("decoded : " + decoded);
-                      // console.log("value : " + value);
+                      console.log("decoded.email : " + decoded.email);
+                      console.log("decoded : ", decoded);
+                      console.log("value : " + value);
 
                       if (decoded && decoded.email && (value === 1)) {
                           console.log("******************  Operasjonen gikk gjennom!  ******************")
                           next();
                       } else {
-                          // console.log("Feil innlogging! Sender brevbombe.");
+                          console.log("Feil innlogging! Sender brevbombe. 1");
                           res.sendStatus(403);
                       }
                   });

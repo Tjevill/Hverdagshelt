@@ -36,6 +36,16 @@ body,
     color: black;
 }
 
+@media (max-width: 640px){
+
+    #pageintro h2 {
+
+        font-size: 1.7rem !important;
+
+    }
+
+}
+
 #case-page {
   height: 100%;
   width: 100%;
@@ -194,6 +204,15 @@ body,
   cursor: pointer;
 }
 
+#login-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/frontpage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #login-page .justify-content-center {
     width: 100%;
     margin: 0;
@@ -216,40 +235,30 @@ body,
     grid-template-rows: auto;
     grid-template-areas: ". . ." "date info image" ". . .";
     background-color: #fff;
-}
-
-@media (max-width: 640px) {
-
-    #events-page .userHome-event {
-        grid-template-columns: 30% 70%;
-        grid-template-rows: auto auto;
-        grid-template-areas: "date image" "info info";
-        border-style: solid;
-        border-color: gray;
-        border-width: 0 0 3px 0;
-    }
-
-    #events-page .event-info {
-        text-align: center;
-    }
-
+    border-style: solid;
+    border-color: gray;
+    border-width: 0 0 3px 0;
 }
 
 #events-page .event-date {
     grid-area: date;
     width: 100%;
-    padding: 10%;
+    padding: 10px 20% 40%;
 }
 
 #events-page .event-info {
     grid-area: info;
     width:100%;
-    padding: 10%;
+    padding: 10px;
+}
+
+#events-page .event-info h5{
+    margin-top: 0;
 }
 
 #events-page .event-image {
     grid-area: image;
-    padding: 10%;
+    padding: 10px;
 }
 
 #register-page {
@@ -268,6 +277,23 @@ body,
     width: 80%;
     height: 60px;
     margin: 5% 10% 0;
+}
+
+@media (max-width: 640px) {
+
+    #events-page .userHome-event {
+        grid-template-columns: 30% 70%;
+        grid-template-rows: auto auto;
+        grid-template-areas: "date image" "info info";
+        border-style: solid;
+        border-color: gray;
+        border-width: 0 0 3px 0;
+    }
+
+    #events-page .event-info {
+        text-align: center;
+    }
+
 }
 
 #user-edit-page {

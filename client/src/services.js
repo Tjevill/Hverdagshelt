@@ -144,7 +144,7 @@ class CaseService {
   getAllCases(): Promise <Case[]> {
     return axios.get(url+'/case');
   }
-  
+
   getCase(id: number): Promise<Case> {
     return axios.get(url + '/cases/' + id);
   }
@@ -216,11 +216,6 @@ class CaseService {
 
 	}
 
-	updateCaseComment (case_id: number, comment: string): Promise<void> {
-		return axios.put(url + '/changeCaseComment/' + case_id + '/' + comment);
-
-	}
-
   /**  Update one case */
   updateCase(case_id: number, info: json): Promise<void>{
     return axios.put(url+'/updateCase/'+case_id, info,{
@@ -229,7 +224,7 @@ class CaseService {
       }
     });
   }
-  
+
   /** Get number of cases in the db */
   countCases(): Promise <number>{
     return axios.get(url+'/countCases');
@@ -280,28 +275,21 @@ class CaseService {
 		return axios.put(url + '/updateCaseStatusToDeleted/' + case_id);
 	}
 
-	updateStatusAndCommentForOrg(case_id: number, status: number, comment: string): Promise<void>{
-    return axios.put(url + '/updateStatusAndComment/' + case_id, {
-      status: status,
-      comment: comment
-    });
-  }
-
 	/**
 	 * Gets all cases for one organization
 	 * @param id The organizations id number
 	 * @returns {AxiosPromise<any>}
-	 */
+
 	getCasesForOrganization(id: number): Promise<Case[]>{
 		return axios.get(url + '/getCasesOnOrgID/' + id);
 	}
-	
+*/
 	/**  Update one case_status */
 	updateCaseStatus (case_id: number, status_id: number): Promise<void> {
 		return axios.put(url + '/updateCaseStatus/' + case_id + '/' + status_id);
-		
+
 	}
-	
+
 	/**
    * Update case comment for one case by case_id
 	 * @param case_id
@@ -309,10 +297,10 @@ class CaseService {
 	 * @returns {AxiosPromise<any>}
 	 */
 	updateCaseComment (case_id: number, comment: string): Promise<void> {
-		return axios.put(url + '/updateCaseComment/' + case_id + '/' + comment);
-		
+		return axios.put(url + '/changeCaseComment/' + case_id + '/' + comment, axiosConfig);
+
 	}
-	
+
 	/**
    * Update case for employee
 	 * @param case_id The case_id to update
@@ -329,10 +317,9 @@ class CaseService {
       status: status_id,
       employee_id: employee_id,
       org_id: org_id
-    });
-		
+    }, axiosConfig);
 	}
-	
+
 
 }
 export let caseService = new CaseService();
@@ -341,49 +328,48 @@ class UserService {
   addUser(newuser: Register): Promise<void> {
     console.log("DATA TIL SERVICE: ", newuser);
     // console.log(axios.post(domain + '/admin/legginn', article, axiosConfig));
-    return axios.put(url + "/newuser", newuser);
+    return axios.post(url + "/user", newuser);
   }
 
+  loginHverdagshelt(login: Login[]): Promise<void> {
+      return axios.post(url + "/loginhh", login);
+  }
 
-    loginHverdagshelt(login: Login[]): Promise<void> {
-        return axios.post(url + "/loginhh", login);
-    }
+  loginBedrift(login: Login): Promise<void> {
+      return axios.post(url + "/loginb", login);
+  }
 
-    loginBedrift(login: Login): Promise<void> {
-        return axios.post(url + "/loginb", login);
-    }
-
-    loginKommune(login: Login): Promise<void> {
-        return axios.post(url + "/logink", login);
-    }
+  loginKommune(login: Login): Promise<void> {
+      return axios.post(url + "/logink", login);
+  }
 
   getDistricts(): Promise<Districts[]> {
       return axios.get(url + '/getdistricts');
   }
 
-    getProvince(province: number): Promise<Province[]> {
-        return axios.get(url + '/getdistricts/' + province);
-    }
+  getProvince(province: number): Promise<Province[]> {
+      return axios.get(url + '/getdistricts/' + province);
+  }
 
   getAllUsers(): Promise<User[]>{
     return axios.get(url + '/user');
   }
 
-    getUserByID(id: number): Promise<User[]>{
-        return axios.get(url + '/user/' + id);
-    }
+  getUserByID(id: number): Promise<User[]>{
+      return axios.get(url + '/user/' + id);
+  }
 
-    getUserByToken(): Promise<User>{
-        return axios.get(url + '/getuser/', axiosConfig);
-    }
+  getUserByToken(): Promise<User>{
+      return axios.get(url + '/getuser/', axiosConfig);
+  }
 
-    updateOne(user: User): Promise<void>{
-        return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
-    }
+  updateOne(user: User): Promise<void>{
+      return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
+  }
 
-    updateMyUserInfo(user: User): Promise<void>{
-        return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
-    }
+  updateMyUserInfo(user: User): Promise<void>{
+      return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
+  }
 
   deleteUser(id: number): Promise<void>{
     return axios.delete(url + '/user/' + id, axiosConfig);
@@ -419,8 +405,6 @@ class UserService {
 
 	}
 
-
-
 	getUsersBySearchingOnName(searchString: string): Promise<User[]>{
 	  return axios.get(url + '/userNameSearch/' + searchString)
   }
@@ -449,6 +433,8 @@ class OrgService{
 
 	}
 
+
+
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');
   }
@@ -458,14 +444,14 @@ class OrgService{
   }
 
 
-    getOrganizationByToken(): Promise<Organization[]>{
-        console.log("Requesting Organization information")
-        return axios.get(url + '/getorg/', axiosConfig);
-    }
+  getOrganizationByToken(): Promise<Organization[]>{
+      console.log("Requesting Organization information")
+      return axios.get(url + '/getorg/', axiosConfig);
+  }
 
 
-    updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+  updateOrgByID(org: Organization): Promise<void>{
+  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
   }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
@@ -497,6 +483,11 @@ class OrgService{
   sendResetLink(email: string): Promise<void> {
     return axios.post(url + '/reset/org/' + email);
   }
+
+  getAllCases(org_id:number): Promise<Cases[]>{
+	  return axios.get(url+"/getAllCasesOrg/"+org_id);
+  }
+
 }
 
 export let orgService = new OrgService();
@@ -580,8 +571,14 @@ export default class EmployeeService {
 
 
     getEmployeeByToken(): Promise<Employee[]>{
-	    console.log("Requesting Employee information")
+        console.log("Requesting Employee information")
         return axios.get(url + '/getemployee/', axiosConfig);
+    }
+
+
+    getOne(id: number): Promise<Employee[]>{
+        console.log("Requesting Employee information")
+        return axios.get(url + '/employee/' + id, axiosConfig);
     }
 
 
@@ -598,7 +595,7 @@ export default class EmployeeService {
 
   /** Delete an employee with employee_id. Yolo */
   deleteEmp(employee_id): Promise<void>{
-    return axios.delete(url + '/employee/'+employee_id);
+    return axios.delete(url + '/employee/'+employee_id, axiosConfig);
   }
 
 
@@ -613,6 +610,10 @@ export default class EmployeeService {
   * Example on JSON in postman:
   *   {	"name":"Bento", "tel":4123444, "email":"test@test.no", "province":1, "district" : 22  	}
   */
+  updateEmpData(emp: Employee) : Promise<void> {
+      return axios.put(url + '/employee/' + emp.employee_id, emp, axiosConfig);
+  }
+
   updateEmpDataByToken(emp: Employee) : Promise<void>{
     return axios.put(url+'/employee/' + emp.employee_id, emp, axiosConfig);
   }
@@ -761,7 +762,7 @@ class EventService {
   }
 
   updateEvent(event_id:number, event:Event):Promise<Void>{
-      return axios.put(url+/updateEvent/+event_id, event);
+      return axios.put(url+/updateEvent/+event_id, event, axiosConfig   );
   }
 	
 	/**
@@ -816,7 +817,7 @@ class GeoService {
 export let geoService = new GeoService();
 
 class StatisticsService {
-	
+
 	/**
    * Get statistics for registered cases past 7 days
 	 * @returns {AxiosPromise<any>}
@@ -824,7 +825,7 @@ class StatisticsService {
   getRegisteredCases(): Promise<{dag: string, registerert: number}>{
     return axios.get(url + "/statistics/cases");
   }
-	
+
 	/**
    * Gets a count of cases registered on categories in database
 	 * @returns {AxiosPromise<any>} An array [{antall: number, description: string, category_id: number}]
@@ -832,7 +833,7 @@ class StatisticsService {
 	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
     return axios.get(url + "/statistics/casesCategory");
   }
-	
+
 }
 
 export let statisticsService = new StatisticsService();
