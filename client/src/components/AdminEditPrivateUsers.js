@@ -64,6 +64,9 @@ export default class AdminEditPrivateUSers extends Component < {
       `);
 
       this.update();
+      window.location.reload();
+      history.push("/admin/heroes");
+
     } else {
       window.alert("Ingen endringer ble utført");
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
@@ -139,6 +142,8 @@ export default class AdminEditPrivateUSers extends Component < {
       .catch(err => {
         console.log("AXIOS ERROR:", err);
       });
+
+
 
   }
 
@@ -344,9 +349,7 @@ export default class AdminEditPrivateUSers extends Component < {
      
     }
 
-    save() {
-        console.log("relocating to a new window")
-    }
+  
 
     componentDidMount() {
         userService

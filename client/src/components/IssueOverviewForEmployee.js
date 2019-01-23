@@ -304,6 +304,20 @@ export default class IssueOverviewForEmployee extends Component<{
         return this.currentOrg[0].name;
     }
 
+    getOrgOnCase (id) {
+        if(id == null) {
+            return 'Ingen tildelt bedrift'
+        } else {
+            const test = this.orgs.filter(function(x) {
+                return x.org_id == id});
+            console.log(this.orgs);
+            console.log('--------------------------');
+            console.log(test);
+            return test[0].name;
+        }
+
+    }
+
   render() {
     let lists;
     let sidebuttons;
@@ -318,6 +332,7 @@ export default class IssueOverviewForEmployee extends Component<{
             <th />
             <td />
             <td>tomt</td>
+              <td/>
             <td />
           </tr>
         </tbody>
@@ -332,6 +347,7 @@ export default class IssueOverviewForEmployee extends Component<{
                 {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
+                {/*<td>{this.getOrgOnCase(casen.org_id)}</td>*/}
               <td>
                 {" "}
                     <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
@@ -437,7 +453,7 @@ export default class IssueOverviewForEmployee extends Component<{
               type="button"
               className="btn btn-outline-dark"
               id="Saker-side-button"
-              onClick={() => history.push("/admin/issues/All/" + sidetall)}
+              onClick={() => history.push("/admin/issues/" + sidetall)}
             >
               {sidetall}{" "}
             </button>
@@ -529,6 +545,7 @@ export default class IssueOverviewForEmployee extends Component<{
                     <th scope="col">#</th>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
+                      {/*<th scope="col">Saken er tildelt</th>*/}
                     <th scope="col">Handling</th>
                   </tr>
                 </thead>

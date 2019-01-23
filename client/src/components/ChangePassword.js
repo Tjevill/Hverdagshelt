@@ -79,7 +79,8 @@ export default class ChangePassword extends Component {
     }else{
     const passwordInfo = {
       user_id : this.userid,
-    	oldPassword: this.oldPassword
+    	oldPassword: this.oldPassword,
+      newPassword: this.newPassword1
     };
     const passwordInfoUpdatePasswordInDB = {
       user_id : this.userid,
@@ -87,30 +88,24 @@ export default class ChangePassword extends Component {
     };
 
     userService
-      .verifyOldPassword(passwordInfo)
+      .verifyOldPassword(passwordInfo) //Verifies and changes password on backend
       .then((response) => {
           console.log(response + "Skal oppdatere passord");
-          userService.updateUserPWord(passwordInfoUpdatePasswordInDB)
-            .then(response => {
-							console.log(response, "response from updatepassword ok", "Passord oppdatert");
+          console.log(response, "response from updatepassword ok", "Passord oppdatert");
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
               console.log("this.meldning =" + this.meldning);
               this.forceUpdate();
-						})
-            .catch(err => {
-              console.log(err, "REJECTED FEIL I DATABASE");
-            })
         })
-     .catch((error: Error) => {
-       console.log(error);
-       console.log("Verify fail");
-       this.meldning = "Feil ved endring av passord,Prøv på nytt";
-       this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
-       this.forceUpdate();
-		 });
-    }
-  }
+        .catch((error: Error) => {
+          console.log(error);
+          console.log("Verify fail");
+          this.meldning = "Feil ved endring av passord,Prøv på nytt";
+          this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
+          this.forceUpdate();
+        });
+        }
+      }
 
   componentDidMount(){
 

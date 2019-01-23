@@ -190,6 +190,26 @@ body,
 
 }
 
+#map-page #map-spacer {
+    height: 100vh;
+    width: 100%;
+    margin-bottom: 10%;
+}
+
+#map-page #map-search {
+    width: 100%;
+    padding: 5% 20%;
+    text-align: center;
+    color: black;
+}
+
+#map-page .center-button-wrapper {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
 .loading-animation {
   text-align: center;
 }

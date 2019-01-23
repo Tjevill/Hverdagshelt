@@ -183,7 +183,7 @@ class Main extends Component {
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues" component={IssueOverview} />
                                 <Route exact path="/issues/:id" component={IssueOverview} />
-                                <Route exact path="/events" component={Events}/>
+                                <Route exact path="/events/:id" component={Events}/>
                                 <Route exact path="/map" component={Map} />
 
                                 <Route exact path="/report" component={ReportPage} />

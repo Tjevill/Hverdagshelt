@@ -106,27 +106,23 @@ export default class ChangePassword extends Component {
     }
 
     employeeService
-      .verifyOldPassword(this.userid, this.oldPassword)
+      .verifyOldPassword(this.userid, this.oldPassword, this.newPassword1)
       .then((response) => {
-          console.log("verify:", response);
-          console.log(passwordInfo);
-          employeeService.updateEmpPw(passwordInfo)
-            .then(pwUpdateResponse => {
-              console.log(pwUpdateResponse);
+          console.log(response + "Skal oppdatere passord");
+          console.log(response, "response from updatepassword ok", "Passord oppdatert");
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
+              console.log("this.meldning =" + this.meldning);
               this.forceUpdate();
-            })
-            .catch(error => {
-              console.error(error);
-            });
+         
         })
-     .catch((error: Error) => {
-       Alert.danger("noooooo");
-       this.meldning = "Feil ved endring av passord. Prøv på nytt";
-       this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
-       this.forceUpdate();
-		 });
+      .catch((error: Error) => {
+        console.log(error);
+            console.log("Verify fail");
+            this.meldning = "Feil ved endring av passord,Prøv på nytt";
+            this.bilde = "https://visualpharm.com/assets/83/Cancel-595b40b65ba036ed117d3d31.svg";
+            this.forceUpdate();
+      });
 
     }
 
