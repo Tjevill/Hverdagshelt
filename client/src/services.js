@@ -458,14 +458,14 @@ class OrgService{
   }
 
 
-    getOrganizationByToken(): Promise<Organization[]>{
-        console.log("Requesting Organization information")
-        return axios.get(url + '/getorg/', axiosConfig);
-    }
+  getOrganizationByToken(): Promise<Organization[]>{
+      console.log("Requesting Organization information")
+      return axios.get(url + '/getorg/', axiosConfig);
+  }
 
 
-    updateOrgByID(org: Organization): Promise<void>{
-    return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+  updateOrgByID(org: Organization): Promise<void>{
+  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
   }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{

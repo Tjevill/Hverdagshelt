@@ -452,8 +452,6 @@ app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
     })
 });
 
-
-
 // End User
 
 // Organization
@@ -478,8 +476,6 @@ app.get('/org/:id', (req: Request, res: Response) => {
     })
 });
 
-
-
 /**
  * Get one org by token
  */
@@ -502,8 +498,6 @@ app.get('/getorg/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /**
  * Adds a new organization or the Organization table
@@ -682,6 +676,10 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 
 
+
+
+
+
 // Employee
 
 /** Get all employees from the db */
@@ -701,8 +699,6 @@ app.get("/employee/:employee_id", (req, res) =>{
         res.json(data);
     });
 });
-
-
 
 /**
  * Get one Employeee from DB by token
@@ -726,8 +722,6 @@ app.get('/getemployee/', (req: Request, res: Response) => {
 
 
 });
-
-
 
 /** Get all employees in one province */
 app.get("/employee/commune/:commune", (req, res) =>{
@@ -792,8 +786,6 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
         res.json(data);
     });
 });
-
-
 
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
