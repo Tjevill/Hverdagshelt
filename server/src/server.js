@@ -1547,6 +1547,17 @@ app.put('/userVerification', (req: Request, res: Response) => {
     });
 });
 
+app.put('/updateUserPassword', (req: Request, res:Response) => {
+    console.log('PUT-request for updatePassword');
+    console.log(req.body);
+
+    userdao.updateUserPassword({user_id: req.body.user_id, password: req.body.password}, (status,data) => {
+        console.log("STATUS: ", "200");
+        res.status(200).json('Password verified, and changed.');
+
+    });
+});
+
 
 /**
  * Verifies old password and updates new password for employee.

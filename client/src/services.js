@@ -389,7 +389,7 @@ class UserService {
   }
 
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
-    return axios.put(url + '/updateUserPWord', userPWordUpdate);
+    return axios.put(url + '/updateUserPassword', userPWordUpdate);
   }
 
   getUsersProviceFromUserID(id: number): Promise<string>{
