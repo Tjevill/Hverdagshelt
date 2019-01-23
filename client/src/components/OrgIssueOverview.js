@@ -260,7 +260,7 @@ export default class OrgIssueOverview extends Component<{
           .then(res => {
               console.log(res);
               window.alert("Kommentar og status endret!");
-              this.forceUpdate();
+              window.location.reload();
           })
           .catch((error: Error) => Alert.danger(error.message));
 
@@ -269,7 +269,7 @@ export default class OrgIssueOverview extends Component<{
             .then(res => {
                 console.log(res);
                 window.alert("Kommentar og status endret!");
-                this.forceUpdate();
+                window.location.reload();
             })
             .catch((error: Error) => Alert.danger(error.message));
 
@@ -279,7 +279,7 @@ export default class OrgIssueOverview extends Component<{
                 console.log(res);
                 console.log(document.getElementById('comment-input').value);
                 window.alert("Kommentar lagret!");
-                this.forceUpdate();
+                window.location.reload();
             })
             .catch((error: Error) => Alert.danger(error.message));
       }

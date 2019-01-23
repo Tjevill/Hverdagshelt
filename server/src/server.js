@@ -1198,17 +1198,17 @@ app.post("/case", (req, res) => {
 /**
  * For organizations to update comment and status of a case they are registered as working on
  */
-app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+/*app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
     console.log("Received PUT-request /updateStatusAndComment/:id");
 	caseDao.updateCommentAndStatusOrg(req.params.id, req.body, (status, data) => {
     console.log(req.params.id);
 		res.status(status);
 		res.json(data);
 	});
-});
+});*/
 
 
-app.put("::::::::::::::::::::::::::::./updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
+app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
     
    let token = req.headers['x-access-token'] || req.headers['authorization'];
     jwt.verify(token, privateKey, function(err, decoded)  {
@@ -1229,8 +1229,11 @@ app.put("::::::::::::::::::::::::::::./updateStatusAndComment/:id", checkIfOrgan
                     caseDao.getCaseReplyMail(req.params.id, (status,data) => {
                         console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
                         console.log(data);
-                        
-                        if(data[0].subscription === 1) {
+
+                        if(data[0] === undefined) {
+                            console.log('undefined data from replymail');
+                        }
+                        else if(data[0].subscription === 1) {
                             const mailOptionsCase = {
                                 from: 'bedrehverdagshelt@gmail.com',
                                 to: data[0].email,
@@ -1246,6 +1249,7 @@ app.put("::::::::::::::::::::::::::::./updateStatusAndComment/:id", checkIfOrgan
                                     console.log(error);
                                 } else {
                                     console.log('Email sent: ' + info.response);
+                                    console.log(mailOptionsCase);
                                 }
                             }); //transporter
                         } //subscribed ifelse
