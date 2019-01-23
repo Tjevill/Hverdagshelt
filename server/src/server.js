@@ -785,7 +785,7 @@ app.put("/employee/:employee_id", checkIfEmployee,(req: Request, res: Response) 
 });
 
 /** Update an employee password in the db on employee_id */
-app.put("/updateEmpPW", checkIfEmployee, (req: Request, res: Response) =>{
+app.put("/updateEmpPW", (req: Request, res: Response) =>{
     console.log("Received post-request on endpoint /updateEmpPw");
     empDao.updateEmpPassword(req.body, (status, data) =>{
         res.status(status);
@@ -1547,6 +1547,7 @@ app.put('/userVerification', (req: Request, res: Response) => {
     });
 });
 
+/** UpdateUserPassword */
 app.put('/updateUserPassword', (req: Request, res:Response) => {
     console.log('PUT-request for updatePassword');
     console.log(req.body);
