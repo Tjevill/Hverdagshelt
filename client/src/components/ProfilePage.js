@@ -38,9 +38,13 @@ export default class ProfilePage extends Component {
         if(loaded1 == 1 && loaded2 == 1){
 		return (
 
-			<div>
-                <div className="container profilecard-container">
-                    <h2 className="display-4">Din brukerinformasjon</h2>
+			<div id="profile-page-user" className="profile-page">
+
+                <div className="profile-title">
+                    <h2>Velkommen {this.user.name}!</h2>
+                </div>
+                <div className="profile-details">
+                    <h4>Mine detaljer</h4>
                     <ul className = "list-group">
                         <li className = "list-group-item d-flex justify-content-between align-items-center">
                             Navn:
@@ -62,8 +66,8 @@ export default class ProfilePage extends Component {
                 </div>
 
 
-                <div className="container caselist-container">
-                    <h2 className="display-4">Saker</h2>
+                <div className="profile-reports">
+                    <h4>Mine saker</h4>
                     <table className="table table-hover">
                         <thead>
                         <tr>
@@ -86,5 +90,3 @@ export default class ProfilePage extends Component {
         }
 	}
 }
-
-

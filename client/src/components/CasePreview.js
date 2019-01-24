@@ -6,7 +6,7 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import {NavLink, Router} from 'react-router-dom';
 import {
-   
+
     IconButton,
 
 } from "react-mdl";
@@ -30,12 +30,14 @@ export default class CasePreview extends Component <{title: string, status: numb
                     <tr>
                         <td className="clickable-link" onClick={()=>history.push('/case/'+ this.props.id)}>{this.props.title}</td>
                         <td data-tip={this.y}>{this.x}</td><ReactTooltip />
-                        <td className="pointer" onClick ={() => this.delete(this.props.id)}>Slett sak</td>
+                        <td className="center-children">
+                            <button type="button" className="btn btn-danger" onClick={() => this.delete(this.props.id)}>Slett sak</button>
+                        </td>
                     </tr>
                 </tbody>
             )
     }
-    
+
     delete(case_id) {
 
         if(this.help == 1) {
@@ -53,7 +55,7 @@ export default class CasePreview extends Component <{title: string, status: numb
             window.alert("Du kan bare slette saker som har 'registrert' som status. Saker som allerede har blitt mottatt av kommunen kan ikke slettes.");
         }
     }
-    
+
     componentDidMount() {
         if (this.props.status == 2) {
             //console.log('test');
@@ -82,5 +84,5 @@ export default class CasePreview extends Component <{title: string, status: numb
             console.log('Error, status invalid!');
         }
     }
-    
+
 }

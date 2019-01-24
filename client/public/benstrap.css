@@ -20,6 +20,14 @@ body,
   float: right;
 }
 
+.commune-option:hover {
+  cursor: pointer;
+}
+
+.center-children {
+    text-align: center;
+}
+
 #pageintro {
     height: 100vh;
     padding: 5% !important;
@@ -221,10 +229,6 @@ body,
   height: 300px !important;
 }
 
-#employee-edit-page .commune-option:hover{
-  cursor: pointer;
-}
-
 #login-page {
     width: 100%;
     margin: 0;
@@ -349,4 +353,36 @@ body,
 
 #user-edit-page #main-image img {
     bottom: 0;
+}
+
+.profile-page {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto auto;
+    grid-template-areas: "title title" "details reports";
+}
+
+.profile-title {
+    grid-area: title;
+    text-align: center;
+    padding-top: 5%;
+}
+
+.profile-details {
+    grid-area: details;
+    padding: 40px;
+
+}
+
+.profile-reports {
+    grid-area: reports;
+    padding: 40px;
+}
+
+@media (max-width: 700px){
+    .profile-page {
+        grid-template-columns: 100%;
+        grid-template-rows: auto auto auto;
+        grid-template-areas: "title" "details" "reports";
+    }
 }
