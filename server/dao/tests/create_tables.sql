@@ -40,14 +40,22 @@ CREATE TABLE Cases (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
   
-CREATE TABLE Events (
-    event_id int(8) NOT NULL AUTO_INCREMENT,
-    name varchar(100) NOT NULL,
-    date varchar(100) NOT NULL, -- Will be changed to DATETIME or DATE
-    description text NOT NULL,
-    zipcode int(4) NOT NULL,
-    PRIMARY KEY (event_id)
-) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+CREATE TABLE `Events` (
+  `event_id` int(6) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `description` text NOT NULL,
+  `zipcode` varchar(4) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `venue` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `Events`
+  ADD PRIMARY KEY (`event_id`);
+
+ALTER TABLE `Events`
+  MODIFY `event_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+COMMIT;
 
 
 CREATE TABLE Category (
