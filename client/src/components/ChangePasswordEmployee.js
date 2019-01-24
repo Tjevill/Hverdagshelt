@@ -28,15 +28,14 @@ export default class ChangePassword extends Component {
   render(){
     return(
       <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h4>Endre passord</h4>
-        </div>
-      </div>
+
+
+
 
         <div className="container text-center">
           <div className="row">
             <div className="col">
+                <h2>Endre passord</h2>
               <div className="form-group">
                 Gammelt passord:{" "}
                 <input
@@ -69,11 +68,13 @@ export default class ChangePassword extends Component {
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
                 <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
               </div>
-              <div className="col">
-              <p>{this.meldning}</p>
-              <img src={this.bilde} width="200"/>
+              <div className="col hengelaasdiv">
+
+              <img src={this.bilde} className="hengelaas"/>
               </div>
+
               </div>
+            <h3>{this.meldning}</h3>
               </div>
       </>
     );

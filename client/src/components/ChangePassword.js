@@ -22,6 +22,7 @@ export default class ChangePassword extends Component {
         <div className="container text-center">
           <div className="row">
             <div className="col">
+                <h2>Endre passord</h2>
               <div className="form-group">
                 Gammelt passord:{" "}
                 <input
@@ -54,12 +55,12 @@ export default class ChangePassword extends Component {
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
                 <Button.Light onClick={() => history.push("/user")}>Cancel</Button.Light>
               </div>
-              <div className="col">
+              <div className="col hengelaasdiv">
               <p>{this.meldning}</p>
-              <img src={this.bilde} width="200"/>
+              <img src={this.bilde} className="hengelaas"/>
               </div>
-              </div>
-              </div>
+          </div>
+        </div>
       </div>
     );
   }
