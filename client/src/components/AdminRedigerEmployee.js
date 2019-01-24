@@ -25,7 +25,7 @@ export default class AdminRedigerEmployee extends Component {
 
   loaded = false;
 
-  bilde = "https://img.icons8.com/android/1600/user.png";
+  bilde = "./resources/hverdagshelt.png";
   user = {};
   commune = "";
   communes = [];
@@ -71,6 +71,7 @@ export default class AdminRedigerEmployee extends Component {
           <div className="container text-center">
             <div className="row">
               <div className="col">
+                  <h1>Hverdagshelt!</h1>
                 <div className="form-group">
                   Epost:
                   <input
@@ -141,7 +142,7 @@ export default class AdminRedigerEmployee extends Component {
               </div>
               <div className="col">
                 <br/><br/><br/><br/>
-                <img id="employee-edit-image" src={this.bilde} width="200"/>
+                <img id="employee-edit-image" src={ require('./resources/kommuneansatt.png') } width="200"/>
               </div>
             </div>
           </div>

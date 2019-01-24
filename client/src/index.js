@@ -79,7 +79,7 @@ class forsideMain extends Component {
 
         }else{
           button =(
-            <button className="btn btn-primary" onClick={() => { history.push('/report/') }}>Meld feil eller mangler!</button>
+            <button className="btn btn-primary" onClick={() => { history.push('/user/report') }}>Meld feil eller mangler!</button>
           );
         }
         return(
@@ -188,7 +188,6 @@ class Main extends Component {
                                 <Route exact path="/events/:id" component={Events}/>
                                 <Route exact path="/map" component={Map} />
 
-                                <Route exact path="/report" component={ReportPage} />
                                 <Route exact path="/register" component={Register}/>
                                 <Route exact path="/reset/user/:token" component={UpdateUserPasswordFromToken} />
                                 <Route exact path="/reset/emp/:token" component={UpdateEmployeePasswordFromToken} />
@@ -197,7 +196,7 @@ class Main extends Component {
                                 <Route exact path="/reset/emp" component={ForgottenPasswordEmployee} />
                                 <Route exact path="/reset/org" component={ForgottenPasswordOrganization} />
 
-
+                                <PrivateRoute exact path="/user/report" component={ReportPage} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/edit" component={UserEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user/changePassword" component={ChangePassword} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/user" component={ProfilePage} isAuthenticated={this.amILoggedin} redirect="/login"/>
@@ -210,7 +209,7 @@ class Main extends Component {
 
                                 <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/changePassword" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/bedrift" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/:id" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>

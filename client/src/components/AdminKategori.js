@@ -43,7 +43,7 @@ export default class AdminKategori extends Component {
                     <table className="">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+
                             <th scope="col">Beskrivelse</th>
                             <th scope="col">&nbsp;</th>
                             <th scope="col">&nbsp;</th>
@@ -53,7 +53,7 @@ export default class AdminKategori extends Component {
                         {this.cat.map((item, i) => {
                             return(
                             <tr>
-                                <th scope="row">{i+1}</th>
+
                                 <td>{item.description}</td>
                                 <td><button type="button" className="btn btn-primary" onClick={() => { history.push('/admin/kategori/rediger/' + item.category_id) }}>Rediger</button></td>
                                 <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(item.category_id)}>Slett</button></td>
