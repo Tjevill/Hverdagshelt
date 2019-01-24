@@ -51,7 +51,7 @@ export default class AdminBedrift extends Component {
                         <tbody>
                         {this.org.map((item, i) => {
                             return(
-                            <tr>
+                            <tr key={i}>
                                 <th scope="row">{i+1} - {item.org_id}</th>
                                 <td>{item.organizationnumber}</td>
                                 <td>{item.name}</td>

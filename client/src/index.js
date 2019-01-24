@@ -28,7 +28,7 @@ import ChangePasswordOrg from "./components/ChangePasswordOrg";
 import createHashHistory from "history/createHashHistory";
 import AdminRedigerEmployee from "./components/AdminRedigerEmployee";
 import AdminEvents from "./components/AdminEvents";
-import EmployeeOverview from "./components/EmployeeOverview";
+import AdminEmployee from "./components/AdminEmployee";
 import Events from "./components/events";
 import AdminRedigerEvents from "./components/AdminRedigerEvents";
 import ForgottenPasswordUser from "./components/ForgottenPasswordUser";
@@ -66,6 +66,10 @@ import UpdateOrgPasswordFromToken from "./components/UpdateOrgPasswordFromToken"
 
 const history = createHashHistory();
 
+
+history.listen((location, action) => {
+    window.scrollTo(0, 0);
+});
 
 class forsideMain extends Component {
 
@@ -135,16 +139,18 @@ class Main extends Component {
     componentDidMount() {
         // console.log("This location (from componentDidMount: " + window.location);
 
-        const promiseObject = refreshToken();
-        console.log("PO:  ", sessionStorage.getItem("storedtoken"))  // returns pending
-        promiseObject.then(value => {
-            console.log("Am I logged in? " + value);  // does not get triggerede
-            if (value != 'undefined') {
-                this.amILoggedin = value;
-            } else {
-                this.amILoggedin = false;
-            }
-        });
+        try {
+            const promiseObject = refreshToken();
+            console.log("PO:  ", sessionStorage.getItem("storedtoken"))
+            promiseObject.then(value => {
+                console.log("Am I logged in? " + value);
+                if (value != 'undefined') {
+                    this.amILoggedin = value;
+                } else {
+                    this.amILoggedin = false;
+                }
+            });
+        } catch (error) { console.log ("error: " + error)}
     }
 
     render() {
@@ -162,7 +168,7 @@ class Main extends Component {
                                 <div className="wrapper row1">
                                     <header id="header" className="hoc clear">
                                         <div id="logo" className="fl_left">
-                                            <a href="/"><img id="logo" className="forsidelogo" src="https://tinyurl.com/yb79l4dx" alt="Logo"/></a>
+                                            <a href="/"><img id="logo" className="forsidelogo" src="./images/oransjelogo.png" alt="Logo"/></a>
                                         </div>
                                         <Menu loggedin={this.amILoggedin}/>
                                         <LoginStatus loggedin={this.amILoggedin}/>
@@ -179,7 +185,7 @@ class Main extends Component {
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues" component={IssueOverview} />
                                 <Route exact path="/issues/:id" component={IssueOverview} />
-                                <Route exact path="/events" component={Events}/>
+                                <Route exact path="/events/:id" component={Events}/>
                                 <Route exact path="/map" component={Map} />
 
                                 <Route exact path="/report" component={ReportPage} />
@@ -216,7 +222,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/events" component={AdminEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/events/rediger/:id" component={AdminRedigerEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/kommune" component={EmployeeOverview} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/kommune" component={AdminEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/nyansatt" component={NewEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>

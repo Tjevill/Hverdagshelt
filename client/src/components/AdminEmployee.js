@@ -30,7 +30,7 @@ const style = {
 };
 
 //<{ match: { params: { name: string, id: number } } }>
-export default class EmployeeOverview extends Component {
+export default class AdminEmployee extends Component {
   employees = [];
   employeesbackup = [];
   commune = "";
