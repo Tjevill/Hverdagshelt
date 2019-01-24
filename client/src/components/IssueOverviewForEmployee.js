@@ -423,12 +423,12 @@ export default class IssueOverviewForEmployee extends Component<{
                             </div>
                         </div>
                     </div>
-                <button class="btn btn-danger m-2">
+                <button class="btn btn-danger m-2" onClick={() => {
+                    this.delete(casen.case_id);
+                }}>
                   <span
                     aria-hidden="true"
-                    onClick={() => {
-                      this.delete(casen.case_id);
-                    }}
+
                   >
                     &#x2716;  Slett
                   </span>
