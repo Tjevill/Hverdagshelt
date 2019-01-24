@@ -142,7 +142,7 @@ export default class AdminRedigerEvents extends Component<{
         <div>
           <button
             onClick={() => this.save()}
-            type="submit"
+            type="button"
             className="btn btn-primary"
             id="superuserbutton"
           >
@@ -169,6 +169,7 @@ export default class AdminRedigerEvents extends Component<{
             )
         .then(response =>{
             console.log("Edit event response: ", response);
+            history.push("/admin/events/1");
             // history.push("/admin/events");
         })
         .catch((error: Error) => (console.log(error.message)));
