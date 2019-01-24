@@ -234,7 +234,7 @@ module.exports = class CasesDao extends Dao {
 	 */
   getCasesForOrganization(id: number, callback: mixed){
 	  super.query(
-	    "SELECT * FROM Cases WHERE org_id = ?",
+	    "SELECT * FROM Cases WHERE org_id = ? AND status_id NOT LIKE 6",
       [id],
       callback
     )
