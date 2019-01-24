@@ -52,8 +52,6 @@ var sha512 = function(password, salt){
     };
 };
 
-
-
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: "mysql.stud.iie.ntnu.no",
