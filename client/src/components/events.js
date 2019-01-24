@@ -104,19 +104,40 @@ export default class events extends Component<{
     if (!this.loading) {
       return (
         <>
+
           <div className="container">
             <div className="row">
               <div className="col-12 col-md-8">
                 <img
-                  src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
-                  id="Saker-icon-pic"
+                    src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
+                    id="Saker-icon-pic"
                 />
               </div>
               <div className="col-6 col-md-4" />
             </div>
 
             <div className="row">
-              <div className="col-4 col-md-4" />
+              <div
+                  className="col-6 col-md-4"
+              >
+                <div className="form-group mt-2">
+                  <span
+                      className="glyphicon glyphicon-search"
+                      aria-hidden="true"
+                  />
+                  <input
+                      className = "form-control mb-2"
+                      type="text"
+                      id="search"
+                      name="search"
+                      placeholder="Søk på navn.."
+                      onChange={this.search}
+                  />
+                </div>
+
+              </div>
+
+
               <div className="col-6 col-md-4">
                 <div className="form-group">
                   <label htmlFor="inputFylke">Velg Fylke</label>
@@ -157,22 +178,12 @@ export default class events extends Component<{
                   </select>
                 </div>
               </div>
+
+
             </div>
 
             <div className="row">
-              <div className="col-4 col-md-4">
-                <span
-                  className="glyphicon glyphicon-search"
-                  aria-hidden="true"
-                />
-                <input
-                  type="text"
-                  id="search"
-                  name="search"
-                  placeholder="Søk.."
-                  onChange={this.search}
-                />
-              </div>
+
               <div className="col-6 col-md-4" />
               <div className="col-6 col-md-4" />
             </div>
@@ -220,7 +231,7 @@ export default class events extends Component<{
 
                         <button
                           type="button"
-                          className="btn btn-secondary"
+                          className="btn btn-info"
                           data-toggle="modal"
                           data-target={"#" + e.event_id}
                         >
@@ -262,7 +273,7 @@ export default class events extends Component<{
                                 </div>
                                 <button
                                   type="button"
-                                  className="btn btn-secondary"
+                                  className="btn btn-info"
                                   data-dismiss="modal"
                                 >
                                   Close
@@ -313,18 +324,16 @@ export default class events extends Component<{
         this.events = sak;
         this.eventsFraKommune = sak;
         this.backup = sak;
+        userService
+          .getDistricts()
+          .then(fylker => {
+            this.fylker = fylker;
+            this.loading = false;
+            this.forceUpdate();
+          })
+          .catch((error: Error) => console.log("Error: getting fylker"));
       })
       .catch((error: Error) => console.log(error.message));
-
-    userService
-      .getDistricts()
-      .then(fylker => {
-        this.fylker = fylker;
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log("Error: getting fylker"));
-
-    this.loading = false;
   }
 
   getMonth(month) {

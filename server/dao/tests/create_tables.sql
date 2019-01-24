@@ -5,6 +5,28 @@ DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS Status;
 DROP TABLE IF EXISTS Organization;
+DROP TABLE IF EXISTS Place;
+DROP TABLE IF EXISTS kommune;
+DROP TABLE IF EXISTS fylke;
+
+CREATE TABLE Place (
+  zipcode varchar(4) NOT NULL,
+  province varchar(100) NOT NULL,
+  PRIMARY KEY (zipcode)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE kommune (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  fylke_id int(11) NOT NULL,
+  navn varchar(40),
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE fylke (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  navn varchar(30),
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 
@@ -27,17 +49,27 @@ CREATE TABLE Cases (
 
 
 
-  CREATE TABLE Employee (
-  employee_id int(8) NOT NULL AUTO_INCREMENT,
-  name varchar(100) NOT NULL,
-  tel int(8) NOT NULL,
-  email varchar(50) NOT NULL,
-  password text NOT NULL,
-  secret varchar(32) NOT NULL,
-  province int(3) NOT NULL,
-  district int(3) NOT NULL,
-  PRIMARY KEY (employee_id)
+CREATE TABLE `Employee` (
+  `employee_id` int(8) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `tel` int(8) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` text NOT NULL,
+  `secret` varchar(32) NOT NULL,
+  `commune` int(3) NOT NULL,
+  `county` int(2) NOT NULL,
+  `superuser` tinyint(1) NOT NULL DEFAULT '0',
+  `resetPasswordToken` varchar(255) DEFAULT NULL,
+  `expirePasswordToken` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `Employee`
+  ADD PRIMARY KEY (`employee_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `Employee`
+  MODIFY `employee_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+COMMIT;
 
   
 CREATE TABLE `Events` (
@@ -115,26 +147,5 @@ ALTER TABLE `Organization`
 
 ALTER TABLE `Organization`
   MODIFY `org_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
-
-CREATE TABLE Place (
-  zipcode varchar(4) NOT NULL,
-  province varchar(100) NOT NULL,
-  PRIMARY KEY (zipcode)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE kommune (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  fylke_id int(11) NOT NULL,
-  navn varchar(40),
-  PRIMARY KEY (ID)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE fylke (
-  ID int(11) NOT NULL AUTO_INCREMENT,
-  navn varchar(30),
-  PRIMARY KEY (ID)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-  
 
 COMMIT;

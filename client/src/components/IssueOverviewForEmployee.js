@@ -414,7 +414,7 @@ export default class IssueOverviewForEmployee extends Component<{
                                     </select>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
                                     <button type="button" className="btn btn-primary"
                                             onClick={() => this.saveUpdate(casen.case_id)}>
                                         Lagre endringer
@@ -423,12 +423,12 @@ export default class IssueOverviewForEmployee extends Component<{
                             </div>
                         </div>
                     </div>
-                <button class="btn btn-danger m-2">
+                <button class="btn btn-danger m-2" onClick={() => {
+                    this.delete(casen.case_id);
+                }}>
                   <span
                     aria-hidden="true"
-                    onClick={() => {
-                      this.delete(casen.case_id);
-                    }}
+
                   >
                     &#x2716;  Slett
                   </span>
