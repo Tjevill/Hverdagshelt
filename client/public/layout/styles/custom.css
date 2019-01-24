@@ -48,4 +48,15 @@
 	padding-top:27px;
 }
 
-.navbar-inverse .navbar-nav>li>a { color:#000; }
+.navbar-inverse .navbar-nav>li>a { color:#fff; }
+
+.hengelaas {
+	width:250px;
+	padding:20px;
+	padding-top:30px;
+}
+
+@media screen and (max-width:650px){
+	.hengelaasdiv {display:none; }
+}
+
