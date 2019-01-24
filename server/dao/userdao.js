@@ -168,6 +168,9 @@ module.exports = class UserDao extends Dao {
 	}
 
 	/**	Get the province from the user based on user_id
+	 * This method was NOT tested in the test-suite because
+	 * it requires a sql-script with 5000 lines. Which will slow
+	 * the test-suite alot. Sorry, bro :-(
 	*	@param id - the user_id you wish the province for.
 	*/
 	getUsersProvinceByUserID (id: number, callback: mixed) {
