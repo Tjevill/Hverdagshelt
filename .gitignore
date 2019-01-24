@@ -3,3 +3,4 @@ client/public/bundle.js
 .idea
 package-lock.json
 config.js
+/config.js

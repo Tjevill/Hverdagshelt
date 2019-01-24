@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import { userService } from "../services.js";
-import { LoadingFirkant } from "./widgets";
+import { Loading } from "./widgets";
 import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
@@ -27,7 +27,6 @@ function count(array) {
  * A simple table demonstrating the hierarchy of the `Table` component and its sub-components.
  */
 
-
 export default class PrivateUsersList extends Component<{
   match: { params: { id: number } }
 }> {
@@ -37,17 +36,15 @@ export default class PrivateUsersList extends Component<{
   superUser = "";
   loaded = false;
 
-  abbstatus(number){
-    if(number==1){
+  abbstatus(number) {
+    if (number == 1) {
       return "no";
-    }else{
+    } else {
       return "yes";
     }
   }
 
   render() {
-
-
     if (this.loaded) {
       return (
         <div id="org-page">
@@ -76,29 +73,31 @@ export default class PrivateUsersList extends Component<{
               </tr>
             </thead>
             <tbody>
-              {this.users.slice(
-                (this.props.match.params.id - 1) * 10,
-                (this.props.match.params.id - 1) * 10 + 10
-              ).map((item, i) => (
-                <tr key={i} className="PrivateUsersList-TableRow">
-                  <th scope="row">{item.name}</th>
-                  <td>{item.address}</td>
-                  <td>{item.tel}</td>
-                  <td>{item.email}</td>
-                  <td>{this.abbstatus(item.subscription)}</td>
-                  <td>{item.zipcode}</td>
-                  <td>{this.addEditRowColumn(item)}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => this.delete(item.user_id, item)}
-                    >
-                      Slett
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {this.users
+                .slice(
+                  (this.props.match.params.id - 1) * 10,
+                  (this.props.match.params.id - 1) * 10 + 10
+                )
+                .map((item, i) => (
+                  <tr key={i} className="PrivateUsersList-TableRow">
+                    <th scope="row">{item.name}</th>
+                    <td>{item.address}</td>
+                    <td>{item.tel}</td>
+                    <td>{item.email}</td>
+                    <td>{this.abbstatus(item.subscription)}</td>
+                    <td>{item.zipcode}</td>
+                    <td>{this.addEditRowColumn(item)}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => this.delete(item.user_id, item)}
+                      >
+                        Slett
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           <div id="toolbar">
@@ -120,15 +119,7 @@ export default class PrivateUsersList extends Component<{
         </div>
       );
     } else {
-      return (
-        <div className="group btmspace-50 demo">
-          <div className="one_third first">&nbsp;</div>
-          <div className="one_third centered padded">
-            <LoadingFirkant />
-          </div>
-          <div className="one_third">&nbsp;</div>
-        </div>
-      );
+      return <Loading />;
     }
   }
 

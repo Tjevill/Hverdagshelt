@@ -2,7 +2,7 @@ import * as React from "react";
 import { Component } from "react-simplified";
 import { caseService, orgService } from "../services";
 import createHashHistory from "history/createHashHistory";
-import { LoadingFirkant } from "./widgets";
+import { Loading } from "./widgets";
 
 const history = createHashHistory();
 
@@ -129,15 +129,7 @@ export default class AdminBedrift extends Component<{
         </div>
       );
     } else {
-      return (
-        <div className="group btmspace-50 demo">
-          <div className="one_third first">&nbsp;</div>
-          <div className="one_third centered padded">
-            <LoadingFirkant />
-          </div>
-          <div className="one_third">&nbsp;</div>
-        </div>
-      );
+      return <Loading />;
     }
   }
 

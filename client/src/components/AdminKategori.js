@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
+import { Loading } from "./widgets";
 import {caseService, categoryService, orgService} from "../services";
 import createHashHistory from "history/createHashHistory";
 const history = createHashHistory();
@@ -69,11 +70,7 @@ export default class AdminKategori extends Component {
             );
         } else {
             return (
-                <div className="group btmspace-50 demo">
-                    <div className="one_third first">&nbsp;</div>
-                    <div className="one_third centered padded"><LoadingFirkant /></div>
-                    <div className="one_third">&nbsp;</div>
-                </div>
+               <Loading/>
 
             );
         }

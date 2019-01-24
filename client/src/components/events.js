@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { eventService, userService } from "../services.js";
 import createHashHistory from "history/createHashHistory";
+import { Loading } from "./widgets";
 
 import {
   Card,
@@ -22,7 +23,6 @@ import {
   Textfield
 } from "react-mdl";
 const history = createHashHistory();
-
 
 function sliceArray(array, size) {
   var result = [];
@@ -51,7 +51,8 @@ export default class events extends Component<{
   backup = [];
   fylker = [];
   kommuner = [];
-	eventside = [];
+  eventside = [];
+  loading = true;
 
   search = event => {
     this.eventsFraKommune = this.backup.filter(function(value) {
@@ -65,8 +66,8 @@ export default class events extends Component<{
   handleChangeFylke = event => {
     if (event.target.value == 0) {
       this.eventsFraKommune = this.events;
-			document.getElementById('kommune').value = 0;
-			this.forceUpdate();
+      document.getElementById("kommune").value = 0;
+      this.forceUpdate();
     } else {
       console.log("Fylke valgt: " + event.target.value);
       userService
@@ -82,7 +83,7 @@ export default class events extends Component<{
     }
   };
 
-  handleChangeKommune = event =>{
+  handleChangeKommune = event => {
     eventService
       .getEventsCommune(event.target.value)
       .then(response => {
@@ -92,208 +93,216 @@ export default class events extends Component<{
       })
       .catch((error: Error) =>
         console.log("Fails by getting available  from kommune")
-      )
-		};
+      );
+  };
 
   render() {
-    this.eventside = this.eventsFraKommune.slice((this.props.match.params.id - 1) * 5,(this.props.match.params.id - 1) * 5 + 5);
-    return (
-      <>
-        <div className="container">
-          <div className="row">
-            <div className="col-12 col-md-8">
-              <img
-                src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
-                id="Saker-icon-pic"
-              />
+    this.eventside = this.eventsFraKommune.slice(
+      (this.props.match.params.id - 1) * 5,
+      (this.props.match.params.id - 1) * 5 + 5
+    );
+    if (!this.loading) {
+      return (
+        <>
+          <div className="container">
+            <div className="row">
+              <div className="col-12 col-md-8">
+                <img
+                  src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
+                  id="Saker-icon-pic"
+                />
+              </div>
+              <div className="col-6 col-md-4" />
             </div>
-            <div className="col-6 col-md-4" />
-          </div>
 
-          <div className="row">
-            <div className="col-4 col-md-4" />
-            <div className="col-6 col-md-4">
-              <div className="form-group">
-                <label htmlFor="inputFylke">Velg Fylke</label>
-                <select
-                  id="fylke"
-                  name="fylke"
-                  className="form-control"
-                  onChange={this.handleChangeFylke}
-                >
-                  <option selected value={0}>
-                    Alle{" "}
-                  </option>
-                  {this.fylker.map((fylke, i) => {
-                    return (
-                      <option value={fylke.ID} key={i}>
-                        {fylke.navn}
-                      </option>
-                    );
-                  })}
-                </select>
+            <div className="row">
+              <div className="col-4 col-md-4" />
+              <div className="col-6 col-md-4">
+                <div className="form-group">
+                  <label htmlFor="inputFylke">Velg Fylke</label>
+                  <select
+                    id="fylke"
+                    name="fylke"
+                    className="form-control"
+                    onChange={this.handleChangeFylke}
+                  >
+                    <option selected value={0}>
+                      Alle{" "}
+                    </option>
+                    {this.fylker.map((fylke, i) => {
+                      return (
+                        <option value={fylke.ID} key={i}>
+                          {fylke.navn}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+              <div className="col-6 col-md-4">
+                <div className="form-group">
+                  <label htmlFor="inputKommune">Velg Kommune</label>
+                  <select
+                    id="kommune"
+                    name="kommune"
+                    className="form-control"
+                    onChange={this.handleChangeKommune}
+                  >
+                    <option selected value={0}>
+                      Velg fylke først{" "}
+                    </option>
+                    {this.kommuner.map(kommune => {
+                      return <option value={kommune.ID}>{kommune.navn}</option>;
+                    })}
+                  </select>
+                </div>
               </div>
             </div>
-            <div className="col-6 col-md-4">
-              <div className="form-group">
-                <label htmlFor="inputKommune">Velg Kommune</label>
-                <select
-                  id="kommune"
-                  name="kommune"
-                  className="form-control"
-                  onChange={this.handleChangeKommune}
-                >
-                  <option selected value={0}>Velg fylke først </option>
-                  {this.kommuner.map(kommune => {
-                    return <option value={kommune.ID}>{kommune.navn}</option>;
-                  })}
-                </select>
+
+            <div className="row">
+              <div className="col-4 col-md-4">
+                <span
+                  className="glyphicon glyphicon-search"
+                  aria-hidden="true"
+                />
+                <input
+                  type="text"
+                  id="search"
+                  name="search"
+                  placeholder="Søk.."
+                  onChange={this.search}
+                />
               </div>
+              <div className="col-6 col-md-4" />
+              <div className="col-6 col-md-4" />
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-4 col-md-4">
-              <span className="glyphicon glyphicon-search" aria-hidden="true" />
-              <input
-                type="text"
-                id="search"
-                name="search"
-                placeholder="Søk.."
-                onChange={this.search}
-              />
-            </div>
-            <div className="col-6 col-md-4" />
-            <div className="col-6 col-md-4" />
-          </div>
-        </div>
+          <div id="events-page" className="events-body">
+            <div className="userHome-body">
+              <div className="userHome-container">
+                <div className="userHome-events">
+                  {this.eventside.map((e, i) => (
+                    <div key={i} className="userHome-event">
+                      <div className="event-date">
+                        <div className="calender">
+                          <p>
+                            {this.getMonth(
+                              e.date
+                                .substring(0, 16)
+                                .replace("20", "")
+                                .replace("T", " ")
+                                .substring(0, 8)
+                                .substring(3, 5)
+                            )}
+                          </p>
 
-        <div id="events-page" className="events-body">
-          <div className="userHome-body">
-            <div className="userHome-container">
-              <div className="userHome-events">
-                {this.eventside.map((e, i) => (
-                  <div key={i} className="userHome-event">
-                    <div className="event-date">
-                      <div className="calender">
+                          <h4>{e.date.substring(8, 10).replace("0", "")}</h4>
+                        </div>
+                      </div>
+
+                      <div className="event-info">
+                        <h5>{e.name}</h5>
                         <p>
-                          {this.getMonth(
-                            e.date
-                              .substring(0, 16)
-                              .replace("20", "")
-                              .replace("T", " ")
-                              .substring(0, 8)
-                              .substring(3, 5)
-                          )}
+                          {" "}
+                          <Icon name="home" />
+                          {e.address}
+                        </p>
+                        <p>
+                          {" "}
+                          <Icon name="access_time" />
+                          {e.date
+                            .substring(0, 16)
+                            .replace("20", "")
+                            .replace("T", " ")
+                            .substring(9)}
                         </p>
 
-                        <h4>{e.date.substring(8, 10).replace("0", "")}</h4>
-                      </div>
-                    </div>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-toggle="modal"
+                          data-target={"#" + e.event_id}
+                        >
+                          Les mer
+                        </button>
 
-                    <div className="event-info">
-                      <h5>{e.name}</h5>
-                      <p>
-                        {" "}
-                        <Icon name="home" />
-                        {e.address}
-                      </p>
-                      <p>
-                        {" "}
-                        <Icon name="access_time" />
-                        {e.date
-                          .substring(0, 16)
-                          .replace("20", "")
-                          .replace("T", " ")
-                          .substring(9)}
-                      </p>
+                        <div
+                          className="modal fade"
+                          id={e.event_id}
+                          tabIndex="-1"
+                          role="dialog"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5
+                                  className="modal-title"
+                                  id="exampleModalLabel"
+                                >
+                                  {e.name}
+                                </h5>
 
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-toggle="modal"
-                        data-target={"#" + e.event_id}
-                      >
-                        Les mer
-                      </button>
-
-                      <div
-                        className="modal fade"
-                        id={e.event_id}
-                        tabIndex="-1"
-                        role="dialog"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                      >
-                        <div className="modal-dialog" role="document">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5
-                                className="modal-title"
-                                id="exampleModalLabel"
-                              >
-                                {e.name}
-                              </h5>
-
-                              <button
-                                type="button"
-                                className="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                              >
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-
-                            <div className="modal-body">{e.description}</div>
-                            <div className="modal-footer">
-                              <div className="float-left">
-                                {e.venue + " - " + e.address}
+                                <button
+                                  type="button"
+                                  className="close"
+                                  data-dismiss="modal"
+                                  aria-label="Close"
+                                >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
                               </div>
-                              <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-dismiss="modal"
-                              >
-                                Close
-                              </button>
+
+                              <div className="modal-body">{e.description}</div>
+                              <div className="modal-footer">
+                                <div className="float-left">
+                                  {e.venue + " - " + e.address}
+                                </div>
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary"
+                                  data-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="event-image">
-                      <img
-                        className="max"
-                        src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                      />
+                      <div className="event-image">
+                        <img
+                          className="max"
+                          src="https://images.pexels.com/photos/2143/lights-party-dancing-music.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-              <div>
-                {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
-                  <button
-                    type="button"
-                    class="btn btn-outline-dark"
-                    id="Saker-side-button"
-                    onClick={() =>
-                      history.push(
-                        "/events/" + sidetall)
-                    }
-                  >
-                    {sidetall}
-                  </button>
-                ))}
+                  ))}
+                </div>
+                <div>
+                  {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark"
+                      id="Saker-side-button"
+                      onClick={() => history.push("/events/" + sidetall)}
+                    >
+                      {sidetall}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </>
-    );
+        </>
+      );
+    } else {
+      return <Loading />;
+    }
   }
-
 
   componentDidMount() {
     console.log("events mounted");
@@ -313,6 +322,8 @@ export default class events extends Component<{
         this.forceUpdate();
       })
       .catch((error: Error) => console.log("Error: getting fylker"));
+
+    this.loading = false;
   }
 
   getMonth(month) {
@@ -373,15 +384,15 @@ export default class events extends Component<{
   }*/
 
 /*userService //Endre til event senere
-	 	.getUserByID(34).then( sak => console.log(sak))
-	 	.catch((error: Error) => console.log(error.message));
-	 	console.log(this.user);*/
+    .getUserByID(34).then( sak => console.log(sak))
+    .catch((error: Error) => console.log(error.message));
+    console.log(this.user);*/
 
 /* componentDidMount() {
-	 	eventService //Endre til event senere
-	 	.getAllEvents()
-	 	.then( sak => this.setState({events: sak}))
-	 	.catch((error: Error) => console.log(error.message));
+    eventService //Endre til event senere
+    .getAllEvents()
+    .then( sak => this.setState({events: sak}))
+    .catch((error: Error) => console.log(error.message));
 
 
 
