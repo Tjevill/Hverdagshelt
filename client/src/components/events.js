@@ -220,7 +220,7 @@ export default class events extends Component<{
 
                         <button
                           type="button"
-                          className="btn btn-secondary"
+                          className="btn btn-info"
                           data-toggle="modal"
                           data-target={"#" + e.event_id}
                         >
@@ -262,7 +262,7 @@ export default class events extends Component<{
                                 </div>
                                 <button
                                   type="button"
-                                  className="btn btn-secondary"
+                                  className="btn btn-info"
                                   data-dismiss="modal"
                                 >
                                   Close

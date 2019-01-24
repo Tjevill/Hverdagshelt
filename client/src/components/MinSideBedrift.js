@@ -87,7 +87,7 @@ export default class MinSideBedrift extends Component {
                             <li className="list-group-item text-dark">Epost: {this.organization.email}</li>
                         </ul>
                         <button
-                            className= "btn btn-secondary"
+                            className= "btn btn-info"
                             onClick={ () => history.push("/bedrift/edit")}
                         >Rediger profil</button>
                     </div>

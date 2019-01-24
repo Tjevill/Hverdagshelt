@@ -236,7 +236,7 @@ export default class AdminEvents extends Component {
 
                             <button
                               type="button"
-                              className="btn btn-secondary"
+                              className="btn btn-info"
                               data-dismiss="modal"
                             >
                               Lukk
@@ -426,7 +426,7 @@ export default class AdminEvents extends Component {
 
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-info"
                   data-dismiss="modal"
                 >
                   Lukk
