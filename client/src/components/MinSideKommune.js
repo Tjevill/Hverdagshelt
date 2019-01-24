@@ -60,13 +60,14 @@ export default class MinSideKommune extends Component {
             if(this.loaded) {
                 return (
 
+                        <div className="profile-page">
 
-                        <div className="container">
+                            <div className="profile-title">
+                                <h2>Velkommen {this.employee.name}</h2>
+                            </div>
 
-                            <h1>Velkommen {this.employee.name}</h1>
-                            <div className="row">
-                                <div className="col-sm">
-                                    <h5>Bruker:</h5>
+                                <div className="profile-details">
+                                    <h4>Mine detaljer</h4>
                                     <ul className="list-group">
                                         <li className="list-group-item text-dark">Navn: {this.employee.name}</li>
                                         <li className="list-group-item text-dark">Telefon: {this.employee.tel}</li>
@@ -80,8 +81,8 @@ export default class MinSideKommune extends Component {
 
                                 </div>
 
-                                <div className="col-sm">
-                                    <h5>Siste 5 feil:</h5>
+                                <div className="profile-reports">
+                                    <h4>Siste 5 feilrapporter:</h4>
 
                                     <table className="table">
 
@@ -127,7 +128,6 @@ export default class MinSideKommune extends Component {
 
                                     </table>
                                 </div>
-                            </div>
 
                             <div>
                                 <p>

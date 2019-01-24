@@ -1,9 +1,9 @@
+// @flow
 import * as React from "react";
 import { Component } from "react-simplified";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import { caseService, employeeService, geoService } from "../services";
 import { Alert, Loading } from "./widgets";
-
 
 const style = {
     width: "90%",
@@ -35,12 +35,18 @@ export class MapContainer extends Component {
     longitude = 10.3876995;
     zoom = 5;
 
+    amountFound = <></>;
+
     async componentDidMount(){
         this.cases = await caseService.getAllCases();
         this.communes = await geoService.getCommunesKommune();
         console.log(this.communes);
         this.loaded = true;
         this.forceUpdate();
+    }
+
+    handleKeyPressSearch(e: Event){
+        if(e.key === "Enter") this.casesByCommune(this.commune);
     }
 
     async casesByCommune(name) {
@@ -57,8 +63,9 @@ export class MapContainer extends Component {
         if(this.casesShowing.length  >  0){
             this.latitude = this.casesShowing[0].latitude;
             this.longitude = this.casesShowing[0].longitude;
-            this.zoom = 10;
+            this.zoom = 11;
         }
+        this.amountFound = <h5>Antall saker i kommunen: {this.casesShowing.length}</h5>;
 
     }
 
@@ -67,7 +74,7 @@ export class MapContainer extends Component {
             return (
                 <div id="map-page" className="max">
                     <div id="map-search">
-                        Din lokasjon:
+                        Finn alle saker i kommune:
                         <input
                           id="map-commune-input"
                           className="form-control"
@@ -77,6 +84,7 @@ export class MapContainer extends Component {
                             this.commune = event.target.value;
                             this.changeCommune(event);
                           }}
+                          onKeyPress={this.handleKeyPressSearch}
                         />
                         <div className="card" style={{width: "100%"}}>
                           <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
@@ -92,6 +100,7 @@ export class MapContainer extends Component {
                         <div className="center-button-wrapper">
                             <button type="button" className="btn btn-lg btn-primary" onClick={() => this.casesByCommune(this.commune)}>Søk</button>
                         </div>
+                        {this.amountFound}
                     </div>
                     <Map
                         google={this.props.google}
