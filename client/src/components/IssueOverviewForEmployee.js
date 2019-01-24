@@ -414,7 +414,7 @@ export default class IssueOverviewForEmployee extends Component<{
                                     </select>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
                                     <button type="button" className="btn btn-primary"
                                             onClick={() => this.saveUpdate(casen.case_id)}>
                                         Lagre endringer

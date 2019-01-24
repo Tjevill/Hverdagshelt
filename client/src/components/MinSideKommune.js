@@ -74,7 +74,7 @@ export default class MinSideKommune extends Component {
                                         <li className="list-group-item text-dark">Kommune: {this.commune}</li>
                                     </ul>
                                     <button
-                                        className= "btn btn-secondary"
+                                        className= "btn btn-info"
                                         onClick={ () => history.push("/admin/edit")}
                                     >Rediger profil</button>
 
