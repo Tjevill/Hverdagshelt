@@ -113,10 +113,20 @@ CREATE TABLE Place (
   zipcode varchar(4) NOT NULL,
   province varchar(100) NOT NULL,
   PRIMARY KEY (zipcode)
-
-
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE kommune (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  fylke_id int(11) NOT NULL,
+  navn varchar(40),
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE fylke (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  navn varchar(30),
+  PRIMARY KEY (ID)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  
 
 COMMIT;
