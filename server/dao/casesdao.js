@@ -40,7 +40,7 @@ module.exports = class CasesDao extends Dao {
 
     /** Get all cases from one user based on user_id */
     getCaseOnUser(user_id, callback){
-        super.query("SELECT * FROM Cases WHERE user_id = ?", [user_id], callback);
+        super.query("SELECT * FROM Cases WHERE user_id = ? order by timestamp desc", [user_id], callback);
     }
 
     /** Create case 
@@ -234,7 +234,7 @@ module.exports = class CasesDao extends Dao {
 	 */
   getCasesForOrganization(id: number, callback: mixed){
 	  super.query(
-	    "SELECT * FROM Cases WHERE org_id = ? AND status_id NOT LIKE 6",
+	    "SELECT * FROM Cases WHERE org_id = ? AND status_id NOT LIKE 6 ORDER BY timestamp desc",
       [id],
       callback
     )

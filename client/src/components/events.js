@@ -324,18 +324,16 @@ export default class events extends Component<{
         this.events = sak;
         this.eventsFraKommune = sak;
         this.backup = sak;
+        userService
+          .getDistricts()
+          .then(fylker => {
+            this.fylker = fylker;
+            this.loading = false;
+            this.forceUpdate();
+          })
+          .catch((error: Error) => console.log("Error: getting fylker"));
       })
       .catch((error: Error) => console.log(error.message));
-
-    userService
-      .getDistricts()
-      .then(fylker => {
-        this.fylker = fylker;
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log("Error: getting fylker"));
-
-    this.loading = false;
   }
 
   getMonth(month) {
