@@ -68,7 +68,7 @@ module.exports = class OrgDao extends Dao {
 	 * @param callback
 	 */
 	updateOrg (json: jsonUpdate, callback: mixed){
-console.log("Kall til updateOrg: ");
+		console.log("Kall til updateOrg: ");
 		let val = [json.organizationnumber, json.name, json.email, json.tel, json.org_id];
 		console.log("val: ", val);
 		super.query(
@@ -130,8 +130,11 @@ console.log("Kall til updateOrg: ");
 		);
 	}
 
-
-
+	/**
+	 *
+	 * @param json
+	 * @param callback
+	 */
     addOrganization(json, callback) {
         var salt = genRandomString(32); /** Creates a salt of 32 bytes. BYTES ARE CHEAP! */
         var passwordData = sha512(json.password, salt);
@@ -152,7 +155,13 @@ console.log("Kall til updateOrg: ");
 			callback
 		);
 	}
-	
+
+	/**
+	 * Update the resetPasswordToken.
+	 * @param json
+	 * @param org_id
+	 * @param callback
+	 */
 	updateResetPasswordToken(json: json, org_id: number, callback: any) {
 		let val = [json.resetPasswordToken, json.resetPasswordExpire, org_id];
 		super.query(
@@ -161,7 +170,12 @@ console.log("Kall til updateOrg: ");
 			callback
 		);
 	}
- 	
+
+	/**
+	 * Get the resetToken for one user.
+	 * @param token
+	 * @param callback
+	 */
 	 getUserFromResetToken(token: string, callback: any) {
 
 		 super.query(
@@ -171,6 +185,12 @@ console.log("Kall til updateOrg: ");
 		 );
 	 }
 
+
+	/**
+	 * Get one organization using the email.
+	 * @param email
+	 * @param callback
+	 */
 	  getOrgByEmail(email, callback) {
         super.query(
             "select * from Organization where email = ?",
@@ -179,7 +199,12 @@ console.log("Kall til updateOrg: ");
         );
     }
 
-    getAllCasesOrg(org_id, callback){
+	/**
+	 * Get all the cases for one organization that is "SOLVED".
+	 * @param org_id
+	 * @param callback
+	 */
+	getAllCasesOrg(org_id, callback){
 		super.query(
 			"SELECT * FROM Cases WHERE org_id = ? AND status_id = 6",
 			[org_id],
