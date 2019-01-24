@@ -1319,6 +1319,10 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                 console.log('::::::::::::::::::updating case');
                 
                 orgDao.getOrgReplyMail(req.body.org_id, (status,data) => {
+
+                    if(!data[0]) {
+                        console.log('ikke tildelt en bedrift, sender ikke e-post');
+                    } else {
                     
                     const mailOptionsCaseOrg = {
                         from: 'bedrehverdagshelt@gmail.com',
@@ -1337,6 +1341,7 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                             console.log(mailOptionsCaseOrg);
                         }
                     });
+                    }
 
                     statusDao.getOneById(req.body.status, (status,data) => {
                         let statusName = data[0].description;
