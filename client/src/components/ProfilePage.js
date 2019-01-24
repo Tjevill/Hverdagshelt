@@ -69,7 +69,6 @@ export default class ProfilePage extends Component {
                         <tr>
                             <th scope="col">Tittel</th>
                             <th scope="col">Status</th>
-                            <th scope="col"></th>
                         </tr>
                         </thead>
                         {this.cases.map(x  => (

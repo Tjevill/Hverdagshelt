@@ -142,7 +142,7 @@ module.exports = class UserDao extends Dao {
 	 */
 	getCasesOnCommuneID(id: number, callback: mixed){
         super.query(
-          "SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?)",
+          "SELECT * FROM Cases INNER JOIN Place ON Place.zipcode = Cases.zipcode WHERE Place.province = (SELECT navn FROM kommune WHERE ID = ?) order by timestamp desc",
           [id],
           callback
         )

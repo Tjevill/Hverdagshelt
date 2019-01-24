@@ -28,10 +28,18 @@ INSERT INTO `Events` (`event_id`, `name`, `date`, `description`, `zipcode`, `add
 (32, 'Ben spiller blokkfløyte... enda en gang', '2019-09-27 00:00:00', 'Ben er ikke særlig god', '7020', 'Fløyteveien 2', 'I kjellern');
 
 
-INSERT INTO Employee (name, tel, email, password, secret, province, district) VALUES
- ('Odd Ronny Grustak', 24681012, 'oddronny@gmail.com', '66a6530c6943ff75238f0bef371af70929c899b12d08ffefeefa33fb1cc328c36925b5918520b20d82a2745845f650f633ec6120e3ca1a1bce4aed0e08c39118', '65aaacb1161c919729fdf2fecedbae72', 74, 5),
- ('Bentoooo', 4123444, 'test@test.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 22);
 
+INSERT INTO `Employee` (`employee_id`, `name`, `tel`, `email`, `password`, `secret`, `commune`, `county`, `superuser`, `resetPasswordToken`, `expirePasswordToken`) VALUES
+(1, 'Øyvind Valstadsve', 98815562, 'oyvinval@stud.ntnu.no', 'ed380054c5e100366d8ad107358e2738e102d7c1fad6f2b614f090f59c0db2422a99cdac8cf1acbaa4fd4b351a02069fa81a1d2df709803783cff992ec8e3014', 'a382b017fef364c2e4b5a523efa0d867', 1, 1, 0, NULL, NULL),
+(3, 'Ben-endret', 12345678, 'test@endret.no', 'e92185b11bf459e1d89fcfb4c7f82eea5d4bd848c0ffb2973466cc4382f77018255e323b118183385fcc21f55c9ef5653ba5f05fca1c61661d79383aa90f964a', '0e5811db7f2e8bdf1f90353c1d8e856c', 1, 23, 0, NULL, NULL),
+(4, 'Odd Ronny Grustaket', 3342434, 'oddronny@gmail.com', '0dddf2ff98189adfaf0d5fe0f8249ebe887292ad9e345bc066ab13864288bc95e0a0545ad517707c76c396caaefa972e3d4c3a04e1bc553c52f04cccdd8858b3', '42cc7e1ba4bc257260b1cad8eba0cf4f', 315, 16, 1, NULL, NULL),
+(5, 'Ben Oscar Strømstrømstrøm', 12345678, 'benstrom@strom.ben', '6162a3d05e4f543c2fc22b695f42565c0af0ce089f323708fddc5d30ad5d267ee85d240188211ccb604e2e4af3c9a28ad42454ec9260ef072dbb8f2ceef03e22', '25a532363c2056c0d10b8004eed58d7b', 1, 1, 1, NULL, NULL),
+(7, 'Slett meg ', 12345654, 'praxiz@praxiz.net', 'bddd6dce9c963d9620695c7dc3d280ce9fe51b979799b0f0af675a3c2906ec935cfc73fcb627bc60f265304704ca7770de3a23bc44c856c21eed99cb2322377b', '19d95b8709f530185253b74916c23b91', 229, 12, 0, NULL, NULL),
+(8, 'Torstein', 3424243, 'TorsteinFikser@gmail.com', '92676977dd43948c35843a7604dce881e3ab2a47b3183a356da5ca0ff0afc79ffff3457eab0d469cd9758a4debb9c0031ff0deaab8dc9446d4d56ab21cdc475a', '98bd355587bef6cd5245bb8c24bc3578', 296, 16, 0, NULL, NULL),
+(10, 'Erling troll 2e', 12345678, 'erling@ansatt.no', 'cc5dfb9a74f1ce49dd779c4b15f670d95dc735389fa6c22ecad05edf36b797dda041ba51286ddbc2a93b1826172ecfb8b19270f13c51afa1cb10f5f73066e797', '5ffc96989d86d92a90e42bf1c2d7a0dc', 315, 16, 0, NULL, NULL),
+(18, 'Benkom', 999999993, 'benos@stud.ntnu.no', 'b2780b82c0364fc792a421441f11a88be3ce64d40d24b0a0769ebcbc030c6fe2a7218463499572bef58ecdff160509297cadf66254fc04f35131e67ded82b603', '9d0e021022fbf54b0f0875020931eaa2', 315, 16, 0, '62160308bec58e8cf10a763a6d4838f85a908ac6', '1548272371463'),
+(20, 'kari traa', 3424234, '342@gmail.com', '05e0258951320e13d1357305b8482749e89b98477c38e0d0c4b6c14d3931a27c8a69954173085e40c103cf63a80464568c87221250c7b7750ca8a44ca95148d9', 'a3161a354ac8ed1f874e1f2a5d993cd7', 106, 6, 0, NULL, NULL),
+(21, 'Aria Bui', 45181447, 'thuybrooks98@gmail.com', '752310c5e37f25df4a06d45581b2b98ad00d776120035e8d7ce5d70456d33fca047b59cab7c7740ca5fc6ceef2ae1c2299695e5c4c145e5a24bf4d4ace1196b0', 'a60001b5b2ff017efc8da10cd4801cc3', 315, 16, 0, NULL, NULL);
 
 INSERT INTO StatusTable (description) VALUES
       ("Ubehandlet"), 
@@ -86,3 +94,19 @@ INSERT INTO `Organization` (`org_id`, `organizationnumber`, `name`, `tel`, `emai
 (16, 23242, 'Kåres Kranservice', '28472403', 'heh@heh.no', '188a716070e7d91dae6c63a80914f0d9d2726363691c228936309c2a796a6cc38bae5396ee396cf86a1fc164f3cb4114b58041dac0afd53c848566188b69da5f', 'd9cf4ba91f363d3eace36deeddd0fb22', NULL, NULL),
 (22, 7173777, 'Elektro', '12345678', 'Elektro@gmail.com', 'ba45aefdf394bc75505c4022559cec2d686a5a341c36e1f8f3753e5abff5b5ca9cf451b4c537cacbac3746a8326f396c092dcfbd9613f4a97fc0bca60b85a9ab', '0e91aa75989e880d8ce826bf0c66fe86', NULL, NULL);
 
+
+
+INSERT INTO Place (zipcode, province) VALUES
+("0001",'OSLO'),
+(1001, 'OSLO'),
+(2001, 'LILLESTRØM'),
+(3001, 'DRAMMEN'),
+(7001, 'TRONDHEIM');
+
+INSERT INTO fylke (navn) VALUES
+('OSLO'),
+('TRØNDELAG');
+
+INSERT INTO kommune (fylke_id, navn) VALUES
+(1,'OSLO'),
+(2,'TRONDHEIM');
