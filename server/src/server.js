@@ -64,7 +64,6 @@ const pool = mysql.createPool({
 });
 
 // Dao's
-const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
@@ -91,7 +90,6 @@ const transporter = nodemailer.createTransport({
 
 let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
-let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let employeeDao = new Employeedao(pool);
 let orgDao = new Orgdao(pool);
