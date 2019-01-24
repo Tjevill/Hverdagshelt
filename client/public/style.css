@@ -409,3 +409,7 @@ ListItem {
 .hover {
     pointer: hover;
 }
+
+.search-employee {
+    color: black !important;
+}

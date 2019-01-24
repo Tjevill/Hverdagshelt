@@ -348,7 +348,7 @@ export default class IssueOverviewForEmployee extends Component<{
           {this.caseside.map(casen => (
             <tr key={casen.case_id}>
               <th>{casen.case_id}</th>
-              <td onClick={() => history.push("/case/" + casen.case_id)}>
+              <td className={"clickable-link"} onClick={() => history.push("/case/" + casen.case_id)}>
                 {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
