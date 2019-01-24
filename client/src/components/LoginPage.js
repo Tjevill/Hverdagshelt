@@ -230,7 +230,7 @@ export default class LoginPage extends Component {
 
                             <div className="loginoption1" /* onClick={() => {this.toggle1()}} */>
 
-                                <h3 id="login-user-title" data-toggle="collapse" data-target="#login-user-image, #login-user-form" className="login-title">HVERDAGSHELT</h3>
+                                <h3 id="login-user-title" onClick={() => ("")} data-toggle="collapse" data-target="#login-user-image, #login-user-form" className="login-title">HVERDAGSHELT</h3>
                                 <div id="login-user-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
                                 </div>
@@ -280,7 +280,7 @@ export default class LoginPage extends Component {
 
                             <div className="loginoption2" /* onClick={() => {this.toggle2()}} */>
 
-                                <h3 id="login-org-title" data-toggle="collapse" data-target="#login-org-image, #login-org-form" className="login-title">BEDRIFT</h3>
+                                <h3 id="login-org-title" onClick={() => ("")} data-toggle="collapse" data-target="#login-org-image, #login-org-form" className="login-title">BEDRIFT</h3>
                                 <div id="login-org-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/bedriftsansatt.png') } alt="bedriftsansatt" />
                                 </div>
@@ -330,7 +330,7 @@ export default class LoginPage extends Component {
 
                             <div className="loginoption3" /* onClick={() => {this.toggle3()}} */>
 
-                                <h3 id="login-emp-title" data-toggle="collapse" data-target="#login-emp-image, #login-emp-form" className="login-title">KOMMUNE</h3>
+                                <h3 id="login-emp-title" onClick={() => ("")} data-toggle="collapse" data-target="#login-emp-image, #login-emp-form" className="login-title">KOMMUNE</h3>
                                 <div id="login-emp-image" className="profilbilde login-collapsable">
                                     <img src={ require('./resources/kommuneansatt.png') } alt="kommuneansatt" />
                                 </div>

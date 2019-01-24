@@ -530,6 +530,9 @@ export default class OrgIssueOverview extends Component<{
             </div>
           </div>
         </div>
+
+        <br/><br/>
+
         </>
       );
      }else{
