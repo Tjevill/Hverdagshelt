@@ -40,7 +40,7 @@ export default class Menu extends Component {
 
                     </nav>
                     <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
-                        <div className="container">
+                        <div className="hamburgercontainer">
                             <div className="navbar-header">
                                 <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                     <span className="sr-only">Toggle navigation</span>
@@ -92,7 +92,7 @@ export default class Menu extends Component {
 
                 </nav>
                 <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
-                    <div className="container">
+                    <div className="hamburgercontainer">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>
@@ -154,7 +154,7 @@ export default class Menu extends Component {
 
 
                 <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
-                    <div className="container">
+                    <div className="hamburgercontainer">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>
@@ -224,7 +224,7 @@ export default class Menu extends Component {
 
 
                     <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
-                        <div className="container">
+                        <div className="hamburgercontainer">
                         <div className="navbar-header">
                              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>

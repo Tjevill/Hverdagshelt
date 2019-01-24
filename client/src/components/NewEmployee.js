@@ -8,8 +8,6 @@ import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
 
-
-
 function isEmail(str) {
   var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
   return reg.test(str);
@@ -34,6 +32,24 @@ export default class NewEmployee extends Component {
     commune: "",
     password: "",
     password2: ""
+  };
+
+  messagewarn = {
+    password1: "",
+    password2: "",
+    commune: "",
+    email: "",
+    tel: "",
+    name: ""
+  };
+
+  validstatus = {
+    password1: "",
+    password2: "",
+    email: "",
+    commune: "",
+    tel: "",
+    name: ""
   };
 
   componentDidMount() {
@@ -84,10 +100,12 @@ export default class NewEmployee extends Component {
     const name = target.name;
     if (isNaN(value)) {
       value = this._value;
-      this.telinfo = "kun skriv inn nummer";
+      this.messagewarn.tel = "kun skriv inn nummer";
+      this.validstatus.tel = "is-invalid";
       setTimeout(
         function() {
-          this.telinfo = " ";
+          this.messagewarn.tel = "";
+          this.validstatus.tel = "";
           document.getElementById("tel").value = this._value;
         }.bind(this),
         500
@@ -111,17 +129,18 @@ export default class NewEmployee extends Component {
             <div className="form-group">
               Navn:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.name}
                 type="text"
                 name="name"
                 defaultValue=""
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">{this.messagewarn.name}</div>
             </div>
             <div className="form-group">
               Telefon:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.tel}
                 type="text"
                 defaultValue=""
                 maxLength="8"
@@ -129,17 +148,19 @@ export default class NewEmployee extends Component {
                 name="tel"
                 onChange={this.changeNr}
               />
+              <div className="invalid-feedback">{this.messagewarn.tel}</div>
               <p>{this.telinfo}</p>
             </div>
             <div className="form-group">
               Email:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.email}
                 type="text"
                 defaultValue=""
                 name="email"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">{this.messagewarn.email}</div>
             </div>
             <div className="form-group">
               Velg fylke:{" "}
@@ -158,7 +179,7 @@ export default class NewEmployee extends Component {
             <div className="form-group">
               Velg kommune:{" "}
               <select
-                className="form-control"
+                className={"form-control " + this.validstatus.commune}
                 name="commune"
                 id="commune"
                 onChange={this.handleChangeKommune}
@@ -168,26 +189,33 @@ export default class NewEmployee extends Component {
                   return <option value={kommuner.ID}>{kommuner.navn}</option>;
                 })}
               </select>
+              <div className="invalid-feedback">{this.messagewarn.commune}</div>
             </div>
             <div className="form-group">
               Passord:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.password1}
                 type="password"
                 defaultValue=""
                 name="password"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">
+                {this.messagewarn.password1}
+              </div>
             </div>
             <div className="form-group">
               Gjenta Passord:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.password2}
                 type="password"
                 defaultValue=""
                 name="password2"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">
+                {this.messagewarn.password2}
+              </div>
             </div>
             <h3>{this.passworderror}</h3>
 
@@ -213,6 +241,13 @@ export default class NewEmployee extends Component {
     let name = this.state.name;
     let tel = this.state.tel;
     let email = this.state.email;
+    this.validstatus.name = " ";
+    this.validstatus.tel = " ";
+    this.validstatus.email = " ";
+    this.validstatus.password1 = "";
+    this.validstatus.password2 = "";
+    this.messagewarn.commune = " ";
+    this.validstatus.commune = " ";
 
     if (!this.user) {
       console.log("Returning null!");
@@ -220,28 +255,47 @@ export default class NewEmployee extends Component {
       return null;
     }
 
-    if (email == "" || name == "" || tel == "") {
-      this.passworderror = "Feltet kan ikke være null";
+    if (name == "") {
+      this.messagewarn.name = "Feltet kan ikke være null";
+      this.validstatus.name = "is-invalid";
       return null;
     }
-    
-    if (!isEmail(email)) {
-      this.passworderror = "Ugydig email";
+    if (tel == "") {
+      this.messagewarn.tel = "Feltet kan ikke være null";
+      this.validstatus.tel = "is-invalid";
       return null;
-    } else {
-      this.passworderror = "";
     }
 
+    if (email == "") {
+      this.messagewarn.email = "Feltet kan ikke være null";
+      this.validstatus.email = "is-invalid";
+      return null;
+    }
+
+    if (!isEmail(email)) {
+      this.messagewarn.email = "Ugydig email";
+      this.validstatus.email = "is-invalid";
+      return null;
+    }
+
+    if (this.state.commune == "") {
+      this.messagewarn.commune = " må valge et kommune";
+      this.validstatus.commune = "is-invalid";
+    }
 
     if (this.state.password != this.state.password2) {
-      this.passworderror = "Passordene matcher ikke.";
+      this.messagewarn.password1 = "Passordene matcher ikke.";
+      this.messagewarn.password2 = "Passordene matcher ikke.";
+      this.validstatus.password1 = "is-invalid";
+      this.validstatus.password2 = "is-invalid";
       return null;
     } else {
       this.passworderror = "";
     }
 
     if (passlength < minlength) {
-      this.passworderror = "Passordet er for kort";
+      this.messagewarn.password1 = "Passordet er for kort";
+      this.validstatus.password1 = "is-invalid";
       return null;
     } else {
       this.passworderror = "";
