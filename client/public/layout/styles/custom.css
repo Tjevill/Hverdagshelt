@@ -60,3 +60,17 @@
 	.hengelaasdiv {display:none; }
 }
 
+.buttonpadding {
+	margin:5px;
+	border-radius: 4px !important;
+}
+
+.min-side-rediger-bilde-div {
+	text-align: center;
+}
+.min-side-rediger-bilde {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}

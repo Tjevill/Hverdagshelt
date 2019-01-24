@@ -160,8 +160,10 @@ Delete it completely to stop fading
 
 .container {
 	padding: 2px !important;
-	margin-right: 50px !important;
-	margin-left: 50px !important;
+	margin-top: 35px; !important;
+	margin-bottom:80px; !important;
+	margin-right: 5px !important;
+	margin-left: 5px !important;
 }
 
 
@@ -399,6 +401,10 @@ table a, #comments a{background-color:inherit;}
 	}
 
 	#footer{}
+	.min-side-rediger-bilde-div {
+
+	}
+
 
 	#copyright{}
 	#copyright p:first-of-type{margin-bottom:10px;}

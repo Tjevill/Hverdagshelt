@@ -386,3 +386,7 @@ body,
         grid-template-areas: "title" "details" "reports";
     }
 }
+
+.saker-table-hover tbody tr:hover td {
+    background: #519e8a;
+}
