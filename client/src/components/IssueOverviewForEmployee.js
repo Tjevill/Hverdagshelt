@@ -562,6 +562,7 @@ export default class IssueOverviewForEmployee extends Component<{
               <div className="btn-group">{sidebuttons}</div>
             </div>
           </div>
+          <br/><br/>
         </>
       );
     } else {

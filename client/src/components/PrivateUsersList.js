@@ -116,6 +116,7 @@ export default class PrivateUsersList extends Component<{
               </div>
             </div>
           </div>
+          <br/><br/>
         </div>
       );
     } else {

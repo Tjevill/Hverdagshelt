@@ -1358,7 +1358,7 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                                 const mailOptionsCase = {
                                     from: 'bedrehverdagshelt@gmail.com',
                                     to: data[0].email,
-                                    subject: 'Din sak har blitt oppdaert!',
+                                    subject: 'Din sak har blitt oppdatert!',
                                     html:
                                         '<h1> Status: ' + statusName + ' </h1>' +
                                         '<p> "' + req.body.comment + '" </p>' +
