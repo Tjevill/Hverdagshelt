@@ -347,7 +347,6 @@ export default class IssueOverviewForEmployee extends Component<{
         <tbody>
           {this.caseside.map(casen => (
             <tr key={casen.case_id}>
-              <th>{casen.case_id}</th>
               <td className={"clickable-link"} onClick={() => history.push("/case/" + casen.case_id)}>
                 {casen.headline}
               </td>
@@ -355,9 +354,9 @@ export default class IssueOverviewForEmployee extends Component<{
                 <td>{this.getOrgOnCase(casen.org_id)}</td>
               <td>
                 {" "}
-                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
-                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
-                    	&nbsp;Oppdater sak&nbsp;
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-warning m-2">
+                  <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
+                    	&#x270E;  Oppdater
                   </span>
                     </button>
                     <div className="modal fade" id={casen.case_id} tabIndex="-1"
@@ -424,20 +423,18 @@ export default class IssueOverviewForEmployee extends Component<{
                             </div>
                         </div>
                     </div>
-                <button className="btn btn-sm btn-danger edit-button">
+                <button class="btn btn-danger m-2">
                   <span
-                    className="glyphicon glyphicon-remove"
                     aria-hidden="true"
                     onClick={() => {
                       this.delete(casen.case_id);
                     }}
                   >
-                    &nbsp;Slett&nbsp;&nbsp;
+                    &#x2716;  Slett
                   </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <span className="badge badge-primary">
-
+                <span class="badge badge-primary m-2">
 
                 <span className="badge badge-primary">
                     <div>
@@ -548,7 +545,6 @@ export default class IssueOverviewForEmployee extends Component<{
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
                       <th scope="col">Saken er tildelt</th>

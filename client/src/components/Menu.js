@@ -211,9 +211,9 @@ export default class Menu extends Component {
                             <li><a className="drop" href="#">Administrator</a>
                                 <ul>
                                     <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/heroes/1">Hverdagshelter</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/bedrift/1">Bedrifter</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/admin/events/1">Events</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
                                     <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
                                     <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
@@ -248,7 +248,7 @@ export default class Menu extends Component {
                             <li><NavLink to="#">---------------------</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/bedrift/1">Bedrifter</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
                             <li><NavLink onClick={() => window.open("#/statistics")} to="/" onClick={this.preventRoute}>Statistikk</NavLink></li>
