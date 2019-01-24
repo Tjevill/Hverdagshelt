@@ -400,11 +400,7 @@ ListItem {
     padding: 5px 7px 5px !important;
 }
 
-.container {
-    padding: 2px !important;
-    margin-right: 50px !important;
-    margin-left: 50px !important;
-}
+
 
 .hover {
     pointer: hover;
