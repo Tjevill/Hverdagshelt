@@ -115,7 +115,7 @@ class Districts {
 }
 
 //let url = 'http://xx.xx.xxx.xx:8080'; for mobile testing(use your own ip)
-const url = "http://10.22.147.81:8080";
+const url = "http://localhost:8080";
 
 let axiosConfig = {
   headers: {
