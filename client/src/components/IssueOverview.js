@@ -288,11 +288,11 @@ export default class IssueOverview extends Component<{
           <div className="jumbotron">
             <div className="container text-center">
               <div className="btn-group" role="group" aria-label="First group">
-                <button type="button" class="btn btn-secondary col-sm-3"  onClick={()=>this.category(0,"All")}>
+                <button type="button" class="btn btn-info col-sm-3"  onClick={()=>this.category(0,"All")}>
                   All
                 </button>
                 {this.categories.map(category => (
-                  <button type="button" class="btn btn-secondary col-sm-3" onClick={()=>this.category(category.category_id,category.description)}>
+                  <button type="button" class="btn btn-info col-sm-3" onClick={()=>this.category(category.category_id,category.description)}>
                     {category.description}
                   </button>
                 ))}
@@ -397,6 +397,9 @@ export default class IssueOverview extends Component<{
               <div class="btn-group">{sidebuttons}</div>
             </div>
           </div>
+
+          <br/><br/>
+
         </>
       );
     } else {

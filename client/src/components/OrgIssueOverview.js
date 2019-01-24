@@ -370,7 +370,7 @@ export default class OrgIssueOverview extends Component<{
                                           Sak løst
                                   </label>
                                   <div className="modal-footer">
-                                      <button type="button" className="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                                      <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
                                       <button type="button" className="btn btn-primary"
                                               onClick={() => this.saveComment(casen.case_id)}>
                                           Lagre endringer
@@ -530,6 +530,9 @@ export default class OrgIssueOverview extends Component<{
             </div>
           </div>
         </div>
+
+        <br/><br/>
+
         </>
       );
      }else{
