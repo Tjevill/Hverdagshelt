@@ -126,6 +126,7 @@ export default class AdminBedrift extends Component<{
               </div>
             </div>
           </div>
+          <br/><br/>
         </div>
       );
     } else {

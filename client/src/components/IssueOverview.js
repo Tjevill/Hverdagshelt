@@ -397,6 +397,9 @@ export default class IssueOverview extends Component<{
               <div class="btn-group">{sidebuttons}</div>
             </div>
           </div>
+
+          <br/><br/>
+
         </>
       );
     } else {

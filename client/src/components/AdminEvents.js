@@ -129,6 +129,8 @@ export default class AdminEvents extends Component {
                       </div>
                     </div>
                   </div>
+                  <br/><br/>
+
 
                   <form onSubmit={() => this.addEvent()}>
                     <div
