@@ -107,4 +107,16 @@ ALTER TABLE `Organization`
 
 ALTER TABLE `Organization`
   MODIFY `org_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
+
+CREATE TABLE Place (
+  zipcode varchar(4) NOT NULL,
+  province varchar(100) NOT NULL,
+  PRIMARY KEY (zipcode)
+
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
 COMMIT;
