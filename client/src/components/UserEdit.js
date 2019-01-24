@@ -19,7 +19,7 @@ export default class UserEdit extends Component {
   loaded = false;
   userid = -1;
   user = new Object();
-  bilde = "https://img.icons8.com/android/1600/user.png";
+  bilde = "./resources/hverdagshelt.png";
   _tel = "";
   Emailinputtype = "";
   Nameinputtype = "";
@@ -88,6 +88,7 @@ export default class UserEdit extends Component {
     return (
           <div id="user-edit-page">
             <div id="main-form" className="col">
+                <h2>Rediger din profil</h2>
          <div className="form-group">
           Navn:{" "}
           <input
@@ -153,7 +154,7 @@ export default class UserEdit extends Component {
           <button type="button" className="btn btn-secondary" onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</button>
           </div>
           <div id="main-image" className="col">
-            <img src={this.bilde} width="200"/>
+              <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
           </div>
         </div>
     );

@@ -71,7 +71,7 @@ export default class AdminRedigerEmployee extends Component {
           <div className="container text-center">
             <div className="row">
               <div className="col">
-                  <h1>Hverdagshelt!</h1>
+                  <h2>Rediger din profil</h2>
                 <div className="form-group">
                   Epost:
                   <input
