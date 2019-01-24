@@ -248,6 +248,18 @@ body,
 
 }
 
+#events-page .page-banner {
+    text-align: center;
+    width: 100%;
+    padding: 2% 20%;
+}
+
+#events-page .page-icon {
+    width: 20%;
+    display: inline-block;
+    margin-bottom: 3%;
+}
+
 #events-page .userHome-event{
     width: 100%;
     padding: 4% 0 4% 0;

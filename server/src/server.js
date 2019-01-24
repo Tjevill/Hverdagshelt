@@ -29,10 +29,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-
-
 let privateKey = ("asecretprivatekeytorulethemallforgedinthemountainsoffordbord");
-
 
 'use strict';
 const crypto = require('crypto');
@@ -53,6 +50,8 @@ var sha512 = function(password, salt){
     };
 };
 
+/** Authentication with database */
+
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: config.db.host,
@@ -62,23 +61,7 @@ const pool = mysql.createPool({
     debug: false
 });
 
-// Dao's
-const eventdao = require("../dao/eventdao.js");
-const Casedao = require("../dao/casesdao.js");
-const Userdao = require("../dao/userdao.js");
-const Orgdao = require("../dao/orgdao.js");
-const Categorydao = require("../dao/categorydao.js");
-const Empdao = require("../dao/employeedao.js");
-const Statusdao = require("../dao/statusdao.js");
-const GeoDao = require("../dao/geodao.js");
-const StatDao = require("../dao/statisticsdao.js");
-
-const Employeedao = require("../dao/employeedao.js");
-
-
-
-
-// Authentication with bedrehverdagshelt@gmail.com
+/** Authentication with bedrehverdagshelt@gmail.com */
 const transporter = nodemailer.createTransport({
     service: config.email.service,
     auth: {
@@ -87,167 +70,41 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-let userdao = new Userdao(pool);
-let eventDao = new eventdao(pool);
-let caseDao = new Casedao(pool);
-let employeeDao = new Employeedao(pool);
-let orgDao = new Orgdao(pool);
+/** Dao- imports */
+const Casedao       = require("../dao/casesdao.js");
+const Categorydao   = require("../dao/categorydao.js");
+const eventdao      = require("../dao/eventdao.js");
+const Employeedao   = require("../dao/employeedao.js");
+const Empdao        = require("../dao/employeedao.js");
+const GeoDao        = require("../dao/geodao.js");
+const Orgdao        = require("../dao/orgdao.js");
+const Statusdao     = require("../dao/statusdao.js");
+const StatDao       = require("../dao/statisticsdao.js");
+const Userdao       = require("../dao/userdao.js");
+
+let caseDao     = new Casedao(pool);
 let categoryDao = new Categorydao(pool);
-let empDao = new Empdao(pool);
-let statusDao = new Statusdao(pool);
-let geodao = new GeoDao(pool);
-let statDao = new StatDao(pool);
+let eventDao    = new eventdao(pool);
+let employeeDao = new Employeedao(pool);
+let empDao      = new Empdao(pool);
+let geodao      = new GeoDao(pool);
+let orgDao      = new Orgdao(pool);
+let statusDao   = new Statusdao(pool);
+let statDao     = new StatDao(pool);
+let userdao     = new Userdao(pool);
 
 
-/** Send password reset link for user*/
 
-app.post("/reset/user/:email", (req, res) => {
-    console.log("/reset fikk POST request");
-    console.log("email: " + req.params.email);
-    var promise1 = new Promise(function(resolve, reject) {
-        userdao.getUserByEmail(req.params.email, (status, data) => {
-            res.status(status);
-            res.json(data);
-            resolve(data);
-        });
-    });
+/** @Userdao methods here*/
 
-    promise1.then(data => {
-        console.log(data[0].user_id);
-        if (data[0] == undefined) {
-        console.log(':::email entered not found in database::::');
-        } else {
-        console.log(':::valid email entered:::');
-        const token = crypto.randomBytes(20).toString('hex');
-        console.log(':::::::::' + token);
-        userdao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].user_id, (status, data) => {
-        });
-
-        const mailOptions = {
-            from: `bedrehverdagshelt@gmail.com`,
-            to: `${req.params.email}`,
-            subject: `Link To Reset Password`,
-            text:
-                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
-                `http://localhost:3000/#/reset/user/${token}\n\n` +
-                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-        }; // mailoption end
-
-        console.log('sending mail');
-        transporter.sendMail(mailOptions, function(err, response) {
-            if (err) {
-                console.error('there was an error: ', err);
-            } else {
-                console.log('here is the res: ', response);
-                res.status(200).json('recovery email sent');
-            }
-
-        }); // transporter end
-        } //ifelse end
-
-    });
-});
-
-/** Send password reset link for employee*/
-
-app.post("/reset/emp/:email", (req, res) => {
-    console.log("/reset fikk POST request");
-    console.log("email: " + req.params.email);
-    var promise1 = new Promise(function(resolve, reject) {
-        empDao.getEmployeeByEmail(req.params.email, (status, data) => {
-            res.status(status);
-            res.json(data);
-            resolve(data);
-        });
-    });
-
-    promise1.then(data => {
-        console.log(data[0].employee_id);
-        if (data[0] == undefined) {
-        console.log(':::email entered not found in database::::');
-        } else {
-        console.log(':::valid email entered:::');
-        const token = crypto.randomBytes(20).toString('hex');
-        console.log(':::::::::' + token);
-        empDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].employee_id, (status, data) => {
-        });
-
-        const mailOptions = {
-            from: `bedrehverdagshelt@gmail.com`,
-            to: `${req.params.email}`,
-            subject: `Link To Reset Password`,
-            text:
-                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
-                `http://localhost:3000/#/reset/emp/${token}\n\n` +
-                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-        }; // mailoption end
-
-        console.log('sending mail');
-        transporter.sendMail(mailOptions, function(err, response) {
-            if (err) {
-                console.error('there was an error: ', err);
-            } else {
-                console.log('here is the res: ', response);
-                res.status(200).json('recovery email sent');
-            }
-
-        }); // transporter end
-        } //ifelse end
-
-    });
-});
-
-
-/** Send password reset link for organization*/
-
-app.post("/reset/org/:email", (req, res) => {
-    console.log("/reset/org/:email fikk POST request");
-    console.log("email: " + req.params.email);
-    var promise1 = new Promise(function(resolve, reject) {
-        orgDao.getOrgByEmail(req.params.email, (status, data) => {
-            res.status(status);
-            res.json(data);
-            resolve(data);
-        });
-    });
-
-    promise1.then(data => {
-        console.log(data[0].org_id);
-        if (data[0] == undefined) {
-        console.log(':::email entered not found in database::::');
-        } else {
-        console.log(':::valid email entered:::');
-        const token = crypto.randomBytes(20).toString('hex');
-        console.log(':::::::::' + token);
-        orgDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].org_id, (status, data) => {
-        });
-
-        const mailOptions = {
-            from: `bedrehverdagshelt@gmail.com`,
-            to: `${req.params.email}`,
-            subject: `Link To Reset Password`,
-            text:
-                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
-                `http://localhost:3000/#/reset/org/${token}\n\n` +
-                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-        }; // mailoption end
-
-        console.log('sending mail');
-        transporter.sendMail(mailOptions, function(err, response) {
-            if (err) {
-                console.error('there was an error: ', err);
-            } else {
-                console.log('here is the res: ', response);
-                res.status(200).json('recovery email sent');
-            }
-
-        }); // transporter end
-        } //ifelse end
-
-    });
+/**
+ * Gets all users from DB
+ */
+app.get('/user', (req: Request, res: Response) => {
+    userdao.getAll((status, data) => {
+        res.status(status);
+        res.json(data);
+    })
 });
 
 /** Create user and send welcome-email */
@@ -279,73 +136,6 @@ app.post("/user", (req, res) => {
     });
 });
 
-
-app.put("/newemployee", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    console.log(req.body);
-    employeeDao.addEmployee(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-
-app.put("/neworganization", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    orgDao.addOrganization(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-app.put("/neworgcat/:id", (req, res) => {
-    console.log("Fikk POST-request fra klienten");
-    employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
-        res.status(status);
-        //  res.json(data);
-    });
-});
-
-app.get("/events/:commune_id", (req, res) =>{
-    console.log("Fikk GET-request from client");
-    eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
-        res.status(status);
-        res.json(data);
-    });
-});
-
-/**
- * Gets all districts from DB
- */
-app.get('/getdistricts', (req: Request, res: Response) => {
-    userdao.getAllDistricts((status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
-
-
-/**
- * Gets all provinces from specific district from DB
- */
-app.get('/getdistricts/:id', (req: Request, res: Response) => {
-    userdao.getProvincesFromFylke(req.params.id, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
-
-
-/**
- * Gets all users from DB
- */
-app.get('/user', (req: Request, res: Response) => {
-    userdao.getAll((status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
-
 /**
  * Get one user from DB by id
  */
@@ -357,35 +147,19 @@ app.get('/user/:id', (req: Request, res: Response) => {
 });
 
 /**
- * Get one user from DB by token
+ * Gets all districts from DB
  */
-app.get('/getuser/', (req: Request, res: Response) => {
 
-    let token = req.headers['x-access-token'] || req.headers['authorization'];
-    jwt.verify(token, privateKey, function(err, decoded)  {
-        if (decoded) {
-            console.log("DECODED: ", decoded.userid)
-            userdao.getOneByID(decoded.userid, (status, data) => {
-                res.status(status);
-                res.json(data);
-                console.log("/getuser/ sending: ", data)
-            })
-        } else {
-            console.log("Feil innlogging! Sender brevbombe.");
-            res.sendStatus(403);
-        }
-    });
-});
 
-/**
- * Updates user by id by an Employee
- */
-app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
-    userdao.updateUser(req.body, (status, data) => {
-        res.status(status);
-        res.json(data);
-    })
-});
+// /** DUPE exact same as user/:id
+//  * Updates user by id by an Employee
+//  */
+// app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
+//     userdao.updateUser(req.body, (status, data) => {
+//         res.status(status);
+//         res.json(data);
+//     })
+// });
 
 /**
  * Updates user by id by themselves
@@ -407,6 +181,45 @@ app.delete('/user/:id', checkIfEmployee, (req: Request, res: Response) => {
     })
 });
 
+app.get('/districts', (req: Request, res: Response) => {
+    userdao.getAllDistricts((status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+
+/**
+ * Gets all provinces from specific district from DB
+ */
+app.get('/districts/:id', (req: Request, res: Response) => {
+    userdao.getProvincesFromFylke(req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+    })
+});
+
+/**
+ * Get one user from DB by token
+ */
+app.get('/token/user', (req: Request, res: Response) => {
+
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    jwt.verify(token, privateKey, function(err, decoded)  {
+        if (decoded) {
+            console.log("DECODED: ", decoded.userid)
+            userdao.getOneByID(decoded.userid, (status, data) => {
+                res.status(status);
+                res.json(data);
+                console.log("/getuser/ sending: ", data)
+            })
+        } else {
+            console.log("Feil innlogging! Sender brevbombe.");
+            res.sendStatus(403);
+        }
+    });
+});
+
 /**
  * Gets count of all users in DB
  */
@@ -420,7 +233,7 @@ app.get('/userCount', (req: Request, res: Response) => {
 /**
  * Gets email from user by ID
  */
-app.get('/userEmail/:id', (req: Request, res: Response) => {
+app.get('/user/:id/email', (req: Request, res: Response) => {
     userdao.getEmailUserByID(req.params.id, (status, data) => {
         res.status(status);
         res.json(data);
@@ -457,9 +270,41 @@ app.get('/userNameSearch/:searchString', (req: Request, res: Response) => {
     })
 });
 
+app.get("/user/:username", (req, res) => {
+    console.log("/user fikk request: " + req.params.username);
+    userdao.getUsername(req.params.username, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
 // End User
 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
+
 // Organization
+
+app.put("/neworganization", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    orgDao.addOrganization(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
 
 /**
  * Get all organisations from DB
@@ -500,8 +345,6 @@ app.get('/getorg/', (req: Request, res: Response) => {
             res.sendStatus(403);
         }
     });
-
-
 });
 
 /**
@@ -598,9 +441,22 @@ app.get('/orgCount', (req: Request, res: Response) => {
     })
 });
 
-
-
-
+// ORG END
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 
 
 // Category
@@ -697,13 +553,38 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 // End category
 
-
-
-
-
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 
 
 // Employee
+
+app.put("/newemployee", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    console.log(req.body);
+    employeeDao.addEmployee(req.body, (status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+app.put("/neworgcat/:id", (req, res) => {
+    console.log("Fikk POST-request fra klienten");
+    employeeDao.addManyRefrences(req.body, req.params.id, (status, data) => {
+        res.status(status);
+        //  res.json(data);
+    });
+});
 
 /** Get all employees from the db */
 app.get("/employee", (req, res) => {
@@ -735,7 +616,7 @@ app.get('/getemployee/', (req: Request, res: Response) => {
             empDao.getOne(decoded.userid, (status, data) =>{
                 res.status(status);
                 res.json(data);
-                console.log("/getuser/ sending: ", data)
+                console.log("/getemployee/ sending: ", data)
             })
         } else {
             console.log("Feil innlogging! Sender brevbombe.");
@@ -859,13 +740,44 @@ app.get("/searchUserEmail/:email", (req, res) => {
     });
 });
 
+/**
+ * Gets cases on employees id
+ */
+app.get("/getCaseOnEmployeeID/:id", (req, res) => {
+	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
+		res.status(status);
+		res.json(data);
+	});
+});
 
 // End employee
 
-
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 
 
 // Events
+
+app.get("/events/:commune_id", (req, res) =>{
+    console.log("Fikk GET-request from client");
+    eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
+        res.status(status);
+        res.json(data);
+    });
+});
+
 
 /**
  * Get events in selected commune ID
@@ -916,14 +828,6 @@ app.get("/eventOnDateAsc/:date", (req, res) => {
 });
 
 
-app.get("/user/:username", (req, res) => {
-    console.log("/user fikk request: " + req.params.username);
-    userdao.getUsername(req.params.username, (status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
 /**  */
 app.get("/eventOnDateDesc/:date", (req, res) => {
     console.log("Received get-request on endpoint /eventOnDateDesc/" + req.params.date);
@@ -961,6 +865,20 @@ app.put("/updateEvent/:event_id", checkIfEmployee, (req, res) => {
 });
 
 // End Events
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
 
 // Cases
 
@@ -1263,17 +1181,6 @@ app.put("/updateStatusAndComment/:id", checkIfOrganization, (req, res) => {
     }); //JWT
 }); //APP
 
-/**
- * Gets cases on employees id
- */
-app.get("/getCaseOnEmployeeID/:id", (req, res) => {
-	employeeDao.getCaseOnEmployeeID(req.params.id, (status, data) => {
-		res.status(status);
-		res.json(data);
-	});
-});
-
-
 app.get("/getCasesOnOrgID/:id", checkIfOrganization,  (req, res) => {
 	caseDao.getCasesForOrganization(req.params.id, (status, data) => {
 		res.status(status);
@@ -1390,6 +1297,24 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
 
 // End Cases
 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
+
+
 // GEO (Place, kommune, fylke)
 
 /**
@@ -1431,6 +1356,21 @@ app.get("/getCommunesKommune", (req, res) => {
 	});
 });
 
+// GEO END
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
 
 // Statistics
 
@@ -1466,8 +1406,211 @@ app.get("/statistics/countUsers", (req, res) => {
 
 // End statistics
 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
+// STATUS
+
+
+/** Get all status */
+app.get("/status", (req, res) => {
+    console.log("Received get-request on endpoint /allCases");
+    statusDao.getAllStatuses((status, data) => {
+        res.status(status);
+        res.json(data);
+    });
+});
+
+/** Get status by ID */
+app.get("/status/:id", (req, res) => {
+    console.log("Received get-request on endpoint /allCases");
+    statusDao.getOneById( req.params.id, (status, data) => {
+        res.status(status);
+        res.json(data);
+
+    });
+});
+
+// STATUS END
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
 
 // Login, Verification and Password
+
+/** Send password reset link for user*/
+
+app.post("/reset/user/:email", (req, res) => {
+    console.log("/reset fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        userdao.getUserByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].user_id);
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        userdao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].user_id, (status, data) => {
+        });
+
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/user/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end
+
+    });
+});
+
+/** Send password reset link for employee*/
+
+app.post("/reset/emp/:email", (req, res) => {
+    console.log("/reset fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        empDao.getEmployeeByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].employee_id);
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        empDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].employee_id, (status, data) => {
+        });
+
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/emp/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end
+
+    });
+});
+
+/** Send password reset link for organization*/
+
+app.post("/reset/org/:email", (req, res) => {
+    console.log("/reset/org/:email fikk POST request");
+    console.log("email: " + req.params.email);
+    var promise1 = new Promise(function(resolve, reject) {
+        orgDao.getOrgByEmail(req.params.email, (status, data) => {
+            res.status(status);
+            res.json(data);
+            resolve(data);
+        });
+    });
+
+    promise1.then(data => {
+        console.log(data[0].org_id);
+        if (data[0] == undefined) {
+        console.log(':::email entered not found in database::::');
+        } else {
+        console.log(':::valid email entered:::');
+        const token = crypto.randomBytes(20).toString('hex');
+        console.log(':::::::::' + token);
+        orgDao.updateResetPasswordToken( {resetPasswordToken: token, resetPasswordExpire: Date.now() + 3600000}, data[0].org_id, (status, data) => {
+        });
+
+        const mailOptions = {
+            from: `bedrehverdagshelt@gmail.com`,
+            to: `${req.params.email}`,
+            subject: `Link To Reset Password`,
+            text:
+                `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+                `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
+                `http://localhost:3000/#/reset/org/${token}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+        }; // mailoption end
+
+        console.log('sending mail');
+        transporter.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.error('there was an error: ', err);
+            } else {
+                console.log('here is the res: ', response);
+                res.status(200).json('recovery email sent');
+            }
+
+        }); // transporter end
+        } //ifelse end
+
+    });
+});
 
 /** Token verification for user */
 
@@ -1673,27 +1816,6 @@ app.put('/organizationVerification', (req: Request, res: Response) => {
     });
 });
 
-
-
-
-/** Get all status */
-app.get("/status", (req, res) => {
-    console.log("Received get-request on endpoint /allCases");
-    statusDao.getAllStatuses((status, data) => {
-        res.status(status);
-        res.json(data);
-    });
-});
-
-/** Get status by ID */
-app.get("/status/:id", (req, res) => {
-    console.log("Received get-request on endpoint /allCases");
-    statusDao.getOneById( req.params.id, (status, data) => {
-        res.status(status);
-        res.json(data);
-
-    });
-});
 
 
 app.post("/loginhh", (req, res) => {
@@ -2084,6 +2206,22 @@ app.use("/refreshtoken", (req, res) => {
 });
 
 
+
+
+// LOGIN, VERIFICATION, PASSWORD END
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 
 
 

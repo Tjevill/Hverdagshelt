@@ -346,11 +346,11 @@ class UserService {
   }
 
   getDistricts(): Promise<Districts[]> {
-      return axios.get(url + '/getdistricts');
+      return axios.get(url + '/districts');
   }
 
   getProvince(province: number): Promise<Province[]> {
-      return axios.get(url + '/getdistricts/' + province);
+      return axios.get(url + '/districts/' + province);
   }
 
   getAllUsers(): Promise<User[]>{
@@ -362,11 +362,11 @@ class UserService {
   }
 
   getUserByToken(): Promise<User>{
-      return axios.get(url + '/getuser/', axiosConfig);
+      return axios.get(url + '/token/user', axiosConfig);
   }
 
   updateOne(user: User): Promise<void>{
-      return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
+      return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
   }
 
   updateMyUserInfo(user: User): Promise<void>{
@@ -382,7 +382,7 @@ class UserService {
   }
 
   getEmailUserByID(id: number): Promise<string>{
-    return axios.get(url + '/userEmail/' + id);
+    return axios.get(url + '/user/' + id + '/email');
   }
 
   updateSubscription(userSubUpdate: UserSubscriptionUpdate): Promise<void>{
@@ -396,7 +396,6 @@ class UserService {
   getUsersProviceFromUserID(id: number): Promise<string>{
     return axios.get(url + '/userProvince/' + id);
   }
-
 
 	/**
 	 * Service object for verifying old password
@@ -434,8 +433,6 @@ class OrgService{
 		return axios.put(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword, newPassword: newPassword}, axiosConfig);
 
 	}
-
-
 
   getAllOrg(): Promise<Organization[]>{
     return axios.get(url + '/org');

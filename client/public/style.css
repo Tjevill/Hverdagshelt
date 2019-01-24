@@ -143,7 +143,7 @@
 
 
 .userHome-body{
-    
+
 }
 
 .row {
@@ -165,13 +165,13 @@
 .userHome-container{
     background-color:inherit; /* BYTTES UT MED HVIT */
     width: 100%;
-    padding: 10%;
+    padding: 0 10%;
     margin:0 auto;
 }
 
 .userHome-banner{
 
-      background-image: url("https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/3/2018/03/03103805/big-concert-audience-listening-to-music-at-festival-picture-id485343244.jpg");
+    background-image: url("https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/3/2018/03/03103805/big-concert-audience-listening-to-music-at-festival-picture-id485343244.jpg");
     height: 250px;
     background-color: #50BBE6;
     text-align: center;
@@ -408,5 +408,9 @@ ListItem {
 }
 
 .search-employee {
+    color: black !important;
+}
+
+.btn-outline-dark {
     color: black !important;
 }
