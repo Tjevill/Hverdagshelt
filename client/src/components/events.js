@@ -252,17 +252,19 @@ export default class events extends Component<{
                     </div>
                   ))}
                 </div>
-                <div>
-                  {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
-                    <button
-                      type="button"
-                      class="btn btn-outline-dark"
-                      id="Saker-side-button"
-                      onClick={() => history.push("/events/" + sidetall)}
-                    >
-                      {sidetall}
-                    </button>
-                  ))}
+                <div className="container text-center">
+                    <div class="btn-group">
+                      {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          id="Saker-side-button"
+                          onClick={() => history.push("/events/" + sidetall)}
+                        >
+                          {sidetall}
+                        </button>
+                      ))}
+                </div>
                 </div>
                 <br/><br/>
               </div>

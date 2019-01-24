@@ -410,3 +410,7 @@ ListItem {
 .search-employee {
     color: black !important;
 }
+
+.btn-outline-dark {
+    color: black !important;
+}
