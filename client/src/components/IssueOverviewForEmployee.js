@@ -354,7 +354,7 @@ export default class IssueOverviewForEmployee extends Component<{
                 <td>{this.getOrgOnCase(casen.org_id)}</td>
               <td>
                 {" "}
-                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-warning m-2">
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-primary m-2">
                   <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
                     	&#x270E;  Oppdater
                   </span>
