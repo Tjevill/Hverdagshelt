@@ -335,9 +335,9 @@ export default class OrgIssueOverview extends Component<{
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
                 {" "}
-                  <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
-                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
-                    	&nbsp;Oppdater sak&nbsp;
+                  <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-primary m-2">
+                  <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
+                    	&#x270E;  Oppdater
                   </span>
                   </button>
                       <div className="modal fade" id={casen.case_id} tabIndex="-1"

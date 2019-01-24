@@ -181,6 +181,7 @@ class Main extends Component {
                             {/*Main componenets*/}
                             <div>
                                 <Route exact path="/" component={UserHome} />
+                                <Route exact path="/validation/:id" component={ReportValidation} />
                                 <Route exact path="/case/:id" component={Case} />
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues/:id" component={IssueOverview} />
@@ -208,7 +209,7 @@ class Main extends Component {
 
                                 <PrivateRoute exact path="/admin/" component={MinSideKommune} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/changePassword" component={ChangePasswordEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/bedrift/:id" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/bedrift/oversikt/:id" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
