@@ -25,6 +25,7 @@ const history = createHistory({
 export class Report extends Component {
     message = " ";
     error = " ";
+    caseReported = false;
 
     categories = [];
     selectedFile: null;
@@ -351,83 +352,90 @@ export class Report extends Component {
     };
 
     register(){
-        if (this.state.headline == ''){
-            this.titleValid = "is-invalid";
-            return null;
+        if(this.caseReported == false) {
+            if (this.state.headline == ''){
+                this.titleValid = "is-invalid";
+                return null;
+            } else {
+                this.titleValid = "";
+            }
+
+            if (this.country.trim() == 'Norge' || this.country.trim() == 'Norway') {
+                this.countryValid = "";
+            } else {
+                this.countryValid = "is-invalid";
+                return null;
+            }
+            if (this.mapData.address_components == null) {
+                this.countryValid = 'is-invalid';
+                return null;
+            } else {
+                this.countryValid = '';
+            }
+            if(this.state.zipcode.length < 4) {
+                this.zipValid = 'is-invalid';
+                return null;
+            } else if (!(this.onlyNumber(this.state.zipcode))) {
+                this.zipValid = 'is-invalid';
+                return null;
+            } else if (!(this.zipcodes.includes(this.state.zipcode))) {
+                this.zipValid = 'is-invalid';
+                return null;
+            } else {
+                this.zipValid = '';
+            }
+            if (this.selectedFile == null) {
+                this.picValidationClass = "img-visible";
+                return null;
+            } else if(!this.isImage(this.selectedFile.name)) {
+                this.picValidationClass = "img-visible";
+                console.log('Ikke bilde!');
+                return null;
+            } else {
+                this.picValidationClass = '';
+            }
+
+            if (this.state.category_id.trim() == ''){
+                this.categoryValid = "is-invalid";
+                return null;
+            } else {
+                this.categoryValid = "";
+            }
+            this.caseReported = true;
+            let fd = new FormData();
+            fd.append('file', this.selectedFile, this.selectedFile.name);
+            fd.append('upload_preset', 'elo47cnr');
+            axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
+                .then(res => {
+                    this.state.picture = res.url;
+                    console.log('test');
+
+                    const casedata = {
+                        headline: this.state.headline,
+                        description: this.state.description,
+                        latitude: this.lat,
+                        longitude: this.lng,
+                        zipcode: this.state.zipcode,
+                        picture: this.state.picture,
+                        category_id: this.state.category_id
+                    };
+
+
+
+                    if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
+                    caseService.createUserCase(casedata)
+                        .then(res => {
+                            console.log(res, "FROM REPORT PAGE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                            window.location = "#validation/" + res.insertId;
+                        })
+                        .catch((error: Error) => Alert.danger(error.message));
+
+
+                });
         } else {
-            this.titleValid = "";
+            return null;
         }
 
-        if (this.country.trim() == 'Norge' || this.country.trim() == 'Norway') {
-            this.countryValid = "";
-        } else {
-            this.countryValid = "is-invalid";
-            return null;
-        }
-        if (this.mapData.address_components == null) {
-            this.countryValid = 'is-invalid';
-            return null;
-        } else {
-            this.countryValid = '';
-        }
-        if(this.state.zipcode.length < 4) {
-            this.zipValid = 'is-invalid';
-            return null;
-        } else if (!(this.onlyNumber(this.state.zipcode))) {
-            this.zipValid = 'is-invalid';
-            return null;
-        } else if (!(this.zipcodes.includes(this.state.zipcode))) {
-            this.zipValid = 'is-invalid';
-            return null;
-        } else {
-            this.zipValid = '';
-        }
-        if (this.selectedFile == null) {
-            this.picValidationClass = "img-visible";
-            return null;
-        } else if(!this.isImage(this.selectedFile.name)) {
-            this.picValidationClass = "img-visible";
-            console.log('Ikke bilde!');
-            return null;
-        } else {
-            this.picValidationClass = '';
-        }
-
-        if (this.state.category_id.trim() == ''){
-            this.categoryValid = "is-invalid";
-            return null;
-        } else {
-            this.categoryValid = "";
-        }
-        let fd = new FormData();
-        fd.append('file', this.selectedFile, this.selectedFile.name);
-        fd.append('upload_preset', 'elo47cnr');
-        axios.post('https://api.cloudinary.com/v1_1/altair/image/upload', fd, 'elo47cnr')
-            .then(res => {
-                this.state.picture = res.url;
-                console.log('test');
-
-                const casedata = {
-                    headline: this.state.headline,
-                    description: this.state.description,
-                    latitude: this.lat,
-                    longitude: this.lng,
-                    zipcode: this.state.zipcode,
-                    picture: this.state.picture,
-                    category_id: this.state.category_id
-                };
-
-
-
-                if (this.state.picture.trim() == '') this.state.picture = 'https://tinyurl.com/y73nxqn9';
-                caseService.createUserCase(casedata)
-                    .then(res => {
-                        console.log(res, "FROM REPORT PAGE@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                    })
-                    .catch((error: Error) => Alert.danger(error.message));
-
-                window.location = "#validation";
-            });
     }
 
     componentDidMount(){
