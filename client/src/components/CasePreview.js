@@ -30,7 +30,7 @@ export default class CasePreview extends Component <{title: string, status: numb
                     <tr>
                         <td className="clickable-link" onClick={()=>history.push('/case/'+ this.props.id)}>{this.props.title}</td>
                         <td data-tip={this.y}>{this.x}</td><ReactTooltip />
-                        <td className="pointer delete-case" onClick ={() => this.delete(this.props.id)}>Slett sak</td>
+                        <td className="pointer" onClick ={() => this.delete(this.props.id)}>Slett sak</td>
                     </tr>
                 </tbody>
             )
