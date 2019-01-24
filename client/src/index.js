@@ -177,7 +177,6 @@ class Main extends Component {
                                 <Route exact path="/" component={forsideMain} />
                                 <Route path="/" component={ikkeforsideMain} />
                             </div>
-                            
 
                             {/*Main componenets*/}
                             <div>
