@@ -423,7 +423,7 @@ export default class IssueOverviewForEmployee extends Component<{
                             </div>
                         </div>
                     </div>
-                <button class="btn btn-danger m-2" onClick={() => {
+                <button className="btn btn-danger m-2" onClick={() => {
                     this.delete(casen.case_id);
                 }}>
                   <span
@@ -434,7 +434,7 @@ export default class IssueOverviewForEmployee extends Component<{
                   </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <span class="badge badge-primary m-2">
+                <span className="badge badge-primary m-2">
 
                 <span className="badge badge-primary">
                     <div>

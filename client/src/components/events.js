@@ -102,94 +102,53 @@ export default class events extends Component<{
       (this.props.match.params.id - 1) * 5 + 5
     );
     if (!this.loading) {
-      return (
-        <>
+        return (
+            <div id="events-page">
 
-          <div className="container">
-            <div className="row">
-              <div className="col-12 col-md-8">
-                <img
-                    src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
-                    id="Saker-icon-pic"
-                />
-              </div>
-              <div className="col-6 col-md-4" />
-            </div>
+                <div className="page-banner">
+                    <div className="page-icon">
+                        <img
+                            src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
+                            id="Saker-icon-pic"
+                        />
+                    </div>
 
-            <div className="row">
-              <div
-                  className="col-6 col-md-4"
-              >
-                <div className="form-group mt-2">
-                  <span
-                      className="glyphicon glyphicon-search"
-                      aria-hidden="true"
-                  />
-                  <input
-                      className = "form-control mb-2"
-                      type="text"
-                      id="search"
-                      name="search"
-                      placeholder="Søk på navn.."
-                      onChange={this.search}
-                  />
+                    <div>
+                        <span className="glyphicon glyphicon-search" aria-hidden="true" />
+                        <input className="form-control mb-2" type="text" id="search" name="search" placeholder="Søk på navn.." onChange={this.search} />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="inputFylke">Velg Fylke</label>
+                        <select id="fylke" name="fylke" className="form-control" onChange={this.handleChangeFylke}>
+                            <option selected value={0}>
+                                Alle{" "}
+                            </option>
+                            {this.fylker.map((fylke, i) => { return (
+                            <option value={fylke.ID} key={i}>
+                                {fylke.navn}
+                            </option>
+                            ); })}
+                        </select>
+                    </div>
+
+
+                    <div className="form-group">
+                        <label htmlFor="inputKommune">Velg Kommune</label>
+                        <select id="kommune" name="kommune" className="form-control" onChange={this.handleChangeKommune}>
+                            <option selected value={0}>
+                                Velg fylke først{" "}
+                            </option>
+                            {this.kommuner.map(kommune =>
+                                (
+                                    <option value={kommune.ID}>{kommune.navn}</option>
+                                )
+                            )}
+                        </select>
+                    </div>
                 </div>
 
-              </div>
-
-
-              <div className="col-6 col-md-4">
-                <div className="form-group">
-                  <label htmlFor="inputFylke">Velg Fylke</label>
-                  <select
-                    id="fylke"
-                    name="fylke"
-                    className="form-control"
-                    onChange={this.handleChangeFylke}
-                  >
-                    <option selected value={0}>
-                      Alle{" "}
-                    </option>
-                    {this.fylker.map((fylke, i) => {
-                      return (
-                        <option value={fylke.ID} key={i}>
-                          {fylke.navn}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-              <div className="col-6 col-md-4">
-                <div className="form-group">
-                  <label htmlFor="inputKommune">Velg Kommune</label>
-                  <select
-                    id="kommune"
-                    name="kommune"
-                    className="form-control"
-                    onChange={this.handleChangeKommune}
-                  >
-                    <option selected value={0}>
-                      Velg fylke først{" "}
-                    </option>
-                    {this.kommuner.map(kommune => {
-                      return <option value={kommune.ID}>{kommune.navn}</option>;
-                    })}
-                  </select>
-                </div>
-              </div>
-
-
-            </div>
-
-            <div className="row">
-
-              <div className="col-6 col-md-4" />
-              <div className="col-6 col-md-4" />
-            </div>
-          </div>
-
-          <div id="events-page" className="events-body">
+          <div className="events-body">
             <div className="userHome-body">
               <div className="userHome-container">
                 <div className="userHome-events">
@@ -293,23 +252,25 @@ export default class events extends Component<{
                     </div>
                   ))}
                 </div>
-                <div>
-                  {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
-                    <button
-                      type="button"
-                      class="btn btn-outline-dark"
-                      id="Saker-side-button"
-                      onClick={() => history.push("/events/" + sidetall)}
-                    >
-                      {sidetall}
-                    </button>
-                  ))}
+                <div className="container text-center">
+                    <div class="btn-group">
+                      {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          id="Saker-side-button"
+                          onClick={() => history.push("/events/" + sidetall)}
+                        >
+                          {sidetall}
+                        </button>
+                      ))}
+                </div>
                 </div>
                 <br/><br/>
               </div>
             </div>
           </div>
-        </>
+        </div>
       );
     } else {
       return <Loading />;
@@ -321,6 +282,7 @@ export default class events extends Component<{
     eventService //Endre til event senere
       .getAllEvents()
       .then(sak => {
+        console.log(sak);
         this.events = sak;
         this.eventsFraKommune = sak;
         this.backup = sak;

@@ -17,50 +17,50 @@ export default class EventsEdit extends Component {
   render(){
     return (
       <>
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container text-center">
-          <h1 class="display-4">Opprett Nytt Event</h1>
+      <div className="jumbotron jumbotron-fluid">
+        <div className="container text-center">
+          <h1 className="display-4">Opprett Nytt Event</h1>
         </div>
       </div>
-        <div class="container">
-          <div class="row">
-            <div class="col">
+        <div className="container">
+          <div className="row">
+            <div className="col">
               <form>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="exampleInputName">Event navn</label>
                     <input
                       type="name"
-                      class="form-control"
+                      className="form-control"
                       id="Name"
                       placeholder="Skriv inn navn til event">
 
                     </input>
                     </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label for="exampleInputTime">Tidspunkt</label>
                     <input
                       type="tidspunkt"
-                      class="form-control"
+                      className="form-control"
                       id="Timming"
                       placeholder="">
 
                     </input>
                    </div>
-                   <div class="form-group">
+                   <div className="form-group">
                      <label for="exampleInputDescription">Beskrivelse</label>
                        <input
                          type="description"
-                         class="form-control"
+                         className="form-control"
                          id="Desciption"
                          placeholder="">
 
                        </input>
                       </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="exampleInputDescription">Postnummer</label>
                           <input
                             type="zipcode"
-                            class="form-control"
+                            className="form-control"
                             id="zipcode"
                             maxlength="4"
                             size="4"
@@ -68,11 +68,11 @@ export default class EventsEdit extends Component {
 
                           </input>
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label for="exampleInputDescription">Adresse</label>
                           <input
                             type="zipcode"
-                            class="form-control"
+                            className="form-control"
                             id="zipcode"
                             maxlength="4"
                             size="4"
@@ -80,13 +80,13 @@ export default class EventsEdit extends Component {
 
                           </input>
                     </div>
-                  <button type="submit" class="btn btn-primary">Rediger</button>
+                  <button type="submit" className="btn btn-primary">Rediger</button>
               </form>
             </div>
-            <div class="col">
-            <div class="form-group">
+            <div className="col">
+            <div className="form-group">
               <label for="exampleFormControlFile1">Example file input</label>
-                <input type="file" class="form-control-file" id="exampleFormControlFile1"/>
+                <input type="file" className="form-control-file" id="exampleFormControlFile1"/>
                 </div>
             </div>
           </div>

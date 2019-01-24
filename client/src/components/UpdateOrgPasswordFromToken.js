@@ -24,9 +24,9 @@ export default class UpdateEmployeePasswordFromToken extends Component <{ match:
         </div>
       </div>
 
-        <div class="container text-center">
-          <div class="row">
-            <div class="col">
+        <div className="container text-center">
+          <div className="row">
+            <div className="col">
               <div className="form-group">
                 Nytt passord:{" "}
                 <input
@@ -50,7 +50,7 @@ export default class UpdateEmployeePasswordFromToken extends Component <{ match:
                 <Button.Success onClick={() => this.save()}>Save</Button.Success>
                 <Button.Light onClick={() => history.push('/profile/'+this.employee.emp_id)}>Cancel</Button.Light>
               </div>
-              <div class="col">
+              <div className="col">
               <p>{this.melding}</p>
               <img src={this.bilde} width="200"/>
               </div>

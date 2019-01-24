@@ -31,17 +31,17 @@ export default class ForgottenPasswordUser extends Component {
 
      render() {
         return(
-            <div class="form-group">
+            <div className="form-group">
                 <label for="exampleInputEmail1">Skriv inn din e-postadresse her</label>
                 <input 
                     type="email" 
-                    class="form-control" 
+                    className="form-control"
                     id="InputEmail" 
                     aria-describedby="emailHelp" 
                     placeholder="Enter email"
                     onChange={this.handleChange}
                 />
-                <small id="emailHelp" class="form-text text-muted">En hverdagshelt kan også glemme sitt passord!</small>
+                <small id="emailHelp" className="form-text text-muted">En hverdagshelt kan også glemme sitt passord!</small>
                 <button id ="submit"  type="submit" className="btn btn-primary" onClick={this.handleSubmit}>
                 Send inn
                 </button>
