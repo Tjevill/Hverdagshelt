@@ -32,7 +32,7 @@ export default class Menu extends Component {
                          <ul className="hovedmeny">
                                 <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
@@ -55,7 +55,7 @@ export default class Menu extends Component {
                                 <ul className="nav navbar-nav">
                                     <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                    <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
@@ -77,7 +77,7 @@ export default class Menu extends Component {
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
                         <li><a className="drop" href="#/user">Min side</a>
@@ -108,7 +108,7 @@ export default class Menu extends Component {
                                 <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                                 <li><NavLink to="#">---------------------</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
@@ -137,7 +137,7 @@ export default class Menu extends Component {
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
                         <li><a className="drop" href="#/bedrift">Min side</a>
@@ -169,7 +169,7 @@ export default class Menu extends Component {
                             <ul className="nav navbar-nav">
                                 <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                                 <li><NavLink to="#">---------------------</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
@@ -197,7 +197,7 @@ export default class Menu extends Component {
                         <ul className="hovedmeny">
                             <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
                             <li><a className="drop" href="#">Min side</a>
@@ -239,7 +239,7 @@ export default class Menu extends Component {
                         <ul className="nav navbar-nav">
                             <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
                             <li><NavLink to="#">---------------------</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
