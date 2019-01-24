@@ -59,6 +59,7 @@ export default class OrgEdit extends Component {
           <div className="container text-center">
             <div className="row">
               <div className="col">
+                  <h2>Rediger din profil</h2>
                 <div className="form-group">
                   Organisasjonsnummer:
                   <input
@@ -109,7 +110,7 @@ export default class OrgEdit extends Component {
               </div>
               <div className="col">
                 <br/><br/><br/><br/>
-                <img id="employee-edit-image" src={this.bilde} width="200"/>
+                  <img src={ require('./resources/bedriftsansatt.png') } alt="kommuneansatt" />
               </div>
             </div>
           </div>

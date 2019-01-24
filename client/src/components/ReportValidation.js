@@ -9,17 +9,16 @@ const history = createHistory({
     forceRefresh: true
 })
 
-export default class ReportValidation extends Component {
+export default class ReportValidation extends Component <{ match: { params: { id: number } } }>{
 
     componentDidMount() {
-        setTimeout(() => (window.location = "#profile"), 10);
+        setTimeout(() => (window.location = ("#case/" + this.props.match.params.id)), 2000);
     }
 
     render(){
         return(
-
             <div className="loading-img">
-                <h3 align="center">Takk for innmedlingen, du vil bli redirigert til din profilside hvert øyeblikk...</h3>
+                <h3 align="center">Takk for innmedlingen, du vil bli redirigert til sakssiden hvert øyeblikk...</h3>
                 <NavLink to={'/profile'}>
                     <p className="align-link">Klikk her om du ikke blir redirigert</p>
                 </NavLink>

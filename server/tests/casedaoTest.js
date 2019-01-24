@@ -2,17 +2,24 @@
 
 let mysql = require('mysql');
 jest.setTimeout(50000);
+const config = require('../../config.js');
 
 const Casedao = require("../dao/casesdao.js");
 const runsqlfile = require('./runsqlfile.js');
 
+
+const host = config.testdb.host;
+const user = config.testdb.user;
+const database = config.testdb.database;
+const password = config.testdb.password;
+
 // GitLab CI Pool
-let pool = mysql.createPool({
+const pool = mysql.createPool({
   connectionLimit: 1,
-  host: 'mysql.stud.iie.ntnu.no',
-  user: 'benos',
-  password: 'uJHtIkcl',
-  database: 'benos',
+  host: host,
+  user: user,
+  password: password,
+  database: database,
   debug: false,
   multipleStatements: true
 });
@@ -140,7 +147,6 @@ test('updateCase', done => {
     done();
   }
   casedao.updateCase(
-    10,
     { 
       
       description: "test update from jest", 
@@ -154,7 +160,8 @@ test('updateCase', done => {
       picture: "url",
       employee_id: "1",
       org_id: "1",
-      email : "benos@stud.ntnu.no"
+      email : "benos@stud.ntnu.no",
+      case_id: 10
   
     },
     callback

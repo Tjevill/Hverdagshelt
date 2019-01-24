@@ -2,6 +2,7 @@
 /* eslint eqeqeq: "off" */
 
 const express = require("express");
+const config = require('../../config.js');
 const mysql = require("mysql");
 const app = express();
 const bodyParser = require("body-parser");
@@ -52,14 +53,12 @@ var sha512 = function(password, salt){
     };
 };
 
-
-
 const pool = mysql.createPool({
     connectionLimit: 10,
-    host: "mysql.stud.iie.ntnu.no",
-    user: "mariteil",
-    database: "mariteil",
-    password: "Fs7ABKyd",
+    host: config.db.host,
+    user: config.db.user,
+    database: config.db.database,
+    password: config.db.password,
     debug: false
 });
 
@@ -81,10 +80,10 @@ const Employeedao = require("../dao/employeedao.js");
 
 // Authentication with bedrehverdagshelt@gmail.com
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: config.email.service,
     auth: {
-        user: 'bedrehverdagshelt@gmail.com',
-        pass: 'JegErDinHelt69'
+        user: config.email.user,
+        pass: config.email.password
     }
 });
 
@@ -1321,6 +1320,10 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                 console.log('::::::::::::::::::updating case');
                 
                 orgDao.getOrgReplyMail(req.body.org_id, (status,data) => {
+
+                    if(!data[0]) {
+                        console.log('ikke tildelt en bedrift, sender ikke e-post');
+                    } else {
                     
                     const mailOptionsCaseOrg = {
                         from: 'bedrehverdagshelt@gmail.com',
@@ -1339,6 +1342,7 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                             console.log(mailOptionsCaseOrg);
                         }
                     });
+                    }
 
                     statusDao.getOneById(req.body.status, (status,data) => {
                         let statusName = data[0].description;
