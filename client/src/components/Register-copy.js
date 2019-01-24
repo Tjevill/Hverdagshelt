@@ -122,7 +122,7 @@ export default class Register extends Component {
           onChange={this.handleChange} />{" "}
 
         </div>
-        <button type="button" onClick={this.save} class="btn btn-primary">
+        <button type="button" onClick={this.save} className="btn btn-primary">
           Save
         </button>
         <h1>{this.message}</h1>

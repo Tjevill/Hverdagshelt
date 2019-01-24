@@ -268,7 +268,7 @@ export default class IssueOverview extends Component<{
           {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
             <button
               type="button"
-              class="btn btn-outline-dark"
+              className="btn btn-outline-dark"
               id="Saker-side-button"
               onClick={() =>
                 history.push(
@@ -288,24 +288,24 @@ export default class IssueOverview extends Component<{
           <div className="jumbotron">
             <div className="container text-center">
               <div className="btn-group" role="group" aria-label="First group">
-                <button type="button" class="btn btn-info col-sm-3"  onClick={()=>this.category(0,"All")}>
+                <button type="button" className="btn btn-info col-sm-3"  onClick={()=>this.category(0,"All")}>
                   All
                 </button>
                 {this.categories.map(category => (
-                  <button type="button" class="btn btn-info col-sm-3" onClick={()=>this.category(category.category_id,category.description)}>
+                  <button type="button" className="btn btn-info col-sm-3" onClick={()=>this.category(category.category_id,category.description)}>
                     {category.description}
                   </button>
                 ))}
               </div>
               <br />
               <br />
-              <div class="form-row">
-                <div class="form-group col-4">
+              <div className="form-row">
+                <div className="form-group col-4">
                   <label for="inputFylke">Velg Fylke</label>
                   <select
                     id="fylke"
                     name="fylke"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeFylke}
                   >
                     <option selected value={0}>
@@ -316,12 +316,12 @@ export default class IssueOverview extends Component<{
                     })}
                   </select>
                 </div>
-                <div class="form-group col-4">
+                <div className="form-group col-4">
                   <label for="inputKommune">Velg Kommune</label>
                   <select
                     id="kommune"
                     name="kommune"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeKommune}
                   >
                     <option selected> Velg fylke først </option>
@@ -332,12 +332,12 @@ export default class IssueOverview extends Component<{
                     })}
                   </select>
                 </div>
-                <div class="form-group col-4">
+                <div className="form-group col-4">
                   <label for="inputKommune">Velg Status</label>
                   <select
                     id="status"
                     name="status"
-                    class="form-control"
+                    className="form-control"
                     onChange={this.handleChangeStatus}
                   >
                     <option value={0}>Alle</option>
@@ -354,14 +354,14 @@ export default class IssueOverview extends Component<{
           </div>
 
           <div className="container">
-            <div class="row">
-              <div class="col">
-                <h2 class="display-4" id="Saker-tittel">Saker</h2>
+            <div className="row">
+              <div className="col">
+                <h2 className="display-4" id="Saker-tittel">Saker</h2>
               </div>
-              <div class="col" />
-              <div class="col" />
-              <div class="col">
-                <span class="glyphicon glyphicon-search" aria-hidden="true" />
+              <div className="col" />
+              <div className="col" />
+              <div className="col">
+                <span className="glyphicon glyphicon-search" aria-hidden="true" />
                 <input
                   type="text"
                   id="search"
@@ -371,13 +371,13 @@ export default class IssueOverview extends Component<{
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="col">
+            <div className="row">
+              <div className="col">
                 <p>Kategori:{this.categoryname} &nbsp; Status:{this.statusname[this.statusid]} &nbsp; Kommune: {this.kommune}&nbsp;</p>
               </div>
             </div>
             <Router history={history}>
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th scope="col">Saksnummer</th>
@@ -394,7 +394,7 @@ export default class IssueOverview extends Component<{
 
           <div id="toolbar">
             <div className="wrapper text-center">
-              <div class="btn-group">{sidebuttons}</div>
+              <div className="btn-group">{sidebuttons}</div>
             </div>
           </div>
 
