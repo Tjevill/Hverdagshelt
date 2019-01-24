@@ -350,3 +350,7 @@ body,
 #user-edit-page #main-image img {
     bottom: 0;
 }
+
+.saker-table-hover tbody tr:hover td {
+    background: #519e8a;
+}
