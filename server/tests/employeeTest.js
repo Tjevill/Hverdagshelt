@@ -2,19 +2,26 @@
 
 let mysql = require('mysql');
 jest.setTimeout(50000);
+const config = require('../../config.js');
+
 
 const EmplDao = require("../dao/employeedao.js");
 const runsqlfile = require('./runsqlfile.js');
 
+const host = config.testdb.host;
+const user = config.testdb.user;
+const database = config.testdb.database;
+const password = config.testdb.password;
+
 // GitLab CI Pool
 let pool = mysql.createPool({
-    connectionLimit : 1,
-    host: 'mysql.stud.iie.ntnu.no',
-    user: 'benos',
-    password: 'uJHtIkcl',
-    database: 'benos',
-    debug: false,
-    multipleStatements: true
+	connectionLimit: 1,
+	host: host,
+	user: user,
+	password: password,
+	database: database,
+	debug: false,
+	multipleStatements: true
 });
 
 let empDao = new EmplDao(pool);

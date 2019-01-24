@@ -2,19 +2,25 @@
 
 let mysql = require('mysql');
 jest.setTimeout(50000);
+const config = require('../../config.js');
 
 const Userdao = require("../dao/userdao.js");
 const runsqlfile = require('./runsqlfile.js');
 
+const host = config.testdb.host;
+const user = config.testdb.user;
+const database = config.testdb.database;
+const password = config.testdb.password;
+
 // GitLab CI Pool
 let pool = mysql.createPool({
-    connectionLimit: 1,
-    host: 'mysql.stud.iie.ntnu.no',
-    user: 'benos',
-    password: 'uJHtIkcl',
-    database: 'benos',
-    debug: false,
-    multipleStatements: true
+	connectionLimit: 1,
+	host: host,
+	user: user,
+	password: password,
+	database: database,
+	debug: false,
+	multipleStatements: true
 });
 
 
@@ -133,7 +139,7 @@ test("Update subscription for one user with user_id", done => {
 /**
  * Delete one user from the db using the user_id.
  */
-test("Delete one user from the db with the user_id", done => {
+test(".Delete one user from the db with the user_id", done => {
 
     function callback(status, data){
         console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));

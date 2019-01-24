@@ -181,6 +181,7 @@ class Main extends Component {
                             {/*Main componenets*/}
                             <div>
                                 <Route exact path="/" component={UserHome} />
+                                <Route exact path="/validation/:id" component={ReportValidation} />
                                 <Route exact path="/case/:id" component={Case} />
                                 <Route exact path="/case/:id/edit" component={CaseEdit} />
                                 <Route exact path="/issues/:id" component={IssueOverview} />
