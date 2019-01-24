@@ -1,5 +1,6 @@
 const config = {
 	email: {
+		service: 'gmail',
 		user: 'bedrehverdagshelt@gmail.com',
 		password: 'JegErDinHelt69'
 	},
