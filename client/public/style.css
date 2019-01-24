@@ -319,12 +319,12 @@ ListItem {
 
 .map-wrapper {
     height: 300px !important;
-    width: 350px !important;
 }
 
 .rapporter {
-    width: 350px;
     height: 1000px;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
 }
 
 .img-visible {
@@ -408,5 +408,9 @@ ListItem {
 }
 
 .search-employee {
+    color: black !important;
+}
+
+.btn-outline-dark {
     color: black !important;
 }

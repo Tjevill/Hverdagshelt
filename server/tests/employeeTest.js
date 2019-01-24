@@ -37,129 +37,170 @@ afterAll(done => {
 });
 
 
-/** Get all employees in the db */
-test('getAllEmployees from db', done =>{
-    
-    function callback(status, data) {
-        console.log('Test callback: status = '+status + ', data = '+JSON.stringify(data));
-        expect(data.length).toBe(2);
+/**
+ * Get all employees in the db
+ */
+test("Get all employees in db", done =>{
+
+    function callback(status, data){
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data.length).toBe(10);
         done();
     }
     empDao.getAllEmp(callback);
 });
 
-/** Get one employee from the db. */
-test('GetOneEmployee from db', done =>{
-    
-    function callback(status, data) {
-        console.log('Test callback: status = '+status+ ', data = '+JSON.stringify(data));
-        expect(data[0].name).toBe('Bentoooo');
-        done();
-    }
-    empDao.getOne(2, callback);
-});
 
-/** Count every employee in the db */
-test('Count All employees in db', done =>{
-    
+/**
+ * Add one employee to the db
+ */
+test("Add an employee into the db", done => {
+
     function callback(status, data){
-        console.log("Test callback: status = "+status+ ", data = "+JSON.stringify(data));
-        expect(data[0].x).toBe(2);
-        done()
-    }
-    empDao.countEmps(callback);
-});
-
-/** Add employee to the db */
-test('Insert new employee in db', done =>{
-    
-    function callbackA(status, data){
-        console.log("Test callback: status = "+status+ ", data = "+JSON.stringify(data));
-        expect(data.length).toBe(3);
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data.length).toBe(11);
         done();
     }
     empDao.addEmployee(
-        {"name":"Simon", "tel":"48104122", "email":"sim@on.lil", "password": "lett", "province":1, "district":24},
+        {
+            name : "AddTestEmp",
+            tel : 12345678,
+            email : "addtestEmp@test.no",
+            commune : 1,
+            county : 1,
+            password : "testadd"
+        },
         callbackB
     );
 
-    function callbackB(status, data){
-        empDao.getAllEmp(callbackA);
+    function callbackB(){
+        empDao.getAllEmp(callback);
     }
 });
 
 
-/** Get all employees in a given province */
-test("Get all employees in a given province", done =>{
-    
+/**
+ * Get all the employees in a specific commune based on commune_id.
+ */
+test("Get all employees in one commune", done =>{
+
     function callback(status, data){
-        console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
-        expect(data.length).toBe(2);
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data.length).toBe(4);
         done();
     }
-    empDao.getAllEmpProvince(1, callback);
+    empDao.getAllEmpCommune(1, callback);
 });
 
-/** Count all employees in a given province with province number */
-test("Count all employees in a gives province", done =>{
+
+/**
+ *  Delete one employee using employee_id.
+ */
+test("Delete one employee in the db", done =>{
 
     function callback(status, data){
-        console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
-        expect(data[0].x).toBe(2);
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data.length).toBe(10);
+        done();
+    }
+    empDao.deleteEmpById(21, callbackB);
+
+    function callbackB(){
+        empDao.getAllEmp(callback);
+    }
+});
+
+
+/**
+ * Update one employee in the db using employee_id.
+ * Also tests the getOne() method.
+ */
+test("Update one employee in the db and getOne().", done =>{
+
+    function callback(status, data){
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data[0].name).toBe("TestEdit emp");
+        expect(data[0].tel).toBe(87654321);
+        expect(data[0].email).toBe("testedit@test.no");
+        expect(data[0].commune).toBe(2);
+        expect(data[0].county).toBe(2);
+        done();
+    }
+    empDao.updateEmp(
+        {
+            name: "TestEdit emp",
+            tel : 87654321,
+            email : "testedit@test.no",
+            commune: 2,
+            county: 2,
+        },
+        3,
+        callbackB
+    );
+
+    function callbackB(){
+        empDao.getOne(3, callback);
+    }
+});
+
+
+/**
+ *  Count all employees in the db
+ */
+test("Count all the employees in the db", done =>{
+
+    function callback(status, data){
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data[0].x).toBe(10);
+        done()
+    }
+
+    empDao.countEmps(callback);
+});
+
+
+/**
+ * Count all the employees in a given province.
+ */
+test("Count all the employees in a given province", done =>{
+
+    function callback(status, data){
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data[0].x).toBe(3);
         done();
     }
     empDao.countEmpsProvince(1, callback);
 });
 
-/** Delete one employee in the db based on employee_id */
-test("Delete one employee in the db", done =>{
-    
-    function callbackA(status, data){
-        console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
-        expect(data.length).toBe(2);
-        done();
-    }
-    empDao.deleteEmpById(1,callbackB);
 
-    function callbackB(status, data){
-        empDao.getAllEmp(callbackA);
-    }
-})
-
-/** Edit one employee in the db based on employee_id */
-test("Edit one employee in the db", done =>{
-
-    function callbackA(status, data){
-        console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
-        expect(data[0].name).toBe("Ben-endret");
-        expect(data[0].tel).toBe(12345678);
-        expect(data[0].email).toBe("test@endret.no");
-        expect(data[0].province).toBe(1);
-        expect(data[0].district).toBe(23);
-        done();
-    }
-    empDao.updateEmp(
-        {"name":"Ben-endret", "tel":"12345678", "email":"test@endret.no", "province":1, "district":23},
-        2,
-        callbackB
-    );
-
-    function callbackB(status, data){
-        empDao.getOne(2, callbackA);
-    }
-});
-
-/** Update one employees password in the db */
-test("Edit one employees password in the db", done =>{
+/**
+ * Get one employee by email
+ */
+test("Get one employee searching on email", done =>{
 
     function callback(status, data){
-        console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
-        expect(data.affectedRows).toBe(1);
+
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data[0].employee_id).toBe(1);
+        expect(data[0].name).toBe("Øyvind Valstadsve");
         done();
     }
-    empDao.updateEmpPassword(
-        {"password":"testpw", "employee_id":3},
-        callback
-    );
-})
+    empDao.getEmployeeByEmail("oyvinval@stud.ntnu.no", callback);
+});
+
+
+/**
+ * Get every case assigned to one employee.
+ * This query uses the Cases table.
+ */
+test("Get every case assigned to one employee", done =>{
+
+    function callback(status, data){
+
+        console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
+        expect(data.length).toBe(6);
+        done();
+    }
+    empDao.getCaseOnEmployeeID(1, callback);
+});
 
