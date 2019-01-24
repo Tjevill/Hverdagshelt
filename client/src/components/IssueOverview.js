@@ -1,4 +1,4 @@
-//@flow
+
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -254,8 +254,8 @@ export default class IssueOverview extends Component<{
           {this.cateside.map(casen => (
             <tr>
               <th>{casen.case_id}</th>
-              <td onClick={() => history.push("/case/" + casen.case_id)}>
-                {casen.headline} ID: {casen.category_id}
+              <td className="clickable-link" onClick={() => history.push("/case/" + casen.case_id)}>
+                {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
             </tr>

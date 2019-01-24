@@ -91,7 +91,6 @@ export default class MinSideKommune extends Component {
                                                 <th scope="col">Overskrift</th>
                                                 <th scope="col">Postkode</th>
                                                 <th scope="col">Tidspunkt</th>
-                                                <th scope="col">Valg</th>
                                             </tr>
                                         </thead>
 
@@ -101,14 +100,15 @@ export default class MinSideKommune extends Component {
 
                                                 <tr
                                                     key={i}
-                                                    onClick={ () => window.alert("Skal redirecte til redigere-event siden. Id: "+ca.case_id+". Fikses på linje 101 i MinSideKommune.js") }
                                                 >
 
                                                     <th scope="row">
                                                         {ca.case_id}
                                                     </th>
 
-                                                    <td>
+                                                    <td
+                                                        className={"clickable-link"}
+                                                        onClick={() => history.push("/case/" + ca.case_id)}>
                                                         {ca.headline}
                                                     </td>
 
@@ -120,26 +120,12 @@ export default class MinSideKommune extends Component {
                                                         {ca.timestamp.substring(0,16).replace("T", " kl ")}
                                                     </td>
 
-                                                    <td>
-                                                        <select className="form-control" id="sel1">
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
-                                                    </td>
-
                                                 </tr>
                                             ))}
 
                                         </tbody>
 
                                     </table>
-                                </div>
-                                <div className = "col-sm">
-
-                                    <h5>Forhåndsvisning av valgt sak</h5>
-
                                 </div>
                             </div>
 
@@ -164,43 +150,5 @@ export default class MinSideKommune extends Component {
                     <Loading/>
                 );
             }
-    }
-
-    previewCase(case_id){
-
-        return(
-
-            <table className="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-
-        )
     }
 }
