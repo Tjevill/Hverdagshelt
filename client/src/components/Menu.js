@@ -22,6 +22,10 @@ export default class Menu extends Component {
 
     }
 
+    preventRoute(e){
+        e.preventDefault();
+    }
+
     render() {
 
         // console.log("Menu.js: loggedin = " + this.props.loggedin);
@@ -200,7 +204,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                            <li><a className="drop" href="#">Min side</a>
+                            <li><a className="drop" href="#/admin">Min side</a>
                                 <ul>
                                     <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
@@ -215,7 +219,7 @@ export default class Menu extends Component {
                                     <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
-                                    <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
+                                    <li><NavLink onClick={() => window.open("#/statistics")} to="/" disabled>Statistikk</NavLink></li>
                                     <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                                 </ul>
                             </li>
