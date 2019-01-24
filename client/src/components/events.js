@@ -99,73 +99,62 @@ export default class events extends Component<{
     this.eventside = this.eventsFraKommune.slice((this.props.match.params.id - 1) * 5,(this.props.match.params.id - 1) * 5 + 5);
     return (
       <>
-        <div className="container">
-          <div className="row">
-            <div className="col-12 col-md-8">
-              <img
-                src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
-                id="Saker-icon-pic"
-              />
-            </div>
-            <div className="col-6 col-md-4" />
-          </div>
+        <div id="events-page-search">
 
-          <div className="row">
-            <div className="col-4 col-md-4" />
-            <div className="col-6 col-md-4">
-              <div className="form-group">
+            <div className="page-icon">
+                <img
+                    src="https://visualpharm.com/assets/951/Event%20Accepted%20Tentatively-595b40b65ba036ed117d403b.svg"
+                    id="Saker-icon-pic"
+                />
+            </div>
+
+            <div className="county">
                 <label htmlFor="inputFylke">Velg Fylke</label>
                 <select
-                  id="fylke"
-                  name="fylke"
-                  className="form-control"
-                  onChange={this.handleChangeFylke}
+                    id="fylke"
+                    name="fylke"
+                    className="form-control"
+                    onChange={this.handleChangeFylke}
                 >
-                  <option selected value={0}>
-                    Alle{" "}
-                  </option>
-                  {this.fylker.map((fylke, i) => {
-                    return (
-                      <option value={fylke.ID} key={i}>
-                        {fylke.navn}
-                      </option>
-                    );
-                  })}
+                    <option selected value={0}>
+                        Alle{" "}
+                    </option>
+                    {this.fylker.map((fylke, i) => {
+                        return (
+                            <option value={fylke.ID} key={i}>
+                                {fylke.navn}
+                            </option>
+                        );
+                    })}
                 </select>
-              </div>
             </div>
-            <div className="col-6 col-md-4">
-              <div className="form-group">
-                <label htmlFor="inputKommune">Velg Kommune</label>
-                <select
-                  id="kommune"
-                  name="kommune"
-                  className="form-control"
-                  onChange={this.handleChangeKommune}
-                >
-                  <option selected value={0}>Velg fylke først </option>
-                  {this.kommuner.map(kommune => {
-                    return <option value={kommune.ID}>{kommune.navn}</option>;
-                  })}
-                </select>
-              </div>
-            </div>
+
+          <div className="commune">
+            <label htmlFor="inputKommune">Velg Kommune</label>
+            <select
+              id="kommune"
+              name="kommune"
+              className="form-control"
+              onChange={this.handleChangeKommune}
+            >
+              <option selected value={0}>Velg fylke først </option>
+              {this.kommuner.map(kommune => {
+                return <option value={kommune.ID}>{kommune.navn}</option>;
+              })}
+            </select>
           </div>
 
-          <div className="row">
-            <div className="col-4 col-md-4">
-              <span className="glyphicon glyphicon-search" aria-hidden="true" />
-              <input
-                type="text"
-                id="search"
-                name="search"
-                placeholder="Søk.."
-                onChange={this.search}
-              />
-            </div>
-            <div className="col-6 col-md-4" />
-            <div className="col-6 col-md-4" />
+          <div className="name">
+            <span className="glyphicon glyphicon-search" aria-hidden="true" />
+            <input
+              type="text"
+              id="search"
+              name="search"
+              placeholder="Søk.."
+              onChange={this.search}
+            />
           </div>
+
         </div>
 
         <div id="events-page" className="events-body">
