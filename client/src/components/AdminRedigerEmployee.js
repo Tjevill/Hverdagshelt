@@ -102,6 +102,7 @@ export default class AdminRedigerEmployee extends Component {
                       </div>
                   </div>
               </div>
+              <div className="col-md-2"/>
           </div>
       );
     } else {
@@ -195,7 +196,7 @@ export default class AdminRedigerEmployee extends Component {
     }
 
     employeeService.updateEmpDataByToken(this.user);
-    window.location.reload();
+    history.push("/admin");
 
   }
 

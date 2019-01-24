@@ -18,13 +18,13 @@ export default class UpdateUserPasswordFromToken extends Component <{ match: { p
       if(this.loaded) {
     return(
       <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h4> Du kan nå endre ditt passord</h4>
-        </div>
-      </div>
 
-        <div className="container text-center">
+          <div className="row">
+              <div className="col-md-2">&nbsp;</div>
+              <div className="col-md-8">
+
+
+              <div className="container text-center">
           <div className="row">
             <div className="col">
               <div className="form-group">
@@ -56,6 +56,10 @@ export default class UpdateUserPasswordFromToken extends Component <{ match: { p
               </div>
               </div>
               </div>
+
+              </div>
+              <div className="col-md-2">&nbsp;</div>
+          </div>
       </>
     );
       } else {

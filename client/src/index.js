@@ -51,7 +51,7 @@ import Statistikk from "./components/Statistikk";
 import Statistikk2 from "./components/Statistikk2";
 import StatisticsPage from "./components/StatisticsPage";
 import PrivateRoute from 'react-private-route';
-import PrivateUsersList from "./components/PrivateUsersList";
+import AdminUsers from "./components/AdminUsers";
 import ProfilePage from "./components/ProfilePage";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -125,7 +125,7 @@ class LoginStatus extends Component {
     render () {
         return (
             (this.props.loggedin)
-                ? <div className="logged-in-as">{sessionStorage.getItem("email")} <br/>({ sessionStorage.getItem("access") }), <NavLink to="/" onClick={()=>this.handleLogOut()}>Logg ut</NavLink></div>
+                ? <div className="logged-in-as"><NavLink to="/" onClick={()=>this.handleLogOut()}>Logg ut</NavLink></div>
                 : <div className="logged-in-as">Not logged in</div>
         );
     }
@@ -212,7 +212,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/bedrift/oversikt/:id" component={AdminBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/ny" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/bedrift/rediger/:id" component={AdminRedigerBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/heroes/:id" component={PrivateUsersList} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/heroes/:id" component={AdminUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/heroes/:id/edit" component={AdminEditPrivateUsers} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>

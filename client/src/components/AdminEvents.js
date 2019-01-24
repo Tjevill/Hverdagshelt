@@ -81,7 +81,7 @@ export default class AdminEvents extends Component {
                         )
                         .map((e, i) => (
                           <tr key={i}>
-                            <th scope="row"> {e.name} </th>
+                            <td> {e.name} </td>
                             <td> {e.address} </td>
                             <td> {e.zipcode} </td>
                             <td> {e.date.substring(0, 10)} </td>

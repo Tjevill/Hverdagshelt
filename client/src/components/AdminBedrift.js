@@ -43,7 +43,15 @@ export default class AdminBedrift extends Component<{
     if (this.loaded) {
       console.log("org: ", this.org);
       return (
-        <div id="org-page">
+
+
+          <div className="row">
+              <div className="col-md-1">&nbsp;</div>
+              <div className="col-md-10">
+
+
+
+              <div id="org-page">
           <div className="group btmspace-50 headerlayout">
             <div className="one_half first">
               <h3>Bedrifter og organisasjoner</h3>
@@ -67,7 +75,7 @@ export default class AdminBedrift extends Component<{
                 <th scope="col">Org. nummer</th>
                 <th scope="col">Navn</th>
                 <th scope="col">Telefon</th>
-                <th scope="col">Email</th>
+                <th scope="col admin-bedrift-email" >Email</th>
                 <th scope="col" colSpan="2">
                   <input
                     id="searchbar"
@@ -81,7 +89,7 @@ export default class AdminBedrift extends Component<{
               {this.orgsider.map((item, i) => {
                 return (
                   <tr key={i}>
-                    <th scope="row">{item.organizationnumber}</th>
+                    <td>{item.organizationnumber}</td>
                     <td>{item.name}</td>
                     <td>{item.tel}</td>
                     <td>{item.email}</td>
@@ -128,6 +136,13 @@ export default class AdminBedrift extends Component<{
           </div>
           <br/><br/>
         </div>
+
+
+
+              </div>
+              <div className="col-md-1">&nbsp;</div>
+          </div>
+
       );
     } else {
       return <Loading />;

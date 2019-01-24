@@ -315,7 +315,6 @@ export default class OrgIssueOverview extends Component<{
       lists = (
         <tbody>
           <tr>
-            <th />
             <td />
             <td>tomt</td>
             <td />
@@ -328,7 +327,6 @@ export default class OrgIssueOverview extends Component<{
         <tbody>
           {this.casesbyStatus.map(casen => (
             <tr key={casen.case_id}>
-              <th>{casen.case_id}</th>
               <td className="clickable-link" onClick={() => history.push("/case/" + casen.case_id)}>
                 {casen.headline}
               </td>
@@ -402,9 +400,13 @@ export default class OrgIssueOverview extends Component<{
     if (this.loaded) {
       return (
         <>
-          <br />
-          <br />
-          <div className="container">
+
+            <div className="row">
+                <div className="col-md-2">&nbsp;</div>
+                <div className="col-md-8">
+
+
+                <div>
             <div className="row">
               <div className="col-12 col-md-8">
                 <img
@@ -498,8 +500,7 @@ export default class OrgIssueOverview extends Component<{
           </div>
           </div>
 
-
-          <div className="container">
+          <div>
           <div className="row">
             <div className="col-3">
             <span className="glyphicon glyphicon-search" aria-hidden="true" />
@@ -512,7 +513,6 @@ export default class OrgIssueOverview extends Component<{
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
                     <th scope="col">Handling</th>
@@ -531,8 +531,9 @@ export default class OrgIssueOverview extends Component<{
           </div>
         </div>
 
-        <br/><br/>
-
+                </div>
+                <div className="col-md-2">&nbsp;</div>
+            </div>
         </>
       );
      }else{

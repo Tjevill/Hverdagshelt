@@ -222,7 +222,7 @@ export default class UserEdit extends Component {
           this.Nameinputtype = "is-valid";
           this.AddressInputClass = "is-valid";
           this.ZipcodeInputClass = "is-valid";
-          this.forceUpdate();
+          history.push("/user");
           setTimeout(function(){window.location.reload()}.bind(this),2000);
         })
       .catch((error: Error) => {

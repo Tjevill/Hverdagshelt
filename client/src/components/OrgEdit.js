@@ -129,7 +129,7 @@ export default class OrgEdit extends Component {
       .updateOrgByToken(this.user)
       .then(response =>{
           console.log(response);
-          window.location.reload();
+          history.push("/bedrift")
       })
       .catch((error: Error) => (console.log(error.message)));
 

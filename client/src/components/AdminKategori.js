@@ -33,8 +33,8 @@ export default class AdminKategori extends Component {
             return (
                 <div id="cat-page">
                     <div className="row">
-                        <div className="col-sm-3">&nbsp;</div>
-                        <div className="col-sm-6">
+                        <div className="col-sm-4">&nbsp;</div>
+                        <div className="col-sm-4">
                     <div className="group btmspace-50 headerlayout">
                         <div className="one_half first"><h3>Kategorier</h3></div>
                         <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/admin/kategori/ny') }}>Legg til kategori</button></div>
@@ -64,7 +64,7 @@ export default class AdminKategori extends Component {
                         </tbody>
                     </table>
                         </div>
-                        <div className="col-sm-3">&nbsp;</div>
+                        <div className="col-sm-4">&nbsp;</div>
                     </div>
                 </div>
             );

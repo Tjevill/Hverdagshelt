@@ -27,7 +27,7 @@ function count(array) {
  * A simple table demonstrating the hierarchy of the `Table` component and its sub-components.
  */
 
-export default class PrivateUsersList extends Component<{
+export default class AdminUsers extends Component<{
   match: { params: { id: number } }
 }> {
   users = [];
@@ -47,7 +47,17 @@ export default class PrivateUsersList extends Component<{
   render() {
     if (this.loaded) {
       return (
-        <div id="org-page">
+
+
+          <div className="row">
+              <div className="col-md-2">&nbsp;</div>
+              <div className="col-md-8">
+
+
+
+
+
+              <div id="org-page">
           <div className="group btmspace-50 headerlayout">
             <div className="one_half first">
               <h3>HverdagsHelter</h3>
@@ -80,7 +90,7 @@ export default class PrivateUsersList extends Component<{
                 )
                 .map((item, i) => (
                   <tr key={i} className="PrivateUsersList-TableRow">
-                    <th scope="row">{item.name}</th>
+                    <td>{item.name}</td>
                     <td>{item.address}</td>
                     <td>{item.tel}</td>
                     <td>{item.email}</td>
@@ -118,6 +128,13 @@ export default class PrivateUsersList extends Component<{
           </div>
           <br/><br/>
         </div>
+
+
+
+              </div>
+              <div className="col-md-2">&nbsp;</div>
+          </div>
+
       );
     } else {
       return <Loading />;
