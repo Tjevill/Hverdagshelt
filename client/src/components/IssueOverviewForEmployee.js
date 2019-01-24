@@ -80,6 +80,9 @@ export default class IssueOverviewForEmployee extends Component<{
     };
 
   handleChangeStatus = event => {
+    if(this.props.match.params.id!=1){
+        window.location.href='#/admin/issues/1';
+    };
     document.getElementById("search").value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
@@ -120,6 +123,9 @@ export default class IssueOverviewForEmployee extends Component<{
   };
 
   handleChangeCategories = event => {
+    if(this.props.match.params.id!=1){
+        window.location.href='#/admin/issues/1';
+    };
     document.getElementById("search").value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
@@ -308,24 +314,19 @@ export default class IssueOverviewForEmployee extends Component<{
         if(id == null) {
             return 'Ingen tildelt bedrift'
         } else {
-            const test = this.orgs.filter(function(x) {
-                return x.org_id == id});
-            console.log(this.orgs);
-            console.log('--------------------------');
-            console.log(test);
-            return test[0].name;
+            if(this.orgs.filter(e => e.org_id == id)[0] != null) {
+                let test = this.orgs.filter(e => e.org_id == id);
+                return test[0].name;
+            } else {
+                return 'Ingen bedrift tildelt';
+            }
         }
-
     }
 
   render() {
     let lists;
     let sidebuttons;
     if (this.casesbyStatus.length == 0) {
-      this.caseside = this.casesbyStatus.slice(
-        (this.props.match.params.id - 1) * 15,
-        (this.props.match.params.id - 1) * 15 + 15
-      );
       lists = (
         <tbody>
           <tr>
@@ -338,21 +339,24 @@ export default class IssueOverviewForEmployee extends Component<{
         </tbody>
       );
     } else {
+      this.caseside = this.casesbyStatus.slice(
+        (this.props.match.params.id - 1) * 15,
+        (this.props.match.params.id - 1) * 15 + 15
+      );
       lists = (
         <tbody>
-          {this.casesbyStatus.map(casen => (
-            <tr>
-              <th>{casen.case_id}</th>
-              <td onClick={() => history.push("/case/" + casen.case_id)}>
+          {this.caseside.map(casen => (
+            <tr key={casen.case_id}>
+              <td className={"clickable-link"} onClick={() => history.push("/case/" + casen.case_id)}>
                 {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
-                {/*<td>{this.getOrgOnCase(casen.org_id)}</td>*/}
+                <td>{this.getOrgOnCase(casen.org_id)}</td>
               <td>
                 {" "}
-                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-sm btn-warning edit-button">
-                  <span className="glyphicon glyphicon-list-alt" aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
-                    	&nbsp;Oppdater sak&nbsp;
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-warning m-2">
+                  <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
+                    	&#x270E;  Oppdater
                   </span>
                     </button>
                     <div className="modal fade" id={casen.case_id} tabIndex="-1"
@@ -419,20 +423,18 @@ export default class IssueOverviewForEmployee extends Component<{
                             </div>
                         </div>
                     </div>
-                <button class="btn btn-sm btn-danger edit-button">
+                <button class="btn btn-danger m-2">
                   <span
-                    class="glyphicon glyphicon-remove"
                     aria-hidden="true"
                     onClick={() => {
                       this.delete(casen.case_id);
                     }}
                   >
-                    &nbsp;Slett&nbsp;&nbsp;
+                    &#x2716;  Slett
                   </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <span class="badge badge-primary">
-
+                <span class="badge badge-primary m-2">
 
                 <span className="badge badge-primary">
                     <div>
@@ -450,6 +452,7 @@ export default class IssueOverviewForEmployee extends Component<{
         <div>
           {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
             <button
+                key={sidetall}
               type="button"
               className="btn btn-outline-dark"
               id="Saker-side-button"
@@ -492,7 +495,7 @@ export default class IssueOverviewForEmployee extends Component<{
                   >
                     <option value={0}>Alle</option>
                     {this.categories.map(category => (
-                      <option value={category.category_id}>
+                      <option key={category.category_id} value={category.category_id}>
                         {category.description} {category.category_id}
                       </option>
                     ))}
@@ -542,10 +545,9 @@ export default class IssueOverviewForEmployee extends Component<{
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
-                      {/*<th scope="col">Saken er tildelt</th>*/}
+                      <th scope="col">Saken er tildelt</th>
                     <th scope="col">Handling</th>
                   </tr>
                 </thead>
@@ -578,7 +580,6 @@ export default class IssueOverviewForEmployee extends Component<{
       .getEmployeeByToken()
       .then(employee => {
         this.employee = employee[0];
-        console.log("This employyeee :  ", this.employee)
         employeeService
           .getCasesOnOnCommuneID(this.employee.commune)
           .then(cases => {
@@ -592,8 +593,6 @@ export default class IssueOverviewForEmployee extends Component<{
               return value.status_id != 7;
             });
             this.loaded = true;
-            console.log(this.employee.commune);
-            console.log(cases);
             this.forceUpdate();
           })
           .catch((error: Error) =>

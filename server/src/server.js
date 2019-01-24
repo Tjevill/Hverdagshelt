@@ -64,7 +64,6 @@ const pool = mysql.createPool({
 });
 
 // Dao's
-const Hverdagsdao = require("../dao/hverdagsdao.js");
 const eventdao = require("../dao/eventdao.js");
 const Casedao = require("../dao/casesdao.js");
 const Userdao = require("../dao/userdao.js");
@@ -91,7 +90,6 @@ const transporter = nodemailer.createTransport({
 
 let userdao = new Userdao(pool);
 let eventDao = new eventdao(pool);
-let hverdagsdao = new Hverdagsdao(pool);
 let caseDao = new Casedao(pool);
 let employeeDao = new Employeedao(pool);
 let orgDao = new Orgdao(pool);
@@ -1322,38 +1320,62 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
                 res.json(data);
                 console.log('::::::::::::::::::updating case');
                 
-                statusDao.getOneById(req.body.status, (status,data) => {
-                    let statusName = data[0].description;
-                    console.log(':::::::::::::::::: fetching status name');
+                orgDao.getOrgReplyMail(req.body.org_id, (status,data) => {
+                    
+                    const mailOptionsCaseOrg = {
+                        from: 'bedrehverdagshelt@gmail.com',
+                        to: data[0].email,
+                        subject: 'En sak har blitt tildelt din bedrift',
+                        html:
+                        '<h1> Saks id: ' + req.body.case_id + '</h1>' +
+                        '<p> Kommentar:' + req.body.comment + '</p>'
+                    };
 
-                    caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
-                        console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
-                        console.log(data);
-                        
-                        if(data[0].subscription === 1) {
-                            const mailOptionsCase = {
-                                from: 'bedrehverdagshelt@gmail.com',
-                                to: data[0].email,
-                                subject: 'Din sak har blitt oppdaert!',
-                                html:
-                                    '<h1> Status: ' + statusName + ' </h1>' +
-                                    '<p> "' + req.body.comment + '" </p>' + 
-                                    '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
-                            };
-
-                            transporter.sendMail(mailOptionsCase, function(error, info){
-                                if (error) { 
-                                    console.log(error);
-                                } else {
-                                    console.log('Email sent: ' + info.response);
-                                }
-                            }); //transporter
-                        } //subscribed ifelse
-                        else {
-                            console.log('user does not want spam');
+                    transporter.sendMail(mailOptionsCaseOrg, function(error, info){
+                        if (error) { 
+                            console.log(error);
+                        } else {
+                            console.log('Email sent to Organization: ' + info.response);
+                            console.log(mailOptionsCaseOrg);
                         }
-                    }); //reply
-                }); //status
+                    });
+
+                    statusDao.getOneById(req.body.status, (status,data) => {
+                        let statusName = data[0].description;
+                        console.log(':::::::::::::::::: fetching status name');
+
+                        caseDao.getCaseReplyMail(req.body.case_id, (status,data) => {
+                            console.log(':::::::::::::::::: fetching reply mail and sending:::::::::::::::::::::::::::::.');
+                            console.log(data[0]);
+                            if(!data[0]) {
+                                console.log("Ingen hverdagshelt tildelt denne saken!");
+                            }
+                            else if(data[0].subscription === 1) {
+                                const mailOptionsCase = {
+                                    from: 'bedrehverdagshelt@gmail.com',
+                                    to: data[0].email,
+                                    subject: 'Din sak har blitt oppdaert!',
+                                    html:
+                                        '<h1> Status: ' + statusName + ' </h1>' +
+                                        '<p> "' + req.body.comment + '" </p>' + 
+                                        '<p> Logg inn på hverdagshelt for å se siste oppdatering! :) </p>'
+                                };
+
+                                transporter.sendMail(mailOptionsCase, function(error, info){
+                                    if (error) { 
+                                        console.log(error);
+                                    } else {
+                                        console.log('Email sent: ' + info.response);
+                                        console.log(mailOptionsCase);
+                                    }
+                                }); //transporter
+                            } //subscribed ifelse
+                            else {
+                                console.log('user does not want spam');
+                            }
+                        }); //reply
+                    }); //status
+                }); 
             }); //update
         } else {
             console.log("Feil innlogging! Sender brevbombe.");
