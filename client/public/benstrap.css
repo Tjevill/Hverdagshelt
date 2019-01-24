@@ -21,6 +21,7 @@ body,
 }
 
 #pageintro {
+    height: 100vh;
     padding: 5% !important;
 }
 
