@@ -41,7 +41,7 @@ INSERT INTO `Employee` (`employee_id`, `name`, `tel`, `email`, `password`, `secr
 (20, 'kari traa', 3424234, '342@gmail.com', '05e0258951320e13d1357305b8482749e89b98477c38e0d0c4b6c14d3931a27c8a69954173085e40c103cf63a80464568c87221250c7b7750ca8a44ca95148d9', 'a3161a354ac8ed1f874e1f2a5d993cd7', 106, 6, 0, NULL, NULL),
 (21, 'Aria Bui', 45181447, 'thuybrooks98@gmail.com', '752310c5e37f25df4a06d45581b2b98ad00d776120035e8d7ce5d70456d33fca047b59cab7c7740ca5fc6ceef2ae1c2299695e5c4c145e5a24bf4d4ace1196b0', 'a60001b5b2ff017efc8da10cd4801cc3', 315, 16, 0, NULL, NULL);
 
-INSERT INTO StatusTable (description) VALUES
+INSERT INTO Status (description) VALUES
       ("Ubehandlet"), 
       ("Under behandlet"), 
       ("Behandlet"), 
