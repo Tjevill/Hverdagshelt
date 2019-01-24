@@ -191,8 +191,8 @@ export class MapContainer extends Component {
       let selectedCase = this.casesShowing.find(caseItem => {
         return caseItem.case_id == marker.name;
       });
-      console.log(selectedCase);
-
+      this.latitude = marker.position.lat();
+      this.longitude = marker.position.lng();
       this.infoTitle = selectedCase.headline;
       this.infoId = selectedCase.case_id;
       this.activeMarker = marker;

@@ -6,7 +6,8 @@ import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
 import { geoService, employeeService, userService } from "../services";
-import { Alert, Card, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
+import {Alert, Card, ListGroup, Row, Column, Button, Form, Loading} from './widgets';
+
 
 const history = createHashHistory();
 var emailRegex =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -18,8 +19,17 @@ const formValid = ({ formErrors, ...rest }) => {
     Object.values(formErrors).forEach(val => {
         val.length > 0 && (valid = false);
     });
+
+     // validate the form was filled out
+   Object.values(rest).forEach(val => {
+        val === "" && (valid = false);
+    });
+
+
     return valid;
 };
+
+
 
 
 export default class AdminEditEmployee extends Component < {
@@ -74,8 +84,9 @@ export default class AdminEditEmployee extends Component < {
 
   
     } else {
-      window.alert("Ingen endringer ble utført");
-      console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+
+     window.alert("Vennligst fyll ut alle felt");
+     console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
     }
   };
 
@@ -108,24 +119,25 @@ export default class AdminEditEmployee extends Component < {
        
 
         case "county":
-        const chosenCounty = this.counties.find((county) => county.navn== value);
+        const chosenCounty = this.counties.find((county) => county.navn.toUpperCase()== value.toUpperCase());
         if(chosenCounty!=null){
         this.county_nr=chosenCounty.ID;
-		}
+        this.setState({commune:""})
+	     	}
  		formErrors.county =
-          value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke (Stor forbokstav)" : "";
+          value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke" : "";
         formErrors.commune =
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn gyldig kommune (Stor forbokstav)" : "";
         
         break;
 
          case "commune":
-       const chosenCommune = this.communes.find((commune) => commune.navn== value && commune.fylke_id==this.county_nr);
+       const chosenCommune = this.communes.find((commune) => commune.navn.toUpperCase()== value.toUpperCase() && commune.fylke_id==this.county_nr);
          if(chosenCommune!=null){
         this.commune_nr=chosenCommune.ID;
 		}
 		formErrors.commune =
-          value.length <1 || chosenCommune==null  ? "Vennligst skriv inn en gyldig kommune (Stor forbokstav) i følgende fylke:" : "";
+          value.length <1 || chosenCommune==null  ? "Vennligst skriv inn en gyldig kommune i følgende fylke:" : "";
 
 
         break;

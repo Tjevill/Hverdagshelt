@@ -73,13 +73,13 @@ export default class AdminEmployee extends Component {
                     <div className="col-md-3"></div>
                         <div className="col-md-6">
                             <div className="group btmspace-50 headerlayout">
-                                <div className="one_half first"><h3>Kategorier</h3></div>
+                                <div className="one_half first"><h3>Ansatte</h3></div>
                                 <div className="one_half"><button type="button" className="btn btn-primary btn-lg largebutton" onClick={() => { history.push('/admin/kommune/nyansatt') }}>Legg til ny ansatt</button></div>
                             </div>
                         <table className="">
                                 <thead>
                                 <tr>
-                                  <th scope="col">#</th>
+
                                   <th scope="col">Navn</th>
                                   <th scope="col">Tlf</th>
                                   <th scope="col">Superbruker</th>
@@ -87,6 +87,7 @@ export default class AdminEmployee extends Component {
 
 
                                       <input
+                                          className="search-employee"
                                           id="searchbar"
                                           type="text"
                                           onChange={event => this.search(event)}
@@ -100,9 +101,7 @@ export default class AdminEmployee extends Component {
                                 <tbody>
                                     {this.employees.map((employee, i) => (
                                       <tr key={i} className="PrivateUsersList-TableRow">
-                                         <td className="employee_id">
-                                          {employee.employee_id}
-                                        </td>
+
                                              <td className="name">
                                            {employee.name}
                                             </td>

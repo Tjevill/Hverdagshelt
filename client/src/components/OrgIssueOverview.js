@@ -81,12 +81,10 @@ export default class OrgIssueOverview extends Component<{
               return value.status_id != 7;
             });
             if(statusid>0){
-              console.log("med status");
               this.casesbyStatus = this.casesbyKommune.filter(function(value) {
                 return value.status_id == statusid;
               });
               if(categoryid>0){
-                console.log("med category og status");
                 this.casesbyStatus = this.casesbyStatus.filter(function(value){
                    return value.category_id == categoryid;
                 });
@@ -101,8 +99,6 @@ export default class OrgIssueOverview extends Component<{
               this.casesbyStatus = this.casesbyKommune;
             };
             this.backup = this.casesbyStatus;
-            console.log("All the cases from chooesd kommune",this.casesbyKommune);
-            console.log("All the cases",this.casesbyStatus);
             this.forceUpdate();
         })
         .catch((error: Error) => console.log("fails by getting fylker"));
@@ -134,12 +130,10 @@ export default class OrgIssueOverview extends Component<{
       this.kommuner = [];
       this.forceUpdate();
     }else{
-      console.log("Fylke valgt: " + event.target.value);
         userService
           .getProvince(event.target.value)
           .then(response => {
               this.kommuner = response;
-              console.log("kommuner: ", this.kommuner);
               this.forceUpdate();
           })
           .catch((error: Error) => console.log("Errors by getting kommuner"));
@@ -333,10 +327,10 @@ export default class OrgIssueOverview extends Component<{
       lists = (
         <tbody>
           {this.casesbyStatus.map(casen => (
-            <tr>
+            <tr key={casen.case_id}>
               <th>{casen.case_id}</th>
-              <td onClick={() => history.push("/case/" + casen.case_id)}>
-                {casen.headline} category: {casen.category_id}
+              <td className="clickable-link" onClick={() => history.push("/case/" + casen.case_id)}>
+                {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
               <td>
@@ -398,7 +392,7 @@ export default class OrgIssueOverview extends Component<{
       sidebuttons =(
         <div>
         {(count(sliceArray(this.casesbyStatus, 15))).map(sidetall => (
-            <button type="button" id ="Saker-side-button" className="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
+            <button key={sidetall} type="button" id ="Saker-side-button" className="btn btn-outline-dark" onClick={() => history.push('/bedrift/issues/'+sidetall)}> {sidetall} </button>
         ))}
         </div>
       );
@@ -435,7 +429,7 @@ export default class OrgIssueOverview extends Component<{
                 <div className="form-group">
                   <label htmlFor="inputFylke">Velg Fylke</label>
                   <select id="fylke" name="fylke" className="form-control" onChange={this.handleChangeFylke}>
-                    <option selected value={0}>Alle </option>
+                    <option value={0}>Alle </option>
                       {this.fylker.map((fylke, i) => {
                           return(<option value={fylke.ID} key={i}>{fylke.navn}</option>)
                       })}
@@ -446,9 +440,9 @@ export default class OrgIssueOverview extends Component<{
                 <div className="form-group">
                   <label htmlFor="inputKommune">Velg Kommune</label>
                     <select id="kommune" name="kommune" className="form-control" onChange={this.handleChangeKommune}>
-                      <option selected >Velg fylke først </option>
+                      <option >Velg fylke først </option>
                       {this.kommuner.map(kommune => {
-                          return(<option value={kommune.Name}>{kommune.navn}</option>)
+                          return(<option key={kommune.ID} value={kommune.Name}>{kommune.navn}</option>)
                       })}
                     </select>
                   </div>
@@ -472,7 +466,7 @@ export default class OrgIssueOverview extends Component<{
                     Alle
                   </option>
                   {this.categories.map(category => (
-                    <option value={category.category_id}>
+                    <option key={category.category_id} value={category.category_id}>
                       {category.description} {category.category_id}
                     </option>
                   ))}
@@ -550,10 +544,6 @@ export default class OrgIssueOverview extends Component<{
         .then(employee => {
             this.employee = employee[0];
             this.org_id = this.employee.org_id;
-            console.log("This org id: " + this.org_id)
-
-    //this.org_id = sessionStorage.getItem("userid");
-    // console.log(sessionStorage.getItem("userid"));
 
     caseService
       .getCasesForOrganization(this.org_id)
@@ -578,7 +568,6 @@ export default class OrgIssueOverview extends Component<{
       .getCategoriesForOrganization(this.org_id)
       .then(categories => {
         this.categories = categories;
-        console.log(categories);
         this.forceUpdate();
       })
       .catch((error: Error) =>

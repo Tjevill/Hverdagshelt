@@ -211,4 +211,12 @@ module.exports = class OrgDao extends Dao {
 			callback
 		);
 	}
+
+	getOrgReplyMail(org_id, callback) {
+		super.query(
+			"SELECT email FROM Organization WHERE org_id = ?",
+			[org_id],
+			callback
+		);
+	}
 };

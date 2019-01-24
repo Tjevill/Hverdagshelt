@@ -20,7 +20,7 @@ export function refreshToken() {
     let fetchData = {
         method: 'POST',
         headers: myHeaders
-    }
+    };
 
     return new Promise(resolve => {
     fetch(url, fetchData)
