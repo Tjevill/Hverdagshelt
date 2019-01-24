@@ -12,14 +12,14 @@ const history = createHistory({
 export default class ReportValidation extends Component <{ match: { params: { id: number } } }>{
 
     componentDidMount() {
-        setTimeout(() => (window.location = ("#case/" + this.props.match.params.id)), 2000);
+        setTimeout(() => (history.replace("#/case/" + this.props.match.params.id), window.location.reload()), 3000);
     }
 
     render(){
         return(
             <div className="loading-img">
                 <h3 align="center">Takk for innmedlingen, du vil bli redirigert til sakssiden hvert øyeblikk...</h3>
-                <NavLink to={'/profile'}>
+                <NavLink to={'/case/' + this.props.match.params.id}>
                     <p className="align-link">Klikk her om du ikke blir redirigert</p>
                 </NavLink>
                     <img src='https://i.redd.it/ounq1mw5kdxy.gif' />
