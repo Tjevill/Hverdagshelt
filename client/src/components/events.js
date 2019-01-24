@@ -297,7 +297,7 @@ export default class events extends Component<{
                   {count(sliceArray(this.eventsFraKommune, 5)).map(sidetall => (
                     <button
                       type="button"
-                      class="btn btn-outline-dark"
+                      className="btn btn-outline-dark"
                       id="Saker-side-button"
                       onClick={() => history.push("/events/" + sidetall)}
                     >
