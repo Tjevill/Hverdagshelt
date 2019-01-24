@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import { Switch, Route, NavLink } from 'react-router-dom'
-import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom'
+
 import createHistory from 'history/createBrowserHistory';
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Navbar from "./Navbar";
+
 
 
 const history = createHistory({
@@ -44,9 +44,9 @@ export default class Menu extends Component {
                             <div className="navbar-header">
                                 <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                     <span className="sr-only">Toggle navigation</span>
-                                    <span className="icon-bar"></span>
-                                    <span className="icon-bar"></span>
-                                    <span className="icon-bar"></span>
+                                    <span className="icon-bar">&nbsp;</span>
+                                    <span className="icon-bar">&nbsp;</span>
+                                    <span className="icon-bar">&nbsp;</span>
                                 </button>
                             </div>
 
@@ -68,7 +68,7 @@ export default class Menu extends Component {
             );
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "user")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") === "user")) {
 
             return (
             <div>
@@ -129,7 +129,7 @@ export default class Menu extends Component {
 
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "bedrift")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") === "bedrift")) {
 
             return (
             <div>
@@ -188,7 +188,7 @@ export default class Menu extends Component {
 
         }
 
-        if (this.props.loggedin && (sessionStorage.getItem("access") == "kommune")) {
+        if (this.props.loggedin && (sessionStorage.getItem("access") === "kommune")) {
 
 
             return (
@@ -200,7 +200,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
 
-                            <li><a className="drop" href="#">Min side</a>
+                            <li><a className="drop" href="#/admin/">Min side</a>
                                 <ul>
                                     <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
@@ -208,7 +208,7 @@ export default class Menu extends Component {
                                     <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                                 </ul>
                             </li>
-                            <li><a className="drop" href="#">Administrator</a>
+                            <li><a className="drop" href="#/admin/">Administrator</a>
                                 <ul>
                                     <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>

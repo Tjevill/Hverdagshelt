@@ -252,7 +252,7 @@ td{border-width:0 1px;}
 .faico li:last-child{margin-right:0;}
 .faico a{display:inline-block; width:36px; height:36px; line-height:36px; font-size:18px; text-align:center;}
 
-.faico a{color:#FFFFFF; background-color:rgba(162,183,13,.5)/* #6b5b95 */;}
+.faico a{color:#FFFFFF; background-color:rgba(162,183,13,.5)/* #343434 */;}
 
 .faicon-dribble:hover{background-color:#EA4C89;}
 .faicon-facebook:hover{background-color:#3B5998;}
@@ -271,30 +271,30 @@ td{border-width:0 1px;}
 
 /* Colours
 --------------------------------------------------------------------------------------------------------------- */
-body{color:#6b5b95; background-color:#efefef; min-width:400px;}
-a{color:#6b5b95;}
+body{color:#343434; background-color:#efefef; min-width:400px;}
+a{color:#343434;}
 
 a:active, a:focus{background:transparent;}/* IE10 + 11 Bugfix - prevents grey background */
 hr, .borderedbox{border-color:#D7D7D7;}
-label span{color:#6b5b95; background-color:inherit;}
-input:focus, textarea:focus, *:required:focus{border-color:#6b5b95;}
+label span{color:#343434; background-color:inherit;}
+input:focus, textarea:focus, *:required:focus{border-color:#343434;}
 .overlay{color:#FFFFFF; background-color:inherit;}
 .overlay::after{color:inherit; background-color:rgba(0,0,0,.4);}
-.overlay.coloured::after{background-color:#ff7b25;}
+.overlay.coloured::after{background-color:#333333;}
 
 .btn, .btn.inverse:hover{color:#efefef; border-color:#000000; }
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 
-.btn2, .btn2.inverse:hover{color:#6b5b95; background-color:#ff7b25; border-color:#000000;}
+.btn2, .btn2.inverse:hover{color:#343434; background-color:#333333; border-color:#000000;}
 .btn2:hover, .btn2.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 
 
 /* Rows */
-.row1{color:#FFFFFF; background-color:#ff7b25;}
-.row2{color:#191919; background-color:#ff7b25;}
-.row3{color:#191919; background-color:#ff7b25;}
+.row1{color:#FFFFFF; background-color:#333333;}
+.row2{color:#191919; background-color:#333333;}
+.row3{color:#191919; background-color:#333333;}
 .row4{color:#CBCBCB;}
-.row5, .row5 a{color:#CBCBCB; background-color:#ff7b25;}
+.row5, .row5 a{color:#CBCBCB; background-color:#333333;}
 
 
 /* Header */
@@ -304,14 +304,14 @@ input:focus, textarea:focus, *:required:focus{border-color:#6b5b95;}
 /* Content Area */
 .services li article{border-color:#D7D7D7;}
 .services li article > a{color:inherit;}
-.services li article:hover > a i{color:#6b5b95;}
+.services li article:hover > a i{color:#343434;}
 
 .excerpts article{border-color:#EDEDED; box-shadow:0px 0px 5px 5px #EDEDED;}/* There is sadly no box-shadow-color, so the full tag is here */
-.excerpts article:hover{border-color:#6b5b95; box-shadow:0px 0px 5px 5px rgba(162,183,13,.2)/* #6b5b95 */;}
+.excerpts article:hover{border-color:#343434; box-shadow:0px 0px 5px 5px rgba(162,183,13,.2)/* #343434 */;}
 
 .excerpts article figure figcaption{color:#FFFFFF;}
-.excerpts article figure figcaption time strong{color:#ff7b25; background-color:#EDEDED;}
-.excerpts article figure figcaption time em{color:#ff7b25; background-color:#DADADA;}
+.excerpts article figure figcaption time strong{color:#333333; background-color:#EDEDED;}
+.excerpts article figure figcaption time em{color:#333333; background-color:#DADADA;}
 .excerpts article figure + .hgroup, .excerpts article footer{border-color:#EDEDED;}
 .excerpts article .hgroup + figure > a{color:inherit;}
 .excerpts article .hgroup + figure > a:hover::before{background:rgba(0,0,0);}
@@ -322,31 +322,31 @@ input:focus, textarea:focus, *:required:focus{border-color:#6b5b95;}
 #footer .heading{color:#FFFFFF;}
 #footer hr, #footer .borderedbox, #footer .linklist li{border-color:rgba(255,255,255,.2);}
 #footer nav a{color:inherit;}
-#footer nav li:first-child a, #footer nav a:hover{color:#6b5b95;}
+#footer nav li:first-child a, #footer nav a:hover{color:#343434;}
 
 
 /* Navigation */
 #mainav li a{color:inherit;}
-#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#6b5b95; background-color:inherit;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#343434; background-color:inherit;}
 #mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.5); border-color:rgba(0,0,0,.1);}
-#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#6b5b95;}
+#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#343434;}
 #mainav form select{color:#FFFFFF; background-color:#000000; border-color:rgba(255,255,255,.2);}
 
 #breadcrumb a{color:inherit; background-color:inherit;}
-#breadcrumb li:last-child a{color:#6b5b95;}
+#breadcrumb li:last-child a{color:#343434;}
 
 .container .sidebar nav a{color:inherit; border-color:#D7D7D7;}
-.container .sidebar nav a:hover{color:#6b5b95;}
+.container .sidebar nav a:hover{color:#343434;}
 
 .pagination a, .pagination strong{border-color:#D7D7D7;}
-.pagination .current *{color:#FFFFFF; background-color:#6b5b95;}
+.pagination .current *{color:#FFFFFF; background-color:#343434;}
 
-#backtotop{color:#FFFFFF; background-color:#6b5b95;}
+#backtotop{color:#FFFFFF; background-color:#343434;}
 
 
 /* Tables + Comments */
 table, th, td, #comments .avatar, #comments input, #comments textarea{border-color:#D7D7D7;}
-#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#6b5b95;}
+#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#343434;}
 th{color:#FFFFFF; background-color:#373737;}
 tr, #comments li, #comments input[type="submit"], #comments input[type="reset"]{color:#1b1e21; background-color:#EEEEEE;}
 tr:nth-child(even), #comments li:nth-child(even){color:1b1e21; background-color:#DDDDDD;}

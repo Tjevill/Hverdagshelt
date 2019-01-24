@@ -139,16 +139,18 @@ class Main extends Component {
     componentDidMount() {
         // console.log("This location (from componentDidMount: " + window.location);
 
-        const promiseObject = refreshToken();
-        console.log("PO:  ", sessionStorage.getItem("storedtoken"))  // returns pending
-        promiseObject.then(value => {
-            console.log("Am I logged in? " + value);  // does not get triggerede
-            if (value != 'undefined') {
-                this.amILoggedin = value;
-            } else {
-                this.amILoggedin = false;
-            }
-        });
+        try {
+            const promiseObject = refreshToken();
+            console.log("PO:  ", sessionStorage.getItem("storedtoken"))
+            promiseObject.then(value => {
+                console.log("Am I logged in? " + value);
+                if (value != 'undefined') {
+                    this.amILoggedin = value;
+                } else {
+                    this.amILoggedin = false;
+                }
+            });
+        } catch (error) { console.log ("error: " + error)}
     }
 
     render() {

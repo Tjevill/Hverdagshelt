@@ -47,3 +47,5 @@
 .hovedmeny {
 	padding-top:27px;
 }
+
+.navbar-inverse .navbar-nav>li>a { color:#000; }
