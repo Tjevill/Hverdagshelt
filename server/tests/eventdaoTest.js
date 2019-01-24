@@ -24,6 +24,7 @@ let pool = mysql.createPool({
 });
 
 let eventdao = new Eventdao(pool);
+
 beforeAll(done => {
   runsqlfile('dao/tests/create_tables.sql', pool, () => {
     runsqlfile('dao/tests/create_testdata.sql', pool, done);
@@ -35,98 +36,148 @@ afterAll(done => {
 });
 
 
-test('getAllEvents', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.length).toBe(3);
-    done();
+/**
+ * Get all future events.
+ * To get this test to pass, make sure there are future events in the testdata-set!
+ */
+test("Get all future events", done =>{
+
+  function callback(status, data){
+
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data.length).toBe(10);
+    done()
   }
   eventdao.getAllEvents(callback);
 });
 
-test('getOne', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data[0].name).toBe("Test Event 1");
+
+/**
+ * Get one event from the db using event_id.
+ */
+test("Get one event from db with event_id", done =>{
+
+  function callback(status, data){
+
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data[0].name).toBe("Madrugada");
+    expect(data[0].event_id).toBe(1);
+    expect(data[0].zipcode).toBe("8015");
     done();
   }
   eventdao.getOne(1, callback);
 });
 
-test('searchEvent', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.length).toBe(3);
+
+/**
+ * Search for an event on name in the db
+ */
+test("Search for event in db by name", done => {
+
+  function callback(status, data){
+
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data.length).toBe(2);
     done();
   }
-  eventdao.searchEvent("Event",callback);
+  eventdao.searchEvent("Ben", callback);
 });
 
-test('onDateAsc', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.length).toBe(3);
-    done();
-  }
-  eventdao.onDateAsc(2019,callback);
-});
 
-test('onDateDesc', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.length).toBe(3);
-    expect(data[0].name).toBe("Test Event 1");
-    done();
-  }
-  eventdao.onDateDesc(2019,callback);
-});
+/**
+ * Create one event and put it in the db
+ */
+test("Create one event", done => {
 
-test('createEvent', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.affectedRows).toBe(1);
-    expect(data.insertId).toBe(4);
+  function callback(status, data){
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data[0].name).toBe("Testevent");
+    expect(data[0].description).toBe("Testdesc");
+    expect(data[0].zipcode).toBe("1337");
     done();
   }
   eventdao.createEvent(
-    { 
-        name:"Test Ben på piano",
-        date:"2019-07-10 16:00:0", 
-        description:"Låter knall bra",
-        zipcode:"7021"
-            
-        },
-        callback
-    );
+      {
+        name : "Testevent",
+        date : "2019-09-10 16:00",
+        description: "Testdesc",
+        zipcode : "1337",
+        address : "Testveien 2",
+        venue : "Test"
+      },
+      callbackB
+  );
+
+  function callbackB(){
+    eventdao.searchEvent("Testevent", callback);
+  }
 });
 
-test('updateEvent', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.affectedRows).toBe(1);
+
+/**
+ * Delete one event in the db using event_id
+ */
+test("Delete one event in the db", done => {
+
+  function callback(status, data){
+
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data.length).toBe(10);
     done();
   }
-  eventdao.updateEvent(
-      2,
-    { 
-        name:"Test Update",
-        date:"2019-07-10 16:00:0", 
-        description:"Jest made this update",
-        zipcode:"7021"
-            
-    }
-      ,callback
-    );
+  eventdao.deleteEvent(32, callbackB);
+
+  function callbackB(){
+    eventdao.getAllEvents(callback);
+  }
 });
 
-test('deleteEvent', done => {
-  function callback(status, data) {
-    console.log('Test callback: status=' + status + ', data=' + JSON.stringify(data));
-    expect(data.affectedRows).toBe(1);
-    
+
+/**
+ * Update an existing event in the db.
+ */
+test("Update one event in the db", done =>{
+
+  function callback(status, data){
+
+    console.log("Test callback: status = "+status+" , data = "+JSON.stringify(data));
+    expect(data[0].name).toBe("Testedit");
+    expect(data[0].description).toBe("testedityo");
+    expect(data[0].zipcode).toBe("7331");
+    expect(data[0].address).toBe("editveien 2");
+    expect(data[0].venue).toBe("edited");
     done();
   }
-  eventdao.deleteEvent(1,callback);
+  eventdao.updateEvent(1,
+      {
+        name : "Testedit",
+        date : "2019-09-10 16:00",
+        description: "testedityo",
+        zipcode : "7331",
+        address: "editveien 2",
+        venue: "edited"
+      },
+      callbackB
+  );
+
+  function callbackB(){
+    eventdao.getOne(1, callback);
+  }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

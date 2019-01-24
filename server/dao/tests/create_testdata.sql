@@ -14,10 +14,18 @@ INSERT INTO Cases ( description, longitude, latitude, status_id, user_id, catego
 INSERT INTO Status (description) VALUES
     ('Status1'), ('Status2'), ('Status3'), ('Status4'), ('Status5');
 
-INSERT INTO Events (name, date, description, zipcode) VALUES 
-    ('Test Event 1', "2019-12-03", 'description 1', 7001),
-    ('Test Event 2', "2019-12-03", 'description 2', 7002),
-    ('Test Event 3', "2019-12-03", 'description 3', 7003);
+
+INSERT INTO `Events` (`event_id`, `name`, `date`, `description`, `zipcode`, `address`, `venue`) VALUES
+(1, 'Madrugada', '2019-09-18 08:20:14', 'Madrugada er tilbake i Trondheim. Konserten holdes på spektakulære Sverresborg under stjernehimmelen. Ikke gå glipp av årets konsert!', '8015', 'Sverresborg', 'Sverresborg'),
+(2, 'Kiss – The Exisbitchin', '2019-09-16 14:00:00', 'Svenske Alexander Johansson har samlet på Kiss-effekter helt siden han 7 år gammel fikk se coveret til Kiss-albumet Destroyer. I dag har 41 år gamle Johansson av Nordens største Kiss-samlinger. Dette blir første gang han tar med seg vandreutstillingen Kiss – The Exhibition til Norge.', '7010', 'Brattørkaia 14', 'Rockheim'),
+(3, 'Sjakk for kongerab', '2019-09-02 09:00:00', 'Arrangement for unger interessert i sjakk. Her kan ungene lære sjakk, spille sjakk og se på partier. Åpent for alle barn.', '7037', 'Sorgenfriveien 9', 'Toppen Kantine'),
+(6, 'Svingkurs - Nybegynner', '2019-09-03 13:00:00', 'Vil du også lære å danse swing?\r\n\r\nÅ danse swing er sosialt, moro og god trening. Ta med familie, venner, arbeidskollegaer og bli med på kurs.', '7047', 'Ingvald Ystgaards veg 7B ', 'Dans Trondheim IL'),
+(7, 'Humle, Humle og atter Humle', '2019-09-02 16:00:00', 'Bruk av humle strekker seg langt tilbake til før 1000-tallet, og de startet med bruk av humle i øl for og konservere ølet. Dette gjorde at man kunne brygge lavere alkoholprosent og det ble mer profitt på øl. Humle brukes i øl før å tilføre bitterhet og aroma og konservere ølet. IPA er et øl som inneholder mye, og ofte flere typer humle.\r\nVi inviterer til en intim middag (18 plasser) der det først blir en historifortelling og forklaring om de ulike typer IPA øl som finnes og fakta om ulike humletyper. Etterpå blir det servert en 4-retters meny der vi har laget maten etter ølet, og med 9 forskjellige humleøl.', '7067', 'Strandveien 71', 'E.C.Dahls Pup og Kjøkken'),
+(8, 'aaVinter kajakk-tur i Afrikaa', '2019-09-18 17:00:00', 'Ikke gå glipp av å oppleve Trondheims vinterstemning fra en kajakk. Våre eksklusive vinterturer går langs Nidelven, og er tilpasset også de som ikke har padlet kajakk tidligere. Turen ledes av våre profesjonelle instruktører. aa', '7031', 'Bostadvegen 11', 'Tempe Idrettsanlegg'),
+(9, 'Bokåret 2018', '2019-09-22 15:00:00', 'Gikk du glipp av høydepunktene fra bokåret 2018? Trondheim folkebibliotek har invitert et variert panel med forfattere, kritikere og bokelskere til å presentere kjente og ukjente bokperler. Kom til en litterær helaften og bli servert årets kjente og ukjente bokperler! Arrangementet avsluttes med panelets personlige favoritter!', '7011', 'Kongens gate 1', 'Kulturtorget, Trondheim folkebibliotek'),
+(10, 'Magevals nybegynnerkurs', '2019-09-10 14:00:00', 'Velkommen til 10-ukers nybegynnerkurs i magedans/orientalsk dans.', '7042', 'Båtmannsgata 4', 'Dora'),
+(29, 'Ben spiller blokkfløyte... igjen og igjen test', '2019-09-26 17:00:00', 'Ben dræg opp blokkfløyta for en siste heilblåsanes riff', '7021', 'NTNU - Kalvskinnet', '403'),
+(32, 'Ben spiller blokkfløyte... enda en gang', '2019-09-27 00:00:00', 'Ben er ikke særlig god', '7020', 'Fløyteveien 2', 'I kjellern');
 
 
 INSERT INTO Employee (name, tel, email, password, secret, province, district) VALUES
