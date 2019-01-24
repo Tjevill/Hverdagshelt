@@ -1,4 +1,4 @@
-// @flow
+
 /* eslint eqeqeq: "off" */
 
 import * as React from 'react';
@@ -254,7 +254,7 @@ export class Loading extends Component {
     render(){
         return (
             <div className="loading-animation">
-                <img src='https://i.redd.it/ounq1mw5kdxy.gif' alt="loader" />
+                <img src='https://mir-s3-cdn-cf.behance.net/project_modules/disp/585d0331234507.564a1d239ac5e.gif' alt="loader" />
             </div>
         );
     }

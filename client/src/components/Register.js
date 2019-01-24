@@ -156,7 +156,7 @@ export default class Register extends Component {
         </div>
         <h3>{this.passworderror}</h3>
         <div className="form-group">
-        <label htmlFor="subscription">Vil du motta informasjon om events på mail?</label>
+        <label htmlFor="subscription">Vil du motta varsler fra oss på mail?</label>
         <input
           className="form-control"
           name="subscription"

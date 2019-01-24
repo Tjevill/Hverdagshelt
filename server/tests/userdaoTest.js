@@ -32,9 +32,9 @@ beforeAll(done => {
     });
 });
 
-afterAll(done => {
-    runsqlfile('dao/tests/delete_testdata.sql', pool, done);
-});
+// afterAll(done => {
+//     runsqlfile('dao/tests/delete_testdata.sql', pool, done);
+// });
 
 /**
  * Get every user from the database returned as an array.

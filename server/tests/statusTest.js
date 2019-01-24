@@ -29,9 +29,9 @@ beforeAll(done => {
 	});
 });
 
-afterAll(done => {
-	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
-});
+// afterAll(done => {
+// 	runsqlfile('dao/tests/delete_testdata.sql', pool, done);
+// });
 
 /**
  * Gets all statuses from Status table in DB
