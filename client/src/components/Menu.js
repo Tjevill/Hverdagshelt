@@ -22,10 +22,6 @@ export default class Menu extends Component {
 
     }
 
-    preventRoute(e){
-        e.preventDefault();
-    }
-
     render() {
 
         // console.log("Menu.js: loggedin = " + this.props.loggedin);
@@ -79,7 +75,7 @@ export default class Menu extends Component {
                 <nav id="mainav" className="fl_right">
                     <ul className="hovedmeny">
                         <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                        <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
+                        <li><NavLink exact activeClassName="current" to="/user/report">Meld feil</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                         <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
@@ -110,7 +106,7 @@ export default class Menu extends Component {
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
                                 <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/report">Meld feil</NavLink></li>
+                                <li><NavLink exact activeClassName="current" to="/user/report">Meld feil</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
                                 <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
@@ -212,14 +208,14 @@ export default class Menu extends Component {
                                     <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                                 </ul>
                             </li>
-                            <li><a className="drop" href="#/admin/">Administrator</a>
+                            <li><a className="drop" href="#">Administrator</a>
                                 <ul>
                                     <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                                     <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
-                                    <li><NavLink onClick={() => window.open("#/statistics")} to="/" disabled>Statistikk</NavLink></li>
+                                    <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
                                     <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                                 </ul>
                             </li>
@@ -255,7 +251,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/admin/bedrift">Bedrifter</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
-                            <li><NavLink onClick={() => window.open("#/statistics")} to="/">Statistikk</NavLink></li>
+                            <li><NavLink onClick={() => window.open("#/statistics")} to="/" onClick={this.preventRoute}>Statistikk</NavLink></li>
                             <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                         </ul>
                     </div>
@@ -273,8 +269,8 @@ export default class Menu extends Component {
 
     componentDidMount() {
 
-
     }
+
 }
 
 
