@@ -299,6 +299,7 @@ export class Report extends Component {
                         <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
+                <div className="col-sm-4"></div>
             </div>
         );
     }
@@ -353,6 +354,7 @@ export class Report extends Component {
 
     register(){
         if(this.caseReported == false) {
+            console.log()
             if (this.state.headline == ''){
                 this.titleValid = "is-invalid";
                 return null;
