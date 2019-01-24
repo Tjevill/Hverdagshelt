@@ -88,12 +88,23 @@ CREATE TABLE StatusTable (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE Organization (
- org_id int(8) NOT NULL AUTO_INCREMENT,
- organizationnumber int(12) NOT NULL,
- name varchar(100) NOT NULL,
- email varchar(50) NOT NULL,
- password text NOT NULL,
- secret varchar(32) NOT NULL,
- PRIMARY KEY (org_id)
+CREATE TABLE `Organization` (
+  `org_id` int(8) NOT NULL,
+  `organizationnumber` int(12) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `tel` varchar(8) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` text NOT NULL,
+  `secret` varchar(32) NOT NULL,
+  `resetPasswordToken` varchar(255) DEFAULT NULL,
+  `expirePasswordToken` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `Organization`
+  ADD PRIMARY KEY (`org_id`),
+  ADD UNIQUE KEY `organizationnumber` (`organizationnumber`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `Organization`
+  MODIFY `org_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+COMMIT;

@@ -108,24 +108,24 @@ export default class AdminEditEmployee extends Component < {
        
 
         case "county":
-        const chosenCounty = this.counties.find((county) => county.navn== value);
+        const chosenCounty = this.counties.find((county) => county.navn.toUpperCase()== value.toUpperCase());
         if(chosenCounty!=null){
         this.county_nr=chosenCounty.ID;
 		}
  		formErrors.county =
-          value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke (Stor forbokstav)" : "";
+          value.length <1 || chosenCounty==null ? "Vennligst fyll inn fylke" : "";
         formErrors.commune =
           value.length <1 || chosenCounty==null ? "Vennligst fyll inn gyldig kommune (Stor forbokstav)" : "";
         
         break;
 
          case "commune":
-       const chosenCommune = this.communes.find((commune) => commune.navn== value && commune.fylke_id==this.county_nr);
+       const chosenCommune = this.communes.find((commune) => commune.navn.toUpperCase()== value.toUpperCase() && commune.fylke_id==this.county_nr);
          if(chosenCommune!=null){
         this.commune_nr=chosenCommune.ID;
 		}
 		formErrors.commune =
-          value.length <1 || chosenCommune==null  ? "Vennligst skriv inn en gyldig kommune (Stor forbokstav) i følgende fylke:" : "";
+          value.length <1 || chosenCommune==null  ? "Vennligst skriv inn en gyldig kommune i følgende fylke:" : "";
 
 
         break;

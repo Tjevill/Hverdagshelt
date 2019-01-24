@@ -1,5 +1,5 @@
 INSERT INTO Cases ( description, longitude, latitude, status_id, user_id, category_id, zipcode, timestamp, headline, picture, employee_id, org_id) VALUES
-('test One', '10.38769950', '63.42830650', 1, 31, 1, '7012', '2019-01-09 08:09:06', 'aliens are invading send help', 'url', 1, 1),
+('test One', '10.38769950', '63.42830650', 6, 31, 1, '7012', '2019-01-09 08:09:06', 'aliens are invading send help', 'url', 1, 1),
 ( 'tætt vannhøll', '112.92326821', '43.29427921', 2, 31, 1, '7021', '2019-01-09 08:09:06', 'tætt vannhøl, fix pls', NULL, NULL, NULL),
 ( 'test sak', '1.00000000', '2.00000000', 1, 1, 1, '7012', '2019-01-09 12:26:48', 'test headline', 'url', 1, 1),
 ( 'test sak', '1.00000000', '2.00000000', 1, 1, 1, '7012', '2019-01-09 12:30:52', 'test headline', 'url', 1, 1),
@@ -70,8 +70,9 @@ INSERT INTO `User` (`user_id`, `name`, `address`, `tel`, `email`, `password`, `s
 (101, 'REgmegR', 'regmegvegen 12', 12345678, 'regmeg@reg.no', '27bbdc2692d4e9db8f452b794d58e7d7a376b85d16a1de8c87e06937cd7e7f422c30d7de8be228aaaeb0c1e9b838ebf086f544257c79e43d02d8d7bead4a6811', '69c743b17abb541f1f238f6cc6104d7d', 0, '7020', NULL, NULL),
 (108, 'ben', 'benbenben', 99999999, 'benos@stud.ntnu.no', '681907da36f945a18f92ac9f62a30d6f05219c30dfb44ba8624c9fcda4b96fe90671705d5dcf78d493684e20c3ce75e94bbdd5f2e2e3a1de389b4d77ce909e9b', '551ad87210355279879038e4bdffa78c', 1, '1234', NULL, NULL);
       
-
-INSERT INTO Organization (organizationnumber, name, email, password, secret) VALUES 
-      (12345678, 'BENisasjon', 'mail', 'pass', 'sec'),
-     (23456789, 'SIMisasjon', 'mail', 'pass', 'sec');
+INSERT INTO `Organization` (`org_id`, `organizationnumber`, `name`, `tel`, `email`, `password`, `secret`, `resetPasswordToken`, `expirePasswordToken`) VALUES
+(2, 713210329, 'Josteins Propan Og Badeballe', '24681012', 'jostein@propan.no', '3e6110ed79a8e9fae7d418078cc0a9750aa2b8cee550c9a06160de7fa8c793d3786f37dc9b89ea781ef58a02aca80f44c2711b5aebfcf9e3a8a464f6f75720d2', '5b9d6cdaaaf9aca2b62dc3a64c4aac0d', 'c1f5ee02e39739ad06e767075b49bb04a4646a49', '1548154740084'),
+(15, 7133, 'Odd Ronny Grustak', '24681012', 'kaare@propan.no', '1f6d67d92dc420eff5ef8b4669abb393664e26521aaa7efe4958e50a34aba0e2571a9374027964ebf5cac065548102fd730992a8f02570f5c7e84b13bbafbb4e', '408180820c764683afbfd12ad1088a96', NULL, NULL),
+(16, 23242, 'Kåres Kranservice', '28472403', 'heh@heh.no', '188a716070e7d91dae6c63a80914f0d9d2726363691c228936309c2a796a6cc38bae5396ee396cf86a1fc164f3cb4114b58041dac0afd53c848566188b69da5f', 'd9cf4ba91f363d3eace36deeddd0fb22', NULL, NULL),
+(22, 7173777, 'Elektro', '12345678', 'Elektro@gmail.com', 'ba45aefdf394bc75505c4022559cec2d686a5a341c36e1f8f3753e5abff5b5ca9cf451b4c537cacbac3746a8326f396c092dcfbd9613f4a97fc0bca60b85a9ab', '0e91aa75989e880d8ce826bf0c66fe86', NULL, NULL);
 
