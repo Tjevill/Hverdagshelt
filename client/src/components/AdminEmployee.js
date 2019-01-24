@@ -30,7 +30,7 @@ const style = {
 };
 
 //<{ match: { params: { name: string, id: number } } }>
-export default class EmployeeOverview extends Component {
+export default class AdminEmployee extends Component {
   employees = [];
   employeesbackup = [];
   commune = "";
@@ -47,10 +47,10 @@ export default class EmployeeOverview extends Component {
   }
 
 
-    delete(employeeid) {
+    delete(employeeid, employee) {
 
 
-        if ( window.confirm("Er du sikker på at du ønsker å slette denne ansatte?") ){
+        if ( window.confirm("Er du sikker på at du ønsker å slette følgende ansatt? : " + employee.name) ){
             employeeService.deleteEmp(employeeid)
                 .then(response => {
                     console.log(response, "Slettet kommuneansatt");
@@ -115,7 +115,7 @@ export default class EmployeeOverview extends Component {
                                             <td className="edit">
                                           {this.addEditRowColumn(this.superUser, employee)}
                                         </td>
-                                          <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.employee_id)}>Slett</button></td>
+                                          <td>{this.addDeleteRowColumn(employee.superuser, employee)}</td>
 
                                       </tr>
                                     ))}
@@ -140,6 +140,16 @@ export default class EmployeeOverview extends Component {
            history.push('/admin/kommune/edit/'+ employee.employee_id);
           }}
         >Rediger</button>
+      );
+    } else {
+      return "";
+    }
+  }
+
+   addDeleteRowColumn(superUser, employee) {
+    if (superUser!== 1 && this.superUser==1) {
+      return (
+       <button type="button" className="btn btn-danger" onClick ={() => this.delete(employee.employee_id, employee)}>Slett</button>
       );
     } else {
       return "";

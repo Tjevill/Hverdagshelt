@@ -94,6 +94,7 @@ class EmployeeUpdatePWord {
 class UserVerifyOldPWordAndUpdate {
 	user_id: number;
 	oldPassword: string;
+  newPassword: string;
 }
 
 class Organization {
@@ -388,7 +389,7 @@ class UserService {
   }
 
   updateUserPWord(userPWordUpdate: UserUpdatePWord): Promise<void>{
-    return axios.put(url + '/updateUserPWord', userPWordUpdate);
+    return axios.put(url + '/updateUserPassword', userPWordUpdate);
   }
 
   getUsersProviceFromUserID(id: number): Promise<string>{
@@ -401,7 +402,7 @@ class UserService {
 	 * @param updatePassword Includes variables {user_id, oldPassword}
 	 */
 	verifyOldPassword (updatePassword: UserVerifyOldPWordAndUpdate): Promise<number> {
-		return axios.post(url + '/userVerification', updatePassword);
+		return axios.put(url + '/userVerification', updatePassword, axiosConfig );
 
 	}
 
@@ -428,8 +429,8 @@ class OrgService{
 	 * Service object for verifying and changing password for logged in users.
 	 * @param updatePassword Includes variables {org_id, oldPassword}
 	 */
-	verifyOldPassword (org_id: number, oldPassword: string): Promise<number> {
-		return axios.post(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword});
+	verifyOldPassword (org_id: number, oldPassword: string, newPassword: string): Promise<number> {
+		return axios.put(url + '/organizationVerification', {org_id: org_id, oldPassword: oldPassword, newPassword: newPassword}, axiosConfig);
 
 	}
 
@@ -450,9 +451,14 @@ class OrgService{
   }
 
 
-  updateOrgByID(org: Organization): Promise<void>{
-  return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
-  }
+    updateOrgByID(org: Organization): Promise<void>{
+        return axios.put(url + '/org/' + org.org_id, org, axiosConfig);
+    }
+
+
+    updateOrgByToken(org: Organization): Promise<void>{
+        return axios.put(url + '/orgedit/' + org.org_id, org, axiosConfig);
+    }
 
   updateOrgPWordByID(org: OrganizationUpdatePWord): Promise<void>{
     return axios.put(url + '/updateOrgPWord', org, axiosConfig);
@@ -556,8 +562,8 @@ export default class EmployeeService {
 	 * Service object for verifying old password.
 	 * @param updatePassword Includes variables {employee_id, oldPassword}
 	 */
-	verifyOldPassword (employee_id: number, oldPassword: string): Promise<number> {
-		return axios.post(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword});
+	verifyOldPassword (employee_id: number, oldPassword: string, newPassword: string): Promise<number> {
+		return axios.put(url + '/employeeVerification', {employee_id: employee_id, oldPassword: oldPassword, newPassword: newPassword}, axiosConfig);
 
 	}
     getCategories(): Promise<Category[]> {
@@ -762,9 +768,9 @@ class EventService {
   }
 
   updateEvent(event_id:number, event:Event):Promise<Void>{
-      return axios.put(url+/updateEvent/+event_id, event, axiosConfig   );
+      return axios.put(url+ "/updateEvent/" + event_id, event, axiosConfig);
   }
-	
+
 	/**
 	 * Get events in selected commune ID
 	 * @param commune_ID
@@ -833,7 +839,15 @@ class StatisticsService {
 	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
     return axios.get(url + "/statistics/casesCategory");
   }
-
+	
+	/**
+	 * Gets count of all users of the system in one table
+	 * @returns {AxiosPromise<any>}
+	 */
+  getCountAllUsers(): Promise<{bruker: string, antall: number}>{
+		return axios.get(url + '/statistics/countUsers');
+	}
+  
 }
 
 export let statisticsService = new StatisticsService();

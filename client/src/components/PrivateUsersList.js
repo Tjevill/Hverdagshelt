@@ -8,9 +8,6 @@ import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
 
-const style = {
-  margin: 12
-};
 /**
  * A simple table demonstrating the hierarchy of the `Table` component and its sub-components.
  */
@@ -68,7 +65,7 @@ export default class PrivateUsersList extends Component {
                                 <td>{item.subscription}</td>
                                 <td>{item.zipcode}</td>
                                 <td>{this.addEditRowColumn(item)}</td>
-                                 <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(item.user_id)}>Slett</button></td>
+                                 <td><button type="button" className="btn btn-danger" onClick ={() => this.delete(item.user_id, item)}>Slett</button></td>
                                 </tr>
 
                                     ))}
@@ -114,8 +111,8 @@ export default class PrivateUsersList extends Component {
     }
 }
 
-  delete(id) {
-    if (window.confirm("Er du sikker på at du ønsker å slette brukeren?")) {
+  delete(id, user) {
+    if (window.confirm("Er du sikker på at du ønsker å slette følgende bruker? :" + user.name)) {
       //console.log("The user  with id " + " " + "has been deleted");
       userService
         .deleteUser(id)

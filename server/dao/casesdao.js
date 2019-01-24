@@ -284,10 +284,11 @@ module.exports = class CasesDao extends Dao {
 		);
 	}
 
+    /** Returns user.email connected to a case, and user.subscribed value */
     getCaseReplyMail(case_id: number, callback: any) {
 
         super.query(
-            "SELECT email FROM User JOIN Cases Where User.user_id = Cases.user_id AND Cases.case_id = ?",
+            "SELECT email, subscription FROM User JOIN Cases Where User.user_id = Cases.user_id AND Cases.case_id = ?",
             [case_id],
             callback
         );
