@@ -49,17 +49,27 @@ CREATE TABLE Cases (
 
 
 
-  CREATE TABLE Employee (
-  employee_id int(8) NOT NULL AUTO_INCREMENT,
-  name varchar(100) NOT NULL,
-  tel int(8) NOT NULL,
-  email varchar(50) NOT NULL,
-  password text NOT NULL,
-  secret varchar(32) NOT NULL,
-  province int(3) NOT NULL,
-  district int(3) NOT NULL,
-  PRIMARY KEY (employee_id)
+CREATE TABLE `Employee` (
+  `employee_id` int(8) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `tel` int(8) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` text NOT NULL,
+  `secret` varchar(32) NOT NULL,
+  `commune` int(3) NOT NULL,
+  `county` int(2) NOT NULL,
+  `superuser` tinyint(1) NOT NULL DEFAULT '0',
+  `resetPasswordToken` varchar(255) DEFAULT NULL,
+  `expirePasswordToken` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `Employee`
+  ADD PRIMARY KEY (`employee_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `Employee`
+  MODIFY `employee_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+COMMIT;
 
   
 CREATE TABLE `Events` (
