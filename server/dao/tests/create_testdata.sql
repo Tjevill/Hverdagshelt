@@ -86,3 +86,19 @@ INSERT INTO `Organization` (`org_id`, `organizationnumber`, `name`, `tel`, `emai
 (16, 23242, 'Kåres Kranservice', '28472403', 'heh@heh.no', '188a716070e7d91dae6c63a80914f0d9d2726363691c228936309c2a796a6cc38bae5396ee396cf86a1fc164f3cb4114b58041dac0afd53c848566188b69da5f', 'd9cf4ba91f363d3eace36deeddd0fb22', NULL, NULL),
 (22, 7173777, 'Elektro', '12345678', 'Elektro@gmail.com', 'ba45aefdf394bc75505c4022559cec2d686a5a341c36e1f8f3753e5abff5b5ca9cf451b4c537cacbac3746a8326f396c092dcfbd9613f4a97fc0bca60b85a9ab', '0e91aa75989e880d8ce826bf0c66fe86', NULL, NULL);
 
+
+
+INSERT INTO Place (zipcode, province) VALUES
+("0001",'OSLO'),
+(1001, 'OSLO'),
+(2001, 'LILLESTRØM'),
+(3001, 'DRAMMEN'),
+(7001, 'TRONDHEIM');
+
+INSERT INTO fylke (navn) VALUES
+('OSLO'),
+('TRØNDELAG');
+
+INSERT INTO kommune (fylke_id, navn) VALUES
+(1,'OSLO'),
+(2,'TRONDHEIM');
