@@ -11,6 +11,8 @@ INSERT INTO Cases ( description, longitude, latitude, status_id, user_id, catego
 ( 'test description, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:27:43', 'test headline', 'url', NULL, NULL),
 ( 'test asdasda, denne saken registrerer mindre felter', '1.00000000', '2.00000000', 1, 34, 1, '7012', '2019-01-10 08:36:00', 'test headline', 'url', NULL, NULL);
 
+INSERT INTO Status (description) VALUES
+    ('Status1'), ('Status2'), ('Status3'), ('Status4'), ('Status5');
 
 INSERT INTO Events (name, date, description, zipcode) VALUES 
     ('Test Event 1', "2019-12-03", 'description 1', 7001),
