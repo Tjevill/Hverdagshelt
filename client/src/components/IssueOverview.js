@@ -257,7 +257,7 @@ export default class IssueOverview extends Component<{
               <td className="clickable-link" onClick={() => history.push("/case/" + casen.case_id)}>
                 {casen.headline}
               </td>
-              <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
+              <td>{this.statusname[casen.status_id]}</td>
             </tr>
           ))}
         </tbody>
@@ -345,7 +345,6 @@ export default class IssueOverview extends Component<{
                     <option value={2}>Under Vurdering</option>
                     <option value={3}>Satt på vent</option>
                     <option value={4}>Arbeid pågår</option>
-                    <option value={5}>Avvist</option>
                     <option value={6}>Løst</option>
                   </select>
                 </div>
@@ -381,9 +380,9 @@ export default class IssueOverview extends Component<{
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Saksnummer</th>
                     <th scope="col">Tittel</th>
-                    <th scope="col">Tid</th>
+                    <th scope="col">Nåværende status</th>
                   </tr>
                 </thead>
                 {lists}
@@ -420,13 +419,25 @@ export default class IssueOverview extends Component<{
       .getAllCases()
       .then(cases => {
         this.cases = cases.filter(function(value) {
-          return value.status_id != 7;
+          if(value.status_id == 7 || value.status_id == 5) {
+            return false;
+          } else {
+            return true;
+          }
         });
         this.casesbyStatus = cases.filter(function(value) {
-          return value.status_id != 7;
+            if(value.status_id == 7 || value.status_id == 5) {
+                return false;
+            } else {
+                return true;
+            }
         });
         this.backup = cases.filter(function(value) {
-          return value.status_id != 7;
+            if(value.status_id == 7 || value.status_id == 5) {
+                return false;
+            } else {
+                return true;
+            }
         });
         this.loaded = true;
         this.forceUpdate();
