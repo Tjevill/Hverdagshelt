@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Component } from "react-simplified";
 import {caseService, categoryService, mapService, geoService} from '../services';
-import {Alert} from "./widgets"
+import {Alert, Loading} from "./widgets"
 import axios from 'axios';
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import { NavLink } from 'react-router-dom';
@@ -26,6 +26,7 @@ export class Report extends Component {
     message = " ";
     error = " ";
     caseReported = false;
+    modal = <></>;
 
     categories = [];
     selectedFile: null;
@@ -150,6 +151,7 @@ export class Report extends Component {
     render(){
         return(
             <div id="report-page" className="row row-style" style={style}>
+                {this.modal}
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
                     <div className="rapporter">
@@ -404,6 +406,13 @@ export class Report extends Component {
                 this.categoryValid = "";
             }
             this.caseReported = true;
+
+            this.modal = <div className="react-modal modal-visible">
+                <div className="report-loader">
+                    <img src='https://mir-s3-cdn-cf.behance.net/project_modules/disp/585d0331234507.564a1d239ac5e.gif' />
+                </div>
+            </div>;
+
             let fd = new FormData();
             fd.append('file', this.selectedFile, this.selectedFile.name);
             fd.append('upload_preset', 'elo47cnr');
@@ -441,6 +450,7 @@ export class Report extends Component {
     }
 
     componentDidMount(){
+        this.show = 0;
 
         categoryService.getAllCategories()
             .then((categories => (this.categories = categories)))
