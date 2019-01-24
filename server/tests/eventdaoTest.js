@@ -89,8 +89,8 @@ test('createEvent', done => {
         description:"Låter knall bra",
         zipcode:"7021"
             
-    }
-      ,callback
+        },
+        callback
     );
 });
 

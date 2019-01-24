@@ -30,7 +30,7 @@ const style = {
 };
 
 //<{ match: { params: { name: string, id: number } } }>
-export default class EmployeeOverview extends Component {
+export default class AdminEmployee extends Component {
   employees = [];
   employeesbackup = [];
   commune = "";
@@ -79,7 +79,7 @@ export default class EmployeeOverview extends Component {
                         <table className="">
                                 <thead>
                                 <tr>
-                                  <th scope="col">#</th>
+
                                   <th scope="col">Navn</th>
                                   <th scope="col">Tlf</th>
                                   <th scope="col">Superbruker</th>
@@ -100,9 +100,7 @@ export default class EmployeeOverview extends Component {
                                 <tbody>
                                     {this.employees.map((employee, i) => (
                                       <tr key={i} className="PrivateUsersList-TableRow">
-                                         <td className="employee_id">
-                                          {employee.employee_id}
-                                        </td>
+
                                              <td className="name">
                                            {employee.name}
                                             </td>

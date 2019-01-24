@@ -5,6 +5,10 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
+
+// console.log = function() {}
+
+
 export function refreshToken() {
     const myHeaders = new Headers();
 
@@ -16,7 +20,7 @@ export function refreshToken() {
     let fetchData = {
         method: 'POST',
         headers: myHeaders
-    }
+    };
 
     return new Promise(resolve => {
     fetch(url, fetchData)

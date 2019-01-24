@@ -1,13 +1,41 @@
 #statistics-page{
-    padding: 4% 10% 10%;
-    /*width: 1000px;*/
+    padding: 4% 10% 4%;
 }
 
-.case-chart{
-    padding-bottom: 6%;
+#statistics-page .case-chart{
+    padding-bottom: 9%;
 }
 
-.pdf-form{
-    height: 800px;
-    width: 500px;
+#button-chart{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 3%;
 }
+
+.save-pdf {
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    width: 150px;
+    height: 60px;
+    border: 2px solid #1ECD97;
+    border-radius: 40px;
+    background: transparent;
+    color: #1ECD97;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+    transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+}
+
+.save-pdf:hover {
+    background-color: #1ECD97;
+    color: #fff;
+}
+
+.save-pdf:focus {
+    outline: none;
+}
+

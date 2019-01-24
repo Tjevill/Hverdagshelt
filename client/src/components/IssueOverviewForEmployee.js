@@ -80,6 +80,9 @@ export default class IssueOverviewForEmployee extends Component<{
     };
 
   handleChangeStatus = event => {
+    if(this.props.match.params.id!=1){
+        window.location.href='#/admin/issues/1';
+    };
     document.getElementById("search").value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
@@ -120,6 +123,9 @@ export default class IssueOverviewForEmployee extends Component<{
   };
 
   handleChangeCategories = event => {
+    if(this.props.match.params.id!=1){
+        window.location.href='#/admin/issues/1';
+    };
     document.getElementById("search").value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
@@ -321,10 +327,6 @@ export default class IssueOverviewForEmployee extends Component<{
     let lists;
     let sidebuttons;
     if (this.casesbyStatus.length == 0) {
-      this.caseside = this.casesbyStatus.slice(
-        (this.props.match.params.id - 1) * 15,
-        (this.props.match.params.id - 1) * 15 + 15
-      );
       lists = (
         <tbody>
           <tr>
@@ -337,9 +339,13 @@ export default class IssueOverviewForEmployee extends Component<{
         </tbody>
       );
     } else {
+      this.caseside = this.casesbyStatus.slice(
+        (this.props.match.params.id - 1) * 15,
+        (this.props.match.params.id - 1) * 15 + 15
+      );
       lists = (
         <tbody>
-          {this.casesbyStatus.map(casen => (
+          {this.caseside.map(casen => (
             <tr key={casen.case_id}>
               <th>{casen.case_id}</th>
               <td onClick={() => history.push("/case/" + casen.case_id)}>

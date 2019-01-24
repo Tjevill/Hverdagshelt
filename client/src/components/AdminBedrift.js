@@ -6,9 +6,27 @@ import {LoadingFirkant} from './widgets';
 
 const history = createHashHistory();
 
+function sliceArray(array, size) {
+  var result = [];
+  for (var x = 0; x < Math.ceil(array.length / size); x++) {
+    var start = x * size;
+    var end = start + size;
+    result.push(array.slice(start, end));
+  }
+  return result;
+}
 
+function count(array) {
+  var result = [];
+  for (var x = 1; x < array.length + 1; x++) {
+    result.push(x);
+  }
+  return result;
+}
 
-export default class AdminBedrift extends Component {
+export default class AdminBedrift extends Component<{
+  match: { params: { id: number } }
+}> {
     orgbackup= [];
     loaded = false;
     openMap = false;
@@ -18,6 +36,11 @@ export default class AdminBedrift extends Component {
 
 
     render() {
+      this.orgsider = this.org.slice(
+        (this.props.match.params.id-1) * 10,
+        (this.props.match.params.id-1) * 10 + 10
+      );
+
         if(this.loaded){
             console.log("org: ", this.org)
             return (
@@ -31,7 +54,6 @@ export default class AdminBedrift extends Component {
                     <table className="">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Org. nummer</th>
                             <th scope="col">Navn</th>
                             <th scope="col">Telefon</th>
@@ -49,10 +71,9 @@ export default class AdminBedrift extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.org.map((item, i) => {
+                        {this.orgsider.map((item, i) => {
                             return(
-                            <tr>
-                                <th scope="row">{i+1} - {item.org_id}</th>
+                            <tr key={i}>
                                 <td>{item.organizationnumber}</td>
                                 <td>{item.name}</td>
                                 <td>{item.tel}</td>
@@ -64,6 +85,22 @@ export default class AdminBedrift extends Component {
                         })}
                         </tbody>
                     </table>
+                    <div id="toolbar">
+                      <div className="wrapper text-center">
+                        <div className="btn-group">
+                      {count(sliceArray(this.org, 10)).map(sidetall => (
+                        <button
+                          type="button"
+                          className="btn btn-outline-dark"
+                          id="Saker-side-button"
+                          onClick={() => history.push("/admin/bedrift/" + sidetall)}
+                        >
+                          {sidetall}{" "}
+                        </button>
+                      ))}
+                      </div>
+                    </div>
+                    </div>
                 </div>
             );
         } else {

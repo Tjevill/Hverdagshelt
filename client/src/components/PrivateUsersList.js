@@ -8,9 +8,6 @@ import createHashHistory from "history/createHashHistory";
 
 const history = createHashHistory();
 
-const style = {
-  margin: 12
-};
 /**
  * A simple table demonstrating the hierarchy of the `Table` component and its sub-components.
  */
