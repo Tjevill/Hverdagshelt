@@ -16,7 +16,8 @@ export function refreshToken() {
     myHeaders.append('x-access-token', sessionStorage.getItem('storedtoken'));
     myHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
-    let url = 'http://localhost:8080/refreshtoken';
+    //let url = 'http://xx.xx.xxx.xx:8080/refreshtoken'; for mobile testing(use your own ip)
+    let url = "http://localhost:8080/refreshtoken";
     let fetchData = {
         method: 'POST',
         headers: myHeaders
