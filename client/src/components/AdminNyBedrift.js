@@ -18,6 +18,10 @@ export default class AdminNyBedrift extends Component {
 
   message = " ";
   passworderror = " ";
+  passwordValid1 = " ";
+  passwordValid2 = " ";
+  password1Message = "";
+  password2Message = "";
   _value = "";
   info = {
     org: "",
@@ -178,23 +182,26 @@ export default class AdminNyBedrift extends Component {
             <div className="form-group">
               Passord:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.passwordValid1}
                 type="password"
                 defaultValue=""
                 name="password"
                 onChange={this.handleChange}
               />
             </div>
+            <div className="invalid-feedback">{this.password1Message}</div>
+
             <div className="form-group">
               Gjenta Passord:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.passwordValid2}
                 type="password"
                 defaultValue=""
                 name="password2"
                 onChange={this.handleChange}
               />
             </div>
+            <div className="invalid-feedback">{this.password2Message}</div>
 
             <div className="form-group">
               {this.categories.map(cat => {
@@ -256,7 +263,10 @@ export default class AdminNyBedrift extends Component {
     }
 
     if (this.state.password != this.state.password2) {
-      this.passworderror = "Passordene matcher ikke.";
+      this.password1Message = "Passordene matcher ikke.";
+      this.password2Message = "Passordene matcher ikke.";
+      this.passwordValid1 = "is-invalid";
+      this.passwordValid2 = "is-invalid";
       return null;
     } else {
       this.passworderror = "";
@@ -292,10 +302,6 @@ export default class AdminNyBedrift extends Component {
       }
     }
 
-    if (this.password != this.password2) {
-      this.message = "Passwords do not match.";
-    }
-
     console.log("this organization: ", orgdata);
     console.log("these connections: ", this.category_ids);
 
@@ -304,6 +310,8 @@ export default class AdminNyBedrift extends Component {
       .then(response => {
         console.log("insertID: ", response.insertId);
         console.log("this.category_ids: ", this.category_ids);
+        this.passwordValid1 = "invalid";
+        this.passwordValid2 = "invalid";
         categoryService
           .addOrgCat(this.category_ids, response.insertId)
           .then(response => {
