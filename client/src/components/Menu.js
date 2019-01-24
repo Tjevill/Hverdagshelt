@@ -251,7 +251,7 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/admin/bedrift/oversikt/1">Bedrifter</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
-                            <li><NavLink onClick={() => window.open("#/statistics")} to="/" onClick={this.preventRoute}>Statistikk</NavLink></li>
+                            <li><NavLink onClick={() => window.open("#/statistics")} to="/" >Statistikk</NavLink></li>
                             <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                         </ul>
                     </div>
