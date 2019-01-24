@@ -161,13 +161,18 @@ export default class AdminRedigerEvents extends Component<{
     console.log(this.event.description);
     console.log(this.event.zipcode);
     console.log(this.event.address);
-    this.event.date = this.event.date.replace("T", " ").substring(0, 16);
+    this.event.date = this.event.date.replace("T"," ").substring(0,16);
     eventService
-      .updateEvent(this.props.match.params.id, this.event)
-      .then(response => {
-        console.log("Here !! ", response);
-        console.log("Edit event response: ", response);
-      })
-      .catch((error: Error) => console.log(error.message));
+        .updateEvent(
+            this.props.match.params.id,
+            this.event
+            )
+        .then(response =>{
+            console.log("Edit event response: ", response);
+            // history.push("/admin/events");
+        })
+        .catch((error: Error) => (console.log(error.message)));
+
   }
+
 }
