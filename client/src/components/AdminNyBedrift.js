@@ -18,10 +18,25 @@ export default class AdminNyBedrift extends Component {
 
   message = " ";
   passworderror = " ";
-  passwordValid1 = " ";
-  passwordValid2 = " ";
-  password1Message = "";
-  password2Message = "";
+
+  messagewarn = {
+    password1: "",
+    password2: "",
+    email: "",
+    tel: "",
+    name: "",
+    orgnr: ""
+  };
+
+  validstatus = {
+    password1: "",
+    password2: "",
+    email: "",
+    tel: "",
+    name: "",
+    orgnr: ""
+  };
+
   _value = "";
   info = {
     org: "",
@@ -92,10 +107,12 @@ export default class AdminNyBedrift extends Component {
       console.log("org timeee");
       if (isNaN(value)) {
         value = this._value;
-        this.info.org = "kun skriv inn nummer";
+        this.messagewarn.orgnr = "kun skriv inn nummer";
+        this.validstatus.orgnr = "is-invalid";
         setTimeout(
           function() {
-            this.info.org = " ";
+            this.messagewarn.orgnr = "";
+            this.validstatus.orgnr = "";
             document.getElementById("organizationnumber").value = this._value;
           }.bind(this),
           500
@@ -108,10 +125,12 @@ export default class AdminNyBedrift extends Component {
       console.log("tel timeee");
       if (isNaN(value)) {
         value = this._value;
-        this.info.tel = "kun skriv inn nummer";
+        this.messagewarn.tel = "kun skriv inn nummer";
+        this.validstatus.tel = "is-invalid";
         setTimeout(
           function() {
-            this.info.tel = " ";
+            this.messagewarn.tel = "";
+            this.validstatus.tel = "";
             document.getElementById("tel").value = this._value;
           }.bind(this),
           500
@@ -131,11 +150,11 @@ export default class AdminNyBedrift extends Component {
         <div className="col-sm-4" />
         <div className="col-sm-4">
           <div className="NyAnsatt">
-            <h1>Registrer ny bedrift</h1>
+            <h2>Registrer ny bedrift</h2>
             <div className="form-group">
               Organisasjonsnummer:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.orgnr}
                 id="organizationnumber"
                 type="text"
                 name="organizationnumber"
@@ -143,22 +162,23 @@ export default class AdminNyBedrift extends Component {
                 maxLength="9"
                 onChange={this.changeNr}
               />
-              <p>{this.info.org}</p>
+              <div className="invalid-feedback">{this.messagewarn.orgnr}</div>
             </div>
             <div className="form-group">
               Navn:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.name}
                 type="text"
                 name="name"
                 defaultValue=""
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">{this.messagewarn.name}</div>
             </div>
             <div className="form-group">
               Telefon:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.tel}
                 type="text"
                 defaultValue=""
                 id="tel"
@@ -166,42 +186,47 @@ export default class AdminNyBedrift extends Component {
                 maxLength="8"
                 onChange={this.changeNr}
               />
-              <p>{this.info.tel}</p>
+              <div className="invalid-feedback">{this.messagewarn.tel}</div>
             </div>
             <div className="form-group">
               Email:{" "}
               <input
-                className="form-control"
+                className={"form-control " + this.validstatus.email}
                 type="text"
                 defaultValue=""
                 name="email"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">{this.messagewarn.email}</div>
             </div>
 
             <div className="form-group">
               Passord:{" "}
               <input
-                className={"form-control " + this.passwordValid1}
+                className={"form-control " + this.validstatus.password1}
                 type="password"
                 defaultValue=""
                 name="password"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">
+                {this.messagewarn.password1}
+              </div>
             </div>
-            <div className="invalid-feedback">{this.password1Message}</div>
 
             <div className="form-group">
               Gjenta Passord:{" "}
               <input
-                className={"form-control " + this.passwordValid2}
+                className={"form-control " + this.validstatus.password2}
                 type="password"
                 defaultValue=""
                 name="password2"
                 onChange={this.handleChange}
               />
+              <div className="invalid-feedback">
+                {this.messagewarn.password2}
+              </div>
             </div>
-            <div className="invalid-feedback">{this.password2Message}</div>
 
             <div className="form-group">
               {this.categories.map(cat => {
@@ -250,41 +275,66 @@ export default class AdminNyBedrift extends Component {
     let organizationnumber = this.state.organizationnumber;
     let name = this.state.name;
     let tel = this.state.tel;
+    this.validstatus.orgnr = " ";
+    this.validstatus.name = " ";
+    this.validstatus.tel = " ";
+    this.validstatus.email = " ";
+    this.validstatus.password1 = "";
+    this.validstatus.password2 = "";
 
     if (!this.organization) {
       console.log("Returning null!");
       this.message = "Error";
       return null;
     }
+    if (organizationnumber == "") {
+      this.messagewarn.orgnr = "Feltet kan ikke være null";
+      this.validstatus.orgnr = "is-invalid";
+      return null;
+    }
 
-    if (email == "" || organizationnumber == "" || name == "" || tel == "") {
-      this.passworderror = "Feltet kan ikke være null";
+    if (name == "") {
+      this.messagewarn.name = "Feltet kan ikke være null";
+      this.validstatus.name = "is-invalid";
+      return null;
+    }
+    if (tel == "") {
+      this.messagewarn.tel = "Feltet kan ikke være null";
+      this.validstatus.tel = "is-invalid";
+      return null;
+    }
+
+    if (email == "") {
+      this.messagewarn.email = "Feltet kan ikke være null";
+      this.validstatus.email = "is-invalid";
+      return null;
+    }
+
+    if (!isEmail(email)) {
+      this.messagewarn.email = "Ugydig email";
+      this.validstatus.email = "is-invalid";
       return null;
     }
 
     if (this.state.password != this.state.password2) {
-      this.password1Message = "Passordene matcher ikke.";
-      this.password2Message = "Passordene matcher ikke.";
-      this.passwordValid1 = "is-invalid";
-      this.passwordValid2 = "is-invalid";
+      this.messagewarn.password1 = "Passordene matcher ikke.";
+      this.messagewarn.password2 = "Passordene matcher ikke.";
+      this.validstatus.password1 = "is-invalid";
+      this.validstatus.password2 = "is-invalid";
       return null;
     } else {
       this.passworderror = "";
     }
 
     if (passlength < minlength) {
-      this.passworderror = "Passordet er for kort";
+      this.messagewarn.password1 = "Passordet er for kort";
+      this.validstatus.password1 = "is-invalid";
       return null;
     } else {
       this.passworderror = "";
     }
 
-    if (!isEmail(email)) {
-      this.passworderror = "Ugydig email";
-      return null;
-    } else {
-      this.passworderror = "";
-    }
+
 
     const orgdata = {
       organizationnumber: this.state.organizationnumber,
@@ -310,8 +360,8 @@ export default class AdminNyBedrift extends Component {
       .then(response => {
         console.log("insertID: ", response.insertId);
         console.log("this.category_ids: ", this.category_ids);
-        this.passwordValid1 = "invalid";
-        this.passwordValid2 = "invalid";
+        this.validstatus.password1 = "invalid";
+        this.validstatus.password2 = "invalid";
         categoryService
           .addOrgCat(this.category_ids, response.insertId)
           .then(response => {
@@ -319,7 +369,7 @@ export default class AdminNyBedrift extends Component {
           })
           .catch((error: Error) => (this.message = error.message));
         this.message = "Vellyket!";
-        history.push("/admin/bedrift/");
+        history.push("/admin/bedrift/oversikt/1");
       })
       .catch((error: Error) => (this.message = error.message));
   }
