@@ -118,7 +118,7 @@ export default class AdminBedrift extends Component<{
                     type="button"
                     className="btn btn-outline-dark"
                     id="Saker-side-button"
-                    onClick={() => history.push("/admin/bedrift/" + sidetall)}
+                    onClick={() => history.push("/admin/bedrift/oversikt/" + sidetall)}
                   >
                     {sidetall}{" "}
                   </button>

@@ -114,6 +114,7 @@ class Districts {
   zipcode: string;
 }
 
+//let url = 'http://xx.xx.xxx.xx:8080'; for mobile testing(use your own ip)
 const url = "http://localhost:8080";
 
 let axiosConfig = {
@@ -839,7 +840,7 @@ class StatisticsService {
 	getAllCasesCategory(): Promise<{antall: number, description: string, category_id: number}>{
     return axios.get(url + "/statistics/casesCategory");
   }
-	
+
 	/**
 	 * Gets count of all users of the system in one table
 	 * @returns {AxiosPromise<any>}
@@ -847,7 +848,7 @@ class StatisticsService {
   getCountAllUsers(): Promise<{bruker: string, antall: number}>{
 		return axios.get(url + '/statistics/countUsers');
 	}
-  
+
 }
 
 export let statisticsService = new StatisticsService();
