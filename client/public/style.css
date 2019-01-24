@@ -375,7 +375,7 @@ ListItem {
 }
 
 .clickable-link {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 .caselist-container {
@@ -404,4 +404,12 @@ ListItem {
     padding: 2px !important;
     margin-right: 50px !important;
     margin-left: 50px !important;
+}
+
+.hover {
+    pointer: hover;
+}
+
+.search-employee {
+    color: black !important;
 }

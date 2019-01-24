@@ -93,7 +93,7 @@ export default class MinSideBedrift extends Component {
                     </div>
 
                     <div className = "col-sm-8">
-                        <h5>Tildelte saker :</h5>
+                        <h5>Fullførte saker :</h5>
 
                         <table className="table">
 
@@ -120,7 +120,7 @@ export default class MinSideBedrift extends Component {
                                         {ca.case_id}
                                     </th>
 
-                                    <td>
+                                    <td  className="clickable-link">
                                         {ca.headline}
                                     </td>
 
