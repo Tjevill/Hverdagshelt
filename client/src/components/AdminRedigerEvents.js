@@ -13,7 +13,7 @@ import {
 } from "react-mdl";
 import createHashHistory from "history/createHashHistory";
 import { eventService } from "../services.js";
-import { Alert } from "./widgets";
+import { Alert,Loading } from "./widgets";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 
@@ -39,6 +39,7 @@ const formValid = ({ formErrors, ...rest }) => {
 export default class caseEdit extends Component<{
   match: { params: { id: number } }
 }> {
+  loaded = false;
   event = "";
   dateFormatted ="";
 
@@ -70,7 +71,7 @@ export default class caseEdit extends Component<{
     if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-          name: ${this.state.name} 
+          name: ${this.state.name}
           date:  ${this.state.date}
           dateDay:  ${this.state.dateDay}
           dateTime:  ${this.state.dateTime}
@@ -128,6 +129,7 @@ export default class caseEdit extends Component<{
   render() {
     const { formErrors } = this.state;
 
+    if (this.loaded) {
     return (
       <div className="caseEdit-wrapper">
         <link rel="stylesheet" href="editUsers.css" />
@@ -246,7 +248,9 @@ export default class caseEdit extends Component<{
           </form>
         </div>
       </div>
-    );
+    );}else{
+      return <Loading />;
+    }
   }
 
   componentDidMount() {
@@ -261,6 +265,7 @@ export default class caseEdit extends Component<{
         address: event[0].address
       });
       this.event = event;
+      this.loaded = true;
     });
   }
 

@@ -151,15 +151,15 @@ app.get('/user/:id', (req: Request, res: Response) => {
  */
 
 
-// /** DUPE exact same as user/:id
-//  * Updates user by id by an Employee
-//  */
-// app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
-//     userdao.updateUser(req.body, (status, data) => {
-//         res.status(status);
-//         res.json(data);
-//     })
-// });
+/** DUPE exact same as user/:id
+* Updates user by id by an Employee
+*/
+ app.put('/useredit/:id', checkIfEmployee, (req: Request, res: Response) => {
+    userdao.updateUser(req.body, (status, data) => {
+      res.status(status);
+      res.json(data);
+     })
+ });
 
 /**
  * Updates user by id by themselves
@@ -280,19 +280,19 @@ app.get("/user/:username", (req, res) => {
 
 // End User
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Organization
@@ -442,21 +442,21 @@ app.get('/orgCount', (req: Request, res: Response) => {
 });
 
 // ORG END
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Category
@@ -553,18 +553,18 @@ app.get('/categoriesOrg/:id', (req: Request, res: Response) => {
 
 // End category
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Employee
@@ -752,20 +752,20 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 
 // End employee
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Events
@@ -866,18 +866,18 @@ app.put("/updateEvent/:event_id", checkIfEmployee, (req, res) => {
 
 // End Events
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Cases
@@ -1297,21 +1297,21 @@ app.put("/updateCaseEmployee", checkIfEmployee, (req, res) => {
 
 // End Cases
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1358,18 +1358,18 @@ app.get("/getCommunesKommune", (req, res) => {
 
 // GEO END
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Statistics
@@ -1406,20 +1406,20 @@ app.get("/statistics/countUsers", (req, res) => {
 
 // End statistics
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // STATUS
 
@@ -1445,19 +1445,19 @@ app.get("/status/:id", (req, res) => {
 
 // STATUS END
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // Login, Verification and Password
@@ -2209,19 +2209,19 @@ app.use("/refreshtoken", (req, res) => {
 
 
 // LOGIN, VERIFICATION, PASSWORD END
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 

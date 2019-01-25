@@ -42,7 +42,7 @@ export default class ChangePassword extends Component {
                               <div className="form-group">Nytt passord: <input className="form-control" type="password" name="newPassword1" onChange={event => (this.newPassword1 = event.target.value)} /></div>
                               <div className="form-group">Gjenta nytt passord: <input className="form-control" type="password" name="newPassword2" onChange={event => (this.newPassword2 = event.target.value)} /></div>
                                 <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                                <Button.Light onClick={() => history.push("/admin/")}>Avbryt</Button.Light>
+                                <Button.Light onClick={() => history.push("/admin")}>Avbryt</Button.Light>
                             </div>
 
 
@@ -101,8 +101,9 @@ export default class ChangePassword extends Component {
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
               console.log("this.meldning =" + this.meldning);
-              this.forceUpdate();
-
+              window.alert("Passord endring vellykket!");
+              window.location.reload();
+         
         })
       .catch((error: Error) => {
         console.log(error);

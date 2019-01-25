@@ -21,7 +21,7 @@ class Employee{
   county: string;
 }
 
-export default class AdminRedigerEmployee extends Component {
+export default class AdminEdit extends Component {
 
   loaded = false;
 
@@ -117,7 +117,7 @@ export default class AdminRedigerEmployee extends Component {
                 </Button.Success>
                 <Button.Light
                   onClick={() =>
-                    history.push("/admin/")
+                    history.push("/admin")
                   }
                 >
                   Avbryt
@@ -153,9 +153,32 @@ export default class AdminRedigerEmployee extends Component {
       }
     );
     //console.log(options);
-    this.communeOptions = options.sort().slice(0, 3);
+    this.communeOptions = this.sortBySearch(options, event.target.value).slice(0, 5);
     //console.log(this.communeOptions);
     this.forceUpdate();
+  }
+
+  sortBySearch(inArray, search) {
+
+    search = search.toUpperCase();
+
+    let length = search.length;
+
+    if(inArray.length <= 1){
+      return inArray;
+    }
+
+    inArray.sort();
+
+    let first = [];
+    let others = [];
+
+    inArray.map(item => {
+      if(item.substring(0, length).toUpperCase() === search) first.push(item);
+      else others.push(item);
+    });
+
+    return first.concat(others);
   }
 
   confirmCommune(event, commune){

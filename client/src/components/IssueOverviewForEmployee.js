@@ -203,126 +203,106 @@ export default class IssueOverviewForEmployee extends Component<{
     }));
   };
 
-  saveUpdate(id) {
-    console.log(this.state.comment);
-    let comment = this.state.comment;
+    saveUpdate (id, org_id, kommentar) {
+        console.log(this.state.comment)
+        let comment = '';
+        if(this.state.comment == '') {
+            comment = kommentar;
+        } else {
+            comment = this.state.comment;
+        }
 
-    if (IssueOverviewForEmployee.stat1 == true) {
-      caseService
-        .updateCaseByEmployee(
-          id,
-          comment,
-          2,
-          this.employee.employee_id,
-          this.state.org_id
-        )
-        .then(res => {
-          console.log(res);
-          window.alert("Kommentar, status og bedrift endret!");
-          window.location.reload();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else if (IssueOverviewForEmployee.stat2 == true) {
-      caseService
-        .updateCaseByEmployee(
-          id,
-          comment,
-          3,
-          this.employee.employee_id,
-          this.state.org_id
-        )
-        .then(res => {
-          console.log(res);
-          window.alert("Kommentar, status og bedrift endret!");
-          window.location.reload();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else if (IssueOverviewForEmployee.stat3 == true) {
-      caseService
-        .updateCaseByEmployee(
-          id,
-          comment,
-          4,
-          this.employee.employee_id,
-          this.state.org_id
-        )
-        .then(res => {
-          console.log(res);
-          window.alert("Kommentar, status og bedrift endret!");
-          window.location.reload();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else if (IssueOverviewForEmployee.stat4 == true) {
-      caseService
-        .updateCaseByEmployee(
-          id,
-          comment,
-          5,
-          this.employee.employee_id,
-          this.state.org_id
-        )
-        .then(res => {
-          console.log(res);
-          window.alert("Kommentar, status og bedrift endret!");
-          window.location.reload();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else if (IssueOverviewForEmployee.stat5 == true) {
-      caseService
-        .updateCaseByEmployee(
-          id,
-          comment,
-          6,
-          this.employee.employee_id,
-          this.state.org_id
-        )
-        .then(res => {
-          console.log(res);
-          window.alert("Kommentar, status og bedrift endret!");
-          window.location.reload();
-        })
-        .catch((error: Error) => Alert.danger(error.message));
-    } else {
-      window.alert("Vennligst anngi en status på saken");
-      return null;
+        if(this.state.org_id == 0) {
+            this.state.org_id = org_id;
+        }
+
+
+        if(IssueOverviewForEmployee.stat1 == true) {
+            caseService.updateCaseByEmployee(id, comment, 2, this.employee.employee_id, this.state.org_id)
+                .then(res => {
+                    console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+
+        } else if(IssueOverviewForEmployee.stat2 == true) {
+            caseService.updateCaseByEmployee(id, comment, 3, this.employee.employee_id, this.state.org_id)
+                .then(res => {
+                    console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+
+        } else if(IssueOverviewForEmployee.stat3 == true) {
+            caseService.updateCaseByEmployee(id, comment, 4, this.employee.employee_id, this.state.org_id)
+                .then(res => {
+                    console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+
+        } else if(IssueOverviewForEmployee.stat4 == true) {
+            caseService.updateCaseByEmployee(id, comment, 5, this.employee.employee_id, this.state.org_id)
+                .then(res => {
+                    console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+
+        } else if(IssueOverviewForEmployee.stat5 == true) {
+            caseService.updateCaseByEmployee(id, comment, 6, this.employee.employee_id, this.state.org_id)
+                .then(res => {
+                    console.log(res);
+                    window.alert("Kommentar, status og bedrift endret!");
+                    window.location.reload();
+                })
+                .catch((error: Error) => Alert.danger(error.message));
+
+        } else {
+            window.alert("Vennligst anngi en status på saken");
+            return null;
+        }
     }
-  }
 
-  handleClick1() {
-    IssueOverviewForEmployee.stat1 = true;
-    IssueOverviewForEmployee.stat2 = false;
-    IssueOverviewForEmployee.stat3 = false;
-    IssueOverviewForEmployee.stat4 = false;
-    IssueOverviewForEmployee.stat5 = false;
-  }
-  handleClick2() {
-    IssueOverviewForEmployee.stat1 = false;
-    IssueOverviewForEmployee.stat2 = true;
-    IssueOverviewForEmployee.stat3 = false;
-    IssueOverviewForEmployee.stat4 = false;
-    IssueOverviewForEmployee.stat5 = false;
-  }
-  handleClick3() {
-    IssueOverviewForEmployee.stat1 = false;
-    IssueOverviewForEmployee.stat2 = false;
-    IssueOverviewForEmployee.stat3 = true;
-    IssueOverviewForEmployee.stat4 = false;
-    IssueOverviewForEmployee.stat5 = false;
-  }
-  handleClick4() {
-    IssueOverviewForEmployee.stat1 = false;
-    IssueOverviewForEmployee.stat2 = false;
-    IssueOverviewForEmployee.stat3 = false;
-    IssueOverviewForEmployee.stat4 = true;
-    IssueOverviewForEmployee.stat5 = false;
-  }
-  handleClick5() {
-    IssueOverviewForEmployee.stat1 = false;
-    IssueOverviewForEmployee.stat2 = false;
-    IssueOverviewForEmployee.stat3 = false;
-    IssueOverviewForEmployee.stat4 = false;
-    IssueOverviewForEmployee.stat5 = true;
-  }
+    handleClick1() {
+            IssueOverviewForEmployee.stat1 = true;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick2() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = true;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick3() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = true;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick4() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = true;
+            IssueOverviewForEmployee.stat5 = false;
+        }
+        handleClick5() {
+            IssueOverviewForEmployee.stat1 = false;
+            IssueOverviewForEmployee.stat2 = false;
+            IssueOverviewForEmployee.stat3 = false;
+            IssueOverviewForEmployee.stat4 = false;
+            IssueOverviewForEmployee.stat5 = true;
+        }
 
   handleSelected(id) {
     let filteredCase = this.cases.filter(e => e.case_id == id);
@@ -354,6 +334,21 @@ export default class IssueOverviewForEmployee extends Component<{
       }
     }
   }
+
+    updateCommentState(comment) {
+        this.state.comment = comment;
+        return comment;
+    }
+
+    updateCaseOrg(id) {
+        if(id == null) {
+            return '';
+        } else {
+            this.state.org_id = id;
+            console.log(this.state.org_id);
+            return id;
+        }
+    }
 
   render() {
     let lists;
@@ -389,151 +384,76 @@ export default class IssueOverviewForEmployee extends Component<{
               <td>{this.getOrgOnCase(casen.org_id)}</td>
               <td>
                 {" "}
-                <button
-                  data-toggle="modal"
-                  data-target={"#" + casen.case_id}
-                  className="btn btn-primary m-2"
-                >
-                  <span
-                    aria-hidden="true"
-                    onClick={() => {
-                      this.handleSelected(casen.case_id);
-                    }}
-                  >
-                    &#x270E; Oppdater
+                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-primary m-2">
+                  <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
+                    	&#x270E;  Oppdater
                   </span>
-                </button>
-                <div
-                  className="modal fade"
-                  id={casen.case_id}
-                  tabIndex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                  data-backdrop="static"
-                >
-                  <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h4 className="modal-title" id="exampleModalLabel">
-                          &nbsp;Oppdater sak
-                        </h4>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        />
-                      </div>
-                      <h6 className="modal-title" id="exampleModalLabel">
-                        &nbsp;Legg til en kommentar
-                      </h6>
-                      <div className="modal-body">
-                        <input
-                          className="form-control"
-                          id="comment-input"
-                          defaultValue={casen.comment}
-                          onChange={(
-                            event: SyntheticInputEvent<HTMLInputElement>
-                          ) => (this.state.comment = event.target.value)}
-                        />
-                      </div>
-                      <h6 className="modal-title" id="exampleModalLabel">
-                        &nbsp;Endre status
-                      </h6>
-                      <label className="container inline status-container">
-                        <input
-                          className="status-radio"
-                          type="radio"
-                          id="status01"
-                          name="radio"
-                          onClick={this.handleClick1}
-                        />
-                        Under vurdering
-                      </label>
-                      <label className="container inline status-container">
-                        <input
-                          className="status-radio"
-                          type="radio"
-                          id="status02"
-                          name="radio"
-                          onClick={this.handleClick2}
-                        />
-                        Satt på vent
-                      </label>
-                      <label className="container inline status-container">
-                        <input
-                          className="status-radio"
-                          type="radio"
-                          id="status03"
-                          name="radio"
-                          onClick={this.handleClick3}
-                        />
-                        Arbeid pågår
-                      </label>
-                      <label className="container inline status-container">
-                        <input
-                          className="status-radio"
-                          type="radio"
-                          id="status04"
-                          name="radio"
-                          onClick={this.handleClick4}
-                        />
-                        Avvist
-                      </label>
-                      <label className="container inline status-container">
-                        <input
-                          className="status-radio"
-                          type="radio"
-                          id="status05"
-                          name="radio"
-                          onClick={this.handleClick5}
-                        />
-                        Sak løst
-                      </label>
-                      <h6 className="modal-title" id="exampleModalLabel">
-                        &nbsp;Tildel saken en bedrift
-                      </h6>
-                      <div className="form-group form-group-style">
-                        <select
-                          className={"browser-default custom-select"}
-                          onChange={(
-                            event: SyntheticInputEvent<HTMLInputElement>
-                          ) => (this.state.org_id = event.target.value)}
-                          defaultValue=""
-                        >
-                          <option disabled value="">
-                            {" "}
-                            -- velg bedrift til å løse problemet --{" "}
-                          </option>
-                          {this.orgs.map(org => (
-                            <option key={org.org_id} value={org.org_id}>
-                              {org.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-info"
-                          data-dismiss="modal"
-                        >
-                          Lukk
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          onClick={() => this.saveUpdate(casen.case_id)}
-                        >
-                          Lagre endringer
-                        </button>
-                      </div>
+                    </button>
+                    <div className="modal fade" id={casen.case_id} tabIndex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h4 className="modal-title" id="exampleModalLabel">&nbsp;Oppdater sak</h4>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Legg til en kommentar</h6>
+                                <div className="modal-body">
+                                    <input
+                                        className="form-control"
+                                        id="comment-input"
+                                        defaultValue={casen.comment}
+                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.comment = event.target.value)}>
+
+                                    </input>
+                                </div>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status01" name="radio" onClick={this.handleClick1}></input>
+                                    Under vurdering
+                                </label>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status02" name="radio" onClick={this.handleClick2}></input>
+                                    Satt på vent
+                                </label>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status03" name="radio" onClick={this.handleClick3}></input>
+                                    Arbeid pågår
+                                </label>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status04" name="radio" onClick={this.handleClick4}></input>
+                                    Avvist
+                                </label>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status05" name="radio" onClick={this.handleClick5}></input>
+                                    Sak løst
+                                </label>
+                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
+                                <div className="form-group form-group-style">
+                                    <select className={'browser-default custom-select'}
+                                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
+                                            defaultValue={casen.org_id}>
+                                        <option value={1}> -- velg bedrift til å løse problemet -- </option>
+                                        {this.orgs.map(org => (
+                                            <option key={org.org_id} value={org.org_id}>
+                                                {org.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
+                                    <button type="button" className="btn btn-primary"
+                                            onClick={() => this.saveUpdate(casen.case_id, casen.org_id, casen.comment)}>
+                                        Lagre endringer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <button
-                  className="btn btn-danger m-2"
-                  onClick={() => {
+                <button className="btn btn-danger m-2" onClick={() => {
                     this.delete(casen.case_id);
                   }}
                 >

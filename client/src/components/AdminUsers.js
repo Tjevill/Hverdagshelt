@@ -38,9 +38,9 @@ export default class AdminUsers extends Component<{
 
   abbstatus(number) {
     if (number == 1) {
-      return "no";
+      return "Nei";
     } else {
-      return "yes";
+      return "Ja";
     }
   }
 

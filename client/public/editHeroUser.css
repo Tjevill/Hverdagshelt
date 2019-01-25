@@ -107,7 +107,7 @@ margin-left: 1%;
 
 
  .name,
-.address, .email {
+.address, .email, .description {
   width: 100%;
 }
 
@@ -183,13 +183,22 @@ border-radius:5px;
 border:1px solid #7ac9b7;
 }
 
-input[type=number]{
+textarea{
 margin-bottom: 20px;
 margin-top: 10px;
 width:100%;
 padding: 15px;
 border-radius:5px;
 border:1px solid #7ac9b7;
+}
+
+input[type=number]{
+margin-bottom: 20px;
+margin-top: 10px;
+width:100%;
+padding: 15px;
+border-radius:5px;
+
 }
 
 input[type=submit]
@@ -204,3 +213,4 @@ color: aliceblue;
 font-size:15px;
 cursor:pointer;
 }
+
