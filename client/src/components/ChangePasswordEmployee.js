@@ -101,7 +101,8 @@ export default class ChangePassword extends Component {
               this.meldning = "Passord endring er vellyket";
               this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
               console.log("this.meldning =" + this.meldning);
-              this.forceUpdate();
+              window.alert("Passord endring vellykket!");
+              window.location.reload();
          
         })
       .catch((error: Error) => {

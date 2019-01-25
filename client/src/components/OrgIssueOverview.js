@@ -246,9 +246,15 @@ export default class OrgIssueOverview extends Component<{
     console.log(event.target.value);
     console.log(this.casesbyStatus);
   }
-  saveComment (id) {
+  saveComment (id, kommentar) {
       console.log(this.state.comment)
-      let comment = this.state.comment;
+      let comment = '';
+      if(this.state.comment == '') {
+          comment = kommentar;
+      } else {
+          comment = this.state.comment;
+      }
+
     if(OrgIssueOverview.stat1 == true) {
       caseService.updateStatusAndCommentForOrg(id, 4, comment)
           .then(res => {
@@ -370,7 +376,7 @@ export default class OrgIssueOverview extends Component<{
                                   <div className="modal-footer">
                                       <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
                                       <button type="button" className="btn btn-primary"
-                                              onClick={() => this.saveComment(casen.case_id)}>
+                                              onClick={() => this.saveComment(casen.case_id, casen.comment)}>
                                           Lagre endringer
                                       </button>
                                   </div>

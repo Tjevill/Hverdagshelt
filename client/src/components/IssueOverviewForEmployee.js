@@ -199,9 +199,19 @@ export default class IssueOverviewForEmployee extends Component<{
         }));
     };
 
-    saveUpdate (id) {
+    saveUpdate (id, org_id, kommentar) {
         console.log(this.state.comment)
-        let comment = this.state.comment;
+        let comment = '';
+        if(this.state.comment == '') {
+            comment = kommentar;
+        } else {
+            comment = this.state.comment;
+        }
+
+        if(this.state.org_id == 0) {
+            this.state.org_id = org_id;
+        }
+
 
         if(IssueOverviewForEmployee.stat1 == true) {
             caseService.updateCaseByEmployee(id, comment, 2, this.employee.employee_id, this.state.org_id)
@@ -322,6 +332,21 @@ export default class IssueOverviewForEmployee extends Component<{
         }
     }
 
+    updateCommentState(comment) {
+        this.state.comment = comment;
+        return comment;
+    }
+
+    updateCaseOrg(id) {
+        if(id == null) {
+            return '';
+        } else {
+            this.state.org_id = id;
+            console.log(this.state.org_id);
+            return id;
+        }
+    }
+
   render() {
     let lists;
     let sidebuttons;
@@ -403,8 +428,8 @@ export default class IssueOverviewForEmployee extends Component<{
                                 <div className="form-group form-group-style">
                                     <select className={'browser-default custom-select'}
                                             onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
-                                            defaultValue=''>
-                                        <option disabled value=''> -- velg bedrift til å løse problemet -- </option>
+                                            defaultValue={casen.org_id}>
+                                        <option value={1}> -- velg bedrift til å løse problemet -- </option>
                                         {this.orgs.map(org => (
                                             <option key={org.org_id} value={org.org_id}>
                                                 {org.name}
@@ -415,7 +440,7 @@ export default class IssueOverviewForEmployee extends Component<{
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
                                     <button type="button" className="btn btn-primary"
-                                            onClick={() => this.saveUpdate(casen.case_id)}>
+                                            onClick={() => this.saveUpdate(casen.case_id, casen.org_id, casen.comment)}>
                                         Lagre endringer
                                     </button>
                                 </div>
