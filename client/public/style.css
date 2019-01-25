@@ -434,6 +434,9 @@ ListItem {
 
 .react-modal {
     height: 2000px !important;
+    width: 100% !important;
+    align-items: center !important;
+    position:fixed;
 }
 
 
