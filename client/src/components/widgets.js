@@ -6,7 +6,6 @@ import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 
 
-console.log = function() {}
 
 
 export function refreshToken() {

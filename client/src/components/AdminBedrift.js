@@ -96,6 +96,7 @@ export default class AdminBedrift extends Component<{
                     <td>{item.email}</td>
                     <td>
                       <button
+                        key={i}
                         type="button"
                         className="btn btn-primary"
                         onClick={() => {
@@ -122,8 +123,9 @@ export default class AdminBedrift extends Component<{
           <div id="toolbar">
             <div className="wrapper text-center">
               <div className="btn-group">
-                {count(sliceArray(this.org, 10)).map(sidetall => (
+                {count(sliceArray(this.org, 10)).map((sidetall, i) => (
                   <button
+                    key={i}
                     type="button"
                     className="btn btn-outline-dark"
                     id="Saker-side-button"
