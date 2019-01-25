@@ -72,7 +72,7 @@ export default class Register extends Component {
             <div className="col-sm-6">
 
       <div className="Registrer">
-        <h1>Registrer deg</h1>
+        <h2>Registrer deg</h2>
 
         <div className="form-group">
           Navn:{" "}

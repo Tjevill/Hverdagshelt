@@ -289,7 +289,7 @@ export default class IssueOverview extends Component<{
                     history.push("/case/" + casen.case_id);
                   }}
                 >
-                  Se detaljer
+                  Se mer
                 </button>
               </td>
             </tr>

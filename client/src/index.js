@@ -70,7 +70,12 @@ class forsideMain extends Component {
 
         }else{
           button =(
+              <div>
             <button className="btn btn-primary" onClick={() => { history.push('/user/report') }}>Meld feil eller mangler!</button>
+                  <p>&nbsp;</p>
+                  <p>Du må være registrert for å kunne melde om feil eller mangler.</p>
+              <button className="btn btn-primary" onClick={() => { history.push('/register') }}>Registrer deg!</button>
+              </div>
           );
         }
         return(
@@ -80,6 +85,7 @@ class forsideMain extends Component {
                     <h2 className="heading">Vær en hverdagshelt!</h2>
                     <p>Hverdagen kan til tider være full av store og små problemer. Denne siden handler om å fikse de små problemene i kommunen din, og gir DEG sjansen til å være en hverdagshelt!</p>
                     <footer>{button}</footer>
+
 
                 </div>
             </section>
