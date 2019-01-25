@@ -82,15 +82,7 @@ export default class AdminEmployee extends Component {
                       <h3>Ansatte</h3>
                     </div>
                     <div className="one_half">
-                      <button
-                        type="button"
-                        className="btn btn-primary btn-lg largebutton"
-                        onClick={() => {
-                          history.push("/admin/kommune/nyansatt");
-                        }}
-                      >
-                        Legg til ny ansatt
-                      </button>
+                        {this.addAddEmployeeButton(this.superUser)}
                     </div>
                   </div>
                   <table className="">
@@ -157,6 +149,24 @@ export default class AdminEmployee extends Component {
       return "";
     }
   }
+
+    addAddEmployeeButton(id) {
+        if (id == 1) {
+            return (
+                <button
+                    type="button"
+                    className="btn btn-primary btn-lg largebutton"
+                    onClick={() => {
+                        history.push("/admin/kommune/nyansatt");
+                    }}
+                >
+                    Legg til ny ansatt
+                </button>
+            );
+        } else {
+            return "";
+        }
+    }
 
   addDeleteRowColumn(superUser, employee) {
     if (superUser !== 1 && this.superUser == 1) {
