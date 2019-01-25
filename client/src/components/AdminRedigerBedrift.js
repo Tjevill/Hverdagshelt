@@ -40,7 +40,7 @@ export default class AdminRedigerBedrift extends Component<{
   match: { params: { id: number } }
 }> {
   loading = false;
-  
+
     message = " ";
     passworderror = " ";
 
@@ -63,7 +63,7 @@ export default class AdminRedigerBedrift extends Component<{
         name: "",
         tel: "",
         email: "",
-    
+
       }
     };
   }
@@ -77,11 +77,11 @@ export default class AdminRedigerBedrift extends Component<{
         --SUBMITTING--
         organizationnumber: ${this.state.organizationnumber}
          name: ${this.state.name}
-         tel: ${this.state.tel} 
-         email: ${this.state.email} 
-         organizationnumber: ${this.props.match.params.id} 
-        
-         
+         tel: ${this.state.tel}
+         email: ${this.state.email}
+         organizationnumber: ${this.props.match.params.id}
+
+
       `);
 
       this.update();
@@ -90,6 +90,21 @@ export default class AdminRedigerBedrift extends Component<{
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
     }
   };
+
+  handleAllChecked = (event) => {
+      let i;
+      for (i=0; i < this.conns.length; i++) {
+          if (this.conns[i].catid == event.target.value) {
+              this.conns[i].checked = event.target.checked;
+          }
+      }
+
+
+      console.log(event.target.value + " " + event.target.checked);
+      console.log("conns: ", this.conns)
+  }
+
+
 
   handleChange = e => {
     e.preventDefault();
@@ -122,7 +137,7 @@ export default class AdminRedigerBedrift extends Component<{
 
         break;
 
-      
+
 
       default:
         break;
@@ -131,27 +146,56 @@ export default class AdminRedigerBedrift extends Component<{
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
   };
 
+
+
   update() {
-   
+    if (!this.organization) {
+        console.log("Returning null!");
+        this.message = "Error";
+        return null;
+    }
+
     const orgdata = {
-            organizationnumber:this.state.organizationnumber,
-            name: this.state.name,
-            tel: this.state.tel,
-            email: this.state.email,
-            org_id: this.props.match.params.id
+        organizationnumber: this.state.organizationnumber,
+        name: this.state.name,
+        tel: this.state.tel,
+        email: this.state.email,
+        org_id: this.props.match.params.id
+    };
+
+    let i;
+    for (i=0; i < this.conns.length; i++) {
+        if (this.conns[i].checked) {
+            this.category_ids.push({catid: this.conns[i].catid});
         }
+    }
+
+  console.log("this.conns: ", this.conns)
+    console.log("this organization: ", orgdata);
+    console.log("these connections: ", this.category_ids)
+
+
+    orgService.updateOrgByID(orgdata)
+        .then(response => {
+            console.log("1st response: ", response);
+            categoryService.deleteCategoryByOrgID(this.props.match.params.id)
+                .then(response => {
+
+                    console.log("2nd response: ", response);
+                    console.log("this.category_ids: " + this.category_ids);
+                    categoryService.addOrgCat(this.category_ids, this.props.match.params.id)
+                        .then(response => {
+                            console.log("3rd response: ", response);
+                        })
+                        .catch((error: Error) => (this.message = error.message));
+                })
+                .catch((error: Error) => (this.message = error.message));
+            history.push('/admin/bedrift/oversikt/1')
+        })
+        .catch((error: Error) => (this.message = error.message));
 
 
 
-
-    orgService.updateOrgByID(orgdata) // updating the organization data
-            .then(response => {
-                console.log("1st response: ", response);
-              })
-            .catch((error: Error) => (this.message = error.message));
-
-    
-    
   }
 
   addDeleteButton() {
@@ -270,7 +314,7 @@ export default class AdminRedigerBedrift extends Component<{
                                 )
                             })}
                         </div>
-             
+
 
               <div className="editCase">
                 <button type="submit"> Lagre endringer </button>
@@ -349,6 +393,7 @@ export default class AdminRedigerBedrift extends Component<{
                         let value = false;
                         (response2.length === 0 ? value = false : value = true)
                       this.conns.push({"catid": catid, "checked": false});
+                      this.forceUpdate();
                     });
 
                 }
@@ -360,9 +405,9 @@ export default class AdminRedigerBedrift extends Component<{
 
 
 
-   
 
-   
+
+
 
     //this.loading = false;
   }
