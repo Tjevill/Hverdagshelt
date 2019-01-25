@@ -172,7 +172,7 @@ export class Report extends Component {
 
                         </div>
                         <PlacesAutocomplete
-                            defaultValue={this.address}
+                            value={this.state.address}
                             onChange={this.handleChangeS}
                             onSelect={this.handleSelect}
                         >
