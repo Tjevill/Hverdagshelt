@@ -1,0 +1,19 @@
+h1{
+font-size:40px;
+}
+
+label{
+font-size:12px;
+padding-left: 15px;
+}
+input[type=submit]{
+padding:5px;
+
+}
+button{
+padding: 8px;
+}
+div.form-wrapper{
+width: 100%;
+margin: 10px 30% 10px 11%;
+}
