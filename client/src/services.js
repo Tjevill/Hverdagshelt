@@ -366,7 +366,7 @@ class UserService {
   }
 
   updateOne(user: User): Promise<void>{
-      return axios.put(url + '/user/' + user.user_id, user, axiosConfig);
+      return axios.put(url + '/useredit/' + user.user_id, user, axiosConfig);
   }
 
   updateMyUserInfo(user: User): Promise<void>{
