@@ -63,6 +63,7 @@ export class Report extends Component {
     };
 
     handleChange = event => {
+        console.log(this.address);
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -172,7 +173,7 @@ export class Report extends Component {
 
                         </div>
                         <PlacesAutocomplete
-                            value={this.state.address}
+                            defaultValue={this.address}
                             onChange={this.handleChangeS}
                             onSelect={this.handleSelect}
                         >
