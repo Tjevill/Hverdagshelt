@@ -106,8 +106,8 @@ export default class StatisticsPage extends Component{
 					
 					<div className="wrapper row1" style={{position: "inherit"}}>
 						<div id="copyright" className="hoc clear">
-							<p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - <a href="#">Team 5</a></p>
-							<p className="fl_right">I samarbeid med <a target="_blank" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
+							<p className="fl_left">Copyright &copy; 2019 - All Rights Reserved - Team 5</p>
+							<p className="fl_right">I samarbeid med <a target="_blank" rel="noopener noreferrer" href="http://www.ntnu.no/" title="NTNU">NTNU</a></p>
 						</div>
 					</div>
 					
@@ -124,22 +124,22 @@ export default class StatisticsPage extends Component{
 			.then(result => {
 				this.registeredCases = result;
 				
-				this.registeredCases.map(item => {
+				this.registeredCases.forEach(item => {
 					this.labelsRegCases.push(item.Dag)
 				});
 				
-				this.registeredCases.map(item => {
+				this.registeredCases.forEach(item => {
 					this.dataSetsRegCases.push(item.Registrerte)
 				});
 				
 				statisticsService.getAllCasesCategory()
 					.then(res => {
 						this.caseCountCat = res;
-						this.caseCountCat.map(item => {
+						this.caseCountCat.forEach(item => {
 							this.labelsCaseCount.push(item.description)
 						});
 						
-						this.caseCountCat.map(item => {
+						this.caseCountCat.forEach(item => {
 							this.dataSetsCaseCount.push(item.antall);
 						});
 						
@@ -147,7 +147,7 @@ export default class StatisticsPage extends Component{
 							.then(response => {
 								this.userCount = response;
 								
-								this.userCount.map(item => {
+								this.userCount.forEach(item => {
 									this.labelsUserCount.push(item.bruker);
 									this.dataSetsUserCount.push(item.antall);
 								});

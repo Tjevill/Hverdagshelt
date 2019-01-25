@@ -152,8 +152,13 @@ export default class AdminEditPrivateUSers extends Component < {
     render() {
         const { formErrors } = this.state;
         return (
+
         <div className="caseEdit-wrapper">
-         <link rel="stylesheet" href="editUsers.css" />
+ <link rel="stylesheet" href="editHeroUser.css" />
+<link rel="stylesheet" media="screen and (max-width: 1400px) and (min-width: 601px)" href="editHeroUser1.css" />
+<link rel="stylesheet" media="screen and (max-width: 600px) and (min-width: 351px)" href="editHeroUser2.css" />
+<link rel="stylesheet" media="screen and (max-width: 350px)" href="editHeroUser3.css" />
+
         <div className="form-wrapper">
           <h1> Rediger Bruker </h1>
 
@@ -320,6 +325,7 @@ export default class AdminEditPrivateUSers extends Component < {
 
             <div className="deleteCase">
               <button
+
                 onClick={() => {
                    this.delete(this.props.match.params.id);
                 }}

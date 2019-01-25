@@ -1,0 +1,49 @@
+input[type=submit]
+{
+padding:4px;
+font-size:12px;
+
+}
+input[type=text]{
+padding: 8px;
+margin-left: 20px;
+
+}
+
+.zipcode{
+padding: 8px;
+margin-left: 15px;
+
+}
+
+.subscription{
+padding: 8px;
+margin-left: 13px;
+}
+
+label{
+font-size:12px;
+padding-left: 25px;
+
+}
+h2{
+font-size:20px;
+}
+p{
+font-size:12px;
+}
+div.form-wrapper{
+width: 100%;
+margin: 10px 30% 10px 11%;
+}
+
+
+.editCase {
+	padding-left: 30px;
+	width: 50%;
+}
+
+.deleteCase{
+	width: 50%;
+}
+

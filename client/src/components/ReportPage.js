@@ -300,7 +300,6 @@ export class Report extends Component {
                         <button id="submit" type="button" onClick={this.register} className="btn btn-primary fullfør">
                             Fullfør
                         </button>
-                        <h2 className="feilmelding">{this.error}</h2>
                     </div>
                 </div>
                 <div className="col-sm-4"></div>

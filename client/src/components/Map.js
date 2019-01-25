@@ -6,8 +6,8 @@ import { caseService, employeeService, geoService } from "../services";
 import { Alert, Loading } from "./widgets";
 
 const style = {
+    height: "80%",
     width: "90%",
-    height: "70vh",
     margin: "0 5%"
 }
 
@@ -40,7 +40,6 @@ export class MapContainer extends Component {
     async componentDidMount(){
         this.cases = await caseService.getAllCases();
         this.communes = await geoService.getCommunesKommune();
-        console.log(this.communes);
         this.loaded = true;
         this.forceUpdate();
     }

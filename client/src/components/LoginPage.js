@@ -263,6 +263,7 @@ export default class LoginPage extends Component {
                                             <div className="form-group">
                                                 <button type="button" className="btn btn-primary" onClick={() => {this.handleSubmitHverdagshelt()}}>Login</button>
                                                 <div className="justadiv"><a href="#reset/user" className="justalink">Glemt passord?</a></div>
+                                                <div className="justadiv"><a href="#register" className="justalink">Ingen bruker?</a></div>
                                                 {loading1 &&
                                                 <div>Loading</div>}
                                             </div>

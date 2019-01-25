@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {refreshToken} from './widgets';
+import {refreshToken} from '../src/components/widgets';
 
 export default class AdminMain extends React.Component {
     constructor(props) {

@@ -3,29 +3,29 @@ import ReactDOM from "react-dom";
 import { DropdownButton, SplitButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import createHistory from 'history/createBrowserHistory';
 
-import {refreshToken} from "./widgets";
+import {refreshToken} from "../src/components/widgets";
 
-import Case from "./Case";
-import ProfilePage from "./ProfilePage";
-import ReportPage from "./ReportPage";
-import IssueOverview from "./IssueOverview";
-import UserHome from "./userHome";
-import Events from "./events";
+import Case from "../src/components/Case";
+import ProfilePage from "../src/components/ProfilePage";
+import ReportPage from "../src/components/ReportPage";
+import IssueOverview from "../src/components/IssueOverview";
+import UserHome from "../src/components/userHome";
+import Events from "../src/components/events";
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import Register from "./Register";
-import AdminNyBedrift from "./AdminNyBedrift";
-import NewEmployee from "./NewEmployee";
+import Register from "../src/components/Register";
+import AdminNyBedrift from "../src/components/AdminNyBedrift";
+import NewEmployee from "../src/components/NewEmployee";
 import AdminMain from "./AdminMain";
-import LoginPage from "./LoginPage";
+import LoginPage from "../src/components/LoginPage";
 import PrivateRoute from 'react-private-route';
-import UserEdit from "./UserEdit";
-import ChangePassword from "./ChangePassword";
-import IssueOverviewForEmployee from "./IssueOverviewForEmployee";
-import Map from "./Map";
-import CaseEdit from "./caseEdit";
-import AdminRedigerEvents from "./AdminRedigerEvents";
-import NewEvents from "./NewEvents";
+import UserEdit from "../src/components/UserEdit";
+import ChangePassword from "../src/components/ChangePassword";
+import IssueOverviewForEmployee from "../src/components/IssueOverviewForEmployee";
+import Map from "../src/components/Map";
+import CaseEdit from "../src/components/caseEdit";
+import AdminRedigerEvents from "../src/components/AdminRedigerEvents";
+import NewEvents from "../src/components/NewEvents";
 
 
 const history = createHistory({
