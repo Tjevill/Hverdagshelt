@@ -66,7 +66,8 @@ export default class AdminEvents extends Component {
                         <th scope="col">Dato</th>
                         <th colSpan="2" scope="col">
                           <input
-                            id="searchbar"
+                            id="searchbarintable"
+                            placeholder="Søk Navn.."
                             type="text"
                             onChange={event => this.search(event)}
                           />{" "}

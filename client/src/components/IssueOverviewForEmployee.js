@@ -1,13 +1,13 @@
-
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
 import {
-    caseService,
-    categoryService,
-    userService,
-    employeeService,
-    statusService, orgService
+  caseService,
+  categoryService,
+  userService,
+  employeeService,
+  statusService,
+  orgService
 } from "../services";
 import createHashHistory from "history/createHashHistory";
 import {
@@ -45,13 +45,13 @@ function count(array) {
 export default class IssueOverviewForEmployee extends Component<{
   match: { params: { name: string, id: number } }
 }> {
-    currentCase = [];
-    currentOrg = [];
-    stat1 = false;
-    stat2 = true;
-    stat3 = false;
-    stat4 = false;
-    stat5 = false;
+  currentCase = [];
+  currentOrg = [];
+  stat1 = false;
+  stat2 = true;
+  stat3 = false;
+  stat4 = false;
+  stat5 = false;
   orgs = [];
   loaded = false;
   employeeid = "";
@@ -74,16 +74,16 @@ export default class IssueOverviewForEmployee extends Component<{
   ];
   caseside = "";
 
-    state = {
-        org_id: 0,
-        comment:''
-    };
+  state = {
+    org_id: 0,
+    comment: ""
+  };
 
   handleChangeStatus = event => {
-    if(this.props.match.params.id!=1){
-        window.location.href='#/admin/issues/1';
-    };
-    document.getElementById("search").value = "";
+    if (this.props.match.params.id != 1) {
+      window.location.href = "#/admin/issues/1";
+    }
+    document.getElementById("searchbarintable").value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
@@ -123,10 +123,10 @@ export default class IssueOverviewForEmployee extends Component<{
   };
 
   handleChangeCategories = event => {
-    if(this.props.match.params.id!=1){
-        window.location.href='#/admin/issues/1';
-    };
-    document.getElementById("search").value = "";
+    if (this.props.match.params.id != 1) {
+      window.location.href = "#/admin/issues/1";
+    }
+    document.getElementById("searchbarintable").value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
     let statusid = this.statusid;
@@ -164,7 +164,11 @@ export default class IssueOverviewForEmployee extends Component<{
 
   search = event => {
     this.casesbyStatus = this.backup.filter(function(value) {
-      return value.headline.toLowerCase().indexOf(event.target.value.toLowerCase()) != -1;
+      return (
+        value.headline
+          .toLowerCase()
+          .indexOf(event.target.value.toLowerCase()) != -1
+      );
     });
     this.forceUpdate();
     console.log(event.target.value);
@@ -189,139 +193,167 @@ export default class IssueOverviewForEmployee extends Component<{
 
   checkName() {}
 
-    handleChange = event => {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+  handleChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
 
+    this.setState((state, props) => ({
+      [name]: value
+    }));
+  };
 
-        this.setState((state, props) => ({
-            [name]: value
-        }));
-    };
+  saveUpdate(id) {
+    console.log(this.state.comment);
+    let comment = this.state.comment;
 
-    saveUpdate (id) {
-        console.log(this.state.comment)
-        let comment = this.state.comment;
-
-        if(IssueOverviewForEmployee.stat1 == true) {
-            caseService.updateCaseByEmployee(id, comment, 2, this.employee.employee_id, this.state.org_id)
-                .then(res => {
-                    console.log(res);
-                    window.alert("Kommentar, status og bedrift endret!");
-                    window.location.reload();
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-
-        } else if(IssueOverviewForEmployee.stat2 == true) {
-            caseService.updateCaseByEmployee(id, comment, 3, this.employee.employee_id, this.state.org_id)
-                .then(res => {
-                    console.log(res);
-                    window.alert("Kommentar, status og bedrift endret!");
-                    window.location.reload();
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-
-        } else if(IssueOverviewForEmployee.stat3 == true) {
-            caseService.updateCaseByEmployee(id, comment, 4, this.employee.employee_id, this.state.org_id)
-                .then(res => {
-                    console.log(res);
-                    window.alert("Kommentar, status og bedrift endret!");
-                    window.location.reload();
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-
-        } else if(IssueOverviewForEmployee.stat4 == true) {
-            caseService.updateCaseByEmployee(id, comment, 5, this.employee.employee_id, this.state.org_id)
-                .then(res => {
-                    console.log(res);
-                    window.alert("Kommentar, status og bedrift endret!");
-                    window.location.reload();
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-
-        } else if(IssueOverviewForEmployee.stat5 == true) {
-            caseService.updateCaseByEmployee(id, comment, 6, this.employee.employee_id, this.state.org_id)
-                .then(res => {
-                    console.log(res);
-                    window.alert("Kommentar, status og bedrift endret!");
-                    window.location.reload();
-                })
-                .catch((error: Error) => Alert.danger(error.message));
-
-        } else {
-            window.alert("Vennligst anngi en status på saken");
-            return null;
-        }
+    if (IssueOverviewForEmployee.stat1 == true) {
+      caseService
+        .updateCaseByEmployee(
+          id,
+          comment,
+          2,
+          this.employee.employee_id,
+          this.state.org_id
+        )
+        .then(res => {
+          console.log(res);
+          window.alert("Kommentar, status og bedrift endret!");
+          window.location.reload();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+    } else if (IssueOverviewForEmployee.stat2 == true) {
+      caseService
+        .updateCaseByEmployee(
+          id,
+          comment,
+          3,
+          this.employee.employee_id,
+          this.state.org_id
+        )
+        .then(res => {
+          console.log(res);
+          window.alert("Kommentar, status og bedrift endret!");
+          window.location.reload();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+    } else if (IssueOverviewForEmployee.stat3 == true) {
+      caseService
+        .updateCaseByEmployee(
+          id,
+          comment,
+          4,
+          this.employee.employee_id,
+          this.state.org_id
+        )
+        .then(res => {
+          console.log(res);
+          window.alert("Kommentar, status og bedrift endret!");
+          window.location.reload();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+    } else if (IssueOverviewForEmployee.stat4 == true) {
+      caseService
+        .updateCaseByEmployee(
+          id,
+          comment,
+          5,
+          this.employee.employee_id,
+          this.state.org_id
+        )
+        .then(res => {
+          console.log(res);
+          window.alert("Kommentar, status og bedrift endret!");
+          window.location.reload();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+    } else if (IssueOverviewForEmployee.stat5 == true) {
+      caseService
+        .updateCaseByEmployee(
+          id,
+          comment,
+          6,
+          this.employee.employee_id,
+          this.state.org_id
+        )
+        .then(res => {
+          console.log(res);
+          window.alert("Kommentar, status og bedrift endret!");
+          window.location.reload();
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+    } else {
+      window.alert("Vennligst anngi en status på saken");
+      return null;
     }
+  }
 
-    handleClick1() {
-            IssueOverviewForEmployee.stat1 = true;
-            IssueOverviewForEmployee.stat2 = false;
-            IssueOverviewForEmployee.stat3 = false;
-            IssueOverviewForEmployee.stat4 = false;
-            IssueOverviewForEmployee.stat5 = false;
-        }
-        handleClick2() {
-            IssueOverviewForEmployee.stat1 = false;
-            IssueOverviewForEmployee.stat2 = true;
-            IssueOverviewForEmployee.stat3 = false;
-            IssueOverviewForEmployee.stat4 = false;
-            IssueOverviewForEmployee.stat5 = false;
-        }
-        handleClick3() {
-            IssueOverviewForEmployee.stat1 = false;
-            IssueOverviewForEmployee.stat2 = false;
-            IssueOverviewForEmployee.stat3 = true;
-            IssueOverviewForEmployee.stat4 = false;
-            IssueOverviewForEmployee.stat5 = false;
-        }
-        handleClick4() {
-            IssueOverviewForEmployee.stat1 = false;
-            IssueOverviewForEmployee.stat2 = false;
-            IssueOverviewForEmployee.stat3 = false;
-            IssueOverviewForEmployee.stat4 = true;
-            IssueOverviewForEmployee.stat5 = false;
-        }
-        handleClick5() {
-            IssueOverviewForEmployee.stat1 = false;
-            IssueOverviewForEmployee.stat2 = false;
-            IssueOverviewForEmployee.stat3 = false;
-            IssueOverviewForEmployee.stat4 = false;
-            IssueOverviewForEmployee.stat5 = true;
-        }
+  handleClick1() {
+    IssueOverviewForEmployee.stat1 = true;
+    IssueOverviewForEmployee.stat2 = false;
+    IssueOverviewForEmployee.stat3 = false;
+    IssueOverviewForEmployee.stat4 = false;
+    IssueOverviewForEmployee.stat5 = false;
+  }
+  handleClick2() {
+    IssueOverviewForEmployee.stat1 = false;
+    IssueOverviewForEmployee.stat2 = true;
+    IssueOverviewForEmployee.stat3 = false;
+    IssueOverviewForEmployee.stat4 = false;
+    IssueOverviewForEmployee.stat5 = false;
+  }
+  handleClick3() {
+    IssueOverviewForEmployee.stat1 = false;
+    IssueOverviewForEmployee.stat2 = false;
+    IssueOverviewForEmployee.stat3 = true;
+    IssueOverviewForEmployee.stat4 = false;
+    IssueOverviewForEmployee.stat5 = false;
+  }
+  handleClick4() {
+    IssueOverviewForEmployee.stat1 = false;
+    IssueOverviewForEmployee.stat2 = false;
+    IssueOverviewForEmployee.stat3 = false;
+    IssueOverviewForEmployee.stat4 = true;
+    IssueOverviewForEmployee.stat5 = false;
+  }
+  handleClick5() {
+    IssueOverviewForEmployee.stat1 = false;
+    IssueOverviewForEmployee.stat2 = false;
+    IssueOverviewForEmployee.stat3 = false;
+    IssueOverviewForEmployee.stat4 = false;
+    IssueOverviewForEmployee.stat5 = true;
+  }
 
-
-    handleSelected(id) {
-        let filteredCase = this.cases.filter(e =>
-            e.case_id == id)
-        console.log(filteredCase)
-            this.currentCase = filteredCase[0];
-        console.log(this.currentCase.org_id)
-        if(this.currentCase.org_id == null) {
-            this.currentOrg = null;
-        } else {
-            this.currentOrg = this.orgs.filter(e =>
-                e.org_id == this.currentCase.org_id);
-        }
+  handleSelected(id) {
+    let filteredCase = this.cases.filter(e => e.case_id == id);
+    console.log(filteredCase);
+    this.currentCase = filteredCase[0];
+    console.log(this.currentCase.org_id);
+    if (this.currentCase.org_id == null) {
+      this.currentOrg = null;
+    } else {
+      this.currentOrg = this.orgs.filter(
+        e => e.org_id == this.currentCase.org_id
+      );
     }
+  }
 
-    getCurrentOrg() {
-        return this.currentOrg[0].name;
-    }
+  getCurrentOrg() {
+    return this.currentOrg[0].name;
+  }
 
-    getOrgOnCase (id) {
-        if(id == null) {
-            return 'Ingen tildelt bedrift'
-        } else {
-            if(this.orgs.filter(e => e.org_id == id)[0] != null) {
-                let test = this.orgs.filter(e => e.org_id == id);
-                return test[0].name;
-            } else {
-                return 'Ingen bedrift tildelt';
-            }
-        }
+  getOrgOnCase(id) {
+    if (id == null) {
+      return "Ingen tildelt bedrift";
+    } else {
+      if (this.orgs.filter(e => e.org_id == id)[0] != null) {
+        let test = this.orgs.filter(e => e.org_id == id);
+        return test[0].name;
+      } else {
+        return "Ingen bedrift tildelt";
+      }
     }
+  }
 
   render() {
     let lists;
@@ -333,7 +365,7 @@ export default class IssueOverviewForEmployee extends Component<{
             <th />
             <td />
             <td>tomt</td>
-              <td/>
+            <td />
             <td />
           </tr>
         </tbody>
@@ -347,100 +379,166 @@ export default class IssueOverviewForEmployee extends Component<{
         <tbody>
           {this.caseside.map(casen => (
             <tr key={casen.case_id}>
-              <td className={"clickable-link"} onClick={() => history.push("/case/" + casen.case_id)}>
+              <td
+                className={"clickable-link"}
+                onClick={() => history.push("/case/" + casen.case_id)}
+              >
                 {casen.headline}
               </td>
               <td>{casen.timestamp.slice(0, 16).replace("T", " ")}</td>
-                <td>{this.getOrgOnCase(casen.org_id)}</td>
+              <td>{this.getOrgOnCase(casen.org_id)}</td>
               <td>
                 {" "}
-                    <button data-toggle="modal" data-target={"#" + casen.case_id} className="btn btn-primary m-2">
-                  <span aria-hidden="true" onClick={() => {this.handleSelected(casen.case_id)}}>
-                    	&#x270E;  Oppdater
-                  </span>
-                    </button>
-                    <div className="modal fade" id={casen.case_id} tabIndex="-1"
-                         aria-labelledby="exampleModalLabel" aria-hidden="true"
-                         data-backdrop="static">
-                        <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h4 className="modal-title" id="exampleModalLabel">&nbsp;Oppdater sak</h4>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    </button>
-                                </div>
-                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Legg til en kommentar</h6>
-                                <div className="modal-body">
-                                    <input
-                                        className="form-control"
-                                        id="comment-input"
-                                        defaultValue={casen.comment}
-                                        onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.comment = event.target.value)}>
-
-                                    </input>
-                                </div>
-                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
-                                <label className="container inline">
-                                    <input type="radio" id="status01" name="radio" onClick={this.handleClick1}></input>
-                                    Under vurdering
-                                </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status02" name="radio" onClick={this.handleClick2}></input>
-                                    Satt på vent
-                                </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status03" name="radio" onClick={this.handleClick3}></input>
-                                    Arbeid pågår
-                                </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status04" name="radio" onClick={this.handleClick4}></input>
-                                    Avvist
-                                </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status05" name="radio" onClick={this.handleClick5}></input>
-                                    Sak løst
-                                </label>
-                                <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
-                                <div className="form-group form-group-style">
-                                    <select className={'browser-default custom-select'}
-                                            onChange={(event: SyntheticInputEvent<HTMLInputElement>) => (this.state.org_id = event.target.value)}
-                                            defaultValue=''>
-                                        <option disabled value=''> -- velg bedrift til å løse problemet -- </option>
-                                        {this.orgs.map(org => (
-                                            <option key={org.org_id} value={org.org_id}>
-                                                {org.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-info" data-dismiss="modal">Lukk</button>
-                                    <button type="button" className="btn btn-primary"
-                                            onClick={() => this.saveUpdate(casen.case_id)}>
-                                        Lagre endringer
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <button className="btn btn-danger m-2" onClick={() => {
-                    this.delete(casen.case_id);
-                }}>
+                <button
+                  data-toggle="modal"
+                  data-target={"#" + casen.case_id}
+                  className="btn btn-primary m-2"
+                >
                   <span
                     aria-hidden="true"
-
+                    onClick={() => {
+                      this.handleSelected(casen.case_id);
+                    }}
                   >
-                    &#x2716;  Slett
+                    &#x270E; Oppdater
                   </span>
+                </button>
+                <div
+                  className="modal fade"
+                  id={casen.case_id}
+                  tabIndex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                  data-backdrop="static"
+                >
+                  <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h4 className="modal-title" id="exampleModalLabel">
+                          &nbsp;Oppdater sak
+                        </h4>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <h6 className="modal-title" id="exampleModalLabel">
+                        &nbsp;Legg til en kommentar
+                      </h6>
+                      <div className="modal-body">
+                        <input
+                          className="form-control"
+                          id="comment-input"
+                          defaultValue={casen.comment}
+                          onChange={(
+                            event: SyntheticInputEvent<HTMLInputElement>
+                          ) => (this.state.comment = event.target.value)}
+                        />
+                      </div>
+                      <h6 className="modal-title" id="exampleModalLabel">
+                        &nbsp;Endre status
+                      </h6>
+                      <label className="container inline">
+                        <input
+                          type="radio"
+                          id="status01"
+                          name="radio"
+                          onClick={this.handleClick1}
+                        />
+                        Under vurdering
+                      </label>
+                      <label className="container inline">
+                        <input
+                          type="radio"
+                          id="status02"
+                          name="radio"
+                          onClick={this.handleClick2}
+                        />
+                        Satt på vent
+                      </label>
+                      <label className="container inline">
+                        <input
+                          type="radio"
+                          id="status03"
+                          name="radio"
+                          onClick={this.handleClick3}
+                        />
+                        Arbeid pågår
+                      </label>
+                      <label className="container inline">
+                        <input
+                          type="radio"
+                          id="status04"
+                          name="radio"
+                          onClick={this.handleClick4}
+                        />
+                        Avvist
+                      </label>
+                      <label className="container inline">
+                        <input
+                          type="radio"
+                          id="status05"
+                          name="radio"
+                          onClick={this.handleClick5}
+                        />
+                        Sak løst
+                      </label>
+                      <h6 className="modal-title" id="exampleModalLabel">
+                        &nbsp;Tildel saken en bedrift
+                      </h6>
+                      <div className="form-group form-group-style">
+                        <select
+                          className={"browser-default custom-select"}
+                          onChange={(
+                            event: SyntheticInputEvent<HTMLInputElement>
+                          ) => (this.state.org_id = event.target.value)}
+                          defaultValue=""
+                        >
+                          <option disabled value="">
+                            {" "}
+                            -- velg bedrift til å løse problemet --{" "}
+                          </option>
+                          {this.orgs.map(org => (
+                            <option key={org.org_id} value={org.org_id}>
+                              {org.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-info"
+                          data-dismiss="modal"
+                        >
+                          Lukk
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={() => this.saveUpdate(casen.case_id)}
+                        >
+                          Lagre endringer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  className="btn btn-danger m-2"
+                  onClick={() => {
+                    this.delete(casen.case_id);
+                  }}
+                >
+                  <span aria-hidden="true">&#x2716; Slett</span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
                 <span className="badge badge-primary m-2">
-
-                <span className="badge badge-primary">
-                    <div>
-                  {this.statusname[casen.status_id - 1]}
-                    </div>
-                </span>
+                  <span className="badge badge-primary">
+                    <div>{this.statusname[casen.status_id - 1]}</div>
+                  </span>
                 </span>
               </td>
             </tr>
@@ -452,7 +550,7 @@ export default class IssueOverviewForEmployee extends Component<{
         <div>
           {count(sliceArray(this.casesbyStatus, 15)).map(sidetall => (
             <button
-                key={sidetall}
+              key={sidetall}
               type="button"
               className="btn btn-outline-dark"
               id="Saker-side-button"
@@ -466,14 +564,18 @@ export default class IssueOverviewForEmployee extends Component<{
     }
 
     if (this.loaded) {
-      return <>
+      return (
+        <>
           <div className="row">
             <div className="col-md-2" />
             <div className="col-md-8">
               <div className="container">
                 <div className="row">
                   <div className="col-12 col-md-8">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g" id="Saker-icon-pic" />
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
+                      id="Saker-icon-pic"
+                    />
                   </div>
                   <div className="col-6 col-md-4" />
                 </div>
@@ -486,10 +588,14 @@ export default class IssueOverviewForEmployee extends Component<{
                   </div>
                   <div className="col">
                     <div className="form-group">
-                      <label htmlFor="inputKommune">
-                        Kategorier &nbsp;
-                      </label>
-                      <select className="w-auto" id="kommune" name="kommune" className="form-control" onChange={this.handleChangeCategories}>
+                      <label htmlFor="inputKommune">Kategorier &nbsp;</label>
+                      <select
+                        className="w-auto"
+                        id="kommune"
+                        name="kommune"
+                        className="form-control"
+                        onChange={this.handleChangeCategories}
+                      >
                         <option value={0}>Alle</option>
                         {this.categories.map(category => (
                           <option
@@ -505,7 +611,13 @@ export default class IssueOverviewForEmployee extends Component<{
                   <div className="col">
                     <div className="form-group">
                       <label htmlFor="inputStatus">Status &nbsp;</label>
-                      <select className="w-auto" id="status" name="status" className="form-control" onChange={this.handleChangeStatus}>
+                      <select
+                        className="w-auto"
+                        id="status"
+                        name="status"
+                        className="form-control"
+                        onChange={this.handleChangeStatus}
+                      >
                         <option value={0}>Alle</option>
                         <option value={1}>Registrert</option>
                         <option value={2}>Under Vurdering</option>
@@ -520,8 +632,6 @@ export default class IssueOverviewForEmployee extends Component<{
               </div>
 
               <div className="container">
-                <span className="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search} />
                 <Router history={history}>
                   <table className="table table-hover">
                     <thead>
@@ -529,7 +639,16 @@ export default class IssueOverviewForEmployee extends Component<{
                         <th scope="col">Tittel</th>
                         <th scope="col">Tid</th>
                         <th scope="col">Saken er tildelt</th>
-                        <th scope="col">Handling</th>
+                        <th scope="col">
+                          {" "}
+                          <input
+                            type="text"
+                            id="searchbarintable"
+                            name="search"
+                            placeholder="Søk Tittel.."
+                            onChange={this.search}
+                          />
+                        </th>
                       </tr>
                     </thead>
                     {lists}
@@ -542,22 +661,26 @@ export default class IssueOverviewForEmployee extends Component<{
                   <div className="btn-group">{sidebuttons}</div>
                 </div>
               </div>
+              <br/><br/><br/>
             </div>
             <div className="col-md-2" />
           </div>
-        </>;
+        </>
+      );
     } else {
       return <Loading />;
     }
   }
 
   componentDidMount() {
-      orgService.getAllOrg()
-          .then(orgs => {
-            this.orgs = orgs
-          })
-          .catch((error: Error) =>
-              console.log("Fails by getting the available organizations", error))
+    orgService
+      .getAllOrg()
+      .then(orgs => {
+        this.orgs = orgs;
+      })
+      .catch((error: Error) =>
+        console.log("Fails by getting the available organizations", error)
+      );
     employeeService
       .getEmployeeByToken()
       .then(employee => {

@@ -103,6 +103,7 @@ export default class AdminEmployee extends Component {
                           <input
                             className="search-employee"
                             id="searchbar"
+                            placeholder="Søk Navn.."
                             type="text"
                             onChange={event => this.search(event)}
                           />{" "}

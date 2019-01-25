@@ -442,3 +442,9 @@ ListItem {
     margin-top: 300px !important;
 
 }
+
+
+#searchbarintable{
+  color: black;
+  background-color: white;
+}

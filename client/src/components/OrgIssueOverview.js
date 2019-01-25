@@ -142,7 +142,7 @@ export default class OrgIssueOverview extends Component<{
 
 
   handleChangeStatus = event => {
-    document.getElementById('search').value = "";
+    document.getElementById('searchbarintable').value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
@@ -191,7 +191,7 @@ export default class OrgIssueOverview extends Component<{
 
 
   handleChangeCategories = event => {
-    document.getElementById('search').value = "";
+    document.getElementById('searchbarintable').value = "";
     this.categoryid = event.target.value;
     let statusid = this.statusid;
     if (event.target.value == 0) {
@@ -503,8 +503,7 @@ export default class OrgIssueOverview extends Component<{
           <div>
           <div className="row">
             <div className="col-3">
-            <span className="glyphicon glyphicon-search" aria-hidden="true" />
-            <input type="text" id="search" name="search" placeholder="Søk.." onChange={this.search}/>
+
             </div>
             <div className="col-3" />
             <div className="col-3" />
@@ -515,7 +514,7 @@ export default class OrgIssueOverview extends Component<{
                   <tr>
                     <th scope="col">Tittel</th>
                     <th scope="col">Tid</th>
-                    <th scope="col">Handling</th>
+                    <th scope="col"> <input type="text" id="searchbarintable" name="search;" placeholder="Søk.." onChange={this.search}/></th>
                   </tr>
                 </thead>
                 {lists}
@@ -530,7 +529,7 @@ export default class OrgIssueOverview extends Component<{
             </div>
           </div>
         </div>
-
+            <br/><br/>
                 </div>
                 <div className="col-md-2">&nbsp;</div>
             </div>
