@@ -17,7 +17,7 @@ export function refreshToken() {
     myHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
     //let url = 'http://xx.xx.xxx.xx:8080/refreshtoken'; for mobile testing(use your own ip)
-    let url = "http://localhost:8080/refreshtoken";
+    let url = "http://10.22.157.143:8080/refreshtoken";
     let fetchData = {
         method: 'POST',
         headers: myHeaders
