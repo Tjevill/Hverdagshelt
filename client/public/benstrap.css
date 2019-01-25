@@ -212,6 +212,13 @@ body,
     color: black;
 }
 
+#map-page #map-search .search-input{
+    text-align: center;
+    width: 80%;
+    margin: 0 10%;
+    min-width: 200px;
+}
+
 #map-page .center-button-wrapper {
     width: 100%;
     margin-top: 20px;

@@ -42,7 +42,7 @@ export default class ChangePassword extends Component {
                               <div className="form-group">Nytt passord: <input className="form-control" type="password" name="newPassword1" onChange={event => (this.newPassword1 = event.target.value)} /></div>
                               <div className="form-group">Gjenta nytt passord: <input className="form-control" type="password" name="newPassword2" onChange={event => (this.newPassword2 = event.target.value)} /></div>
                                 <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                                <Button.Light onClick={() => history.push("/admin/")}>Avbryt</Button.Light>
+                                <Button.Light onClick={() => history.push("/admin")}>Avbryt</Button.Light>
                             </div>
 
 

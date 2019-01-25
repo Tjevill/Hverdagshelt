@@ -22,7 +22,7 @@ import ChangePassword from "./components/ChangePassword";
 import ChangePasswordEmployee from "./components/ChangePasswordEmployee";
 import ChangePasswordOrg from "./components/ChangePasswordOrg";
 import createHashHistory from "history/createHashHistory";
-import AdminRedigerEmployee from "./components/AdminRedigerEmployee";
+import AdminEdit from "./components/AdminEdit";
 import AdminEvents from "./components/AdminEvents";
 import AdminEmployee from "./components/AdminEmployee";
 import Events from "./components/events";
@@ -207,7 +207,7 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/kategori" component={AdminKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/ny" component={AdminNyKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kategori/rediger/:id" component={AdminRedigerKategori} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/edit" component={AdminRedigerEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
+                                <PrivateRoute exact path="/admin/edit" component={AdminEdit} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/events/:id" component={AdminEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/events/rediger/:id" component={AdminRedigerEvents} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/issues/:id" component={IssueOverviewForEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
