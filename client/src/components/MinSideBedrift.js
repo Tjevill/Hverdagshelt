@@ -113,7 +113,7 @@ export default class MinSideBedrift extends Component {
 
                                 <tr
                                     key={i}
-                                    onClick={ () => window.alert("Skal redirecte til redigere-cases siden. Id: "+ca.case_id+". Fikses på linje 108 i MinSideBedrift.js") }
+                                    onClick={() => history.push("case/" + ca.case_id)}
                                 >
 
                                     <th scope="row">
