@@ -98,7 +98,7 @@ margin-left: 1%;
 
 .email,
 .name ,
-.address{
+.address, .description, .dateDay, .dateTime{
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
@@ -107,7 +107,7 @@ margin-left: 1%;
 
 
  .name,
-.address, .email {
+.address, .email, .description, .dateDay, .dateTime {
   width: 100%;
 }
 

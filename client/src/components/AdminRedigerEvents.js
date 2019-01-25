@@ -1,115 +1,275 @@
-//@flow
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { Router, NavLink } from "react-router-dom";
-import createHashHistory from "history/createHashHistory";
-import { eventService, userService } from "../services";
+import * as React from "react";
+import { Component } from "react-simplified";
 import {
-  Alert,
   Card,
-  NavBar,
-  ListGroup,
-  Row,
-  Column,
-  Button,
-  Form
-} from "./widgets";
-import { Loading } from "./widgets";
+  CardMenu,
+  CardTitle,
+  CardActions,
+  CardText,
+  IconButton,
+  Icon,
+  Grid,
+  Cell
+} from "react-mdl";
+import createHashHistory from "history/createHashHistory";
+import { eventService } from "../services.js";
+import { Alert } from "./widgets";
+import DatePicker from "react-date-picker";
+import TimePicker from "react-time-picker";
 
 const history = createHashHistory();
-
 let superuser = sessionStorage.getItem("superuser");
 
-export default class AdminRedigerEvents extends Component<{
+const formValid = ({ formErrors, ...rest }) => {
+  let valid = true;
+
+  // validate form errors being empty
+  Object.values(formErrors).forEach(val => {
+    val.length > 0 && (valid = false);
+  });
+
+   // validate the form was filled out
+  Object.values(rest).forEach(val => {
+    val == null && (valid = false);
+  });
+
+  return valid;
+};
+
+export default class caseEdit extends Component<{
   match: { params: { id: number } }
 }> {
-  event = new Object();
+  event = "";
+  dateFormatted ="";
 
-  loaded = false;
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      date: "2018-02-02 12:20",
+      dateDay: new Date(),
+      dateTime: "",
+      description: "",
+      zipcode: "",
+      address: "",
+      formErrors: {
+        name: "",
+        date: "",
+        description: "",
+        zipcode: "",
+        address: "",
+        dateDay: "",
+        dateTime: ""
+      }
+    };
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    if (formValid(this.state)) {
+      console.log(`
+        --SUBMITTING--
+          name: ${this.state.name} 
+          date:  ${this.state.date}
+          dateDay:  ${this.state.dateDay}
+          dateTime:  ${this.state.dateTime}
+          description:  ${this.state.description}
+          zipcode:  ${this.state.zipcode}
+          address: ${this.state.address}
+          event_id:  ${this.props.match.params.id}
+      `);
+
+   // this.dateFormatted = this.state.dateDay +this.state.dateTime;
+    //console.log(this.dateFormatted)
+
+      //this.update();
+    } else {
+      window.alert("Vennligst fyll ut alle felt");
+      console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+    }
+  };
+
+  handleChange = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let formErrors = { ...this.state.formErrors };
+    console.log("Name:", name);
+    console.log("Value:", value);
+
+    switch (name) {
+      case "name":
+        formErrors.name = value.length < 3 ? "minimum 3 bokstaver Tittel" : "";
+        break;
+
+      case "address":
+        formErrors.address =
+          value.length < 3 ? "minimum 3 bokstaver Adresse" : "";
+        break;
+
+      case "zipcode":
+        formErrors.zipcode = value.length !== 4 ? " 4 tall:  Postnummer" : "";
+        break;
+
+      case "description":
+        formErrors.description =
+          value.length < 3 ? "minimum 3 bokstaver Beskrivelse" : "";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ formErrors, [name]: value }, () => console.log(this.state));
+  };
+
+  onChangeTime = time => this.setState({ dateTime: time });
+  onChangeDay = date => this.setState({ dateDay: new Date(date)});
 
   render() {
-    if (this.loaded) {
-      return <div className="container">
-          <div className="row">
-            <div className="col-md-2" />
-            <div className="col-md-8">
-              <div>
-                <div className="row">
-                  <div className="col">
-                    <h2>Rediger event</h2>
-                    <form>
-                      <div className="form-group">
-                        <label for="exampleInputName">Event navn</label>
-                        <input type="name" className="form-control" id="Name" defaultValue={this.event.name} onChange={event => (this.event.name = event.target.value)} />
-                      </div>
+    const { formErrors } = this.state;
 
-                      <div className="form-group">
-                        <label for="exampleInputTime">Tidspunkt: </label>
-                        <input type="time" className="form-control" id="timing" defaultValue={this.event.date.substring(0, 16)} onChange={event => (this.event.date = event.target.value.replace("T", " "))} />
+    return (
+      <div className="caseEdit-wrapper">
+        <link rel="stylesheet" href="editUsers.css" />
+        <div className="form-wrapper">
+          <h1> Rediger Events </h1>
 
-                        <small id="dateHelp" className="form-text text-muted">
-                          Format: YYYY-MM-DD HH-MM-SS
-                        </small>
-                      </div>
-
-                      <div className="form-group">
-                        <label for="exampleInputDescription">
-                          Beskrivelse
-                        </label>
-                        <textarea rows="8" type="description" className="form-control" id="description" defaultValue={this.event.description} onChange={event => (this.event.description = event.target.value)} />
-                      </div>
-
-                      <div className="form-group">
-                        <label for="exampleInputDescription">
-                          Postnummer
-                        </label>
-                        <input type="zipcode" className="form-control" id="zipcode" maxLength="4" size="4" defaultValue={this.event.zipcode} onChange={event => (this.event.zipcode = event.target.value)} />
-                      </div>
-
-                      <div className="form-group">
-                        <label for="exampleInputDescription">
-                          Adresse
-                        </label>
-                        <input type="address" className="form-control" id="address" size="4" defaultValue={this.event.address} onChange={event => (this.event.address = event.target.value)} />
-                      </div>
-                      {this.renderEditButton()}
-                    </form>
-                  </div>
-                </div>
-              </div>
+          <form onSubmit={this.handleSubmit} noValidate>
+            <div className="name">
+              <label htmlFor="name"> Tittel </label>
+              <input
+                className={formErrors.name.length > 0 ? "error" : null}
+                type="text"
+                value={this.state.name}
+                placeholder="Tittel"
+                name="name"
+                noValidate
+                onChange={this.handleChange}
+              />
+              {formErrors.name.length > 0 && (
+                <span className="errorMessage">{formErrors.name}</span>
+              )}
             </div>
-            <div className="col-md-2" />
-          </div>
-        </div>;
-    } else {
-      return <Loading />;
-    }
+
+            <div className="dateDay">
+              <label htmlFor="dateDay"> Dato </label>
+
+              <DatePicker
+                onChange={this.onChangeDay}
+                value={this.state.dateDay}
+                minDate={new Date()}
+                returnValue="start"
+              />
+            </div>
+
+            <div className="dateTime">
+              <label htmlFor="dateTime"> Klokkeslett </label>
+              <TimePicker
+                onChange={this.onChangeTime}
+                value={this.state.dateTime}
+              />
+            </div>
+
+            {/*<div className="date">
+             
+              <label htmlFor="date"> Tidspunkt </label>
+              <input
+                className={formErrors.date.length > 0 ? "error" : null}
+                type="text"
+                value={this.state.date}
+                placeholder="Tidspunkt"
+                name="date"
+                noValidate
+                onChange={this.handleChange}
+              /> 
+              {formErrors.date.length > 0 && (
+                <span className="errorMessage">{formErrors.date}</span>
+              )}
+            </div>
+            */}
+
+            <div className="description">
+              <label htmlFor="description"> Beskrivelse </label>
+              <textarea
+                className={formErrors.description.length > 0 ? "error" : null}
+                type="text"
+                value={this.state.description}
+                placeholder="Beskrivelse"
+                name="description"
+                noValidate
+                onChange={this.handleChange}
+              />
+
+              {formErrors.description.length > 0 && (
+                <span className="errorMessage">{formErrors.description}</span>
+              )}
+            </div>
+
+            <div className="zipcode">
+              <label htmlFor="zipcode"> Postnummer </label>
+              <input
+                className={formErrors.zipcode.length > 0 ? "error" : null}
+                type="number"
+                value={this.state.zipcode}
+                placeholder="Postnummer"
+                name="zipcode"
+                noValidate
+                onChange={this.handleChange}
+              />
+
+              {formErrors.zipcode.length > 0 && (
+                <span className="errorMessage">{formErrors.zipcode}</span>
+              )}
+            </div>
+
+            <div className="address">
+              <label htmlFor="address"> Adresse </label>
+              <input
+                className={formErrors.address.length > 0 ? "error" : null}
+                type="text"
+                value={this.state.address}
+                placeholder="Adresse"
+                name="address"
+                noValidate
+                onChange={this.handleChange}
+              />
+
+              {formErrors.address.length > 0 && (
+                <span className="errorMessage">{formErrors.address}</span>
+              )}
+              {console.log(this.state.dateDay)}
+              {console.log(this.state.dateTime)}
+              {console.log(this.state.dateFormatted)}
+            </div>
+
+            {this.renderEditButton()}
+          </form>
+        </div>
+      </div>
+    );
   }
 
   componentDidMount() {
-    console.log("Edit event mounted.");
-    eventService
-      .getOne(this.props.match.params.id)
-      .then(enevent => {
-        console.log(enevent);
-        this.event = enevent[0];
-        this.loaded = true;
-        this.forceUpdate();
-      })
-      .catch((error: Error) => console.log(error.message));
+    eventService.getOne(this.props.match.params.id).then(event => {
+      this.setState({
+        name: event[0].name,
+        //date: event[0].date.replace("T", " ").substring(0, 16),
+        dateDay: new Date(event[0].date.replace("T", " ").substring(0, 11)),
+        dateTime: event[0].date.replace("T", " ").substring(11, 16),
+        description: event[0].description,
+        zipcode: event[0].zipcode,
+        address: event[0].address
+      });
+      this.event = event;
+    });
   }
 
   // Creates the button that allows a superuser to save changes made in an event.
   renderEditButton() {
     if (superuser == 1) {
       return (
-        <div>
-          <button
-            onClick={() => this.save()}
-            type="button"
-            className="btn btn-primary"
-            id="superuserbutton"
-          >
+        <div className="editCase">
+          <button type="submit" className="btn btn-primary">
             Lagre endringer
           </button>
         </div>
@@ -119,25 +279,23 @@ export default class AdminRedigerEvents extends Component<{
     }
   }
 
-  save() {
-    console.log(this.event.name);
-    console.log(this.event.date);
-    console.log(this.event.description);
-    console.log(this.event.zipcode);
-    console.log(this.event.address);
-    this.event.date = this.event.date.replace("T"," ").substring(0,16);
-    eventService
-        .updateEvent(
-            this.props.match.params.id,
-            this.event
-            )
-        .then(response =>{
-            console.log("Edit event response: ", response);
-            history.push("/admin/events/1");
-            // history.push("/admin/events");
-        })
-        .catch((error: Error) => (console.log(error.message)));
+  update() {
 
+
+    eventService
+      .updateEvent(this.props.match.params.id, {
+        name: this.state.name,
+        date: "2019-03-03 12:30",
+        description: this.state.description,
+        zipcode: this.state.zipcode,
+        address: this.state.address
+      })
+      .then(response => {
+        console.log("Here !! ", response);
+        console.log("Edit event response: ", response);
+        history.push("/admin/events/1");
+      })
+      .catch((error: Error) => console.log(error.message));
   }
 
 }
