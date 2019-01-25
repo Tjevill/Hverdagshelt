@@ -29,7 +29,7 @@ export default class CasePreview extends Component <{title: string, status: numb
                 <tbody>
                     <tr>
                         <td className="clickable-link" onClick={()=>history.push('/case/'+ this.props.id)}>{this.props.title}</td>
-                        <td data-tip={this.y}>{this.x}</td><ReactTooltip />
+                        <td data-tip={this.y}>{this.x}<ReactTooltip /></td>
                         <td className="center-children">
                             <button type="button" className="btn btn-danger" onClick={() => this.delete(this.props.id)}>Slett sak</button>
                         </td>

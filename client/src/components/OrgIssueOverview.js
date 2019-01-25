@@ -359,12 +359,12 @@ export default class OrgIssueOverview extends Component<{
                                       </input>
                                   </div>
                                   <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
-                                  <label className="container inline">
-                                      <input type="radio" id="status1" name="radio" onClick={this.handleClick1}/>
+                                  <label className="container inline status-container">
+                                      <input className="status-radio" type="radio" id="status1" name="radio" onClick={this.handleClick1}/>
                                           Arbeid pågår
                                   </label>
-                                  <label className="container inline">
-                                      <input type="radio" id="status2" name="radio" onClick={this.handleClick2}/>
+                                  <label className="container inline status-container">
+                                      <input className="status-radio" type="radio" id="status2" name="radio" onClick={this.handleClick2}/>
                                           Sak løst
                                   </label>
                                   <div className="modal-footer">

@@ -380,24 +380,24 @@ export default class IssueOverviewForEmployee extends Component<{
                                     </input>
                                 </div>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Endre status</h6>
-                                <label className="container inline">
-                                    <input type="radio" id="status01" name="radio" onClick={this.handleClick1}></input>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status01" name="radio" onClick={this.handleClick1}></input>
                                     Under vurdering
                                 </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status02" name="radio" onClick={this.handleClick2}></input>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status02" name="radio" onClick={this.handleClick2}></input>
                                     Satt på vent
                                 </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status03" name="radio" onClick={this.handleClick3}></input>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status03" name="radio" onClick={this.handleClick3}></input>
                                     Arbeid pågår
                                 </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status04" name="radio" onClick={this.handleClick4}></input>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status04" name="radio" onClick={this.handleClick4}></input>
                                     Avvist
                                 </label>
-                                <label className="container inline">
-                                    <input type="radio" id="status05" name="radio" onClick={this.handleClick5}></input>
+                                <label className="container inline status-container">
+                                    <input className="status-radio" type="radio" id="status05" name="radio" onClick={this.handleClick5}></input>
                                     Sak løst
                                 </label>
                                 <h6 className="modal-title" id="exampleModalLabel">&nbsp;Tildel saken en bedrift</h6>
