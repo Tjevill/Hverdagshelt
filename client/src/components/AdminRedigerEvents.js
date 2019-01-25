@@ -13,7 +13,7 @@ import {
 } from "react-mdl";
 import createHashHistory from "history/createHashHistory";
 import { eventService } from "../services.js";
-import { Alert } from "./widgets";
+import { Alert,Loading } from "./widgets";
 import DatePicker from "react-date-picker";
 import TimePicker from "react-time-picker";
 
@@ -28,7 +28,7 @@ const formValid = ({ formErrors, ...rest }) => {
     val.length > 0 && (valid = false);
   });
 
-  // validate the form was filled out
+   // validate the form was filled out
   Object.values(rest).forEach(val => {
     val == null && (valid = false);
   });
@@ -39,6 +39,7 @@ const formValid = ({ formErrors, ...rest }) => {
 export default class caseEdit extends Component<{
   match: { params: { id: number } }
 }> {
+  loaded = false;
   event = "";
   dateFormatted = "";
   year = "";
@@ -74,8 +75,8 @@ export default class caseEdit extends Component<{
     if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-          name: ${this.state.name} 
-        
+          name: ${this.state.name}
+          date:  ${this.state.date}
           dateDay:  ${this.state.dateDay}
           dateTime:  ${this.state.dateTime}
           description:  ${this.state.description}
@@ -84,8 +85,8 @@ export default class caseEdit extends Component<{
           event_id:  ${this.props.match.params.id}
       `);
 
-      // this.dateFormatted = this.state.dateDay +this.state.dateTime;
-      //console.log(this.dateFormatted)
+   // this.dateFormatted = this.state.dateDay +this.state.dateTime;
+    //console.log(this.dateFormatted)
 
       this.update();
     } else {
@@ -127,11 +128,12 @@ export default class caseEdit extends Component<{
   };
 
   onChangeTime = time => this.setState({ dateTime: time });
-  onChangeDay = date => this.setState({ dateDay: new Date(date) });
+  onChangeDay = date => this.setState({ dateDay: new Date(date)});
 
   render() {
     const { formErrors } = this.state;
 
+    if (this.loaded) {
     return (
       <div className="caseEdit-wrapper">
         <link rel="stylesheet" href="editHeroUser.css" />
@@ -250,7 +252,9 @@ export default class caseEdit extends Component<{
           </form>
         </div>
       </div>
-    );
+    );}else{
+      return <Loading />;
+    }
   }
 
   componentDidMount() {
@@ -265,6 +269,7 @@ export default class caseEdit extends Component<{
         address: event[0].address
       });
       this.event = event;
+      this.loaded = true;
     });
   }
 
@@ -290,7 +295,6 @@ export default class caseEdit extends Component<{
     this.fullDate =
       this.year + "-" + this.month + "-" + this.day + " " + this.state.dateTime;
 
-    console.log(this.fullDate);
 
     eventService
       .updateEvent(this.props.match.params.id, {
@@ -315,4 +319,5 @@ export default class caseEdit extends Component<{
       })
       .catch((error: Error) => console.log(error.message));
   }
+
 }

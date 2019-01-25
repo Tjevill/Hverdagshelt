@@ -691,7 +691,7 @@ app.get("/countEmp/:province", (req: Request, res: Response) =>{
 
 app.get("/getCasesOnCommuneID/:id", (req, res) => {
 	empDao.getCasesOnCommuneID(req.params.id, (status, data) => {
-		console.log(req.params.id);
+		console.log("req paarms: " + req.params.id);
 		res.status(status);
 		res.json(data);
 	});
@@ -771,7 +771,7 @@ app.get("/getCaseOnEmployeeID/:id", (req, res) => {
 // Events
 
 app.get("/events/:commune_id", (req, res) =>{
-    console.log("Fikk GET-request from client");
+    console.log("Fikk GET-request from client, hent events i kommune: " + req.params.commune_id);
     eventDao.getEventInCommune(req.params.commune_id, (status, data) =>{
         res.status(status);
         res.json(data);

@@ -436,6 +436,20 @@ table a, #comments a{background-color:inherit;}
 	#stats{text-align:left;}
 
 
+    .loginoption1, .loginoption2, .loginoption3 {
+
+        width:300px;
+
+    }
+
+
+    .navbar-toggle {
+        position:absolute;
+        top: -20px;
+    }
+
+
+
 	.logged-in-as {
 		position: absolute;
 		left:10px;
