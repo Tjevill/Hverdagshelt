@@ -169,7 +169,7 @@ export class Report extends Component {
                         </div>
                         <div className="map-container">
                             Spesifiser hvor problemet befinner seg:
-                            <div className="invalid-feedback">Ugyldig adresse</div>
+
                         </div>
                         <PlacesAutocomplete
                             value={this.state.address}
@@ -187,7 +187,9 @@ export class Report extends Component {
                                         id="address-search"
                                         type="text"
                                         name="headline"
+                                        defaultValue={this.state.address}
                                     />
+                                    <div className="invalid-feedback">Ugyldig adresse</div>
                                     <div className="autocomplete-dropdown-container">
                                         {loading && <div>Loading...</div>}
                                         {suggestions.map(suggestion => {
@@ -307,14 +309,11 @@ export class Report extends Component {
     }
 
     onMarkerDragEnd = (coord) => {
-        console.log(coord.latLng.lat());
         this.lat = coord.latLng.lat();
-        console.log(coord.latLng.lng());
         this.lng = coord.latLng.lng();
         mapService.getMapInfo(this.lat, this.lng).then(
             mapData => {
                 this.mapData = mapData.results[0];
-                console.log(this.mapData);
                 if(this.mapData == null){
                     this.mapData = {
                         formatted_address: "none"
@@ -328,8 +327,6 @@ export class Report extends Component {
                     filter = this.mapData.address_components.filter(e =>
                         e.types[0] == 'postal_code');
                 }
-
-                console.log(filter);
                 if(filter[0] == null) {
                     this.state.zipcode = '';
                     this.zipBoo = false;
@@ -337,7 +334,6 @@ export class Report extends Component {
                 } else {
                     this.state.zipcode = filter[0].long_name;
                 }
-                console.log(this.state.zipcode);
                 let countryFilter = [];
                 let help = [];
                 if (this.mapData.address_components == null) {
@@ -356,8 +352,7 @@ export class Report extends Component {
 
     register(){
         if(this.caseReported == false) {
-            console.log()
-            if (this.state.headline == ''){
+            if (this.state.headline == '' || this.state.headline == null){
                 this.titleValid = "is-invalid";
                 return null;
             } else {
@@ -388,6 +383,7 @@ export class Report extends Component {
             } else {
                 this.zipValid = '';
             }
+
             if (this.selectedFile == null) {
                 this.picValidationClass = "img-visible";
                 return null;
