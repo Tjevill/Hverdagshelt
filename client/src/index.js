@@ -9,17 +9,13 @@ import {Component, sharedComponentData} from 'react-simplified';
 import {refreshToken} from "./components/widgets";
 
 import AdminBedrift from "./components/AdminBedrift";
-import AdminMain from "./components/AdminMain";
 import AdminNyBedrift from "./components/AdminNyBedrift";
 import AdminRedigerBedrift from "./components/AdminRedigerBedrift";
-
 import AdminEditPrivateUsers from  "./components/AdminEditPrivateUsers";
 import AdminEditEmployee  from  "./components/AdminEditEmployee";
-
 import AdminKategori from "./components/AdminKategori";
 import AdminNyKategori from "./components/AdminNyKategori";
 import AdminRedigerKategori from "./components/AdminRedigerKategori";
-
 import Case from "./components/Case";
 import CaseEdit from "./components/caseEdit";
 import ChangePassword from "./components/ChangePassword";
@@ -37,18 +33,13 @@ import ForgottenPasswordOrganization from "./components/ForgottenPasswordOrganiz
 import IssueOverview from "./components/IssueOverview";
 import IssueOverviewForEmployee from "./components/IssueOverviewForEmployee";
 import LoginPage from "./components/LoginPage";
-import LogTable from "./components/LogTable";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
 import MinSideBedrift from "./components/MinSideBedrift.js";
 import MinSideKommune from "./components/MinSideKommune.js";
 import NewEmployee from "./components/NewEmployee";
-import NewEvents from "./components/NewEvents";
-import NewOrganization from "./components/NewOrganization";
 import OrgEdit from "./components/OrgEdit"
 import OrgIssueOverview from "./components/OrgIssueOverview";
-import Statistikk from "./components/Statistikk";
-import Statistikk2 from "./components/Statistikk2";
 import StatisticsPage from "./components/StatisticsPage";
 import PrivateRoute from 'react-private-route';
 import AdminUsers from "./components/AdminUsers";
@@ -157,8 +148,7 @@ class Main extends Component {
        //  console.log("Path: " + window.location.href);
 
 
-			if (window.location.href === "http://localhost:3000/#/Statistikk") { return (<HashRouter><Route exact path="/Statistikk" component={Statistikk2} /></HashRouter>) }
-			else if(window.location.href === "http://localhost:3000/#/statistics"){ return (<StatisticsPage />)}
+			if(window.location.href === "http://localhost:3000/#/statistics"){ return (<StatisticsPage />)}
 			else {
 				return this.amILoggedin == null ? "<div></div>" : (
                 <div>
@@ -224,12 +214,9 @@ class Main extends Component {
                                 <PrivateRoute exact path="/admin/kommune" component={AdminEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/nyansatt" component={NewEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/kommune/edit/:id" component={AdminEditEmployee} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                <PrivateRoute exact path="/admin/main" component={AdminMain} isAuthenticated={this.amILoggedin} redirect="/login"/>
                                 <PrivateRoute exact path="/admin/nyorg" component={AdminNyBedrift} isAuthenticated={this.amILoggedin} redirect="/login"/>
 
-                                {/* MIDLERTIDIG? */}
-                                <PrivateRoute exact path="/admin/logTable" component={LogTable} isAuthenticated={this.amILoggedin} redirect="/login"/>
-                                </div>
+                               </div>
 
                             {/*Bottom banner*/}
                             <div className="wrapper row1" style={{position: "inherit"}}>

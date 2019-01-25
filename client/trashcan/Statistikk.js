@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component } from "react-simplified";
-import {caseService, categoryService, orgService} from "../services";
+import {caseService, categoryService, orgService} from "../src/services";
 import createHashHistory from "history/createHashHistory";
 import jsPDF from 'jspdf';
 import PDF, { Text, AddPage, Line, Image, Table, Html } from 'jspdf-react';
