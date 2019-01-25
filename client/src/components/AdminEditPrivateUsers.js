@@ -54,18 +54,18 @@ export default class AdminEditPrivateUSers extends Component < {
       console.log(`
         --SUBMITTING--
          name: ${this.state.name}
-         address: ${this.state.address} 
-         tel: ${this.state.tel} 
-         email: ${this.state.email} 
-         subscription: ${this.state.subscription} 
-         zipcode: ${this.state.zipcode} 
-         user_id:  ${this.user_id} 
-         
+         address: ${this.state.address}
+         tel: ${this.state.tel}
+         email: ${this.state.email}
+         subscription: ${this.state.subscription}
+         zipcode: ${this.state.zipcode}
+         user_id:  ${this.user_id}
+
       `);
 
       this.update();
       window.location.reload();
-      history.push("/admin/heroes");
+      history.push("/admin/heroes/1");
 
     } else {
       window.alert("Ingen endringer ble utført");
@@ -100,7 +100,7 @@ export default class AdminEditPrivateUSers extends Component < {
         formErrors.email =
            value.match(emailRegex) && value.length > 0 ? "" : "ugyldig epost: format feks :bruker@gmail.com";
         break;
-        
+
             case "subscription":
         formErrors.subscription =
           value.length <1 || value>1 || value <0 ? "(Abonnementstatus) 0: Abonnerer ikke , 1: Abonnerer" : "";
@@ -110,8 +110,8 @@ export default class AdminEditPrivateUSers extends Component < {
         formErrors.zipcode =
           value.length !=4 ? "minimum 4 tall, postnummer" : "";
         break;
-        
-        
+
+
 
 
       default:
@@ -140,7 +140,7 @@ export default class AdminEditPrivateUSers extends Component < {
         console.log("Response recieved:", res); //ENDRINGER ER BLITT LAGRET
       })
       .catch(err => {
-        console.log("AXIOS ERROR:", err);
+        console.log("AXIOS ERROR:", err.message);
       });
 
 
@@ -165,10 +165,10 @@ export default class AdminEditPrivateUSers extends Component < {
           <form onSubmit={this.handleSubmit} noValidate>
 
           <div className="profilePic">
-         
+
           </div>
             <div className="name">
-           
+
               <label htmlFor="name"> Navn </label>
               <input
                 className={
@@ -190,7 +190,7 @@ export default class AdminEditPrivateUSers extends Component < {
               )}
             </div>
 
-            
+
 
             <div className="address">
               <label htmlFor="address"> Adresse </label>
@@ -207,7 +207,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 noValidate
                 onChange={this.handleChange}
               >
-              
+
               </input>
 
               {formErrors.address.length > 0 && (
@@ -232,7 +232,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 noValidate
                 onChange={this.handleChange}
               >
-              
+
               </input>
 
               {formErrors.email.length > 0 && (
@@ -257,7 +257,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 noValidate
                 onChange={this.handleChange}
               >
-              
+
               </input>
 
               {formErrors.tel.length > 0 && (
@@ -267,7 +267,7 @@ export default class AdminEditPrivateUSers extends Component < {
               )}
             </div>
 
-            
+
 
              <div className="subscription">
               <label htmlFor="subscription"> Abonnementstatus </label>
@@ -284,7 +284,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 noValidate
                 onChange={this.handleChange}
               >
-              
+
               </input>
 
               {formErrors.subscription.length > 0 && (
@@ -309,7 +309,7 @@ export default class AdminEditPrivateUSers extends Component < {
                 noValidate
                 onChange={this.handleChange}
               >
-              
+
               </input>
 
               {formErrors.zipcode.length > 0 && (
@@ -349,13 +349,13 @@ export default class AdminEditPrivateUSers extends Component < {
                 .then(user => console.log(user))
                 .catch((error: Error) => console.log(error.message));
                 window.location.reload();
-                history.push("/admin/heroes/"); 
-            
+                history.push("/admin/heroes/");
+
         }
-     
+
     }
 
-  
+
 
     componentDidMount() {
         userService
@@ -371,4 +371,4 @@ export default class AdminEditPrivateUSers extends Component < {
         .catch((error: Error) => console.log(error.message));
 
     }
-}  
+}
