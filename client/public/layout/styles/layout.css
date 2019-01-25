@@ -407,7 +407,7 @@ table a, #comments a{background-color:inherit;}
 
 	.container {
 		padding: 2px !important;
-		margin-right: 0	px !important;
+		margin-right: 0px !important;
 		margin-left: 0px !important;
 	}
 
@@ -434,6 +434,20 @@ table a, #comments a{background-color:inherit;}
 	.sectiontitle{max-width:none; text-align:left;}
 	.excerpts article{max-width:320px;}
 	#stats{text-align:left;}
+
+
+    .loginoption1, .loginoption2, .loginoption3 {
+
+        width:300px;
+
+    }
+
+
+    .navbar-toggle {
+        position:absolute;
+        top: -20px;
+    }
+
 
 
 	.logged-in-as {

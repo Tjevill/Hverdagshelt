@@ -53,12 +53,12 @@ export default class Menu extends Component {
 
                             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul className="nav navbar-nav">
-                                    <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
-                                    <li><NavLink exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/">Home</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/events/1">Events</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/register">Registrer deg!</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                    <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/login">Logg inn!</NavLink></li>
 
                                 </ul>
                             </div>
@@ -92,28 +92,28 @@ export default class Menu extends Component {
 
                 </nav>
                 <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
-                    <div className="container">
+                    <div className="hamburgercontainer">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
+                                <span className="icon-bar">&nbsp;</span>
+                                <span className="icon-bar">&nbsp;</span>
+                                <span className="icon-bar">&nbsp;</span>
                             </button>
                         </div>
 
 
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/user/report">Meld feil</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/">Home</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/user/report">Meld feil</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/issues/1">Saker</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/events/1">Events</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/map">Kart</NavLink></li>
                                 <li><NavLink to="#">---------------------</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/user">Min side</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/user/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/user">Min side</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/user/edit">Rediger profil</NavLink></li>
+                                <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" exact activeClassName="current" to="/user/changePassword">Forandre passord</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
 
                             </ul>
@@ -158,23 +158,23 @@ export default class Menu extends Component {
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
+                                <span className="icon-bar">&nbsp;</span>
+                                <span className="icon-bar">&nbsp;</span>
+                                <span className="icon-bar">&nbsp;</span>
                             </button>
                         </div>
 
 
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/">Home</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/bedrift/issues/1">Saker</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/events/1">Events</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/map">Kart</NavLink></li>
                                 <li><NavLink to="#">---------------------</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift">Min side</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
-                                <li><NavLink exact activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/bedrift">Min side</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/bedrift/edit">Rediger profil</NavLink></li>
+                                <li><NavLink  data-toggle="collapse" data-target=".navbar-collapse"  activeClassName="current" to="/bedrift/changePassword">Forandre passord</NavLink></li>
                                 <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
 
                             </ul>
@@ -225,34 +225,34 @@ export default class Menu extends Component {
 
                     <nav id="hamburgermenu" className="navbar navbar-inverse navbar-static-top" role="navigation">
                         <div className="hamburgercontainer">
-                        <div className="navbar-header">
-                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                                <span className="sr-only">Toggle navigation</span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                            </button>
-                        </div>
+                            <div className="navbar-header">
+                                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span className="sr-only">Toggle navigation</span>
+                                    <span className="icon-bar">&nbsp;</span>
+                                    <span className="icon-bar">&nbsp;</span>
+                                    <span className="icon-bar">&nbsp;</span>
+                                </button>
+                            </div>
 
 
-                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav">
-                            <li><NavLink exact activeClassName="current" to="/">Home</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/events/1">Events</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/map">Kart</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/">Home</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/issues/1">Saker</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/events/1">Events</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/map">Kart</NavLink></li>
                             <li><NavLink to="#">---------------------</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/">Min side</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/">Min side</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/edit">Rediger profil</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
                             <li><NavLink to="#">---------------------</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/heroes/1">Hverdagshelter</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/bedrift/oversikt/1">Bedrifter</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/events/1">Events</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/heroes/1">Hverdagshelter</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/bedrift/oversikt/1">Bedrifter</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/events/1">Events</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
                             <li><NavLink onClick={() => window.open("#/statistics")} to="/" >Statistikk</NavLink></li>
-                            <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
+                            <li><NavLink data-toggle="collapse" data-target=".navbar-collapse" to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>
                         </ul>
                     </div>
         </div>
