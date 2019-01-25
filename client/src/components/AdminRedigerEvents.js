@@ -311,7 +311,7 @@ export default class caseEdit extends Component<{
         console.log("Here !! ", response);
         console.log("Edit event response: ", response);
         window.alert("Event endringer lagret!");
-        // window.location = "#admin/events/" + response.insertId;
+        window.location = "#admin/events/1";
       })
       .catch((error: Error) => console.log(error.message));
   }
