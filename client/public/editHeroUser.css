@@ -46,14 +46,14 @@
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-.form-wrapper label {
+ label {
   font-size: 0.8em;
   margin-bottom: 0.25em;
   color: #222;
   font-weight: lighter;
 }
 
-.form-wrapper input {
+ input {
   padding: 10px 10px;
   border-radius: 5px;
   outline: none;
@@ -61,13 +61,13 @@
   color: black;
 }
 
-.form-wrapper input::placeholder {
+ input::placeholder {
   font-size: 1.2em;
   font-weight: lighter;
   color: #999;
 }
 
-.form-wrapper input.error {
+ input.error {
   border: 1px solid red;
 }
 
@@ -98,7 +98,7 @@ margin-left: 1%;
 
 .email,
 .name ,
-.address, .description, .dateDay, .dateTime{
+.address{
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
@@ -107,7 +107,7 @@ margin-left: 1%;
 
 
  .name,
-.address, .email, .description, .dateDay, .dateTime {
+.address, .email {
   width: 100%;
 }
 
@@ -172,3 +172,35 @@ margin-left: 1%;
 .caseEdit-wrapper .caseEdit-wrapper.address-field {
     margin-bottom: 2%;
 } 
+
+/* Makes responsive fields. Sets size and field alignment.*/
+input[type=text]{
+margin-bottom: 20px;
+margin-top: 10px;
+width:100%;
+padding: 15px;
+border-radius:5px;
+border:1px solid #7ac9b7;
+}
+
+input[type=number]{
+margin-bottom: 20px;
+margin-top: 10px;
+width:100%;
+padding: 15px;
+border-radius:5px;
+border:1px solid #7ac9b7;
+}
+
+input[type=submit]
+{
+margin-bottom: 20px;
+width:100%;
+padding: 15px;
+border-radius:5px;
+border:1px solid #7ac9b7;
+background-color: #4180C5;
+color: aliceblue;
+font-size:15px;
+cursor:pointer;
+}
