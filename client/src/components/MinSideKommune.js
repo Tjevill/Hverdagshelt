@@ -132,7 +132,7 @@ export default class MinSideKommune extends Component {
                             <div>
                                 <p>
                                     <a
-                                        className = "text-dark"
+                                        className = "text-dark m-4 p-4"
                                         href = "https://gitlab.stud.idi.ntnu.no/SUV19_T5/hverdagshelt_t5/wikis/home"
                                         target = "_blank"
                                     >

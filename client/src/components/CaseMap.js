@@ -35,6 +35,7 @@ export class MapContainer extends Component<{lat: number, long: number}> {
           <InfoWindow
             marker={this.activeMarker}
             visible={this.infoShowing}
+            onClose={() => this.onInfoClose()}
           >
               <div>
                 <h6>Lat: {this.props.lat}</h6>
@@ -47,15 +48,18 @@ export class MapContainer extends Component<{lat: number, long: number}> {
   }
 
   onMarkerClick = (props, marker, e) => {
-    console.log("onMarkerClick");
-    this.activeMarker = marker;
-    this.infoShowing = true;
+      this.activeMarker = marker;
+      this.infoShowing = true;
   }
 
   onMapClick(){
-    console.log("onMapClick");
-    this.infoShowing = false;
-    this.activeMarker = {};
+      this.infoShowing = false;
+      this.activeMarker = {};
+  }
+
+  onInfoClose(){
+      this.infoShowing = false;
+      this.activeMarker = {};
   }
 
 }

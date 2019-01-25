@@ -317,6 +317,14 @@ body,
     width: 100%;
 }
 
+@media (max-width: 640px) {
+
+    #register-page h1 {
+        font-size: 30px;
+    }
+
+}
+
 #report-page #submit {
     width: 80%;
     height: 60px;

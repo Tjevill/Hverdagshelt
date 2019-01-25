@@ -228,7 +228,7 @@ export default class events extends Component<{
                               <div className="modal-body">{e.description}</div>
                               <div className="modal-footer">
                                 <div className="float-left">
-                                  {e.venue + " - " + e.address}
+                                  {"Adresse: " + e.address}
                                 </div>
                                 <button
                                   type="button"

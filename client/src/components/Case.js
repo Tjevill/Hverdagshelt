@@ -34,7 +34,7 @@ export default class Case extends Component {
                         <div id="myModal" className="modal">
                             <span id="close-modal" className="close" onClick={this.closeModal}>&times;</span>
                             <img className="modal-content" id="img01" />
-                            <div id="caption">test</div>
+                            <div id="caption">{this.description}</div>
                         </div>
                     </div>
                     <p id="description">{this.case.description}</p>
@@ -60,6 +60,7 @@ export default class Case extends Component {
     casePromise.then(caseData => {
       //console.log(caseData[0]);
       this.case = caseData[0];
+      this.description = this.case.description;
       this.map = <Map lat={this.case.latitude} long={this.case.longitude}/>;
       mapService.getMapInfo(this.case.latitude, this.case.longitude).then(
         mapData => {
@@ -115,7 +116,6 @@ export default class Case extends Component {
 
     modal.style.display = "block";
     modalImg.src = picture.src;
-    captionText.innerHTML = this.case.description;
 
     var close = document.getElementById("close-modal");
     close.style.right = String((casePage.offsetWidth / 2) - (modalImg.offsetWidth / 2) - 40) + "px";
