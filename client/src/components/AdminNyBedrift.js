@@ -257,7 +257,14 @@ export default class AdminNyBedrift extends Component {
               onClick={this.save}
               className="btn btn-primary"
             >
-              Save
+              Lagre
+            </button>
+            <button
+              type="button"
+              onClick={()=>history.push("/admin/bedrift/oversikt/1")}
+              className="btn btn-secondary"
+            >
+              Avbryt
             </button>
             <h4>{this.message}</h4>
           </div>

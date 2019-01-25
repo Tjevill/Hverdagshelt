@@ -62,8 +62,8 @@ export default class ChangePassword extends Component {
                 </div>
                 <br/>
                 <br/>
-                <Button.Success onClick={() => this.save()}>Save</Button.Success>
-                <Button.Light onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</Button.Light>
+                <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
+                <Button.Light onClick={() => history.push('/bedrift')}>Avbryt</Button.Light>
               </div>
               <div className="col hengelaasdiv">
               <p>{this.meldning}</p>
@@ -110,7 +110,7 @@ export default class ChangePassword extends Component {
         this.bilde = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz4bFgZZh0li1xBNi8NCbMZlwyyycFhvJ2H9iwI8WQJNaftq9E";
         console.log("this.meldning =" + this.meldning);
         this.forceUpdate();
-        
+
         })
       .catch((error: Error) => {
         console.log(error);
