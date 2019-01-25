@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react-simplified";
 import { eventService } from "../services.js";
-import { Loading } from "./widgets";
+import {Alert, Loading} from "./widgets";
 import createHashHistory from "history/createHashHistory";
 const history = createHashHistory();
 
@@ -314,7 +314,9 @@ export default class AdminEvents extends Component {
     console.log(this.event.zipcode);
     console.log(this.event.date);
     console.log(this.event.description);
-    eventService.createEvent(this.event);
+    eventService.createEvent(this.event)
+        .then(window.alert("Event opprettet!"),
+      window.location.reload());
   }
 
   editEvent(eventid) {
@@ -455,7 +457,7 @@ export default class AdminEvents extends Component {
     if (conf) {
       eventService.deleteEvent(event_id);
 
-      history.push("/admin/events");
+      window.location.reload();
     } else {
       console.log("false");
     }
@@ -470,7 +472,13 @@ export default class AdminEvents extends Component {
     this.editedEvent.date = this.editedEvent.date
       .replace("T", " ")
       .substring(0, 16);
-    eventService.updateEvent(this.editedEvent.event_id, this.editedEvent);
-    history.push("/admin/events");
+    eventService.updateEvent(this.editedEvent.event_id, this.editedEvent)
+        .then(res => {
+            console.log(res);
+            window.alert("Event endringer lagret!");
+            window.location = "#admin/events/" + res.insertId;
+        })
+        .catch((error: Error) => Alert.danger(error.message));
+
   }
 }
