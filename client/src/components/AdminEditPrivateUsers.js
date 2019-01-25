@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import { userService } from "../services.js";
 import { BrowserRouter, Route } from "react-router-dom";
 import createHashHistory from "history/createHashHistory";
+import {Loading} from "./widgets";
 
 const history = createHashHistory();
 var emailRegex =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -24,6 +25,7 @@ export default class AdminEditPrivateUSers extends Component < {
     match: { params: { id: number } }
 } > {
     user_id="";
+    loaded = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -151,6 +153,7 @@ export default class AdminEditPrivateUSers extends Component < {
 
     render() {
         const { formErrors } = this.state;
+        if(this.loaded){
         return (
 
         <div className="caseEdit-wrapper">
@@ -338,6 +341,11 @@ export default class AdminEditPrivateUSers extends Component < {
         </div>
       </div>
         );
+        } else {
+            return (
+                <Loading />
+            );
+        }
     }
 
 
@@ -364,6 +372,7 @@ export default class AdminEditPrivateUSers extends Component < {
           this.user_id=info[0].user_id
          this.setState({ user: info[0],  name: info[0].name, address: info[0].address, tel: info[0].tel,
           email: info[0].email, subscription: info[0].subscription, zipcode: info[0].zipcode })
+                this.loaded = true;
 
        }
          )

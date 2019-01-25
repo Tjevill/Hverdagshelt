@@ -798,6 +798,7 @@ app.get("/events", (req, res) => {
     });
 });
 
+
 /** Get one event on event_id */
 app.get("/getEvent/:id", (req, res) =>{
     console.log("Received get-request on endpoint /getEvent/"+req.params.id);
