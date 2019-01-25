@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Component } from "react-simplified";
-import { userService } from "../services";
+import { userService } from "../src/services";
 
 export default class Login extends Component {
   login = [];

@@ -279,7 +279,7 @@ td{border-width:0 1px;}
 
 /* Colours
 --------------------------------------------------------------------------------------------------------------- */
-body{color:#343434; background-color:#efefef; min-width:460px;}
+body{color:#343434; background-color:#efefef; }
 a{color:#343434;}
 
 a:active, a:focus{background:transparent;}/* IE10 + 11 Bugfix - prevents grey background */

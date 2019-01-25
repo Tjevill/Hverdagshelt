@@ -9,7 +9,7 @@ import {
 } from "material-ui/Table";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { Component } from "react-simplified";
-import { userService } from "../services.js";
+import { userService } from "../src/services.js";
 import RaisedButton from 'material-ui/RaisedButton';
 import SearchBar from 'material-ui-search-bar';
       import SelectField from 'material-ui/SelectField';

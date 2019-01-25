@@ -75,7 +75,8 @@ export default class AdminUsers extends Component<{
                 <th scope="col">Postnr</th>
                 <th scope="col" colSpan="2">
                   <input
-                    id="searchbar"
+                    id="searchbarintable"
+                    placeholder="Søk Navn.."
                     type="text"
                     onChange={event => this.search(event)}
                   />{" "}
