@@ -224,7 +224,14 @@ export default class NewEmployee extends Component {
               onClick={this.save}
               className="btn btn-primary"
             >
-              Save
+              Lagre
+            </button>
+            <button
+              type="button"
+              onClick={()=>history.push("/admin/kommune/")}
+              className="btn btn-secondary"
+            >
+              Avbryt
             </button>
             <h1>{this.message}</h1>
           </div>

@@ -171,7 +171,7 @@ export default class caseEdit extends Component<{
             </div>
 
             {/*<div className="date">
-             
+
               <label htmlFor="date"> Tidspunkt </label>
               <input
                 className={formErrors.date.length > 0 ? "error" : null}
@@ -181,7 +181,7 @@ export default class caseEdit extends Component<{
                 name="date"
                 noValidate
                 onChange={this.handleChange}
-              /> 
+              />
               {formErrors.date.length > 0 && (
                 <span className="errorMessage">{formErrors.date}</span>
               )}
@@ -293,7 +293,8 @@ export default class caseEdit extends Component<{
       .then(response => {
         console.log("Here !! ", response);
         console.log("Edit event response: ", response);
-        history.push("/admin/events/1");
+          window.alert("Event endringer lagret!");
+          window.location = "#admin/events/" + response.insertId;
       })
       .catch((error: Error) => console.log(error.message));
   }
