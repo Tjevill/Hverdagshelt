@@ -5,16 +5,10 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import { caseService, employeeService, geoService } from "../services";
 import { Alert, Loading } from "./widgets";
 
-// works for desktop
-// const style = {
-//     width: "90%",
-//     height: "70vh",
-//     margin: "0 5%"
-// }
-
 const style = {
-    width: "100%",
-    height: "70%"
+    height: "80%",
+    width: "90%",
+    margin: "0 5%"
 }
 
 class Info {
