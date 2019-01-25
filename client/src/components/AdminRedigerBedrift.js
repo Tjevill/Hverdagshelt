@@ -409,6 +409,6 @@ export default class AdminRedigerBedrift extends Component<{
 
 
 
-    //this.loading = false;
+    this.loading = false;
   }
 }
