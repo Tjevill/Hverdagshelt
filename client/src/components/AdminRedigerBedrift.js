@@ -220,7 +220,7 @@ export default class AdminRedigerBedrift extends Component<{
   render() {
     const { formErrors } = this.state;
 
-    if (!this.loading) {
+    if (this.loading) {
       return (
         <div className="caseEdit-wrapper">
            <link rel="stylesheet" href="editHeroUser.css" />
@@ -394,6 +394,7 @@ export default class AdminRedigerBedrift extends Component<{
                         (response2.length === 0 ? value = false : value = true)
                       this.conns.push({"catid": catid, "checked": false});
                       this.forceUpdate();
+                        this.loading = true;
                     });
 
                 }
@@ -402,13 +403,5 @@ export default class AdminRedigerBedrift extends Component<{
                 (error: Error) =>
                     (this.message = error.message)
             );
-
-
-
-
-
-
-
-    this.loading = false;
   }
 }
