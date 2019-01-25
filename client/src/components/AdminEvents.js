@@ -133,7 +133,7 @@ export default class AdminEvents extends Component {
                   <br/><br/>
 
 
-                  <form onSubmit={() => this.addEvent()}>
+                  <form>
                     <div
                       className="modal fade"
                       id="exampleModal"
@@ -247,8 +247,9 @@ export default class AdminEvents extends Component {
 
                             <input
                               className="btn btn-primary"
-                              type="submit"
+                              type="button"
                               value="Lagre"
+                              onClick={() => this.addEvent()}
                             />
                           </div>
                         </div>

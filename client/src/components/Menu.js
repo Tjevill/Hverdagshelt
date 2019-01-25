@@ -247,9 +247,9 @@ export default class Menu extends Component {
                             <li><NavLink exact activeClassName="current" to="/admin/changePassword">Forandre passord</NavLink></li>
                             <li><NavLink to="#">---------------------</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kommune">Kommuneansatte</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/heroes">Hverdagshelter</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/heroes/1">Hverdagshelter</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/bedrift/oversikt/1">Bedrifter</NavLink></li>
-                            <li><NavLink exact activeClassName="current" to="/admin/events">Events</NavLink></li>
+                            <li><NavLink exact activeClassName="current" to="/admin/events/1">Events</NavLink></li>
                             <li><NavLink exact activeClassName="current" to="/admin/kategori">Kategorier</NavLink></li>
                             <li><NavLink onClick={() => window.open("#/statistics")} to="/" >Statistikk</NavLink></li>
                             <li><NavLink to="/" onClick={this.handleLogOut}>Logg ut</NavLink></li>

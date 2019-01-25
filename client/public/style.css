@@ -448,3 +448,13 @@ ListItem {
   color: black;
   background-color: white;
 }
+
+.status-container {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.status-radio {
+    margin-right: 5px !important;
+    margin-bottom: 5px !important;
+}
