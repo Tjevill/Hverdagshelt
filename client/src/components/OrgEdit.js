@@ -73,7 +73,7 @@ export default class OrgEdit extends Component {
                               <input id="org-edit-email" className="form-control" type="email" defaultValue = {this.user.email} name="zipcode" onChange={event => (this.user.email = event.target.value)}/>
                           </div>
                           <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                          <Button.Light onClick={() => history.push('/admin/'+this.user.user_id)}>Avbryt</Button.Light>
+                          <Button.Light onClick={() => history.push('/bedrift')}>Avbryt</Button.Light>
                       </div>
 
                       <div className="col min-side-rediger-bilde-div">

@@ -117,7 +117,7 @@ export default class AdminRedigerEmployee extends Component {
                 </Button.Success>
                 <Button.Light
                   onClick={() =>
-                    history.push("/admin/" + this.user.user_id)
+                    history.push("/admin/")
                   }
                 >
                   Avbryt

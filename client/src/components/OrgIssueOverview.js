@@ -74,6 +74,7 @@ export default class OrgIssueOverview extends Component<{
   handleChangeKommune = event =>{
     let statusid = this.statusid;
     let categoryid = this.categoryid;
+    let orgid = this.org_id;
       caseService
         .searchCaseByProv(event.target.value)
         .then(response => {
@@ -83,6 +84,9 @@ export default class OrgIssueOverview extends Component<{
             if(statusid>0){
               this.casesbyStatus = this.casesbyKommune.filter(function(value) {
                 return value.status_id == statusid;
+              });
+              this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+                return value.org_id == orgid;
               });
               if(categoryid>0){
                 this.casesbyStatus = this.casesbyStatus.filter(function(value){
@@ -94,9 +98,15 @@ export default class OrgIssueOverview extends Component<{
                 this.casesbyStatus = this.casesbyKommune.filter(function(value){
                    return value.category_id == categoryid;
                 });
+                this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+                  return value.org_id == orgid;
+                });
             }else{
               console.log("ingen category og status");
               this.casesbyStatus = this.casesbyKommune;
+              this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+                return value.org_id == orgid;
+              });
             };
             this.backup = this.casesbyStatus;
             this.forceUpdate();
@@ -108,6 +118,7 @@ export default class OrgIssueOverview extends Component<{
   handleChangeFylke = event =>{
     let statusid = this.statusid;
     let categoryid = this.categoryid;
+    let orgid = this.org_id;
 
     if(event.target.value==0){
       if(statusid>0){
@@ -145,9 +156,12 @@ export default class OrgIssueOverview extends Component<{
     document.getElementById('searchbarintable').value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
+    let orgid = this.org_id;
     if (event.target.value == 0) {
       if(this.kommuner.length>0){
-        this.casesbyStatus = this.casesbyKommune;
+        this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+          return value.org_id == orgid;
+        });
         if(this.categoryid>0){
           this.casesbyStatus = this.casesbyStatus.filter(function(value){
              return value.category_id == categoryid;
@@ -167,6 +181,9 @@ export default class OrgIssueOverview extends Component<{
       if(this.kommuner.length>0){
         this.casesbyStatus = this.casesbyKommune.filter(function(value) {
           return value.status_id == event.target.value;
+        });
+        this.casesbyStatus = this.casesbyStatus.filter(function(value) {
+          return value.org_id == orgid;
         });
         if(this.categoryid>0){
           this.casesbyStatus = this.casesbyStatus.filter(function(value){
@@ -194,9 +211,13 @@ export default class OrgIssueOverview extends Component<{
     document.getElementById('searchbarintable').value = "";
     this.categoryid = event.target.value;
     let statusid = this.statusid;
+    let orgid = this.org_id;
+
     if (event.target.value == 0) {
       if(this.kommuner.length>0){
-        this.casesbyStatus = this.casesbyKommune;
+        this.casesbyStatus = this.casesbyKommune.filter(function(value) {
+          return value.org_id == orgid;
+        });
         if(statusid>0){
           this.casesbyStatus = this.casesbyStatus.filter(function(value){
              return value.status_id == statusid;
@@ -215,7 +236,7 @@ export default class OrgIssueOverview extends Component<{
     }else{
       if(this.kommuner.length>0){
         this.casesbyStatus = this.casesbyKommune.filter(function(value) {
-          return value.category_id == event.target.value;
+          return (value.category_id == event.target.value&&value.org_id == orgid);
         });
         if(statusid>0){
           this.casesbyStatus = this.casesbyStatus.filter(function(value){
