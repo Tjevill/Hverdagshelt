@@ -291,3 +291,4 @@ function getDate(date) {
 export class Form {
   static Input = FormInput;
 }
+
