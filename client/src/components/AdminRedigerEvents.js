@@ -28,7 +28,7 @@ const formValid = ({ formErrors, ...rest }) => {
     val.length > 0 && (valid = false);
   });
 
-   // validate the form was filled out
+  // validate the form was filled out
   Object.values(rest).forEach(val => {
     val == null && (valid = false);
   });
@@ -40,7 +40,11 @@ export default class caseEdit extends Component<{
   match: { params: { id: number } }
 }> {
   event = "";
-  dateFormatted ="";
+  dateFormatted = "";
+  year = "";
+  month = "";
+  day = "";
+  fullDate = "";
 
   constructor(props) {
     super(props);
@@ -71,7 +75,7 @@ export default class caseEdit extends Component<{
       console.log(`
         --SUBMITTING--
           name: ${this.state.name} 
-          date:  ${this.state.date}
+        
           dateDay:  ${this.state.dateDay}
           dateTime:  ${this.state.dateTime}
           description:  ${this.state.description}
@@ -80,10 +84,10 @@ export default class caseEdit extends Component<{
           event_id:  ${this.props.match.params.id}
       `);
 
-   // this.dateFormatted = this.state.dateDay +this.state.dateTime;
-    //console.log(this.dateFormatted)
+      // this.dateFormatted = this.state.dateDay +this.state.dateTime;
+      //console.log(this.dateFormatted)
 
-      //this.update();
+      this.update();
     } else {
       window.alert("Vennligst fyll ut alle felt");
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
@@ -123,14 +127,29 @@ export default class caseEdit extends Component<{
   };
 
   onChangeTime = time => this.setState({ dateTime: time });
-  onChangeDay = date => this.setState({ dateDay: new Date(date)});
+  onChangeDay = date => this.setState({ dateDay: new Date(date) });
 
   render() {
     const { formErrors } = this.state;
 
     return (
       <div className="caseEdit-wrapper">
-        <link rel="stylesheet" href="editUsers.css" />
+        <link rel="stylesheet" href="editHeroUser.css" />
+        <link
+          rel="stylesheet"
+          media="screen and (max-width: 1400px) and (min-width: 601px)"
+          href="editHeroUser1.css"
+        />
+        <link
+          rel="stylesheet"
+          media="screen and (max-width: 600px) and (min-width: 351px)"
+          href="editHeroUser2.css"
+        />
+        <link
+          rel="stylesheet"
+          media="screen and (max-width: 350px)"
+          href="editHeroUser3.css"
+        />
         <div className="form-wrapper">
           <h1> Rediger Events </h1>
 
@@ -159,6 +178,8 @@ export default class caseEdit extends Component<{
                 value={this.state.dateDay}
                 minDate={new Date()}
                 returnValue="start"
+                calendarIcon={null}
+                clearIcon={null}
               />
             </div>
 
@@ -166,27 +187,12 @@ export default class caseEdit extends Component<{
               <label htmlFor="dateTime"> Klokkeslett </label>
               <TimePicker
                 onChange={this.onChangeTime}
-                value={this.state.dateTime}
+                value={this.state.dateTime.replace()}
+                clearIcon={null}
+                clockIcon={null}
+                timePickerIncrement={60}
               />
             </div>
-
-            {/*<div className="date">
-
-              <label htmlFor="date"> Tidspunkt </label>
-              <input
-                className={formErrors.date.length > 0 ? "error" : null}
-                type="text"
-                value={this.state.date}
-                placeholder="Tidspunkt"
-                name="date"
-                noValidate
-                onChange={this.handleChange}
-              />
-              {formErrors.date.length > 0 && (
-                <span className="errorMessage">{formErrors.date}</span>
-              )}
-            </div>
-            */}
 
             <div className="description">
               <label htmlFor="description"> Beskrivelse </label>
@@ -237,10 +243,8 @@ export default class caseEdit extends Component<{
               {formErrors.address.length > 0 && (
                 <span className="errorMessage">{formErrors.address}</span>
               )}
-              {console.log(this.state.dateDay)}
-              {console.log(this.state.dateTime)}
-              {console.log(this.state.dateFormatted)}
             </div>
+
 
             {this.renderEditButton()}
           </form>
@@ -280,12 +284,25 @@ export default class caseEdit extends Component<{
   }
 
   update() {
+    this.day = this.state.dateDay.getDate();
+    this.month = this.state.dateDay.getMonth() + 1;
+    this.year = this.state.dateDay.getFullYear();
+    this.fullDate =
+      this.year + "-" + this.month + "-" + this.day + " " + this.state.dateTime;
 
+    console.log(this.fullDate);
 
     eventService
       .updateEvent(this.props.match.params.id, {
         name: this.state.name,
-        date: "2019-03-03 12:30",
+        date:
+          this.year +
+          "-" +
+          this.month +
+          "-" +
+          this.day +
+          " " +
+          this.state.dateTime,
         description: this.state.description,
         zipcode: this.state.zipcode,
         address: this.state.address
@@ -293,10 +310,9 @@ export default class caseEdit extends Component<{
       .then(response => {
         console.log("Here !! ", response);
         console.log("Edit event response: ", response);
-          window.alert("Event endringer lagret!");
-          window.location = "#admin/events/" + response.insertId;
+        window.alert("Event endringer lagret!");
+        // window.location = "#admin/events/" + response.insertId;
       })
       .catch((error: Error) => console.log(error.message));
   }
-
 }
