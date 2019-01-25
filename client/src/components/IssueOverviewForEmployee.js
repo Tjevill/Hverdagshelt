@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Router, NavLink } from "react-router-dom";
@@ -83,7 +82,7 @@ export default class IssueOverviewForEmployee extends Component<{
     if(this.props.match.params.id!=1){
         window.location.href='#/admin/issues/1';
     };
-    document.getElementById("search").value = "";
+    document.getElementById("searchbarintable").value = "";
     let categoryid = this.categoryid;
     this.statusid = event.target.value;
     if (event.target.value == 0) {
@@ -126,7 +125,7 @@ export default class IssueOverviewForEmployee extends Component<{
     if(this.props.match.params.id!=1){
         window.location.href='#/admin/issues/1';
     };
-    document.getElementById("search").value = "";
+    document.getElementById("searchbarintable").value = "";
     this.categoryid = event.target.value;
     console.log("value:" + event.target.value);
     let statusid = this.statusid;
@@ -520,8 +519,7 @@ export default class IssueOverviewForEmployee extends Component<{
               </div>
 
               <div className="container">
-                <span className="glyphicon glyphicon-search" aria-hidden="true" />
-                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search} />
+
                 <Router history={history}>
                   <table className="table table-hover">
                     <thead>
@@ -529,7 +527,7 @@ export default class IssueOverviewForEmployee extends Component<{
                         <th scope="col">Tittel</th>
                         <th scope="col">Tid</th>
                         <th scope="col">Saken er tildelt</th>
-                        <th scope="col">Handling</th>
+                        <th scope="col">  <input type="text" id="searchbarintable" name="search" placeholder="Search.." onChange={this.search} /></th>
                       </tr>
                     </thead>
                     {lists}
@@ -542,6 +540,7 @@ export default class IssueOverviewForEmployee extends Component<{
                   <div className="btn-group">{sidebuttons}</div>
                 </div>
               </div>
+              <br/><br/>
             </div>
             <div className="col-md-2" />
           </div>
