@@ -113,7 +113,7 @@ export default class MinSideBedrift extends Component {
 
                                 <tr
                                     key={i}
-                                    onClick={() => history.push("case/" + ca.case_id)}
+                                    onClick={() => (window.location=('#/case/' + ca.case_id))}
                                 >
 
                                     <th scope="row">
