@@ -89,6 +89,7 @@ export class Report extends Component {
 
     handleChangeS = address => {
         this.setState({ address });
+        this.address = address;
     };
 
     handleSelect = address => {
@@ -187,7 +188,7 @@ export class Report extends Component {
                                         id="address-search"
                                         type="text"
                                         name="headline"
-                                        defaultValue={this.state.address}
+                                        value={this.state.address}
                                     />
                                     <div className="invalid-feedback">Ugyldig adresse</div>
                                     <div className="autocomplete-dropdown-container">
@@ -319,6 +320,7 @@ export class Report extends Component {
                     }
                 }
                 let filter = [];
+                this.state.address = this.mapData.formatted_address;
                 this.address = this.mapData.formatted_address;
                 if (this.mapData.address_components == null) {
                     console.log('Ikke i Norge!');
@@ -394,7 +396,7 @@ export class Report extends Component {
                 this.picValidationClass = '';
             }
 
-            if (this.state.category_id.trim() == ''){
+            if (this.state.category_id == '' || this.state.category_id == 0 || this.state.category_id == null){
                 this.categoryValid = "is-invalid";
                 return null;
             } else {
