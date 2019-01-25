@@ -71,15 +71,15 @@ export default class MinSideBedrift extends Component {
 
         return(
 
-            <div className = "container">
+            <div className = "profile-page">
+                <div className="profile-title">
+                    <h2>Velkommen {this.organization.name}</h2>
+                </div>
 
-                <h1>Velkommen {this.organization.name}</h1>
 
-                <div className = "row">
+                    <div className = "profile-details">
 
-                    <div className = "col-sm-4">
-
-                        <h5>Bruker:</h5>
+                        <h4>Mine detaljer</h4>
                         <ul className="list-group">
                             <li className="list-group-item text-dark">Bedrift: {this.organization.name}</li>
                             <li className="list-group-item text-dark">Org. nr: {this.organization.organizationnumber}</li>
@@ -92,8 +92,8 @@ export default class MinSideBedrift extends Component {
                         >Rediger profil</button>
                     </div>
 
-                    <div className = "col-sm-8">
-                        <h5>Fullførte saker :</h5>
+                    <div className = "profile-reports">
+                        <h4>Fullførte saker</h4>
 
                         <table className="table">
 
@@ -144,7 +144,6 @@ export default class MinSideBedrift extends Component {
                         </table>
                     </div>
 
-                </div>
 
             </div>
 
@@ -153,4 +152,3 @@ export default class MinSideBedrift extends Component {
     }//End OrgRender()
 
 }//End MinSideBedrift
-

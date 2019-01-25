@@ -68,8 +68,8 @@ export default class Register extends Component {
     return (
 
         <div id="register-page" className="row">
-            <div className="col-sm-4"></div>
-            <div className="col-sm-4">
+            <div className="col-sm-3"></div>
+            <div className="col-sm-6">
 
       <div className="Registrer">
         <h1>Registrer deg</h1>
@@ -172,7 +172,7 @@ export default class Register extends Component {
       </div>
 
         </div>
-      <div className="col-sm-4"></div>
+      <div className="col-sm-3"></div>
       </div>
 
     );

@@ -16,48 +16,50 @@ export default class UpdateEmployeePasswordFromToken extends Component <{ match:
 
   render(){
       if(this.loaded) {
-    return(
-      <>
-      <div className="jumbotron">
-        <div className="container text-center">
-          <h4> Du kan nå endre ditt passord</h4>
-        </div>
-      </div>
+    return <>
 
-        <div className="container text-center">
+
+        <div className="row">
+            <div className="col-md-2">&nbsp;</div>
+            <div className="col-md-8">
+
+
+            <div className="container text-center">
           <div className="row">
             <div className="col">
               <div className="form-group">
-                Nytt passord:{" "}
-                <input
-                className="form-control"
-                  type="password"
-                  name="newPassword1"
-                  onChange={event => (this.newPassword1= event.target.value)}
-                />
+                Nytt passord: <input className="form-control" type="password" name="newPassword1" onChange={event => (this.newPassword1 = event.target.value)} />
               </div>
-                <div className="form-group">
-                  Gjenta nytt passord:{" "}
-                  <input
-                  className="form-control"
-                    type="password"
-                    name="newPassword2"
-                    onChange={event => (this.newPassword2 = event.target.value)}
-                  />
-                </div>
-                <br/>
-                <br/>
-                <Button.Success onClick={() => this.save()}>Save</Button.Success>
-                <Button.Light onClick={() => history.push('/profile/'+this.employee.emp_id)}>Cancel</Button.Light>
+              <div className="form-group">
+                Gjenta nytt passord: <input className="form-control" type="password" name="newPassword2" onChange={event => (this.newPassword2 = event.target.value)} />
               </div>
-              <div className="col">
+              <br />
+              <br />
+              <Button.Success onClick={() => this.save()}>
+                Save
+              </Button.Success>
+              <Button.Light
+                onClick={() =>
+                  history.push("/profile/" + this.employee.emp_id)
+                }
+              >
+                Cancel
+              </Button.Light>
+            </div>
+            <div className="col">
               <p>{this.melding}</p>
-              <img src={this.bilde} width="200"/>
-              </div>
-              </div>
-              </div>
-      </>
-    );
+              <img src={this.bilde} width="200" />
+            </div>
+          </div>
+        </div>
+
+
+            </div>
+            <div className="col-md-2">&nbsp;</div>
+        </div>
+
+
+      </>;
       } else {
           return(
               <Loading />

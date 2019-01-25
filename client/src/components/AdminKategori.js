@@ -31,7 +31,7 @@ export default class AdminKategori extends Component {
         if(this.loaded){
             console.log("cat: ", this.cat)
             return (
-                <div id="cat-page">
+
                     <div className="row">
                         <div className="col-sm-3">&nbsp;</div>
                         <div className="col-sm-6">
@@ -66,7 +66,7 @@ export default class AdminKategori extends Component {
                         </div>
                         <div className="col-sm-3">&nbsp;</div>
                     </div>
-                </div>
+
             );
         } else {
             return (

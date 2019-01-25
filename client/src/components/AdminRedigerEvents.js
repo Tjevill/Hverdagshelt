@@ -29,94 +29,58 @@ export default class AdminRedigerEvents extends Component<{
 
   render() {
     if (this.loaded) {
-      return (
-        <>
-          <div className="jumbotron jumbotron-fluid">
-            <div className="container text-center">
-              <h1 className="display-4">Rediger Event</h1>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col">
-                <form>
-                  <div className="form-group">
-                    <label for="exampleInputName">Event navn</label>
-                    <input
-                      type="name"
-                      className="form-control"
-                      id="Name"
-                      defaultValue={this.event.name}
-                      onChange={event => (this.event.name = event.target.value)}
-                    />
-                  </div>
+      return <div className="container">
+          <div className="row">
+            <div className="col-md-2" />
+            <div className="col-md-8">
+              <div>
+                <div className="row">
+                  <div className="col">
+                    <h2>Rediger event</h2>
+                    <form>
+                      <div className="form-group">
+                        <label for="exampleInputName">Event navn</label>
+                        <input type="name" className="form-control" id="Name" defaultValue={this.event.name} onChange={event => (this.event.name = event.target.value)} />
+                      </div>
 
-                  <div className="form-group">
-                    <label for="exampleInputTime">Tidspunkt:{" "}</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      id="timing"
-                      defaultValue={this.event.date.substring(0, 16)}
-                      onChange={event =>
-                        (this.event.date = event.target.value.replace("T", " "))
-                      }
-                    />
+                      <div className="form-group">
+                        <label for="exampleInputTime">Tidspunkt: </label>
+                        <input type="time" className="form-control" id="timing" defaultValue={this.event.date.substring(0, 16)} onChange={event => (this.event.date = event.target.value.replace("T", " "))} />
 
-                    <small id="dateHelp" className="form-text text-muted">
-                      Format: YYYY-MM-DD HH-MM-SS
-                    </small>
-                  </div>
+                        <small id="dateHelp" className="form-text text-muted">
+                          Format: YYYY-MM-DD HH-MM-SS
+                        </small>
+                      </div>
 
-                  <div className="form-group">
-                    <label for="exampleInputDescription">Beskrivelse</label>
-                    <textarea
-                      rows="8"
-                      type="description"
-                      className="form-control"
-                      id="description"
-                      defaultValue={this.event.description}
-                      onChange={event =>
-                        (this.event.description = event.target.value)
-                      }
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label for="exampleInputDescription">
+                          Beskrivelse
+                        </label>
+                        <textarea rows="8" type="description" className="form-control" id="description" defaultValue={this.event.description} onChange={event => (this.event.description = event.target.value)} />
+                      </div>
 
-                  <div className="form-group">
-                    <label for="exampleInputDescription">Postnummer</label>
-                    <input
-                      type="zipcode"
-                      className="form-control"
-                      id="zipcode"
-                      maxLength="4"
-                      size="4"
-                      defaultValue={this.event.zipcode}
-                      onChange={event =>
-                        (this.event.zipcode = event.target.value)
-                      }
-                    />
-                  </div>
+                      <div className="form-group">
+                        <label for="exampleInputDescription">
+                          Postnummer
+                        </label>
+                        <input type="zipcode" className="form-control" id="zipcode" maxLength="4" size="4" defaultValue={this.event.zipcode} onChange={event => (this.event.zipcode = event.target.value)} />
+                      </div>
 
-                  <div className="form-group">
-                    <label for="exampleInputDescription">Adresse</label>
-                    <input
-                      type="address"
-                      className="form-control"
-                      id="address"
-                      size="4"
-                      defaultValue={this.event.address}
-                      onChange={event =>
-                        (this.event.address = event.target.value)
-                      }
-                    />
+                      <div className="form-group">
+                        <label for="exampleInputDescription">
+                          Adresse
+                        </label>
+                        <input type="address" className="form-control" id="address" size="4" defaultValue={this.event.address} onChange={event => (this.event.address = event.target.value)} />
+                      </div>
+                      {this.renderEditButton()}
+                    </form>
                   </div>
-                  {this.renderEditButton()}
-                </form>
+                </div>
               </div>
             </div>
+            <div className="col-md-2" />
           </div>
-        </>
-      );
+        </div>;
     } else {
       return <Loading />;
     }

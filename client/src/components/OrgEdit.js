@@ -55,66 +55,34 @@ export default class OrgEdit extends Component {
   render(){
     if(this.loaded){
       return (
-        <div id="employee-edit-page">
-          <div className="container text-center">
-            <div className="row">
-              <div className="col">
-                  <h2>Rediger din profil</h2>
-                <div className="form-group">
-                  Organisasjonsnummer:
-                  <input
-                    id="org-edit-number"
-                    className="form-control"
-                    type="number"
-                    defaultValue = {this.user.organizationnumber}
-                    name="organizationnumber"
-                    onChange={event => (this.user.organizationnumber = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Navn:
-                  <input
-                    id="org-edit-name"
-                    className="form-control"
-                    type="text"
-                    name="name"
-                    defaultValue={this.user.name}
-                    onChange={event => (this.user.name = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Mobil:
-                  <input
-                    id="org-edit-tel"
-                    className="form-control"
-                    type="number"
-                    defaultValue={this.user.tel}
-                    name="tel"
-                    onChange={event => (this.user.tel = event.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  Epost:
-                  <input
-                    id="org-edit-email"
-                    className="form-control"
-                    type="email"
-                    defaultValue = {this.user.email}
-                    name="zipcode"
-                    onChange={event => (this.user.email = event.target.value)}
-                  />
-                </div>
+          <div className="row">
+              <div className="col-md-2"/>
+              <div className="col-md-8">
+                  <div id="user-edit-page">
+                      <div id="main-form" className="col">
+                          <h2>Rediger din profil</h2>
+                          <div className="form-group">Organisasjonsnummer:
+                              <input id="org-edit-number" className="form-control" type="number" defaultValue = {this.user.organizationnumber} name="organizationnumber" onChange={event => (this.user.organizationnumber = event.target.value)}/>
+                          </div>
+                          <div className="form-group">Navn:
+                              <input id="org-edit-name" className="form-control" type="text" name="name" defaultValue={this.user.name} onChange={event => (this.user.name = event.target.value)}/></div>
+                          <div className="form-group">Mobil:
+                              <input id="org-edit-tel" className="form-control" type="number" defaultValue={this.user.tel} name="tel" onChange={event => (this.user.tel = event.target.value)}/>
+                          </div>
+                          <div className="form-group">Epost:
+                              <input id="org-edit-email" className="form-control" type="email" defaultValue = {this.user.email} name="zipcode" onChange={event => (this.user.email = event.target.value)}/>
+                          </div>
+                          <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
+                          <Button.Light onClick={() => history.push('/admin/'+this.user.user_id)}>Avbryt</Button.Light>
+                      </div>
 
-                <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                <Button.Light onClick={() => history.push('/admin/'+this.user.user_id)}>Avbryt</Button.Light>
+                      <div className="col min-side-rediger-bilde-div">
+                          <img className="min-side-rediger-bilde" src={ require('./resources/bedriftsansatt.png') } alt="kommuneansatt" />
+                      </div>
+                  </div>
               </div>
-              <div className="col">
-                <br/><br/><br/><br/>
-                  <img src={ require('./resources/bedriftsansatt.png') } alt="kommuneansatt" />
-              </div>
-            </div>
+              <div className="col-md-2"/>
           </div>
-        </div>
       );
     } else {
       return (
@@ -161,7 +129,7 @@ export default class OrgEdit extends Component {
       .updateOrgByToken(this.user)
       .then(response =>{
           console.log(response);
-          window.location.reload();
+          history.push("/bedrift")
       })
       .catch((error: Error) => (console.log(error.message)));
 

@@ -171,19 +171,19 @@ export default class LoginPage extends Component {
             });
     }
 
-    handleKeyPressUser(e) {
+    handleKeyPressUser(e: Event) {
         if (e.key === 'Enter') {
             this.handleSubmitHverdagshelt();
         }
     }
 
-    handleKeyPressOrg(e) {
+    handleKeyPressOrg(e: Event) {
         if (e.key === 'Enter') {
             this.handleSubmitBedrift();
         }
     }
 
-    handleKeyPressEmp(e) {
+    handleKeyPressEmp(e: Event) {
         if (e.key === 'Enter') {
             this.handleSubmitKommune();
         }

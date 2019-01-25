@@ -86,77 +86,48 @@ export default class UserEdit extends Component {
 
     if(this.loaded){
     return (
-          <div id="user-edit-page">
-            <div id="main-form" className="col">
-                <h2>Rediger din profil</h2>
-         <div className="form-group">
-          Navn:{" "}
-          <input
-            className={"form-control " + this.Nameinputtype}
-            type="text"
-            name="name"
-            defaultValue={this.user.name}
-            onChange={event => (this.user.name = event.target.value)}
-          />
-            <div className="invalid-feedback">Ugydig Navn</div>
+        <div className="row">
+            <div className="col-md-2"/>
+            <div className="col-md-8">
+                <div id="user-edit-page">
+                    <div id="main-form" className="col">
+                        <h2>Rediger din profil</h2>
+                        <div className="form-group">
+                            Navn:{" "}
+                            <input className={"form-control " + this.Nameinputtype} type="text" name="name" defaultValue={this.user.name} onChange={event => (this.user.name = event.target.value)}/>
+                            <div className="invalid-feedback">Ugydig Navn</div>
+                        </div>
+                        <div className="form-group">
+                            Adresse:{" "}
+                            <input className={"form-control " + this.AddressInputClass} type="text" defaultValue={this.user.address} name="address" onChange={event => (this.user.address = event.target.value, console.log(this.user.address))}/>
+                            <div className="invalid-feedback">Ugydig Adresse</div>
+                        </div>
+                        <div className="form-group">Postnummer:{" "}
+                        <input className={"form-control " + this.ZipcodeInputClass} type="text" defaultValue = {this.state.zip} maxLength ="4" name="zipcode" onChange={this.changeZip}/>
+                            <div className="invalid-feedback">Ugydig Postnummer</div>
+                            <p color="red">{this.state.zipinfo} </p>
+                        </div>
+                        <div className="form-group">Telefon:{" "}
+                        <input className={"form-control " + this.inputstatus} type="text" name="tel" defaultValue={this.state.tel} maxLength ="8" onChange={this.changeVal}/>
+                            <div className="invalid-feedback">Ugydig telefon</div>
+                            <div className="text-muted">{this.state.telinfo} </div>
+                        </div>
+                        <div className="form-group">Email:{" "}
+                        <input className={"form-control " + this.Emailinputtype} id="validationServer03" type="email" defaultValue={this.user.email} name="email" onChange={event => (this.user.email = event.target.value)}/>
+                            <div className="invalid-feedback">Ugydig Email</div>
+                        </div>
+                        {button}
+                        <Button.Success onClick={() => this.save(this.user,this.state)}>Save</Button.Success>
+                        <button type="button" className="btn btn-info" onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</button>
+                    </div>
+                    <div id="main-image" className="col min-side-rediger-bilde-div">
+                        <img className="min-side-rediger-bilde" src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-2"/>
         </div>
-        <div className="form-group">
-          Adresse:{" "}
-          <input
-          className={"form-control " + this.AddressInputClass}
-            type="text"
-            defaultValue={this.user.address}
-            name="address"
-            onChange={event => (this.user.address = event.target.value, console.log(this.user.address))}
-          />
-          <div className="invalid-feedback">Ugydig Adresse</div>
-        </div>
-        <div className="form-group">
-          Postnummer:{" "}
-          <input
-          className={"form-control " + this.ZipcodeInputClass}
-            type="text"
-            defaultValue = {this.state.zip}
-            maxLength ="4"
-            name="zipcode"
-            onChange={this.changeZip}
-          />
-              <div className="invalid-feedback">Ugydig Postnummer</div>
-          <p color="red">{this.state.zipinfo} </p>
-        </div>
-        <div className="form-group">
-          Telefon:{" "}
-          <input
-          className={"form-control " + this.inputstatus}
-            type="text"
-            name="tel"
-            defaultValue={this.state.tel}
-            maxLength ="8"
-            onChange={this.changeVal}
-          />
-          <div className="invalid-feedback">Ugydig telefon</div>
-            <div className="text-muted">{this.state.telinfo} </div>
-        </div>
-        <div className="form-group">
-          Email:{" "}
-          <input
-            className={"form-control " + this.Emailinputtype}
-            id="validationServer03"
-            type="email"
-            defaultValue={this.user.email}
-            name="email"
-            onChange={event => (this.user.email = event.target.value)}
-          />
-          <div className="invalid-feedback">Ugydig Email</div>
-          </div>
-          {button}
-          <Button.Success onClick={() => this.save(this.user,this.state)}>Save</Button.Success>
-          <button type="button" className="btn btn-info" onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</button>
-          </div>
-          <div id="main-image" className="col">
-              <img src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
-          </div>
-        </div>
+
     );
     } else {
       return (
@@ -251,7 +222,7 @@ export default class UserEdit extends Component {
           this.Nameinputtype = "is-valid";
           this.AddressInputClass = "is-valid";
           this.ZipcodeInputClass = "is-valid";
-          this.forceUpdate();
+          history.push("/user");
           setTimeout(function(){window.location.reload()}.bind(this),2000);
         })
       .catch((error: Error) => {
