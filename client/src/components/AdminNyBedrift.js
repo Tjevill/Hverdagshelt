@@ -5,6 +5,7 @@ import { Component } from "react-simplified";
 import { categoryService, employeeService, orgService } from "../services";
 import { userService } from "../services";
 import createHashHistory from "history/createHashHistory";
+import { Loading } from "./widgets";
 
 const history = createHashHistory();
 
@@ -15,6 +16,7 @@ function isEmail(str) {
 
 export default class AdminNyBedrift extends Component {
   organization = [];
+  loaded = false;
 
   message = " ";
   passworderror = " ";
@@ -62,6 +64,7 @@ export default class AdminNyBedrift extends Component {
       .then(response => {
         console.log("category_id", response.category_id);
         this.categories = response;
+        this.loaded = true;
         //this.conns = Array.from({length: 5}, (response => response);
         // this.conns.category_id = response.category_id;
         let i;
@@ -144,7 +147,7 @@ export default class AdminNyBedrift extends Component {
 
   render() {
     if (!this.organization) return null;
-
+    if(this.loaded){
     return (
       <div className="row">
         <div className="col-sm-4" />
@@ -272,7 +275,10 @@ export default class AdminNyBedrift extends Component {
         <div className="col-sm-4" />
       </div>
     );
+  }else{
+  return <Loading />;
   }
+}
 
   save() {
     let pass = this.state.password;
