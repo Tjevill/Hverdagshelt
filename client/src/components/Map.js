@@ -73,28 +73,28 @@ export class MapContainer extends Component {
             return (
                 <div id="map-page" className="max">
                     <div id="map-search">
-                        Finn alle saker i kommune:
-                        <input
-                          id="map-commune-input"
-                          className="form-control"
-                          type="text"
-                          defaultValue = ""
-                          onChange={event => {
-                            this.commune = event.target.value;
-                            this.changeCommune(event);
-                          }}
-                          onKeyPress={this.handleKeyPressSearch}
-                        />
-                        <div className="card" style={{width: "100%"}}>
-                          <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
-                            {
-                              this.communeOptions.map(
-                                commune => (
-                                  <li key={commune} className="list-group-item commune-option" onClick={(event) => this.confirmCommune(event, commune)}>{commune}</li>
-                                )
-                              )
-                            }
-                          </ul>
+                        <h2>Finn alle saker i kommune:</h2>
+                        <div className="search-input">
+                            <input
+                              id="map-commune-input"
+                              className="form-control"
+                              type="text"
+                              defaultValue = ""
+                              onChange={event => {
+                                this.commune = event.target.value;
+                                this.changeCommune(event);
+                              }}
+                              onKeyPress={this.handleKeyPressSearch}
+                            />
+                            <div className="card" style={{width: "100%"}}>
+                                <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
+                                    {this.communeOptions.map(
+                                        commune => (
+                                            <li key={commune} className="list-group-item commune-option" onClick={(event) => this.confirmCommune(event, commune)}>{commune}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </div>
                         </div>
                         <div className="center-button-wrapper">
                             <button type="button" className="btn btn-lg btn-primary" onClick={() => this.casesByCommune(this.commune)}>Søk</button>

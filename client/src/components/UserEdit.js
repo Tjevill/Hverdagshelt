@@ -117,8 +117,8 @@ export default class UserEdit extends Component {
                             <div className="invalid-feedback">Ugydig Email</div>
                         </div>
                         {button}
-                        <Button.Success onClick={() => this.save(this.user,this.state)}>Save</Button.Success>
-                        <button type="button" className="btn btn-info" onClick={() => history.push('/profile/'+this.user.user_id)}>Cancel</button>
+                        <Button.Success onClick={() => this.save(this.user,this.state)}>Lagre</Button.Success>
+                        <button type="button" className="btn btn-info" onClick={() => history.push("/user")}>Avbryt</button>
                     </div>
                     <div id="main-image" className="col min-side-rediger-bilde-div">
                         <img className="min-side-rediger-bilde" src={ require('./resources/hverdagshelt.png') } alt="hverdagshelt"/>
