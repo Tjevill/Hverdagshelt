@@ -63,7 +63,7 @@ export default class ChangePassword extends Component {
                 <br/>
                 <br/>
                 <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                <Button.Light onClick={() => history.push('/bedrift')}>Avbryt</Button.Light>
+                <Button.Light onClick={() => history.push("/bedrift")}>Avbryt</Button.Light>
               </div>
               <div className="col hengelaasdiv">
               <p>{this.meldning}</p>

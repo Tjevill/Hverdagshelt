@@ -37,9 +37,21 @@ function count(array) {
 export default class AdminEvents extends Component {
   events = [];
   eventsbackup = [];
-  event = new Object();
+  event = {
+    name: '',
+      address: '',
+      zipcode: '',
+      date: '',
+      venue: '',
+      description: ''
+  };
   editedEvent = new Object();
   loading = true;
+
+    nameValid = '';
+    zipValid = '';
+    addressValid = '';
+    dateValid = '';
 
   render() {
     if (!this.loading) {
@@ -166,24 +178,27 @@ export default class AdminEvents extends Component {
                             <label htmlFor="Event-name">Navn på event</label>
                             <input
                               type="event-name"
-                              className="form-control"
+                              className={"form-control " + this.nameValid}
                               id="Event-name"
                               onChange={event =>
                                 (this.event.name = event.target.value)
                               }
                               required
                             />
+                              <div className="invalid-feedback">Ugyldig eventnavn</div>
 
                             <label htmlFor="address">Adresse</label>
                             <input
                               type="name"
-                              className="form-control"
+                              className={"form-control " + this.addressValid}
                               id="address"
                               onChange={event =>
                                 (this.event.address = event.target.value)
                               }
                               required
                             />
+                              <div className="invalid-feedback">Ugyldig addresse</div>
+
 
                             <input
                               type="venue"
@@ -198,7 +213,7 @@ export default class AdminEvents extends Component {
                             <label htmlFor="zipcode">Postkode</label>
                             <input
                               type="zipcode"
-                              className="form-control"
+                              className={"form-control " + this.zipValid}
                               id="zipcode"
                               maxLength="4"
                               size="4"
@@ -207,10 +222,11 @@ export default class AdminEvents extends Component {
                                 (this.event.zipcode = event.target.value)
                               }
                             />
+                              <div className="invalid-feedback">Ugyldig postnummer</div>
 
                             <label htmlFor="date">Velg dato og tidspunkt</label>
                             <input
-                              className="form-control"
+                              className={"form-control " + this.dateValid}
                               type="datetime-local"
                               id="date"
                               name="date"
@@ -219,6 +235,7 @@ export default class AdminEvents extends Component {
                               }
                               required
                             />
+                              <div className="invalid-feedback">Ugyldig dato</div>
 
                             <label htmlFor="description">
                               Beskrivelse av event
@@ -309,12 +326,30 @@ export default class AdminEvents extends Component {
   }
 
   addEvent() {
-    console.log(this.event.name);
-    console.log(this.event.address);
-    console.log(this.event.venue);
-    console.log(this.event.zipcode);
-    console.log(this.event.date);
-    console.log(this.event.description);
+    if(this.event.name == '' || this.event.name == null) {
+      this.nameValid = "is-invalid";
+      return null;
+    } else {
+      this.nameValid = "";
+    }
+      if(this.event.address == '' || this.event.address == null) {
+          this.addressValid = "is-invalid";
+          return null;
+      } else {
+          this.addressValid = "";
+      }
+      if(this.event.zipcode == '' || this.event.zipcode == null) {
+          this.zipValid = "is-invalid";
+          return null;
+      } else {
+          this.zipValid = "";
+      }
+      if(this.event.date == '' || this.event.date == null) {
+          this.dateValid = "is-invalid";
+          return null;
+      } else {
+          this.dateValid = "";
+      }
     eventService.createEvent(this.event)
         .then(window.alert("Event opprettet!"),
       window.location.reload());
@@ -322,7 +357,6 @@ export default class AdminEvents extends Component {
 
   editEvent(eventid) {
     this.editedEvent = this.events.find(a => a.event_id === eventid);
-    console.log(this.editedEvent);
 
     return (
       <form onSubmit={() => this.save()}>
