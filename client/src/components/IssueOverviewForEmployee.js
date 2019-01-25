@@ -466,105 +466,86 @@ export default class IssueOverviewForEmployee extends Component<{
     }
 
     if (this.loaded) {
-      return (
-        <>
-          <div className="container">
-            <div className="row">
-              <div className="col-12 col-md-8">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g"
-                  id="Saker-icon-pic"
-                />
-              </div>
-              <div className="col-6 col-md-4" />
-            </div>
+      return <>
+          <div className="row">
+            <div className="col-md-2" />
+            <div className="col-md-8">
+              <div className="container">
+                <div className="row">
+                  <div className="col-12 col-md-8">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVQATgWe5oXqxAnlTcsDNW9Y6kO7YKLHsAuqFV-Fxyiz8gT_e62g" id="Saker-icon-pic" />
+                  </div>
+                  <div className="col-6 col-md-4" />
+                </div>
 
-            <div className="row">
-              <div className="col">
-                <h2 className="display-4" id="Saker-tittel">Saker</h2>
-              </div>
-              <div className="col">
-                <div className="form-group">
-                  <label htmlFor="inputKommune">Kategorier &nbsp;</label>
-                  <select
-                    className="w-auto"
-                    id="kommune"
-                    name="kommune"
-                    className="form-control"
-                    onChange={this.handleChangeCategories}
-                  >
-                    <option value={0}>Alle</option>
-                    {this.categories.map(category => (
-                      <option key={category.category_id} value={category.category_id}>
-                        {category.description} {category.category_id}
-                      </option>
-                    ))}
-                  </select>
+                <div className="row">
+                  <div className="col">
+                    <h2 className="display-4" id="Saker-tittel">
+                      Saker
+                    </h2>
+                  </div>
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="inputKommune">
+                        Kategorier &nbsp;
+                      </label>
+                      <select className="w-auto" id="kommune" name="kommune" className="form-control" onChange={this.handleChangeCategories}>
+                        <option value={0}>Alle</option>
+                        {this.categories.map(category => (
+                          <option
+                            key={category.category_id}
+                            value={category.category_id}
+                          >
+                            {category.description} {category.category_id}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="inputStatus">Status &nbsp;</label>
+                      <select className="w-auto" id="status" name="status" className="form-control" onChange={this.handleChangeStatus}>
+                        <option value={0}>Alle</option>
+                        <option value={1}>Registrert</option>
+                        <option value={2}>Under Vurdering</option>
+                        <option value={3}>Satt på vent</option>
+                        <option value={4}>Arbeid pågår</option>
+                        <option value={5}>Avvist</option>
+                        <option value={6}>Løst</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col">
-                <div className="form-group">
-                  <label htmlFor="inputStatus">Status &nbsp;</label>
-                  <select
-                    className="w-auto"
-                    id="status"
-                    name="status"
-                    className="form-control"
-                    onChange={this.handleChangeStatus}
-                  >
-                    <option value={0}>Alle</option>
-                    <option value={1}>Registrert</option>
-                    <option value={2}>Under Vurdering</option>
-                    <option value={3}>Satt på vent</option>
-                    <option value={4}>Arbeid pågår</option>
-                    <option value={5}>Avvist</option>
-                    <option value={6}>Løst</option>
-                  </select>
+
+              <div className="container">
+                <span className="glyphicon glyphicon-search" aria-hidden="true" />
+                <input type="text" id="search" name="search" placeholder="Search.." onChange={this.search} />
+                <Router history={history}>
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Tittel</th>
+                        <th scope="col">Tid</th>
+                        <th scope="col">Saken er tildelt</th>
+                        <th scope="col">Handling</th>
+                      </tr>
+                    </thead>
+                    {lists}
+                  </table>
+                </Router>
+              </div>
+
+              <div id="toolbar">
+                <div className="wrapper text-center">
+                  <div className="btn-group">{sidebuttons}</div>
                 </div>
               </div>
             </div>
-
-            <div className="row">
-              <div className="col-6 col-md-4" />
-              <div className="col-6 col-md-4" />
-              <div className="col-4 col-md-4">
-              </div>
-            </div>
+            <div className="col-md-2" />
           </div>
-
-          <div className="container">
-          <span className="glyphicon glyphicon-search" aria-hidden="true" />
-          <input
-            type="text"
-            id="search"
-            name="search"
-            placeholder="Search.."
-            onChange={this.search}
-          />
-            <Router history={history}>
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Tittel</th>
-                    <th scope="col">Tid</th>
-                      <th scope="col">Saken er tildelt</th>
-                    <th scope="col">Handling</th>
-                  </tr>
-                </thead>
-                {lists}
-
-              </table>
-            </Router>
-
-          </div>
-          <div id="toolbar">
-            <div className="wrapper text-center">
-              <div className="btn-group">{sidebuttons}</div>
-            </div>
-          </div>
-          <br/><br/>
-        </>
-      );
+        </>;
     } else {
       return <Loading />;
     }

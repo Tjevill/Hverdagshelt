@@ -66,45 +66,70 @@ export default class AdminRedigerEmployee extends Component {
 
   render(){
     if(this.loaded){
-      return (
-          <div className="row">
-              <div className="col-md-2"/>
-              <div className="col-md-8">
-                  <div id="user-edit-page">
-                      <div id="main-form" className="col">
-                          <h2>Rediger din profil</h2>
-                          <div className="form-group">Epost:<input id="emp-edit-email" className="form-control" type="email" defaultValue = {this.user.email} name="zipcode" onChange={event => (this.user.email = event.target.value)}/>
-                          </div>
-                          <div className="form-group">Navn:
-                              <input id="emp-edit-name" className="form-control" type="text" name="name" defaultValue={this.user.name} onChange={event => (this.user.name = event.target.value)}/>
-                          </div>
-                          <div className="form-group">Mobil:
-                              <input id="emp-edit-tel" className="form-control" type="number" defaultValue={this.user.tel} name="tel" onChange={event => {if(event.target.value.length > 8) {event.target.value = (event.target.value-(event.target.value%10))/10;}this.user.tel = event.target.value;}}/>
-                          </div>
-                          <div className="form-group">Kommune:
-                              <input id="emp-edit-commune" className="form-control" type="text" defaultValue = {this.commune} name="zipcode" onChange={event => {this.commune = event.target.value;this.changeCommune(event);}}/>
-                          </div>
+      return <div className="row">
+          <div className="col-md-2" />
+          <div className="col-md-8">
+            <div id="user-edit-page">
+              <div id="main-form" className="col">
+                <h2>Rediger din profil</h2>
+                <div className="form-group">
+                  Epost:
+                  <input id="emp-edit-email" className="form-control" type="email" defaultValue={this.user.email} name="zipcode" onChange={event => (this.user.email = event.target.value)} />
+                </div>
+                <div className="form-group">
+                  Navn:
+                  <input id="emp-edit-name" className="form-control" type="text" name="name" defaultValue={this.user.name} onChange={event => (this.user.name = event.target.value)} />
+                </div>
+                <div className="form-group">
+                  Mobil:
+                  <input id="emp-edit-tel" className="form-control" type="number" defaultValue={this.user.tel} name="tel" onChange={event => {
+                      if (event.target.value.length > 8) {
+                        event.target.value = (event.target.value - (event.target.value % 10)) / 10;
+                      }
+                      this.user.tel = event.target.value;
+                    }} />
+                </div>
+                <div className="form-group">
+                  Kommune:
+                  <input id="emp-edit-commune" className="form-control" type="text" defaultValue={this.commune} name="zipcode" onChange={event => {
+                      this.commune = event.target.value;
+                      this.changeCommune(event);
+                    }} />
+                </div>
 
-                          <div className="card" style={{minWidth: "19rem", width: "100%"}}>
-                              <ul className="list-group list-group-flush" style={{marginBottom: "0", width: "100%"}}>
-                                  {
-                                    this.communeOptions.map(
-                                        commune => (<li key={commune} className="list-group-item commune-option" onClick={(event) => this.confirmCommune(event, commune)}>{commune}</li>)
-                                    )
-                                  }
-                                  </ul>
-                          </div>
-                          <Button.Success onClick={() => this.save()}>Lagre</Button.Success>
-                          <Button.Light onClick={() => history.push('/admin/'+this.user.user_id)}>Avbryt</Button.Light>
-                      </div>
-                      <div className="col min-side-rediger-bilde-div">
-                          <img id="min-side-rediger-bilde" src={ require('./resources/kommuneansatt.png') } width="200"/>
-                      </div>
-                  </div>
+                <div className="card" style={{ minWidth: "19rem", width: "100%" }}>
+                  <ul className="list-group list-group-flush" style={{ marginBottom: "0", width: "100%" }}>
+                    {this.communeOptions.map(commune => (
+                      <li
+                        key={commune}
+                        className="list-group-item commune-option"
+                        onClick={event =>
+                          this.confirmCommune(event, commune)
+                        }
+                      >
+                        {commune}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <Button.Success onClick={() => this.save()}>
+                  Lagre
+                </Button.Success>
+                <Button.Light
+                  onClick={() =>
+                    history.push("/admin/" + this.user.user_id)
+                  }
+                >
+                  Avbryt
+                </Button.Light>
               </div>
-              <div className="col-md-2"/>
+              <div className="col min-side-rediger-bilde-div">
+                <img id="min-side-rediger-bilde" src={require("./resources/kommuneansatt.png")} width="200" />
+              </div>
+            </div>
           </div>
-      );
+          <div className="col-md-2" />
+        </div>;
     } else {
       return (
         <Loading />
