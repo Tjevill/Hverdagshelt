@@ -78,8 +78,9 @@ export default class AdminBedrift extends Component<{
                 <th scope="col admin-bedrift-email" >Email</th>
                 <th scope="col" colSpan="2">
                   <input
-                    id="searchbar"
+                    id="searchbarintable"
                     type="text"
+                    placeholder="Søk Navn.."
                     onChange={event => this.search(event)}
                   />{" "}
                 </th>
