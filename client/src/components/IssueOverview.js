@@ -58,7 +58,6 @@ export default class IssueOverview extends Component<{
     "Under Vurdering",
     "Satt på vent",
     "Arbeid pågår",
-    "Avvist",
     "Løst"
   ];
 
